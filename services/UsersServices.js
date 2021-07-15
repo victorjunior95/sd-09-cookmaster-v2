@@ -23,6 +23,19 @@ const createNewUser = (newUser) => {
   return usersModel.createNewUser(newUser);
 };
 
+// const logUser = async (loginInfo) => {
+//   const { email, password } = loginInfo;
+//   const isLoginValid = USER_SCHEMA.validate({ email, password });
+//   if (isLoginValid.error) {
+//     const errorObj = {
+//       errorCode: response.UNAUTHORIZED,
+//       message: 'All fields must be filled',
+//     };
+//     return errorObj;
+//   }
+//   const validateLogin = await
+// }
+
 module.exports = {
   getAllUsers,
   createNewUser,

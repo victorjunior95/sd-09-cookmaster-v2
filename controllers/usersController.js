@@ -9,11 +9,18 @@ UsersRouter.get('/', async (req, res) => {
   return res.status(response.STATUS_OK).json(registeredUsers);
 });
 
-UsersRouter.post('/', async (req, res, next) => {
+UsersRouter.post('/', async (req, res, _next) => {
   const newUserInfo = req.body;
   const newUser = await UsersServices.createNewUser(newUserInfo);
   if (newUser.errorCode) return res.status(newUser.errorCode).json({ message: newUser.message });
-  return res.status(response.STATUS_CREATED).json({ user: newUser });
+  const { password, ...userInfo } = newUser;
+  return res.status(response.STATUS_CREATED).json({ user: userInfo });
+});
+
+UsersRouter.post('/login', async (req, res) => {
+  const logUser = req.body;
+  const loginSuccessful = await UsersServices.logUser(logUser);
+  return res.status(response.STATUS_OK).json({ token: loginSuccessful.token });
 });
 
 module.exports = UsersRouter;

@@ -10,7 +10,7 @@ const getAllUsers = () => {
   } 
 };
 
-const createNewUser = async ({ name, email }) => {
+const createNewUser = async ({ name, email, password }) => {
   try {
     const registeredUsers = await getAllUsers();
       if (registeredUsers.some((user) => user.email === email)) {
@@ -20,8 +20,8 @@ const createNewUser = async ({ name, email }) => {
           };
         return errorObj;
       }
-      return connection()
-        .then((db) => db.collection('users').insertOne({ name, email, role: 'user' }))
+    return connection()
+        .then((db) => db.collection('users').insertOne({ name, email, role: 'user', password }))
         .then((result) => result.ops[0]);
   } catch (error) {
     return error;
