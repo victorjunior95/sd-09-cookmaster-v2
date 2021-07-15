@@ -3,7 +3,7 @@ const message = {
   type2: { error: [401, { message: 'All fields must be filled' }] },
   type3: { error: [401, { message: 'Incorrect username or password' }] },
   type4: { error: [401, { message: 'jwt malformed' }] },
-  type5: { error: [401, { message: 'missing atuh token' }] },
+  type5: { error: [401, { message: 'missing auth token' }] },
   type6: { error: [403, { message: 'Only admins can register new admins' }] },
   type7: { error: [404, { message: 'recipe not found' }] },
   type8: { error: [409, { message: 'Email already registered' }] },

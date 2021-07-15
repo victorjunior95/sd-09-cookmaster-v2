@@ -10,15 +10,16 @@ const loginObjectValidator = (req, _res, next) => {
 const loginExistsValidator = async (req, _res, next) => {
   const { email, password } = req.body;
   const data = await LoginServices.loginExistsVerifier(email, password);
-  const { _id } = data;
+  const { _id, role } = data;
   req.body.id = _id;
+  req.body.role = role;
   if (data.error) { return next(data); }
   return next();
 };
 
 const loginTokenGenerator = (req, res, _next) => {
-  const { id, email } = req.body;
-  const data = LoginServices.tokenGenerator({ id, email });
+  const { id, email, role } = req.body;
+  const data = LoginServices.tokenGenerator({ id, email, role });
   return res.status(200).json(data);
 };
 
@@ -27,7 +28,6 @@ const loginTokenValidator = (req, _res, next) => {
   const data = LoginServices.tokenValidator(token);
   req.body = { ...req.body, ...data };
   if (data.error) { return next(data); }
-  console.log('passei pela validação do token');
   return next();
 };
 

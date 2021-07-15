@@ -45,9 +45,33 @@ async function recipesGetOne(recipeId) {
   }
 }
 
+async function recipeVerifierUser(idUser, recipeId, roleUser) {
+  try {
+    const idParsed = ObjectID(recipeId);
+    const data = await RecipesModel.findOneRecipe({ _id: idParsed });
+    if (!data) throw statusError.type7;
+    if (idUser === data.userId || roleUser === 'admin') return data;
+    throw statusError.type9;
+  } catch (error) {
+    return error;
+  }
+}
+
+async function recipeUpdateOne(id, name, ingredients, preparation) {
+  try {
+    const data = await RecipesModel.updateOneRecipe(id, name, ingredients, preparation);
+    if (!data) throw statusError.type1;
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 module.exports = {
   recipeVerifier,
   recipeAdd,
   recipesGetAll,
   recipesGetOne,
+  recipeVerifierUser,
+  recipeUpdateOne,
 };

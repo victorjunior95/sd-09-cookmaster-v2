@@ -16,12 +16,22 @@ function tokenGenerator(userObjectWithoutPass) {
   }
 }
 
-function tokenValidator(token) {
+function decodeToken(token) {
   try {
-    const decoded = jwt.verify(token, secret);
-    return decoded;
+    return jwt.verify(token, secret);
   } catch (error) {
     return statusError.type4;
+  }
+}
+
+function tokenValidator(token) {
+  try {
+    if (!token) throw statusError.type5;
+    const decoded = decodeToken(token);
+    if (decoded.error) throw decoded;
+    return decoded;
+  } catch (error) {
+    return error;
   }
 }
 
