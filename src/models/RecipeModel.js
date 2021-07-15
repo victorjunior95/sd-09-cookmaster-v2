@@ -10,6 +10,11 @@ const create = async (recipeInfo, user) => {
   return { recipe: createdUser.ops[0] };
 };
 
+const getAll = async () => (
+  connection().then((db) => db.collection(DB_COLLECTION).find().toArray())
+);
+
 module.exports = {
   create,
+  getAll,
 };
