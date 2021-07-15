@@ -9,6 +9,8 @@ app.use(bodyPaser.json());
 
 app.use('/users', routes.Users);
 
+app.use('/login', routes.Login);
+
 app.use(erroMiddleware);
 
 // Não remover esse end-point, ele é necessário para o avaliador

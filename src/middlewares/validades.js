@@ -32,6 +32,20 @@ const validadesUsers = (req, _res, next) => {
   return next();
 };
 
+const validadeLogin = (req, _res, next) => {
+  const { email, password } = req.body;
+
+  const isValidEmail = validadeValue(email);
+  const isValidPassword = validadeValue(password);
+
+  if (!isValidEmail || !isValidPassword) {
+    return next({ code: 401, message: 'All fields must be filled' });
+  }
+
+  return next();
+};
+
 module.exports = {
   validadesUsers,
+  validadeLogin,
 };
