@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 const LoginService = require('../services/LoginService');
 const { OK_STATUS } = require('../helpers/httpStatus');
-
-const secret = 'oSegredoMaisSecretoDeTodosOsSegredosSuperSecretos';
+const { secret } = require('../api/auth/validateJWT');
 
 const login = async (req, res) => {
   const loginInfo = req.body;

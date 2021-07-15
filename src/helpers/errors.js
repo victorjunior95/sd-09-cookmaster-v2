@@ -24,9 +24,15 @@ const INCORRECT_CREDENTIALS = {
   status: UNAUTHORIZED,
 };
 
+const TOKEN_NOT_FOUND = {
+  error: { message: 'jwt malformed' },
+  status: UNAUTHORIZED,
+};
+
 module.exports = {
   ALREADY_EXISTS,
   INVALID_ENTRIES,
   EMPTY_FIELD,
   INCORRECT_CREDENTIALS,
+  TOKEN_NOT_FOUND,
 };

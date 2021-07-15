@@ -1,5 +1,4 @@
 const connection = require('./connection');
-// const { ObjectId } = require('mongodb');
 
 const DB_COLLECTION = 'users';
 
