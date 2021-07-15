@@ -9,7 +9,7 @@ const addUser = async (req, res) => {
       return res.status(status.CREATE).json({ user: result });
     }
   } catch (err) {
-    return res.status(status.INTERNAL_SERVER_ERROR).send({ error: Message.err });
+    return res.status(status.INTERNAL_SERVER_ERROR).send({ error: err.message });
   }
 };
 
