@@ -19,7 +19,7 @@ const validateNewUser = async (name, email, password) => {
     };
   }
 
-  return await models.postIntoDb(name, email, password);
+  return models.postIntoDb(name, email, password);
 };
 
 module.exports = {

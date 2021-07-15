@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 const routes = require('../routes');
 
+const tokenValidaton = require('../middlewares/tokenValidation');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -17,7 +19,11 @@ app.get('/', (request, response) => {
 
 app.use('/users', rescue(routes.users));
 app.use('/login', rescue(routes.login));
+app.use('/recipes', tokenValidaton, rescue(routes.recipes));
 
-app.use((err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message }));
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.status(err.statusCode || 500).json({ message: err.message });
+});
 
 module.exports = app;

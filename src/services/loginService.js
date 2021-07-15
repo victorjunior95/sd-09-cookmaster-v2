@@ -1,10 +1,5 @@
 const loginValidation = require('../validations/loginValidation');
-// verificar se o email e senha estao cadastrados no db
-// caso esteja, montar um payload com id, email e role do user
 
-// onde fazer isso tudo?
-// acho que da pra fazer a verificacao no service
-// e gerar o token em validations
 const authentication = async (email, password) => {
   if (!email || !password) {
     return {

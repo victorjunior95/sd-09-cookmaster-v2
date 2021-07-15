@@ -7,14 +7,16 @@ const validateLogin = async (email, password) => {
 
   if (!getUser || password !== getUser.password) return false;
 
+  const { _id: id, email: userEmail, role } = getUser;
+
   return {
-    id: getUser._id,
-    email: getUser.email,
-    role: getUser.role,
+    id,
+    userEmail,
+    role,
   };
 };
 
-const generateToken = async (user) => {
+const generateToken = (user) => {
   const token = jwt.sign(user, 'secret');
 
   return token;
