@@ -17,10 +17,4 @@ UsersRouter.post('/', async (req, res, _next) => {
   return res.status(response.STATUS_CREATED).json({ user: userInfo });
 });
 
-UsersRouter.post('/login', async (req, res) => {
-  const logUser = req.body;
-  const loginSuccessful = await UsersServices.logUser(logUser);
-  return res.status(response.STATUS_OK).json({ token: loginSuccessful.token });
-});
-
 module.exports = UsersRouter;

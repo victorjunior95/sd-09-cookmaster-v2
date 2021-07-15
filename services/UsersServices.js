@@ -1,5 +1,5 @@
 const joi = require('joi');
-const usersModel = require('../models/usersModel');
+const UsersModel = require('../models/UsersModel');
 const response = require('../middlewares/responseCodes');
 
 const USER_SCHEMA = joi.object({
@@ -8,11 +8,15 @@ const USER_SCHEMA = joi.object({
   password: joi.string().required(),
 });
 
-const getAllUsers = async () => usersModel.getAllUsers();
+const LOGIN_SCHEMA = joi.object({
+  email: joi.string().email().required(),
+  password: joi.string().required(),
+});
+
+const getAllUsers = async () => UsersModel.getAllUsers();
 
 const createNewUser = (newUser) => {
   const isUserValid = USER_SCHEMA.validate(newUser);
-  console.log(isUserValid.error);
   if (isUserValid.error) {
     const errorObj = {
       errorCode: response.BAD_REQUEST,
@@ -20,23 +24,24 @@ const createNewUser = (newUser) => {
     };
     return errorObj;
   }
-  return usersModel.createNewUser(newUser);
+  return UsersModel.createNewUser(newUser);
 };
 
-// const logUser = async (loginInfo) => {
-//   const { email, password } = loginInfo;
-//   const isLoginValid = USER_SCHEMA.validate({ email, password });
-//   if (isLoginValid.error) {
-//     const errorObj = {
-//       errorCode: response.UNAUTHORIZED,
-//       message: 'All fields must be filled',
-//     };
-//     return errorObj;
-//   }
-//   const validateLogin = await
-// }
+const logUser = async (loginInfo) => {
+  const isLoginValid = LOGIN_SCHEMA.validate(loginInfo);
+  if (isLoginValid.error) {
+    const errorObj = {
+      errorCode: response.UNAUTHORIZED,
+      message: 'All fields must be filled',
+    };
+    return errorObj;
+  }
+  const validateLogin = await UsersModel.validateLogin(loginInfo);
+  return validateLogin;
+};
 
 module.exports = {
   getAllUsers,
   createNewUser,
+  logUser,
 };

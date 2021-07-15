@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const genToken = require('../middlewares/JWTgen');
 const response = require('../middlewares/responseCodes');
 
 const getAllUsers = () => {
@@ -8,6 +9,12 @@ const getAllUsers = () => {
   } catch (error) {
     return error;
   } 
+};
+
+const getUserByEmail = async (email) => {
+  const foundUser = await connection()
+    .then((db) => db.collection('users').findOne({ email }));
+  return foundUser;
 };
 
 const createNewUser = async ({ name, email, password }) => {
@@ -28,7 +35,27 @@ const createNewUser = async ({ name, email, password }) => {
   }
 };
 
+const validateLogin = async (loginInfo) => {
+  try {
+    const { email } = loginInfo;
+    const userExists = await getUserByEmail(email);
+    if (!userExists || userExists.password !== loginInfo.password) {
+      const errorObj = {
+        errorCode: response.UNAUTHORIZED,
+        message: 'Incorrect username or password',
+      };
+      return errorObj;
+    }
+    // const { password, ...userInfo } = userExists;
+    const userToken = genToken(userExists);
+    return userToken;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   createNewUser,
   getAllUsers,
+  validateLogin,
 };
