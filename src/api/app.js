@@ -5,12 +5,15 @@ const routerUser = require('../routers/user');
 const errorHandling = require('../middlewares/errorHandling');
 
 const loginController = require('../controllers/loginController');
+const recipesController = require('../controllers/recipesController');
+const validateJWT = require('./auth/validateJWT'); 
 
 const app = express();
 app.use(bodyParser.json());
 
 app.use('/users', routerUser);
 app.post('/login', rescue(loginController.login));
+app.post('/recipes', validateJWT, rescue(recipesController.create));
 
 app.use(errorHandling);
 
