@@ -6,16 +6,14 @@ const createUser = (req, res, next) => {
     name: Joi.string()
     .required(),
     email: Joi.string()
-      .pattern('[^@]+@[^.]+.com$')
       .required(),
     password: Joi.string()
     .required(),
-    role: Joi.string(),
   });
 
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
-  const { error } = schema.validate({ name, email, password, role });
+  const { error } = schema.validate({ name, email, password });
 
   if (error) throw new InvalidUserFormError();
 
