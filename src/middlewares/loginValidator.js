@@ -1,36 +1,29 @@
-const rescue = require('express-rescue');
 const { findUserByEmail } = require('../models/UsersModel');
 
-function isValidEmail(email) {
-  const regexValEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  return regexValEmail.test(email);
-}
+const verifyEmailAndPassword = (req, res, next) => {
+  const { email, password } = req.body;
 
-async function userExists(email) {
-  const user = await findUserByEmail(email);
-  if (user !== null) return true;
-  return false;
-}
-
-const validateNameAndPass = rescue(async (req, res, next) => {
-  const { name, password, email } = req.body;
-  const emailValidate = isValidEmail(email);
-  
-  if (!name || !password || !email || !emailValidate) {
-    return res.status(400).json({ message: 'Invalid entries. Try again.' });
+  if (!email || !password) {
+    return res.status(401).json({ message: 'All fields must be filled' });
   }
   next();
-});
+};
 
-const emailAlreadyExists = rescue(async (req, res, next) => {
-  const { email } = req.body;
-  const emailExists = await userExists(email);
+const isValidEmailOrPassword = async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await findUserByEmail(email);
 
-  if (emailExists) return res.status(409).json({ message: 'Email already registered' });
+  if (user === null) {
+    return res.status(401).json({ message: 'Incorrect username or password' });
+  }
+
+  if (user.password !== password) {
+    return res.status(401).json({ message: 'Incorrect username or password' });
+  }
   next();
-});
+};
 
 module.exports = {
-  validateNameAndPass,
-  emailAlreadyExists,
+  verifyEmailAndPassword,
+  isValidEmailOrPassword,
 };

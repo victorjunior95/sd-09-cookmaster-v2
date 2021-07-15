@@ -18,4 +18,9 @@ app.post('/users',
   middlewares.emailAlreadyExists,
   UserController.createUser);
 
+app.post('/login',
+  middlewares.verifyEmailAndPassword, 
+  middlewares.isValidEmailOrPassword,
+  UserController.login);
+
 module.exports = app;
