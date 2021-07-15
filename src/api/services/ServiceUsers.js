@@ -16,7 +16,6 @@ const create = async ({ name, email, password }) => {
 };
 
 const login = async ({ email, password }) => {
-
   const findUserByEmail = await ModelUsers.getByEmail({ email });
 
   if (!findUserByEmail || findUserByEmail.password !== password) {

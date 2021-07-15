@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     const token = await ServiceUsers.login({ email, password });
-    console.log(token);
+
     return res.status(SUCCESS).json(token);
   } catch (error) {
     next(error);
