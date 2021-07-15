@@ -11,6 +11,9 @@ const validateNewRecipe = async (name, ingredients, preparation) => {
   return recipesModel.postIntoDb(name, ingredients, preparation);
 };
 
+const getAllRecipes = async () => recipesModel.getAllRecipesFromDb();
+
 module.exports = {
   validateNewRecipe,
+  getAllRecipes,
 };

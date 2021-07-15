@@ -12,6 +12,17 @@ const postIntoDb = async (name, ingredients, preparation) => {
   return recipe && { _id: id, name, ingredients, preparation };
 };
 
+const getAllRecipesFromDb = async () => {
+  const db = await connection();
+
+  const collection = await db.collection('recipes');
+
+  const allRecipes = await collection.find({}).toArray();
+
+  return allRecipes;
+};
+
 module.exports = {
   postIntoDb,
+  getAllRecipesFromDb,
 };
