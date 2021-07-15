@@ -1,0 +1,1 @@
+// validaçoes de rotas e os usos de JWT. Recebe as regras de negócios do Services e despacha para o App
