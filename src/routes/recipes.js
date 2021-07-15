@@ -11,4 +11,6 @@ RecipeRouter.get('/', Recipes.getAll);
 
 RecipeRouter.get('/:id', validateId, Recipes.getRecipe);
 
+RecipeRouter.put('/:id', authToken, Recipes.editRecipe);
+
 module.exports = RecipeRouter;

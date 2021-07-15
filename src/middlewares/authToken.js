@@ -1,14 +1,13 @@
 const jwt = require('jsonwebtoken');
-const connection = require('../models/connection');
 const UserModel = require('../models/users');
 
 const secret = 'secretToken';
 
-const authToken = async (req, res, next) => {
+const authToken = async (req, _res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ error: 'Token não encontrado' });
+    return next({ code: 401, message: 'missing auth token' });
   }
 
   try {
