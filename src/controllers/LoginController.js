@@ -3,6 +3,9 @@ const mdw = require('../middlewares');
 
 const loginRouter = express.Router();
 
-loginRouter.get('/', mdw.mdwLogin.login);
+loginRouter.post('/',
+  mdw.mdwLogin.loginObjectValidator,
+  mdw.mdwLogin.loginExistsValidator,
+  mdw.mdwLogin.loginTokenGenerator);
 
 module.exports = loginRouter;
