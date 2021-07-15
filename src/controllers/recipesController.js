@@ -9,6 +9,15 @@ const create = async (req, res) => {
     .json({ recipe: { name, ingredients, preparation, userId, _id: id } });
 };
 
+const getAll = async (_req, res) => {
+  const response = await recipesService.getAll();
+  console.log(response, 'response');
+  return res
+    .status(200)
+    .json(response);
+};
+
 module.exports = {
   create,
+  getAll,
 };

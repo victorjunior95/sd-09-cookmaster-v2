@@ -18,6 +18,13 @@ const create = async ({ name, preparation, ingredients, userId }) => {
   return idObject;
 };
 
+const getAll = async () => {
+  const recipes = await recipesModel.getAll();
+  console.log(recipes, 'receitas');
+  return recipes;
+};
+
 module.exports = {
   create,
+  getAll,
 };

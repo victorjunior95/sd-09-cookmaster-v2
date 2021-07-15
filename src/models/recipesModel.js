@@ -1,16 +1,26 @@
 const connection = require('./connection');
 
 const create = async ({ name, preparation, ingredients }) => {
-  const usersCollection = await connection()
+  const recipesCollection = await connection()
     .then((db) => db.collection('recipes'));
-  const { insertedId } = await usersCollection
-  .insertOne({ name, preparation, ingredients, url: 'url' });
+  const { insertedId } = await recipesCollection
+  .insertOne({ name, preparation, ingredients });
 
   return {
     id: insertedId,
   };
 };
 
+const getAll = async () => {
+  const recipesCollection = await connection()
+    .then((db) => db.collection('recipes'));
+
+  const recipes = await recipesCollection.find().toArray();
+
+  return recipes;
+};
+
 module.exports = {
   create,
+  getAll,
 };
