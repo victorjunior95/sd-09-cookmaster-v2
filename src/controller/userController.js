@@ -10,7 +10,7 @@ router.post('/', Validation.createUser, async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const created = await UserService.create(name, email, password);
-    return res.status(StatusCode.created).json(created);
+    return res.status(StatusCode.created).json({ user: created });
   } catch (err) {
     next(err);
   }
