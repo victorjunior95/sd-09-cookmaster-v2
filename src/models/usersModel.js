@@ -1,15 +1,15 @@
 const connection = require('./connection');
 
-const registerUser = async (user) => {
-  return connection()
+const registerUser = async (user) => (
+  connection()
     .then((db) => db.collection('users').insertOne(user))
-    .then((result) => result.ops[0]);
-};
+    .then((result) => result.ops[0])
+);
 
-const findUserByEmail = async (email) => {
-  return connection()
-  .then((db) => db.collection('users').findOne({ email }));
-};
+const findUserByEmail = async (email) => (
+  connection()
+  .then((db) => db.collection('users').findOne({ email }))
+);
 
 module.exports = {
   registerUser,
