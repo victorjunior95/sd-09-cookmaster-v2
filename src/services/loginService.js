@@ -1,33 +1,24 @@
 const jwt = require('jsonwebtoken');
 const {
-  getByEmail
+  getByEmail,
 } = require('../models/loginModel');
 
+const errlogin = { message: 'All fields must be filled' };
+const emailneed = { message: 'Incorrect username or password' };
 
-const errlogin = {'message':'All fields must be filled'};
-const emailneed = {'message':'Incorrect username or password'};
-
-
-const checkUser = async({email, password})=>{
-  if(!email || !password){return errlogin;};
+const checkUser = async ({ email, password }) => {
+  if (!email) { return errlogin; }
+  if (!password) { return errlogin; }
   const user = await getByEmail(email);
-  if (!user|| password !== user.password){
-    return emailneed;
-  }else if(user.password === password){
+  if (password !== user.password) { return emailneed; }
+  if (user.password === password) {
     const secret = 'cookMaster';
-    const jwtConfig = { expiresIn: '7d', algorithm: 'HS256'};
-    const token = jwt.sign(user,secret,jwtConfig);
-    return {'token': token} ;
-  };
+    const jwtConfig = { expiresIn: '7d', algorithm: 'HS256' };
+    const token = jwt.sign(user, secret, jwtConfig);
+    return { token };
+  }
 };
-
-
-
-
-
 
 module.exports = {
-  checkUser
+  checkUser,
 };
-
-
