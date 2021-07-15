@@ -10,7 +10,7 @@ function emailIsValid(email) {
 }
 
 function passwordIsValid(password) {
-  const passwordPattern = /[\S]{6,}/;
+  const passwordPattern = /[\S]{5,}/;
   if (!password || !passwordPattern.test(password)) return false;
   return true;
 }

@@ -8,17 +8,20 @@ const secret = 'meutoken';
 const jwtConfig = { expiresIn: '2h', algorithm: 'HS256' };
 
 function tokenGenerator(userObjectWithoutPass) {
-  const token = jwt.sign(userObjectWithoutPass, secret, jwtConfig);
-  return { token };
+  try {
+    const token = jwt.sign(userObjectWithoutPass, secret, jwtConfig);
+    return { token };
+  } catch (error) {
+    return error;
+  }
 }
 
 function tokenValidator(token) {
   try {
     const decoded = jwt.verify(token, secret);
-    if (!decoded.name) throw statusError.type4;
     return decoded;
   } catch (error) {
-    return error;
+    return statusError.type4;
   }
 }
 
