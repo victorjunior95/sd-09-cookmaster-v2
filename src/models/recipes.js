@@ -20,9 +20,13 @@ const editRecipe = async (id, body) => connection()
     ))
   .then((result) => result.value);
 
+const deleteRecipe = async (id) => connection()
+    .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   createRecipes,
   getAll,
   getRecipe,
   editRecipe,
+  deleteRecipe,
 };

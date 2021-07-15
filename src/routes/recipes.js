@@ -13,4 +13,6 @@ RecipeRouter.get('/:id', validateId, Recipes.getRecipe);
 
 RecipeRouter.put('/:id', authToken, Recipes.editRecipe);
 
+RecipeRouter.delete('/:id', authToken, Recipes.deleteRecipe);
+
 module.exports = RecipeRouter;
