@@ -23,7 +23,18 @@ async function recipeAdd(recipeObject) {
   }
 }
 
+async function recipesGetAll() {
+  try {
+    const data = await RecipesModel.findAllRecipes();
+    if (!data) throw statusError.type9;
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 module.exports = {
   recipeVerifier,
   recipeAdd,
+  recipesGetAll,
 };

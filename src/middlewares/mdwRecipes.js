@@ -14,7 +14,14 @@ const newRecipeAdd = async (req, res, next) => {
   return res.status(201).json({ recipe: data });
 };
 
+const recipesGetAll = async (req, res, next) => {
+  const data = await RecipesServices.recipesGetAll();
+  if (data.error) { return next(); }
+  return res.status(200).json(data);
+};
+
 module.exports = {
   newRecipeValidator,
   newRecipeAdd,
+  recipesGetAll,
 };
