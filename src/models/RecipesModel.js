@@ -13,7 +13,14 @@ const findAllRecipes = async () => {
   return recipes;
 };
 
+const findOneRecipe = async (recipeObject) => {
+  const recipe = await connection()
+    .then((db) => db.collection('recipes').findOne(recipeObject));
+  return recipe;
+};
+
 module.exports = {
   addRecipe,
   findAllRecipes,
+  findOneRecipe,
 };

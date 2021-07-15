@@ -1,4 +1,5 @@
 // recipesService
+const { ObjectID } = require('mongodb');
 const validators = require('./allValidators');
 const statusError = require('./allMessages');
 const RecipesModel = require('../models/RecipesModel');
@@ -33,8 +34,20 @@ async function recipesGetAll() {
   }
 }
 
+async function recipesGetOne(recipeId) {
+  try {
+    const idParsed = ObjectID(recipeId);
+    const data = await RecipesModel.findOneRecipe({ _id: idParsed });
+    if (!data) throw statusError.type7;
+    return data;
+  } catch (error) {
+    return statusError.type7;
+  }
+}
+
 module.exports = {
   recipeVerifier,
   recipeAdd,
   recipesGetAll,
+  recipesGetOne,
 };
