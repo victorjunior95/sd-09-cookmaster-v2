@@ -16,8 +16,7 @@ const getByEmail = async (email) => {
     .then((db) => db.collection('users'));
   const response = await usersCollection
     .find({ email }).toArray();
-  if (response.length > 0) return true; 
-  return false;
+  return response;
 };
 
 const getById = async (id) => {

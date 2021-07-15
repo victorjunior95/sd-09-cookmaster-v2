@@ -1,12 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const rescue = require('express-rescue');
 const routerUser = require('../routers/user');
 const errorHandling = require('../middlewares/errorHandling');
+
+const loginController = require('../controllers/loginController');
 
 const app = express();
 app.use(bodyParser.json());
 
 app.use('/users', routerUser);
+app.post('/login', rescue(loginController.login));
 
 app.use(errorHandling);
 
