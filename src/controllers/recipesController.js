@@ -12,6 +12,7 @@ const {
   editvlidation,
   deletevalidation,
   imagvalidation,
+  nameValid,
 } = require('../services/recipesService');
 
 const cc = 200;
@@ -21,7 +22,7 @@ const cd = 400;
 const cdi = 401;
 const cdiv = 404;
 
-router.post('/', validatejwt, async (req, res) => {
+router.post('/', validatejwt, nameValid, async (req, res) => {
   const result = await validarecipies(req.body, req.user);
   let dinamic = result.message ? cd : cdi;
   if (result.recipe) { dinamic = cci; }  
