@@ -1,6 +1,6 @@
 // usersService
-const statusError = require('../services/allMessages');
-const validators = require('../services/allValidators');
+const statusError = require('./allMessages');
+const validators = require('./allValidators');
 const UsersModel = require('../models/UsersModel');
 
 async function usersGetAll() {
@@ -9,7 +9,7 @@ async function usersGetAll() {
     if (!data) throw statusError.type9;
     return data;
   } catch (error) {
-    return error
+    return error;
   }
 }
 
@@ -22,25 +22,25 @@ function userPatternVerifier(name, email, password) {
   } catch (error) {
     return error;
   }
-};
+}
 
 async function userExistsVerifier(email) {
   try {
-    const data = await UsersModel.findOneUser({email});
+    const data = await UsersModel.findOneUser({ email });
     if (data) throw statusError.type8;
     return {};
   } catch (error) {
-    return error
+    return error;
   }
 }
 
 async function userAdd(objectUser) {
   try {
-    const data = await UsersModel.addOneUser(objectUser)
+    const data = await UsersModel.addOneUser(objectUser);
     delete data.password;
-    return {user: data};
+    return { user: data };
   } catch (error) {
-    return error
+    return error;
   }
 }
 
@@ -49,4 +49,4 @@ module.exports = {
   userPatternVerifier,
   userExistsVerifier,
   userAdd,
-}
+};

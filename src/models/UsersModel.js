@@ -13,7 +13,7 @@ const findAllUsers = async () => {
   return users;
 };
 
-const addOneUser =  async (userObject) => {
+const addOneUser = async (userObject) => {
   const user = await connection()
     .then((db) => db.collection('users').insertOne(userObject));
   return user.ops[0];
@@ -23,4 +23,4 @@ module.exports = {
   findOneUser,
   findAllUsers,
   addOneUser,
-}
+};
