@@ -6,7 +6,7 @@ const OPTIONS = {
 };
 
 const MONGO_DB_URL = process.env.MONGO_URL || 'mongodb://mongodb:27017/Cookmaster';
-const DB_NAME = 'StoreManager';
+const DB_NAME = 'Cookmaster';
 
 const { MongoClient } = require('mongodb');
 
