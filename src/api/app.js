@@ -13,7 +13,7 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.use('/users', usersController);
+app.use('/', usersController);
 
 app.use(errorController);
 
