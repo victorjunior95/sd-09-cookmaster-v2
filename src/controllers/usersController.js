@@ -14,13 +14,15 @@ const cdix = 409;
 
 const {
   createUser,
+  checkName,
+  checkEmal,
 
 } = require('../services/usersService');
 
 const invalideEnties = 'Invalid entries. Try again.';
 const alreadRegistered = 'Email already registered';
 
-router.post('/', async (req, res) => {
+router.post('/', checkName, checkEmal, async (req, res) => {
   const result = await createUser(req.body);
   if (!result || result.message === invalideEnties) {
     return res.status(cd).json(result);  
