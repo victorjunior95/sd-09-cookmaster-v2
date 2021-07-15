@@ -9,5 +9,6 @@ const recipesController = require('../controllers/recipesController');
 router.post('/', validateJWT, rescue(recipesController.create));
 router.get('/:id', rescue(recipesController.getById));
 router.get('/', rescue(recipesController.getAll));
+router.put('/:id', validateJWT, rescue(recipesController.updateById));
 
 module.exports = router;
