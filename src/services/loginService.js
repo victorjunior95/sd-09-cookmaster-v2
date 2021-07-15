@@ -19,8 +19,7 @@ const login = async (mail, pass) => {
       const token = jwt.sign({ data: email }, secret, jwtConfig);
       return token;
     }
-  }
-  if (byEmail === null) {
+  } else {
     return 'null';
   }
 };
