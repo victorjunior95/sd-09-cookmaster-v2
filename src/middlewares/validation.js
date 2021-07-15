@@ -6,6 +6,7 @@ const createUser = (req, res, next) => {
     name: Joi.string()
     .required(),
     email: Joi.string()
+      .pattern(new RegExp('[^@]+@[^.]+.com$'))
       .required(),
     password: Joi.string()
     .required(),
