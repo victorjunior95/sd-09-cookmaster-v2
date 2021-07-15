@@ -20,9 +20,9 @@ const authToken = async (req, res, next) => {
       return next({ code: 401, message: 'Erro ao procurar usuário do token.' });
     }
 
-    const { password, ...userWithOutPasswor } = decoded;
+    const { _id, password, ...userWithOutPasswor } = decoded;
 
-    req.user = { ...userWithOutPasswor };
+    req.user = { id: _id, ...userWithOutPasswor };
 
     next();
   } catch (err) {

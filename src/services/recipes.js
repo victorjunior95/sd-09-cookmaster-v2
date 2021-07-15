@@ -1,7 +1,7 @@
 const recipesModel = require('../models/recipes');
 
-const createRecipes = async (name, ingredients, preparation, id) => {
-  const recipe = await recipesModel.createRecipes(name, ingredients, preparation, id);
+const createRecipes = async (name, ingredients, preparation, userId) => {
+  const recipe = await recipesModel.createRecipes(name, ingredients, preparation, userId);
 
   return { recipe };
 };
@@ -12,7 +12,16 @@ const getAll = async () => {
   return allRecipes;
 };
 
+const getRecipe = async (id) => {
+  const recipe = await recipesModel.getRecipe(id);
+
+  if (!recipe) return ({ code: 404, message: 'recipe not found' });
+
+  return recipe;
+};
+
 module.exports = {
   createRecipes,
   getAll,
+  getRecipe,
 };

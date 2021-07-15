@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const { validadeLogin } = require('../middlewares/validades');
+const { validateLogin } = require('../middlewares/validades');
 const loginService = require('../services/login');
 
 const app = express();
@@ -12,7 +12,7 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-app.post('/', validadeLogin, async (req, res, next) => {
+app.post('/', validateLogin, async (req, res, next) => {
   const { email, password } = req.body;
 
   const login = await loginService.login(email, password);
