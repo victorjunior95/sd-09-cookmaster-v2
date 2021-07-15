@@ -13,9 +13,9 @@ const createUser = (req, res, next) => {
     role: Joi.string(),
   });
 
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
-  const { error } = schema.validate({ name, email, password });
+  const { error } = schema.validate({ name, email, password, role });
 
   if (error) throw new InvalidUserFormError();
 
