@@ -1,5 +1,6 @@
 const app = require('./app');
 
-const PORT = 3000;
+const PORTFIXED = 3000;
+const PORT = process.env.PORT || PORTFIXED;
 
 app.listen(PORT, () => console.log(`conectado na porta ${PORT}`));
