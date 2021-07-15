@@ -22,17 +22,11 @@ const recipeRouter = express.Router();
 recipeRouter.post('/', middlewares.authCheck, middlewares.validateRecipeInput,
   recipesController.postNewRecipe);
 
-recipeRouter.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'estamos no /recipes get',
-  });
-});
+// 4 - Crie um endpoint para a listagem de receitas
+recipeRouter.get('/', recipesController.getAllRecipes);
 
-recipeRouter.get('/:id', (req, res) => {
-  res.status(200).json({
-    message: 'estamos no /recipes/:id get',
-  });
-});
+// 5 - Crie um endpoint para visualizar uma receita específica
+recipeRouter.get('/:id', recipesController.getRecipeById);
 
 recipeRouter.put('/:id', (req, res) => {
   res.status(200).json({
