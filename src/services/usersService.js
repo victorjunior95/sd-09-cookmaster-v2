@@ -22,7 +22,7 @@ const validateEmail = async (email) => {
   if (!regex.test(email)) return generateMessageError(BAD_REQUEST, errorsUsers.invalidEntries);
 
   const userFound = await usersModel.findByEmail(email);
-  if (userFound.length) return generateMessageError(CONFLICT, errorsUsers.duplicateEmail);
+  if (userFound) return generateMessageError(CONFLICT, errorsUsers.duplicateEmail);
 };
 
 const addUser = async (dataUser) => {
