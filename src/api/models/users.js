@@ -1,7 +1,7 @@
 const connection = require('./connection');
 
-const create = async ({ name, email, password, role }) => {
-  await connection()
+const create = async ({ name, email, password, role }) => (
+  connection()
     .then(
       (db) => db
         .collection('users')
@@ -11,7 +11,16 @@ const create = async ({ name, email, password, role }) => {
             password,
             role,
           }),
-    );
-};
+    )
+);
 
-module.exports = { create };
+const findByEmail = async (email) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('users')
+          .findOne({ email }),
+    )
+);
+
+module.exports = { create, findByEmail };
