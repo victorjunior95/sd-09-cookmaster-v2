@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const { createUser } = require('../controllers/userController');
+const { createUser, login } = require('../controllers/userController');
 
 app.use(bodyParser.json());
 
@@ -14,5 +14,6 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 app.post('/users', createUser);
+app.post('/login', login);
 
 module.exports = app;

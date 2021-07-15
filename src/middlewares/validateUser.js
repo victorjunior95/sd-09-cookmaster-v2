@@ -1,9 +1,11 @@
 const error = {
   invalid: 'Invalid entries. Try again.',
+  notEmpty: 'All fields must be filled',
 };
 
 const status = {
   badRequest: 400,
+  unauthorized: 401,
 };
 
 const nameIsValid = async (name) => {
@@ -37,6 +39,21 @@ const validateUser = async (name, email, password) => {
   return true;
 };
 
+const validateLogin = async (email, password) => {
+  const validEmail = await emailIsValid(email);
+  const validPassword = await passwordIsValid(password);
+
+  if (!validEmail || !validPassword) {
+    return { isError: true,
+      message: error.notEmpty,
+      status: status.unauthorized,
+    };
+  }
+
+  return true;
+};
+
 module.exports = {
   validateUser,
+  validateLogin,
 };
