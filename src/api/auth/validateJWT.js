@@ -5,7 +5,7 @@ const erros = require('../utils/codigosErro');
 const secret = 'segredo';
 
 const validate = async (req, res, next) => {
-  const token = req.headers['authorization'];
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(erros.UNAUTHORIZED).json({ message: 'missing auth token' });

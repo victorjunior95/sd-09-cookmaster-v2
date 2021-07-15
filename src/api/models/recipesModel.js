@@ -25,9 +25,9 @@ const updateOne = async (id, name, ingredients, preparation) => {
   const db = await connection();
   const recipe = await findById(id);
   await db.collection('recipes')
-    .updateOne({_id: id}, { $set: { name, ingredients, preparation } });
+    .updateOne({ _id: id }, { $set: { name, ingredients, preparation } });
   return {
-    _id: recipe._id, name, ingredients, preparation, userId: recipe.userId
+    _id: id, name, ingredients, preparation, userId: recipe.userId,
   };
 };
 
@@ -40,9 +40,10 @@ const deleteRecipe = async (id) => {
 const addImage = async (id, image) => {
   const db = await connection();
   const recipe = await findById(id);
-  await db.collection('recipes').updateOne({_id: id}, { $set: { image: image }});
+  console.log(recipe);
+  await db.collection('recipes').updateOne({ _id: id }, { $set: { image } });
   return {
-    _id: recipe._id,
+    _id: id,
     name: recipe.name,
     ingredients: recipe.ingredients,
     preparation: recipe.preparation,
@@ -51,6 +52,20 @@ const addImage = async (id, image) => {
   };
 };
 
+/* const addImage = async (id, image) => {
+  const db = await connection();
+  const { _id: idDaReceita, name, ingredients, preparations, userId } = await findById(id);
+  
+  await db.collection('recipes').updateOne({ _id: id }, { $set: { image } });
+  return {
+    _id: idDaReceita,
+    name,
+    ingredients,
+    preparations,
+    userId,
+    image,
+  };
+}; */
 
 module.exports = {
   createRecipe,

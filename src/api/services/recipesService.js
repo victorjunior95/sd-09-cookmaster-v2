@@ -1,13 +1,5 @@
 const recipesModel = require('../models/recipesModel');
 
-/*const validateRecipe = (name, ingredients, preparation) => {
-  if (!name || !ingredients || !preparation) {
-    throw new Error('Invalid entries. Try again.');
-  }
-  return undefined;
-};
-*/
-
 const createRecipe = async (name, ingredients, preparation, userId) => {
   const model = await recipesModel.createRecipe(name, ingredients, preparation, userId);
   return model;

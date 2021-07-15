@@ -9,7 +9,7 @@ const CONFLICT = 409;
 const INVALID_DATA = 422;
 const INTERNAL_ERROR = 500;
 
-module.exports ={
+module.exports = {
   OK,
   CREATED,
   NO_CONTENT,
@@ -19,5 +19,5 @@ module.exports ={
   NOT_FOUND,
   CONFLICT,
   INVALID_DATA,
-  INTERNAL_ERROR
+  INTERNAL_ERROR,
 };
