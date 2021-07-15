@@ -21,14 +21,14 @@ const validateEmail = async (email) => {
 };
 
 const addUser = async (dataUser) => {
-  const { name, password, email, role } = dataUser;
+  const { name, password, email } = dataUser;
   const invalideEntries = validateRequiredFields(name, email, password);
   const errorEmail = await validateEmail(email);
 
   if (invalideEntries) throw (invalideEntries);
   if (errorEmail) throw (errorEmail);
 
-  const response = await usersModel.addUser(name, email, role);
+  const response = await usersModel.addUser(dataUser);
   return response;
 };
 
