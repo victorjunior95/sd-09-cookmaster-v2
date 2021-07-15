@@ -11,6 +11,8 @@ app.use('/users', routes.Users);
 
 app.use('/login', routes.Login);
 
+app.use('/recipes', routes.Recipes);
+
 app.use(erroMiddleware);
 
 // Não remover esse end-point, ele é necessário para o avaliador

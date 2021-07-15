@@ -45,7 +45,22 @@ const validadeLogin = (req, _res, next) => {
   return next();
 };
 
+const validadeRecipes = (req, res, next) => {
+  const { name, ingredients, preparation } = req.body;
+
+  const isValidName = validadeValue(name);
+  const isValidIngredients = validadeValue(ingredients);
+  const isValidPreparation = validadeValue(preparation);
+
+  if (!isValidName || !isValidIngredients || !isValidPreparation) {
+    return next({ code: 400, message: 'Invalid entries. Try again.' });
+  }
+
+  return next();
+};
+
 module.exports = {
   validadesUsers,
   validadeLogin,
+  validadeRecipes,
 };
