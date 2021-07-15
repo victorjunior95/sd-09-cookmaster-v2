@@ -5,8 +5,8 @@ const MONGO_REMOTE_URL = 'mongodb://mongodb:27017/Cookmaster';
 const MONGO_DB_URL = process.env.MONGO_LOCAL_URL || MONGO_REMOTE_URL;
 const DB_NAME = 'Cookmaster';
 
-const connection = () => {
-    MongoClient.connect(MONGO_DB_URL, {
+const connection = () => (
+   MongoClient.connect(MONGO_DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
@@ -14,7 +14,23 @@ const connection = () => {
         .catch((err) => {
             console.log(err);
             process.exit(1);
-        });
-};
+        })
+);
 
 module.exports = connection;
+
+// const { MongoClient } = require('mongodb');
+
+// const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
+// const connection = () => 
+// MongoClient
+// .connect(MONGO_DB_URL, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+// .then((conn) => conn.db('musicClass'))
+// .catch((err) => {
+//   console.error(err);
+//   process.exit(1);
+// });
+// module.exports = connection;
