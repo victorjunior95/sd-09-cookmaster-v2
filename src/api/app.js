@@ -7,6 +7,8 @@ const app = express();
 
 app.use(bodyPaser.json());
 
+app.use('/images', express.static('src/uploads'));
+
 app.use('/users', routes.Users);
 
 app.use('/login', routes.Login);

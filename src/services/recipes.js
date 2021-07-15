@@ -28,8 +28,14 @@ const editRecipe = async (id, body) => {
 
 const deleteRecipe = async (id) => {
   await recipesModel.deleteRecipe(id);
-  
+
   return null;
+};
+
+const addImage = async (id, image) => {
+  const newRecipe = await recipesModel.addImage(id, image);
+
+  return newRecipe;
 };
 
 module.exports = {
@@ -38,4 +44,5 @@ module.exports = {
   getRecipe,
   editRecipe,
   deleteRecipe,
+  addImage,
 };
