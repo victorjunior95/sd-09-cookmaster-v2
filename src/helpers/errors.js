@@ -1,5 +1,6 @@
 const {
   BAD_REQUEST,
+  UNAUTHORIZED,
   CONFLICT,
 } = require('./httpStatus');
 
@@ -13,7 +14,19 @@ const INVALID_ENTRIES = {
   status: BAD_REQUEST,
 };
 
+const EMPTY_FIELD = {
+  error: { message: 'All fields must be filled' },
+  status: UNAUTHORIZED,
+};
+
+const INCORRECT_CREDENTIALS = {
+  error: { message: 'Incorrect username or password' },
+  status: UNAUTHORIZED,
+};
+
 module.exports = {
   ALREADY_EXISTS,
   INVALID_ENTRIES,
+  EMPTY_FIELD,
+  INCORRECT_CREDENTIALS,
 };
