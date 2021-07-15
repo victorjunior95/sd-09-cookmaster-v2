@@ -9,8 +9,12 @@ const validateNewUser = (req, res, next) => {
     .required(),
     password: Joi.string().not().empty().required(),
   }).validate(req.body);
-
-  if (error) return next(error);
+  
+  if (error) {
+    error.details[0].code = 400;
+    error.details[0].message = 'Invalid entries. Try again.';
+    return next(error);
+  }
 
   next();
 };

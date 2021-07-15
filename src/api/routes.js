@@ -1,22 +1,20 @@
 const express = require('express');
 const validateNewUser = require('../middlewares/validateNewUser');
+const validateLoginInput = require('../middlewares/validateLoginInput');
 
 // import de controllers
-const usersControllers = require('../controllers/usersController');
+const usersController = require('../controllers/usersController');
+const loginController = require('../controllers/loginController');
 
 // Rotas de /user
 const usersRouter = express.Router();
 
-usersRouter.post('/', validateNewUser, usersControllers.postNewUser);
+usersRouter.post('/', validateNewUser, usersController.postNewUser);
 
 // Rotas de /login
 const loginRouter = express.Router();
 
-loginRouter.post('/', (req, res) => {
-  res.status(200).json({
-    message: 'estamos no /login post',
-  });
-});
+loginRouter.post('/', validateLoginInput, loginController.postLogin);
 
 // Rotas de /recipe
 const recipeRouter = express.Router();

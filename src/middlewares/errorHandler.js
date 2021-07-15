@@ -2,9 +2,9 @@ const httpCodes = require('../auxiliarFunctions/httpCodes');
 
 const errorMiddleware = (err, req, res, _next) => {
   if (err.isJoi) {
-    return res.status(httpCodes.invalidData)
+    return res.status(err.details[0].code)
       .json({ 
-        message: 'Invalid entries. Try again.',
+        message: err.details[0].message,
       });
   }
 
