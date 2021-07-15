@@ -21,6 +21,9 @@ app.post('/recipes', tokenValidation, RecipeController.create);
 // Requisito 04
 app.get('/recipes', RecipeController.getAll);
 
+// Requisito 05
+app.get('/recipes/:id', RecipeController.getById);
+
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();

@@ -2,6 +2,7 @@ const {
   BAD_REQUEST,
   UNAUTHORIZED,
   CONFLICT,
+  NOT_FOUND,
 } = require('./httpStatus');
 
 const ALREADY_EXISTS = {
@@ -29,10 +30,16 @@ const TOKEN_NOT_FOUND = {
   status: UNAUTHORIZED,
 };
 
+const RECIPE_NOT_FOUND = {
+  error: { message: 'recipe not found' },
+  status: NOT_FOUND,
+};
+
 module.exports = {
   ALREADY_EXISTS,
   INVALID_ENTRIES,
   EMPTY_FIELD,
   INCORRECT_CREDENTIALS,
   TOKEN_NOT_FOUND,
+  RECIPE_NOT_FOUND,
 };
