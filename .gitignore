@@ -293,3 +293,6 @@ $RECYCLE.BIN/
 
 **/uploads/*
 !**/uploads/ratinho.jpg
+
+# Editor config
+.editorconfig
