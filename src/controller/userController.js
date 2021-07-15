@@ -1,9 +1,20 @@
 const express = require('express');
+const Validation = require('../middlewares/validation');
+const UserService = require('../service/userService');
+const ErrorHandler = require('../middlewares/errorHandler');
 
-const UserRouter = express.Router();
+const router = express.Router();
 
-UserRouter.get('/', async (req, res) => {
-  return res.status(200).json({ hello: 'world' });
+router.post('/', Validation.createUser, async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+    const created = await UserService.create(name, email, password);
+    return res.status(201).json(created);
+  } catch (err) {
+    next(err);
+  }
 });
 
-module.exports = UserRouter;
+router.use(ErrorHandler);
+
+module.exports = router;
