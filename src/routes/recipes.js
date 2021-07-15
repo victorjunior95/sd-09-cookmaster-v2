@@ -10,5 +10,6 @@ recipeRouter.post('/', tokenValidaton, recipeController.createRecipe);
 
 recipeRouter.get('/', recipeController.getAllRecipes);
 recipeRouter.get('/:id', recipeController.getRecipeById);
+recipeRouter.put('/:id', tokenValidaton, recipeController.updateRecipe);
 
 module.exports = recipeRouter;
