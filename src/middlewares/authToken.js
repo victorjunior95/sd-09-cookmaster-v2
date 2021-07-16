@@ -6,7 +6,7 @@ const UsersModel = require('../models/usersModel');
 const mySecret = 'meusecretdetoken';
 const authToken = async (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) return res.status(response.UNAUTHORIZED).json({ message: 'jwt malformed' });
+  if (!token) return res.status(response.UNAUTHORIZED).json({ message: 'missing auth token' });
   try {
     const decodedToken = jwt.verify(token, mySecret);
     const user = await UsersModel.getUserByEmail(decodedToken.email);

@@ -36,7 +36,17 @@ const getAllRecipes = async () => RecipesModel.getAllRecipes();
 const getRecipeById = async (recipeId) => {
   if (!ObjectId.isValid(recipeId)) throw genError(response.NOT_FOUND, 'recipe not found');
   const foundRecipe = await RecipesModel.getRecipeById(recipeId);
+  if (!foundRecipe) throw genError(response.NOT_FOUND, 'recipe not found');
   return foundRecipe;
+};
+
+const updateRecipe = async (recipeId, recipeInfo, userId) => {
+  try {
+    const foundRecipe = await RecipesModel.getRecipeById(recipeId);
+    if (foundRecipe.userId !== userId) throw genError(response.UNAUTHORIZED, 'jwt malformed');
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {
@@ -44,4 +54,5 @@ module.exports = {
   validateRecipe,
   getAllRecipes,
   getRecipeById,
+  updateRecipe,
 };

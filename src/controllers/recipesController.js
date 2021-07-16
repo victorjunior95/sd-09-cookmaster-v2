@@ -13,4 +13,9 @@ RecipesRouter.post('/',
   recipesMW.validateRecipe,
   recipesMW.postRecipe);
 
+RecipesRouter.put('/:id',
+  authToken,
+  recipesMW.authUser,
+  recipesMW.updateRecipe);
+
 module.exports = RecipesRouter;
