@@ -3,7 +3,7 @@ const connection = require('./connectionMongoDb');
 module.exports = async (userData) => {
   const result = await connection()
     .then((db) => db.collection('users')
-    .insertOne(userData));
+    .findOne(userData));
 
-  return result.ops[0];
+  return result;
 };

@@ -1,5 +1,4 @@
 const Joi = require('joi');
-
 const models = require('../models');
 
 const validateUser = (user) => 
@@ -9,16 +8,16 @@ const validateUser = (user) =>
     password: Joi.string().required(),
   }).validate(user);
 
-const validateEmail = (email) => {
+const validateEmail = async (email) => {
     const patternEmail = /\S+@\S+\.\S+/;
     return patternEmail.test(email);
 };
 
-const createUserServices = async (userData) => {
+module.exports = async (userData) => {
   const { error } = validateUser(userData);
   const { email } = userData;
   
-  if (error || !validateEmail(email)) throw (Error('Invalid entries. Try again.'));
+  if (error || !await validateEmail(email)) throw (Error('Invalid entries. Try again.'));
   if (await models.getUserByEmail(email)) throw (Error('Email already registered'));
 
   const result = await models.createUser({ ...userData, role: 'user' });
@@ -26,5 +25,3 @@ const createUserServices = async (userData) => {
   delete result.password;
   return { user: result };
 };
-
-module.exports = createUserServices;

@@ -1,11 +1,9 @@
 const connection = require('./connectionMongoDb');
 
-const getUserByEmail = async (Useremail) => {
+module.exports = async (userEmail) => {
   const result = await connection()
     .then((db) => db.collection('users')
-    .findOne({ email: Useremail }));
+    .findOne({ email: userEmail }));
 
   return result;
 };
-
-module.exports = getUserByEmail;

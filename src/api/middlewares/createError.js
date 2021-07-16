@@ -11,6 +11,13 @@ const createError = (err, _req, _res, next) => {
     return next(newError);
   }
   
+  if (err.message === 'All fields must be filled'
+  || err.message === 'Incorrect username or password') {
+    const newError = new Error(err.message);
+    newError.status = 401;
+    return next(newError);
+  }
+
   next(err);
 };
 
