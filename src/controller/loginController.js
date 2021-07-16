@@ -10,7 +10,7 @@ router.post('/', Validation.login, async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const token = await LoginService.login(email, password);
-    return res.status(StatusCode.created).json({ token });
+    return res.status(StatusCode.ok).json({ token });
   } catch (err) {
     next(err);
   }
