@@ -2,14 +2,14 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser').json();
 
-const { usersRoutes, loginRoutes, recipesRoutes } = require('./routes');
+const { usersRoutes, loginRoutes, recipesRoutes, imagesRoutes } = require('./routes');
 const { handleError } = require('../../middlewares');
 
 const app = express();
 
 app.use(bodyParser);
 
-app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')), imagesRoutes);
 app.use('/users', usersRoutes);
 app.use('/login', loginRoutes);
 app.use('/recipes', recipesRoutes);
