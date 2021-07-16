@@ -62,10 +62,19 @@ const remove = rescue(async (req, res, next) => {
   const { id } = req.params;
 
   const userData = { userId, userRole };
-  
-  await recipesService.remove(id, userData);
 
-  return res.status(204).end();
+  try {
+    await recipesService.remove(id, userData);
+    
+    return res.status(204).end();
+  } catch (error) {
+    return next({
+      status: 500,
+      message: error.message,
+    });
+  }
+  
+
 });
 
 module.exports = {
