@@ -8,6 +8,13 @@ const userCreate = async (email, name, password) => {
   return userWithoutPassword;
 };
 
+const userLogin = async (email, password) => {
+  const users = await connection().then((db) => db.collection('users')
+    .findOne({ email, password }).then((user) => user));
+
+  return users;  
+};
+
 const getOne = async (email) => {
   const users = await connection().then((db) => db.collection('users')
     .findOne({ email }).then((user) => user));
@@ -18,4 +25,5 @@ const getOne = async (email) => {
 module.exports = {
   userCreate,
   getOne,
+  userLogin,
 };
