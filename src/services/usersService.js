@@ -35,19 +35,8 @@ const userLogin = async (email, password) => {
   const token = jwt.sign(userWithoutPassword, SECRET, jwtConfig);
   return { token };
 };
-
-const createRecipe = async (name, ingredients, preparation, userId) => {
-  const recipe = await usersModel.createRecipe(name, ingredients, preparation, userId);
-  // if (helpers.checkUserData(name, ingredients, preparation)) {
-  //   return helpers.checkUserData(name, ingredients, preparation);
-  // }
-  // console.log('test');
-  return recipe;
-}; 
-
 module.exports = {
   createUser,
   getUserByEmail,
   userLogin,
-  createRecipe,
 };
