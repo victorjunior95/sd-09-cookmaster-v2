@@ -23,6 +23,8 @@ app.post('/recipes', validateJWT, Recipes.registerRecipe);
 
 app.get('/recipes', Recipes.listRecipes);
 
+app.get('/recipes/:id', Recipes.getRecipeById);
+
 app.use(middleware);
 
 module.exports = app;
