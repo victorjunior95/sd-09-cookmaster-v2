@@ -9,9 +9,18 @@ const create = async (req, res) => {
     .json({ recipe: { name, ingredients, preparation, userId, _id: id } });
 };
 
+const postImage = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req;
+  const image = req.file.filename;
+  const response = await recipesService.postImage(id, userId, image);
+  return res
+    .status(200)
+    .json(response);
+};
+
 const getAll = async (_req, res) => {
   const response = await recipesService.getAll();
-  console.log(response, 'response');
   return res
     .status(200)
     .json(response);
@@ -57,4 +66,5 @@ module.exports = {
   getById,
   updateById,
   deleteById,
+  postImage,
 };

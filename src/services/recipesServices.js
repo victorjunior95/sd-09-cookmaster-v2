@@ -8,6 +8,8 @@ const recipesSchema = Joi.object({
   ingredients: Joi.string().required(),
 });
 
+const recipeNotFound = 'recipe not found';
+
 const validateError = (status, message) => ({ status, message });
 
 const create = async ({ name, preparation, ingredients, userId }) => {
@@ -25,9 +27,9 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  if (!ObjectId.isValid(id)) throw validateError(404, 'recipe not found');
+  if (!ObjectId.isValid(id)) throw validateError(404, recipeNotFound);
   const recipe = await recipesModel.getById(id);
-  if (!recipe) throw validateError(404, 'recipe not found');
+  if (!recipe) throw validateError(404, recipeNotFound);
   return recipe;
 };
 
@@ -37,11 +39,22 @@ const updateById = async (id, name, ingredients, preparation) => {
 };
 
 const deleteById = async (id, userId) => {
-  if (!ObjectId.isValid(id)) throw validateError(404, 'recipe not found');
+  if (!ObjectId.isValid(id)) throw validateError(404, recipeNotFound);
   const recipe = await recipesModel.getById(id);
-  if (!recipe) throw validateError(404, 'recipe not found');
+  if (!recipe) throw validateError(404, recipeNotFound);
   if (recipe.userId === userId) await recipesModel.deleteById(id);
   return true;
+};
+
+const postImage = async (id, userId, image) => {
+  if (!ObjectId.isValid(id)) throw validateError(404, recipeNotFound);
+  const recipe = await recipesModel.getById(id);
+  if (!recipe) throw validateError(404, recipeNotFound);
+  console.log(userId);
+  if (recipe.userId === userId || userId === 'admin') {
+    const updatedRecipe = await recipesModel.postImage(id, image);
+    return updatedRecipe;
+  }
 };
 
 module.exports = {
@@ -50,4 +63,5 @@ module.exports = {
   getById,
   updateById,
   deleteById,
+  postImage,
 };

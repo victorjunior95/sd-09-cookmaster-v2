@@ -10,15 +10,12 @@ module.exports = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, secret);
-    if (decoded.data.role === 'admin') {
+    if (decoded.data.role === 'admin' && await userModel.getByEmail(decoded.data.email)) {
       req.userId = decoded.data.role;
       next();
       return null;
     }
-    const user = await userModel.getByEmail(decoded.data.email);
-    if (!user) return res.status(401).json({ message: 'jwt malformed' });
-    req.userId = decoded.data.id;
-    next();
+    return res.status(403).json({ message: 'Only admins can register new admins' });
   } catch (err) {
     return res.status(401).json({ message: err.message });
   }
