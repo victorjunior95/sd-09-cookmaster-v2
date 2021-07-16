@@ -1,4 +1,4 @@
-const UsersServices = require('../services/UsersServices');
+const UsersServices = require('../services/usersServices');
 const response = require('./responseCodes');
 
 const logUser = async (req, res) => {
@@ -9,7 +9,7 @@ const logUser = async (req, res) => {
     return res.status(loginSuccessful.errorCode).json({ message: loginSuccessful.message });
   }
   return res.status(response.STATUS_OK).json({ token: loginSuccessful });
-}
+};
 
 module.exports = {
   logUser,

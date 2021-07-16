@@ -1,5 +1,5 @@
 const joi = require('joi');
-const UsersModel = require('../models/UsersModel');
+const UsersModel = require('../models/usersModel');
 const response = require('../middlewares/responseCodes');
 
 const USER_SCHEMA = joi.object({

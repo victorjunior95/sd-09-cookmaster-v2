@@ -5,6 +5,7 @@ const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
 const CONFLICT = 409;
 const INVALID_DATA = 422;
+const SERVER_ERROR = 500;
 
 module.exports = {
   STATUS_OK,
@@ -14,4 +15,5 @@ module.exports = {
   NOT_FOUND,
   CONFLICT,
   INVALID_DATA,
+  SERVER_ERROR,
 };

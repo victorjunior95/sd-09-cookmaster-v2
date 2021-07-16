@@ -57,4 +57,5 @@ module.exports = {
   createNewUser,
   getAllUsers,
   validateLogin,
+  getUserByEmail,
 };
