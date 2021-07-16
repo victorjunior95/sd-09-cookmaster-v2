@@ -29,8 +29,29 @@ const getById = async (id) => {
   }
 };
 
+const update = async (id, infoToBeUpdated, userData) => {
+  const recipeToBeUpdated = await getById(id);
+
+  if (userData.userRole === 'admin' || recipeToBeUpdated.userId === userData.userId) {
+    await connection()
+    .then((db) => db.collection(coll).findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: { ...infoToBeUpdated } },
+    ));
+  } else {
+    return null;
+  }
+
+  const recipe = await getById(id);
+  
+  console.log(recipe);
+
+  return recipe;
+};
+
 module.exports = {
   add,
   getAll,
   getById,
+  update,
 };

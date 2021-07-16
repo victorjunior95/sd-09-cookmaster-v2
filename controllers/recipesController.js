@@ -36,8 +36,30 @@ const getById = rescue(async (req, res, next) => {
   return res.status(200).json(recipe);
 });
 
+const update = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const { userId, userRole } = req;
+
+  const infoToBeUpdated = { name, ingredients, preparation };
+
+  const userData = { userId, userRole };
+
+  const recipe = await recipesService.update(id, infoToBeUpdated, userData);
+
+  if (!recipe) {
+    return next({
+      status: 200,
+      message: 'denied.',
+    });
+  }
+
+  return res.status(200).json(recipe);
+});
+
 module.exports = {
   add,
   getAll,
   getById,
+  update,
 };
