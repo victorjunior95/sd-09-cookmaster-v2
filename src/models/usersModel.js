@@ -11,7 +11,7 @@ const getbyemail = async (email) => {
   const emailcheck = await conn().then(
     async (db) => db.collection('users').findOne({ email }),
   );
-  console.log('usermodel13', emailcheck);
+ // console.log('usermodel13', emailcheck);
   return (emailcheck);
 };
 

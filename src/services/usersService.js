@@ -33,6 +33,18 @@ const createUser = async (body) => {
   ) { return errJaexiste; }
 };
 
+const createUserAdmin = async (body, user) => {
+  if (user.role !== 'admin') { return { message: 'Only admins can register new admins' }; }
+  const getAllEmail = await getbyemail(body.email);
+      if (!getAllEmail) {
+     const result = await adduser({ ...body, role: 'admin' });
+     const { name, email, role, _id } = result;
+     const envolucro = { user: { _id, name, email, role } };
+     return envolucro;
+   }
+   if (body.email === getAllEmail.email
+    ) { return errJaexiste; }
+};
 // fazer um arrey com todos os emails de usuários.
 // se o email da req estiver no array devolver um erro
 
@@ -40,5 +52,6 @@ module.exports = {
   createUser,
   checkEmal,
   checkName,
+  createUserAdmin,
 
 };
