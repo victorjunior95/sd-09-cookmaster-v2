@@ -15,7 +15,26 @@ const getAllRecipes = async () => {
 const getRecipeById = async (id) => {
   const result = await recipesModels.getRecipeById(id);
 
-  if (result.error) return { code: 404, message: 'recipe not found' };
+  if (result === null || result.error) return { code: 404, message: 'recipe not found' };
+
+  return result;
+};
+
+const updateRecipe = async (data) => {
+  const { id } = data;
+  const recipeFound = await recipesModels.getRecipeById(id);
+
+  if (recipeFound === null || recipeFound.error) return { code: 404, message: 'recipe not found' };
+
+  const { userId, role } = data;
+
+  if (recipeFound.userId !== userId && role !== 'admin') {
+    return { code: 401, message: 'Unauthorized' };
+  }
+
+  const { name, ingredients, preparation } = data;
+
+  const result = await recipesModels.updateRecipe({ id, name, ingredients, preparation });
 
   return result;
 };
@@ -24,4 +43,5 @@ module.exports = {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
+  updateRecipe,
 };

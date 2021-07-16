@@ -28,11 +28,8 @@ recipeRouter.get('/', recipesController.getAllRecipes);
 // 5 - Crie um endpoint para visualizar uma receita específica
 recipeRouter.get('/:id', recipesController.getRecipeById);
 
-recipeRouter.put('/:id', (req, res) => {
-  res.status(200).json({
-    message: 'estamos no /recipes/:id put',
-  });
-});
+// 7 - Crie um endpoint para a edição de uma receita
+recipeRouter.put('/:id', middlewares.authCheck, recipesController.updateRecipe);
 
 recipeRouter.delete('/:id', (req, res) => {
   res.status(200).json({

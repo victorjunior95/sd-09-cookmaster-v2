@@ -26,8 +26,26 @@ const getRecipeById = async (req, res, next) => {
   res.status(200).json(result);
 };
 
+const updateRecipe = async (req, res, next) => {
+  const { name, ingredients, preparation } = req.body;
+  const { id } = req.params;
+  const { userId, role } = req;
+
+  const payload = { name, ingredients, preparation, id, userId, role };
+
+  const result = await recipesServices.updateRecipe(payload);
+
+  if (result.code) return next(result);
+
+  if (result.modifiedCount === 0) return next({ code: 400, message: 'Não foi possivel atualizar' });
+
+  res.status(200).json({
+    _id: id, name, ingredients, preparation, userId });
+};
+
 module.exports = {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
+  updateRecipe,
 };

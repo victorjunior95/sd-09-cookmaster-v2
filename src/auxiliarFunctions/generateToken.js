@@ -3,7 +3,7 @@ const secret = require('./secretKey');
 
 const createToken = (data) => {
   const jwtConfig = {
-    expiresIn: '1h',
+    expiresIn: '10h',
     algorithm: 'HS256',
   };
 
