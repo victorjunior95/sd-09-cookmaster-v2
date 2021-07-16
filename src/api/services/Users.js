@@ -11,6 +11,16 @@ const uniqueEmail = {
   message: 'Email already registered',
 };
 
+const unauthorized = {
+  status: 401,
+  message: 'All fields must be filled',
+};
+
+const unauthorizedEmailOrPassword = {
+  status: 401,
+  message: 'Incorrect username or password',
+};
+
 // regex referência: https://ui.dev/validate-email-address-javascript/
 const validFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,6 +28,13 @@ const validateUserInfo = async (name, email, password) => {
   if (validFormat.test(email) === false || !name || !password) return invalidEntries;
 
   if (await Users.findByEmail(email)) return uniqueEmail;
+};
+
+const validateLogin = async (email, password) => {
+  if (validFormat.test(email) === false || !password) return unauthorized;
+
+  const UserData = await Users.findUserInfo(email, password);
+  if (!UserData) return unauthorizedEmailOrPassword;
 };
 
 const registerUser = async (name, email, password) => {
@@ -28,6 +45,15 @@ const registerUser = async (name, email, password) => {
   return Users.createUser(name, email, password);
 };
 
+const loginUser = async (email, password) => {
+  const UserData = await validateLogin(email, password);
+
+  if (UserData) return UserData;
+
+  return Users.findUserInfo;
+};
+
 module.exports = {
   registerUser,
+  loginUser,
 };

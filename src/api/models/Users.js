@@ -8,7 +8,14 @@ const createUser = async (name, email) => connection()
 const findByEmail = async (email) => connection()
   .then((db) => db.collection('users').findOne({ 'user.email': email }));
 
+const findUserInfo = (email, password) => connection()
+  .then((db) => db.collection('users').findOne(
+    { 'user.email': email },
+    { 'user.password': password },
+  ));
+
 module.exports = {
   createUser,
   findByEmail,
+  findUserInfo,
 };
