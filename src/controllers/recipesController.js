@@ -44,6 +44,7 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', validatejwt, async (req, res) => {
   console.log('req:', req);
   const editRecipe = await editvlidation(req.params.id, req.body);
+  
   res.status(cc).send(editRecipe);
 });
 
