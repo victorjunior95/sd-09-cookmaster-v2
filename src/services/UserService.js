@@ -7,13 +7,13 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-const createUser = async (name, email, password) => {
-  const { insertedId } = await UserModel.createUser(name, email, password);
+const createUser = async (name, email, password, role) => {
+  const { insertedId } = await UserModel.createUser(name, email, password, role);
   return {
     user: {
       name,
       email,
-      role: 'user',
+      role,
       _id: insertedId,
     },
   };

@@ -32,4 +32,8 @@ app.post('/recipes',
 app.get('/recipes', RecipeController.getRecipes);
 app.get('/recipes/:id', RecipeController.getRecipeById);
 
+app.put('/recipes/:id', 
+  middlewares.validateJWT, 
+  RecipeController.updateRecipe);
+
 module.exports = app;
