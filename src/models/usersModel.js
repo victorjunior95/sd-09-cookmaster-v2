@@ -3,7 +3,7 @@ const connection = require('./connection');
 
 const users = 'users';
 
-const addUser = async ({ name, password, email, role }) => {
+const addUser = async ({ name, password, email, role = 'user' }) => {
   const db = await connection();
   const response = await db.collection(users).insertOne({ name, password, email, role });
   const { password: pass, ...responseWithoutPassword } = response.ops[0];
