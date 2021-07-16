@@ -6,7 +6,7 @@ module.exports = (req, _res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    next({
+    return next({
       status: 401,
       message: 'missing auth token',
     });

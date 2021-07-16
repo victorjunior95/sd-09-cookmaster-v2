@@ -91,7 +91,7 @@ const upload = rescue(async (req, res, next) => {
     });
   }
 
-  return res.status(200).json(recipe);
+  return res.status(200).json(recipe); 
 });
 
 module.exports = {
