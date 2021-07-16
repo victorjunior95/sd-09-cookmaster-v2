@@ -15,13 +15,29 @@ const addRecipe = rescue(async (req, res) => {
   return res.status(201).json(recipe);
 });
 
-const getRecipes = rescue(async (req, res) => {
-  const recipes = await recipesService.getRecipes();
+const listRecipes = rescue(async (_req, res) => {
+  const recipes = await recipesService.listRecipes();
 
   return res.status(200).json(recipes);
 });
 
+const getRecipe = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const recipe = await recipesService.getRecipe(id);
+
+  if (!recipe) {
+    return next({
+      status: 404,
+      message: 'recipe not found',
+    });
+  }
+
+  return res.status(200).json(recipe);
+});
+
 module.exports = {
   addRecipe,
-  getRecipes,
+  listRecipes,
+  getRecipe,
 };

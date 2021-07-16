@@ -13,6 +13,7 @@ router.post('/', [
   recipesController.addRecipe,
 ]);
 
-router.get('/', [recipesController.getRecipes]);
+router.get('/', [recipesController.listRecipes]);
+router.get('/:id', [recipesController.getRecipe]);
 
 module.exports = router;
