@@ -34,6 +34,7 @@ const validateLogin = async (email, password) => {
   if (validFormat.test(email) === false || !password) return unauthorized;
 
   const UserData = await Users.findUserInfo(email, password);
+  // console.log(UserData)
   if (!UserData) return unauthorizedEmailOrPassword;
 };
 
@@ -42,7 +43,20 @@ const registerUser = async (name, email, password) => {
 
   if (data) return data;
 
-  return Users.createUser(name, email, password);
+  const create = await Users.createUser(name, email, password);
+
+  const { role, _id } = create;
+
+  const result = {
+    user: {
+      name,
+      email,
+      role,
+      _id,
+    },
+  };
+
+  return result;
 };
 
 const loginUser = async (email, password) => {
@@ -50,7 +64,7 @@ const loginUser = async (email, password) => {
 
   if (UserData) return UserData;
 
-  return Users.findUserInfo;
+  return Users.findUserInfo(email, password);
 };
 
 module.exports = {

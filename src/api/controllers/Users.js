@@ -31,7 +31,7 @@ const loginUser = rescue(async (req, res, next) => {
     algorithm: 'HS256',
   };
 
-  const token = jwt.sign({ data: email }, secret, jwtConfig);
+  const token = jwt.sign({ data: login }, secret, jwtConfig);
 
   return res.status(STATUS.OK).json({ token });
 });
