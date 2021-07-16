@@ -1,3 +1,4 @@
+const multer = require('multer');
 const RecipeModel = require('../models/RecipesModel');
 const UsersModel = require('../models/UsersModel');
 
@@ -31,6 +32,32 @@ const deleteRecipe = async (id) => {
   return deleted;
 };
 
+const isertUrlImage = async (id, url) => {
+  await RecipeModel.insertUrlImage(id, url);
+  const recipe = RecipeModel.getRecipeByid(id);
+  return recipe;
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'src/uploads/');
+  },
+  filename: (req, file, cb) => {
+    const { id } = req.params;
+    cb(null, `${id}.jpeg`);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype !== 'image/jpeg') {
+    req.fileValidationError = true;
+    return cb(null, false);
+  }
+  return cb(null, true);
+};
+
+const uploadPicture = multer({ fileFilter, storage });
+
 module.exports = {
   createRecipe,
   findUserByEmail,
@@ -38,4 +65,6 @@ module.exports = {
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  isertUrlImage,
+  uploadPicture,
 };

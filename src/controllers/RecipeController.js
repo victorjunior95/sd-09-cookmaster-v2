@@ -54,10 +54,25 @@ const deleteRecipe = async (req, res) => {
   return res.status(204).send('');
 };
 
+const uploadPicture = [
+  RecipeService.uploadPicture.single('image'),
+  async (req, res) => {
+    if (req.fileValidationError) {
+      return res.status(403).json({ error: { message: 'Extension must be "jpeg"' } });
+    }
+    const { params: { id } } = req;
+    const url = `localhost:3000/src/uploads/${id}.jpeg`;
+
+    const recipeWithUrl = await RecipeService.isertUrlImage(id, url); 
+    return res.status(200).json(recipeWithUrl);
+  },
+];
+
 module.exports = {
   createRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  uploadPicture,
 };
