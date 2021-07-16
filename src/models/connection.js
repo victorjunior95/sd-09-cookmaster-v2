@@ -1,21 +1,23 @@
-const mongodb = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 
-// banco local
-const MONGO_DB_URL = 'mongodb://localhost:27017/Cookmaster';
+const OPTIONS = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+// local
+// const MONGO_DB_URL = 'mongodb://localhost:27017/Cookmaster';
+
+// evaluator
+const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
+
 const DB_NAME = 'Cookmaster';
-
-// Para o avaliador funcionar
-// const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
-// const DB_NAME = 'Cookmaster';
-
-module.exports = () =>
-  mongodb.connect(MONGO_DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+let db = null;
+const connection = () => (
+  db ? Promise.resolve(db)
+  : MongoClient.connect(MONGO_DB_URL, OPTIONS)
+    .then((conn) => {
+      db = conn.db(DB_NAME);
+      return db;
   })
-
-    .then((connection) => connection.db(DB_NAME))
-    .catch((err) => {
-      console.error(err);
-      process.exit(1);
-    });
+);
+module.exports = connection;

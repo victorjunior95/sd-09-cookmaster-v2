@@ -1,1 +1,16 @@
-// validaçoes de rotas e os usos de JWT. Recebe as regras de negócios do Services e despacha para o App
+const usesService = require('../services/usesService');
+
+const usersCreate = async (req, res, next) => {
+  try {
+  const { email, name, password } = req.body;
+
+  const userCreate = await usesService.createUserService(email, name, password);
+  return res.status(201).json({ user: userCreate });
+  } catch (error) {
+  return next(error);
+  }
+};
+
+module.exports = {
+  usersCreate,
+};
