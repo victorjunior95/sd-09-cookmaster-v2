@@ -1,26 +1,27 @@
-const Joi = require('joi');
-const InvalidUserFormError = require('../errors/InvalidUserFormError');
+const Errors = require('../errors');
+const Schemas = require('../schemas');
 
 const createUser = (req, res, next) => {
-  const schema = Joi.object({
-    name: Joi.string()
-    .required(),
-    email: Joi.string()
-      .pattern(new RegExp('[^@]+@[^.]+.com$'))
-      .required(),
-    password: Joi.string()
-    .required(),
-  });
-
   const { name, email, password } = req.body;
 
-  const { error } = schema.validate({ name, email, password });
+  const { error } = Schemas.createUser.validate({ name, email, password });
 
-  if (error) throw new InvalidUserFormError();
+  if (error) throw new Errors.InvalidUserFormError();
+
+  next();
+};
+
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  const { error } = Schemas.createUser.validate({ email, password });
+
+  if (error) throw new Errors.LoginFieldMissingError();
 
   next();
 };
 
 module.exports = {
   createUser,
+  login,
 };
