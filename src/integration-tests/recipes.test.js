@@ -794,7 +794,7 @@ describe('PUT /recipes/:id', () => {
   });
 
 });
-
+/*
 describe('DELETE /recipes/:id', () => {
 
   describe('Tenta excluir uma receita sem autenticacao', () => {
@@ -966,7 +966,7 @@ describe('DELETE /recipes/:id', () => {
 
 });
 
-describe.skip('PUT /recipes/:id/image', () => {
+describe('PUT /recipes/:id/image', () => {
 
   describe('Tenta adicionar uma imagem a receita sem autenticacao', () => {
 
@@ -1184,3 +1184,4 @@ describe.skip('PUT /recipes/:id/image', () => {
   });
 
 });
+*/
