@@ -1,8 +1,10 @@
 const connection = require('./connection');
 
+const coll = 'users';
+
 const getUser = async (email) => {
   const user = await connection()
-  .then((db) => db.collection('users').findOne({ email }));
+  .then((db) => db.collection(coll).findOne({ email }));
 
   return user;
 };
@@ -13,7 +15,7 @@ const addUser = async (name, email, password, role) => {
   if (emailAlreadyExists) return null;
 
   const response = await connection().then((db) =>
-    db.collection('users').insertOne({ name, email, password, role }));
+    db.collection(coll).insertOne({ name, email, password, role }));
 
   const [user] = response.ops;
 

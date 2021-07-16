@@ -12,9 +12,16 @@ const addRecipe = rescue(async (req, res) => {
     userId,
   );
 
-  res.status(201).json(recipe);
+  return res.status(201).json(recipe);
+});
+
+const getRecipes = rescue(async (req, res) => {
+  const recipes = await recipesService.getRecipes();
+
+  return res.status(200).json(recipes);
 });
 
 module.exports = {
   addRecipe,
+  getRecipes,
 };
