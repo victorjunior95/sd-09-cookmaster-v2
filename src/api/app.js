@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const {
   createUserController,
   createTokenController,
+  createRecipeController,
 } = require('../controllers/createUserController');
+const { validateToken } = require('../middlware/validateToken');
 const { errorGeneric } = require('../middlware/errorGeneric');
 
 const app = express();
@@ -19,6 +21,8 @@ app.get('/', (request, response) => {
 app.post('/users', createUserController);
 
 app.post('/login', createTokenController);
+
+app.post('/recipes', validateToken, createRecipeController);
 
 app.use(errorGeneric);
 

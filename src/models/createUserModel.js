@@ -27,7 +27,28 @@ const findByemail = async (email) => {
   return user;
 };
 
+const createRecipeModel = async ({ name, ingredients, preparation, userId }) => {
+  const newRecipes = await connection()
+    .then((db) => db.collection('recipes').insertOne({
+      name,
+      ingredients,
+      preparation,
+    }));
+
+  const recipeCreated = {
+    recipe: { 
+      name,
+      ingredients,
+      preparation,
+      userId,
+      _id: newRecipes.insertedId,
+    }, 
+  };
+  return recipeCreated;
+};
+
 module.exports = {
   createUserModel,
   findByemail,
+  createRecipeModel,
 };

@@ -1,36 +1,31 @@
 const Joi = require('joi');
-const jwt = require('jsonwebtoken');
+const { 
+  createToken,
+  joiError,
+} = require('../utils/createToke');
+const { allFields, invalidEntries } = require('../dictionaryError');
 const {
   createUserModel,
   findByemail,
+  createRecipeModel,
 } = require('../models/createUserModel');
 
-const joiError = ({ status, message }) => {
-    const errJoi = Error(message);
-    errJoi.status = status;
-    throw errJoi;
-};
-
 const createUserSchema = Joi.object({
-    name: Joi.string()
-      .required(),
-    
-    email: Joi.string()
-      .email()
-      .required(),
-
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
     password: Joi.required(),
-
-    role: Joi.string()
-    .default('user'),
+    role: Joi.string().default('user'),
 });
 
 const loginSchema = Joi.object({
-  email: Joi.string()
-      .email()
-      .required(),
-
+  email: Joi.string().email().required(),
   password: Joi.required(),
+});
+
+const recipeSchema = Joi.object({
+  name: Joi.string().required(),
+  ingredients: Joi.string().required(),
+  preparation: Joi.string().required(),
 });
 
 const createUserService = async ({ name, email, password, role }) => {
@@ -44,36 +39,37 @@ const createUserService = async ({ name, email, password, role }) => {
   return userCreated;
 };
 
-const jwtConfig = {
-  expiresIn: '15m',
-  algorithm: 'HS256',
-};
-
-const createToken = (payload, secret) => {
- const token = jwt.sign(payload, secret, jwtConfig);
- return token;
-};
-
 const validLoginService = async (email, password) => {
   const { error } = loginSchema.validate({ email, password });
-  if (error) return joiError({ message: 'All fields must be filled', status: 401 });
+  if (error) return joiError(allFields());
   
   const user = await findByemail(email);
   if (!user || user.password !== password) {
- (
-    joiError({
+   (joiError({
       message: 'Incorrect username or password',
       status: 401,
     })); 
-}
+  }
 
-  // if(user.password !== password) 
-  const token = createToken({ email, password }, 'testeJWT');
-  console.log(token);
+  const { password: _, ...userWithoutPassword } = user;
+
+  const token = createToken(userWithoutPassword);
   return token;
+};
+
+const createRecipeService = async ({ name, ingredients, preparation, userData }) => {
+  const { _id } = userData;
+  const userId = _id;
+
+  const { error } = recipeSchema.validate({ name, preparation, ingredients });
+  if (error) return joiError(invalidEntries());
+
+  const recipeCreated = await createRecipeModel({ name, ingredients, preparation, userId });
+  return recipeCreated;
 };
 
 module.exports = {
     createUserService,
     validLoginService,
+    createRecipeService,
 };
