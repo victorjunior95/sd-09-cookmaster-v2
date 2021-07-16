@@ -1,5 +1,5 @@
 const connection = require('./connection');
-// const { ObjectID } = require('mongodb');
+const { ObjectID, ObjectId } = require('mongodb');
 
 const createUserModel = async ({ name, email, password, role }) => {
     const newUser = await connection()
@@ -54,9 +54,19 @@ const listAllRecipesModel = async () => {
   return allRecipes;
 };
 
+const listRecipeById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const recipeById = await connection()
+  .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }));
+
+  return recipeById;
+};
+
 module.exports = {
   createUserModel,
   findByemail,
   createRecipeModel,
   listAllRecipesModel,
+  listRecipeById,
 };

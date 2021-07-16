@@ -5,6 +5,7 @@ const {
   createTokenController,
   createRecipeController,
   listAllRecipesController,
+  listRecipeByIdController,
 } = require('../controllers/createUserController');
 const { validateToken } = require('../middlware/validateToken');
 const { errorGeneric } = require('../middlware/errorGeneric');
@@ -26,6 +27,8 @@ app.post('/login', createTokenController);
 app.post('/recipes', validateToken, createRecipeController);
 
 app.get('/recipes', listAllRecipesController);
+
+app.get('/recipes/:id', listRecipeByIdController);
 
 app.use(errorGeneric);
 

@@ -1,4 +1,9 @@
-const { badRequest, unauthorized, conflict } = require('../utils/statusHttp');
+const {
+    badRequest,
+    unauthorized,
+    conflict,
+    notFound,
+} = require('../utils/statusHttp');
 
 module.exports = {
     jwtMalformed: () => ({
@@ -24,5 +29,10 @@ module.exports = {
     emailAlreadyExists: () => ({
         status: conflict,
         message: 'Email already registered',
-    }), 
+    }),
+
+    recipeNotFound: () => ({
+        status: notFound,
+        message: 'recipe not found',
+    }),
 };

@@ -3,6 +3,7 @@ const {
     validLoginService,
     createRecipeService,
     listAllRecipesService,
+    listRecipeByIdService,
 } = require('../services/createUserService');
 const { ok, created } = require('../utils/statusHttp');
 
@@ -51,9 +52,20 @@ const listAllRecipesController = async (req, res, next) => {
     }
 };
 
+const listRecipeByIdController = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const recipe = await listRecipeByIdService(id);
+        return res.status(ok).json(recipe);
+    } catch (error) {
+        return next(error);
+    }
+};
+
 module.exports = {
     createUserController,
     createTokenController,
     createRecipeController,
     listAllRecipesController,
+    listRecipeByIdController,
 };

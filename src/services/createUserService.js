@@ -7,12 +7,14 @@ const {
   allFields,
   invalidEntries,
   emailAlreadyExists,
+  recipeNotFound,
 } = require('../dictionaryError');
 const {
   createUserModel,
   findByemail,
   createRecipeModel,
   listAllRecipesModel,
+  listRecipeById,
 } = require('../models/createUserModel');
 
 const createUserSchema = Joi.object({
@@ -78,9 +80,16 @@ const listAllRecipesService = async () => {
   return allrecipes;
 };
 
+const listRecipeByIdService = async (id) => {
+  const recipe = await listRecipeById(id);
+  if (!recipe) return joiError(recipeNotFound());
+  return recipe;
+};
+
 module.exports = {
     createUserService,
     validLoginService,
     createRecipeService,
     listAllRecipesService,
+    listRecipeByIdService,
 };
