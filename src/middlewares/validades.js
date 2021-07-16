@@ -64,11 +64,20 @@ const validateId = (req, _res, next) => {
   const regexId = /[0-9A-Fa-f]{6}/g;
 
   if (!regexId.test(id)) {
-    return next({ code: 404, message: 'recipe not found',
-    });
+    return next({ code: 404, message: 'recipe not found' });
   }
 
-  next();
+  return next();
+};
+
+const validadteAdmin = (req, _res, next) => {
+  const { role } = req.user;
+
+  if (role !== 'admin') {
+    return next({ code: 403, message: 'Only admins can register new admins' });
+  }
+
+  return next();
 };
 
 module.exports = {
@@ -76,4 +85,5 @@ module.exports = {
   validateLogin,
   validateRecipes,
   validateId,
+  validadteAdmin,
 };
