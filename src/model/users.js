@@ -1,4 +1,5 @@
 const conn = require('./connection');
+const response = require('../helpers/response');
 
 const findUserByEmail = async (email) => {
   const usersCollection = await conn()
@@ -16,6 +17,8 @@ const signIn = async (name, email, password, role) => {
 
   const { insertedId } = await usersCollection
     .insertOne({ name, email, password, role });
+
+  if (!insertedId) return response(500, 'Internal server error');
 
   return {
     status: 201,
