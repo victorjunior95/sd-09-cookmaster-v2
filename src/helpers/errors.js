@@ -25,8 +25,13 @@ const INCORRECT_CREDENTIALS = {
   status: UNAUTHORIZED,
 };
 
-const TOKEN_NOT_FOUND = {
+const JWT_ERROR = {
   error: { message: 'jwt malformed' },
+  status: UNAUTHORIZED,
+};
+
+const TOKEN_NOT_FOUND = {
+  error: { message: 'missing auth token' },
   status: UNAUTHORIZED,
 };
 
@@ -40,6 +45,7 @@ module.exports = {
   INVALID_ENTRIES,
   EMPTY_FIELD,
   INCORRECT_CREDENTIALS,
+  JWT_ERROR,
   TOKEN_NOT_FOUND,
   RECIPE_NOT_FOUND,
 };

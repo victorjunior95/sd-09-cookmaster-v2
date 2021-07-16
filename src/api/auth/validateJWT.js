@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../../models/UserModel');
-const { TOKEN_NOT_FOUND, INCORRECT_CREDENTIALS } = require('../../helpers/errors');
+const { JWT_ERROR, INCORRECT_CREDENTIALS, TOKEN_NOT_FOUND } = require('../../helpers/errors');
 
 const secret = 'oSegredoMaisSecretoDeTodosOsSegredosSuperSecretos';
 
@@ -22,7 +22,7 @@ const tokenValidation = async (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(TOKEN_NOT_FOUND.status).json({ message: err.message });
+    return res.status(JWT_ERROR.status).json({ message: err.message });
   }
 };
 

@@ -22,8 +22,17 @@ const getById = async (id) => {
   : foundRecipe;
 };
 
+const update = async (id, recipeNewInfo) => {
+  const updatedRecipe = await RecipeModel.update(id, recipeNewInfo);
+
+  return !updatedRecipe
+    ? error.RECIPE_NOT_FOUND
+    : updatedRecipe;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
