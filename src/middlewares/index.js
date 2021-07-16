@@ -1,6 +1,6 @@
 // const { ObjectId } = require('mongodb');
 // const Joi = require('joi');
-const { string } = require('joi');
+// const { string } = require('joi');
 const { findEmail } = require('../models/Users');
 const { validateToken } = require('../services/tokenValidate');
 
@@ -62,6 +62,7 @@ const checkToken = (req, res, next) => {
   if (!validateToken(token)) {
     res.status(Unauthorized).json({ message: msgJWTMalformed });
   }
+  next();
 };
 
 module.exports = {
