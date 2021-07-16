@@ -44,9 +44,22 @@ async function userAdd(objectUser) {
   }
 }
 
+async function userAdminAdd(objectUser) {
+  try {
+    const { role } = objectUser;
+    if (role !== 'admin') throw statusError.type6;
+    const data = await UsersModel.addOneUser(objectUser);
+    delete data.password;
+    return { user: data };
+  } catch (error) {
+    return error;
+  }
+}
+
 module.exports = { 
   usersGetAll,
   userPatternVerifier,
   userExistsVerifier,
   userAdd,
+  userAdminAdd,
 };
