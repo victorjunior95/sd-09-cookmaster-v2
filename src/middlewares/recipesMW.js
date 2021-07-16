@@ -19,7 +19,17 @@ const postRecipe = async (req, res, next) => {
   return res.status(response.STATUS_CREATED).json({ recipe: newRecipe });
 };
 
+const getAllRecipes = async (req, res, next) => {
+  try {
+    const registeredRecipes = await RecipesServices.getAllRecipes();
+    return res.status(response.STATUS_OK).json(registeredRecipes);
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   postRecipe,
   validateRecipe,
+  getAllRecipes,
 };

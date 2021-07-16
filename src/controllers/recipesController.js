@@ -5,6 +5,8 @@ const recipesMW = require('../middlewares/recipesMW');
 
 const RecipesRouter = express.Router();
 
+RecipesRouter.get('/', recipesMW.getAllRecipes);
+
 RecipesRouter.post('/',
   authToken,
   recipesMW.validateRecipe,

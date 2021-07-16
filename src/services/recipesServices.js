@@ -30,7 +30,10 @@ const postRecipe = async (recipeInfo, userInfo) => {
   }
 };
 
+const getAllRecipes = async () => RecipesModel.getAllRecipes();
+
 module.exports = {
   postRecipe,
   validateRecipe,
+  getAllRecipes,
 };
