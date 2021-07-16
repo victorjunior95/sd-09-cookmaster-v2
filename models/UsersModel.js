@@ -46,7 +46,6 @@ const validateLogin = async (loginInfo) => {
       };
       return errorObj;
     }
-    // const { password, ...userInfo } = userExists;
     const userToken = genToken(userExists);
     return userToken;
   } catch (error) {
