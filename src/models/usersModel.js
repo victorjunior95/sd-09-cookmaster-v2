@@ -18,9 +18,18 @@ const uniqueEmail = async (email) => {
   return user;
 };
 
+const loginUsers = async (email, password) => {
+  const userLogin = await connection()
+  .then((db) => db.collection('users')
+  .findOne({ email, password }));
+
+  return userLogin;
+};
+
 module.exports = {
   createUser,
   uniqueEmail,
+  loginUsers,
 };
 
 // fonte de consulta: aula do Mariotto sobre Joi
