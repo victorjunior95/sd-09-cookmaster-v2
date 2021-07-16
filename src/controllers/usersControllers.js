@@ -1,8 +1,10 @@
 const usersServices = require('../services/usersServices');
+const CONFLICT = 409;
+const CREATED = 201;
+const OK = 200;
 
 const createUser = async (req, res) => {
-  const CONFLICT = 409;
-  const CREATED = 201;
+
   const { name, email, password } = req.body;
 
   const newUser = await usersServices.createUser(name, email, password);
@@ -12,4 +14,14 @@ const createUser = async (req, res) => {
   return res.status(CREATED).json(newUser);
 };
 
-module.exports = { createUser };
+const login = async (req, res) => {
+  const { token } = req
+  console.log('==========token======== >>>', token);
+
+  return res.status(OK).json({ token: token });
+};
+
+module.exports = {
+  createUser,
+  login,
+};

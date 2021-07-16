@@ -12,9 +12,9 @@ const schema = Joi.object({
 });
 
 const validateUser = (req, res, next) => {
-  const code = 400;
+  const BAD_REQUEST = 400;
   const { error } = schema.validate(req.body);
-  if (error) return res.status(code).json({ message: error.message });
+  if (error) return res.status(BAD_REQUEST).json({ message: error.message });
 
   next();
 };
