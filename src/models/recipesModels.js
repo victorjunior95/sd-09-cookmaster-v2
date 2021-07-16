@@ -25,7 +25,9 @@ const getRecipeById = async (id) => {
     .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }))
     .catch((error) => ({ error: error.message }));
 
-    return result;
+  if (result === null || !result.name) return ({ code: 404, message: 'Recipe not found' });
+
+  return result;
 };
 
 const updateRecipe = async (data) => {
@@ -36,9 +38,26 @@ const updateRecipe = async (data) => {
   return { modifiedCount };
 };
 
+const deleteRecipe = async (data) => {
+  const { id } = data;
+  const myRecipe = await getRecipeById(id);
+
+  if (!myRecipe.name) return myRecipe;
+
+  const { userId, role } = data;
+
+  if (myRecipe.userId !== userId && role !== 'admin') {
+    return { code: 401, message: 'Unauthorized' };
+  }
+  await connection()
+    .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
+return {};
+};
+
 module.exports = {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };

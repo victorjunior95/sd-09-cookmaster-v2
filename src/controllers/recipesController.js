@@ -43,9 +43,20 @@ const updateRecipe = async (req, res, next) => {
     _id: id, name, ingredients, preparation, userId });
 };
 
+const deleteRecipe = async (req, res, next) => {
+  const { id } = req.params;
+  const { userId, role } = req;
+  const result = await recipesServices.deleteRecipe({ id, userId, role });
+
+  if (result.code) return next(result);
+
+  res.status(204).json();
+};
+
 module.exports = {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };

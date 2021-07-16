@@ -31,11 +31,8 @@ recipeRouter.get('/:id', recipesController.getRecipeById);
 // 7 - Crie um endpoint para a edição de uma receita
 recipeRouter.put('/:id', middlewares.authCheck, recipesController.updateRecipe);
 
-recipeRouter.delete('/:id', (req, res) => {
-  res.status(200).json({
-    message: 'estamos no /recipes/:id delete',
-  });
-});
+// 8 - Crie um endpoint para a exclusão de uma receita
+recipeRouter.delete('/:id', middlewares.authCheck, recipesController.deleteRecipe);
 
 module.exports = {
   usersRouter,

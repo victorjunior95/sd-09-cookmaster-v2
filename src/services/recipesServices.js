@@ -24,7 +24,7 @@ const updateRecipe = async (data) => {
   const { id } = data;
   const recipeFound = await recipesModels.getRecipeById(id);
 
-  if (recipeFound === null || recipeFound.error) return { code: 404, message: 'recipe not found' };
+  if (recipeFound.code) return recipeFound;
 
   const { userId, role } = data;
 
@@ -39,9 +39,16 @@ const updateRecipe = async (data) => {
   return result;
 };
 
+const deleteRecipe = async (data) => {
+  const result = await recipesModels.deleteRecipe(data);
+
+  return result;
+};
+
 module.exports = {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };
