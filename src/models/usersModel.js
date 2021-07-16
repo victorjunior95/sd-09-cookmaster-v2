@@ -17,6 +17,15 @@ const create = async (userInfo) => {
   };
 };
 
+const login = async (email, password) => {
+  const db = await connection();
+  const collection = await db.collection('users');
+  const user = await collection.findOne(
+    { email, password },
+  );
+  return user;
+};
+
 const findEmail = async (email) => {
   const db = await connection();
   const collection = await db.collection('users');
@@ -27,4 +36,5 @@ const findEmail = async (email) => {
 module.exports = {
   create,
   findEmail,
+  login,
 };
