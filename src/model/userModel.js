@@ -9,7 +9,7 @@ const create = async (name, email, password, role) => {
   return ops[0];
 };
 
-const isEmailRegistered = async (email) => {
+const findByEmail = async (email) => {
   const usersCollection = await connection()
   .then((db) => db.collection('users'));
 
@@ -20,5 +20,5 @@ const isEmailRegistered = async (email) => {
 
 module.exports = {
   create,
-  isEmailRegistered,
+  findByEmail,
 };
