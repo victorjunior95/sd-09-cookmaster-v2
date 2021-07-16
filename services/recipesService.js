@@ -43,7 +43,7 @@ const upload = async (id, filename, userData) => {
 
 const getImageByRecipeId = async (id) => {
   const recipe = await recipesModel.getById(id);
-
+  
   if (!recipe) return null;
   
   return recipe.image;
