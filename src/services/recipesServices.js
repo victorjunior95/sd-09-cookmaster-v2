@@ -56,9 +56,9 @@ const postImage = async (id, userId, image) => {
   }
 };
 
-const getImage = async (id) => {
+// const getImage = async (id) => {
   
-};
+// };
 
 module.exports = {
   create,
