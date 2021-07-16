@@ -1,9 +1,9 @@
-const models = require('../models/Users');
+const { Router } = require('express');
 const { findEmail } = require('../models/Users');
 const { generateToken } = require('../services/tokenGenerate');
 const { checkLoginData } = require('../middlewares');
 const userSchemas = require('../schemas');
-const { Router } = require('express');
+
 const OK = '200';
 const Unauthorized = '401';
 
