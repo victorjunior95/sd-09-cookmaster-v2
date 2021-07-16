@@ -31,8 +31,22 @@ const getRecipeById = async (req, res) => {
   return res.status(httpStatus.OK).json(recipe);
 };
 
+const updateRecipe = [
+  middlewares.validateToken,
+  async (req, res) => {
+    const { id } = req.params;
+    const { name, ingredients, preparation } = req.body;
+    const { user } = req;
+    const { _id } = user;
+    const recipeObject = { id, name, ingredients, preparation, _id };
+    const updatedRecipe = await recipeService.updateRecipe(recipeObject);
+    return res.status(httpStatus.OK).json(updatedRecipe);
+  },
+];
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
+  updateRecipe,
 };
