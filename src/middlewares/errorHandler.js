@@ -1,12 +1,11 @@
-const InvalidUserFormError = require('../errors/InvalidUserFormError');
-const EmailAlreadyExistError = require('../errors/EmailAlreadyExistError');
+const Errors = require('../errors');
 const StatusCode = require('../statusCode');
 
 const errorHandler = (err, _req, res, _next) => {
-  if (err instanceof InvalidUserFormError) {
+  if (err instanceof Errors.InvalidUserFormError) {
     return res.status(StatusCode.badRequest).json({ message: err.message });
   } 
-  if (err instanceof EmailAlreadyExistError) {
+  if (err instanceof Errors.EmailAlreadyExistError) {
     return res.status(StatusCode.conflict).json({ message: err.message });
   }
 };
