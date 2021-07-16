@@ -10,15 +10,20 @@ const listAllUsers = async () => {
 const findByEmail = async (email) => {
   const findResult = await connection()
   .then((db) => db.collection('users').findOne({ email }));
-  if (!findResult) return null;
-  return findResult.email;
+  return findResult;
 };
 
 const registerUser = async (userData) => {
   const insertResponse = await connection()
-  .then((db) => db.collection('users').insertOne(userData))
-  .catch((err) => console.error(err));
-  return insertResponse;
+  .then((db) => db.collection('users').insertOne(userData));
+  return {
+    user: {
+      _id: insertResponse.insertedId,
+      name: userData.name,
+      email: userData.email,
+      role: 'user',
+    },
+  };
 };
 
 module.exports = {

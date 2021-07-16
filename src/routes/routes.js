@@ -1,22 +1,14 @@
 const express = require('express');
-const UsersController = require('../controllers/UsersController');
+const { list, register } = require('../controllers/UsersController');
+const getError = require('../middlewares/error');
+const { validateUser } = require('../middlewares/validateUser');
 
 const router = express.Router();
 
-router.get('/users', UsersController.list);
+router.get('/users', list);
   
-router.post('/users', UsersController.register);
+router.post('/users', validateUser, register);
 
-router.use((err, _req, res, _next) => {
-    if (err.status) {
-      return res.status(err.status).json({ message: err.message });
-    }
-    console.log(err);
-    return res.status(500).json({
-      error: {
-        message: 'Internal server error',
-      },
-    });
-  });
+router.use(getError);
 
 module.exports = router;

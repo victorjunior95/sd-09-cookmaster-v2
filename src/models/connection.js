@@ -6,7 +6,7 @@ const OPTIONS = {
   useUnifiedTopology: true,
 };
 
-const DB_NAME = 'StoreManager';
+const DB_NAME = 'Cookmaster';
 
 const AVALITOR_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
 const MONGO_DB_URL = process.env.LOCAL_DB_URL || AVALITOR_DB_URL;
