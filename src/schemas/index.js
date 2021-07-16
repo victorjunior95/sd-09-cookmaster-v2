@@ -1,7 +1,7 @@
 const Joi = require('joi');
-
 const msg = 'Invalid entries. Try again.';
 const msgLogin = 'All fields must be filled';
+
 
 const userSchemas = Joi.object({
   name: Joi.string()
@@ -69,7 +69,7 @@ const recipesSchemas = Joi.object({
       'string.empty': msg,
       'any.required': msg,
     })
-    .required(),
+    .required()
 });
 
 module.exports = { userSchemas, loginSchemas, recipesSchemas };

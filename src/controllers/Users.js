@@ -1,11 +1,11 @@
-const { Router } = require('express');
 const models = require('../models/Users');
 const {
   checkUserData,
   checkUniqueEmail,
+  checkLoginData,
 } = require('../middlewares');
 const userSchemas = require('../schemas');
-
+const { Router } = require('express');
 const Created = '201';
 
 const usersController = Router();

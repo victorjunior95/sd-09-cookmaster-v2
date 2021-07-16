@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const secret = 'seusecretdetoken';
 
 const validateToken = (token) => {
@@ -11,3 +10,4 @@ const validateToken = (token) => {
 };
 
 module.exports = { validateToken };
+
