@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const validateJWT = require('../middlewares/validateJWS');
 const UserController = require('../controllers/users');
@@ -9,6 +10,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
@@ -16,6 +19,7 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 app.post('/users', UserController.registerUser);
+app.post('/users/admin', validateJWT, UserController.registerAdmin);
 app.post('/login', UserController.userLogin);
 app.post('/recipes', validateJWT, RecipeController.registerRecipe);
 app.get('/recipes', RecipeController.getAllRecipes);

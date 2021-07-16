@@ -1,4 +1,6 @@
 @url = http://localhost:3000
+@userToken =
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZjE4MzQ2MTg2ZTc3N2I4NmE0ZmZiNyIsIm5hbWUiOiJhZG1pbiIsImVtYWlsIjoicm9vdEBlbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjI2NDQwNzgwLCJleHAiOjE2MjY0NDQzODB9.ON2jE2kbiIDmReEd_fDeOXl5ipwb0g6PKiVzwbxRQcY
 
 ### POST USER
 POST {{url}}/users
@@ -17,6 +19,26 @@ Content-Type: application/json
 {
   "email": "erickjacquin@gmail.com",
   "password": "12345678"
+}
+
+### LOGIN AS ADMIN
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "root@email.com",
+  "password": "admin"
+}
+
+### CREATE NEW ADMIN
+POST {{url}}/users/admin
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "name": "newAdmin",
+  "email": "rooter@email.com",
+  "password": "newAdmin"
 }
 
 ### GET ALL RECIPES
@@ -39,3 +61,6 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZjBj
 ### DELETE A RECIPE
 DELETE {{url}}/recipes/60f0aff16ca89e71bc0191b0
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZjBjMWM3YTg1MjA4OTA3OGNlNGIyOCIsIm5hbWUiOiJFcmljayBKYWNxdWluIiwiZW1haWwiOiJlcmlja2phY3F1aW5AZ21haWwuY29tIiwicm9sZSI6InVzZXIifSwiaWF0IjoxNjI2MzkxMDMzLCJleHAiOjE2MjYzOTQ2MzN9.dX-DlqdPe5md-e5nLLr8mhjp1v89pVtnsNZqRhS-1Xo
+
+### GET A IMAGE
+GET {{url}}/images/60f0cca64655feb65ed3adde.jpeg

@@ -12,9 +12,10 @@ const validateJWT = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, SECRET);
 
-    const { _id } = decoded.data;
+    const { _id, role } = decoded.data;
 
     req.userId = _id;
+    req.role = role;
 
     next();
   } catch (error) {

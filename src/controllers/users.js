@@ -19,7 +19,19 @@ const userLogin = async (req, res) => {
     : res.status(200).json({ token });
 };
 
+const registerAdmin = async (req, res) => {
+  const { name, email, password } = req.body;
+  const { role } = req;
+
+  const admin = await UserService.registerAdmin({ name, email, password }, role);
+
+  return admin.code
+    ? res.status(admin.code).json({ message: admin.message })
+    : res.status(201).json({ user: admin });
+};
+
 module.exports = {
   registerUser,
   userLogin,
+  registerAdmin,
 };

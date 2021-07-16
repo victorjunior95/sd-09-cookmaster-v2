@@ -34,8 +34,16 @@ const userLogin = async ({ email, password }) => {
   return emailChecked;
 };
 
+const registerAdmin = async ({ name, email, password }) => {
+  const { ops } = await connection()
+    .then((db) => db.collection('users').insertOne({ name, email, password, role: 'admin' }));
+
+  return ops[0];
+};
+
 module.exports = {
   registerUser,
   userLogin,
   checkEmail,
+  registerAdmin,
 };
