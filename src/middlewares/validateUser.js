@@ -1,4 +1,7 @@
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
+
+const secret = 'meuSegredoSuperSegreto';
 
 const validateError = (status, message) => ({
   status,
@@ -24,8 +27,21 @@ const validateLogin = (req, _res, next) => {
   next();
 };
 
+const verifyToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, secret);
+
+    return decoded;
+  } catch (error) {
+    return {
+      message: 'jwt malformed',
+    };
+  }
+};
+
 module.exports = {
   validateError,
   validateUser,
   validateLogin,
+  verifyToken,
 };
