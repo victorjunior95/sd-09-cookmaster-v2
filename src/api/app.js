@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { createUserController } = require('../controllers/createUserController');
+const {
+  createUserController,
+  createTokenController,
+} = require('../controllers/createUserController');
 const { errorGeneric } = require('../middlware/errorGeneric');
 
 const app = express();
@@ -14,6 +17,8 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 app.post('/users', createUserController);
+
+app.post('/login', createTokenController);
 
 app.use(errorGeneric);
 
