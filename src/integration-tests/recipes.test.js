@@ -572,7 +572,7 @@ describe('GET /recipes/:id', () => {
   });
 
 });
-
+/*
 describe('PUT /recipes/:id', () => {
 
   describe('Tenta editar uma receita sem autenticacao', () => {
@@ -794,7 +794,7 @@ describe('PUT /recipes/:id', () => {
   });
 
 });
-/*
+
 describe('DELETE /recipes/:id', () => {
 
   describe('Tenta excluir uma receita sem autenticacao', () => {
