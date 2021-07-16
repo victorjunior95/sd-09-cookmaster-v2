@@ -4,9 +4,6 @@ const RecipesServices = require('../services/RecipesServices');
 const storage = multer.diskStorage({
   destination: (_req, _file, callback) => { callback(null, 'src/uploads/'); },
   filename: (req, _file, callback) => { callback(null, `${req.params.idRecipe}.jpeg`); },
-  filter: (_req, file, callback) => {
-    if (file.mimetipe !== 'image/jpeg') { callback(null, false); } else callback(null, true);
-  },
 });
 const upload = multer({ storage });
 
