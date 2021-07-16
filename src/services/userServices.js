@@ -20,8 +20,6 @@ const loginService = async (data) => {
   const { email, password } = data;
   const findUserByEmail = await userModels.findUserByEmail(email);
 
-  if (!email || !password) return errors.emptyFieldsErr;
-
   if (password !== findUserByEmail.password 
     || !emailRegex.test(email)) return errors.incorrectField;
 
