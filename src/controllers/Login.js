@@ -14,8 +14,8 @@ loginController.post('/', checkLoginData(userSchemas), async (req, res) => {
   const { email } = req.body;
   const user = await findEmail(email);
   if (user) {
-    const { _id, role } = user;
-    const payload = { _id, email, role };
+    const { _id: idToken, role } = user;
+    const payload = { idToken, email, role };
     return res.status(OK).json({ token: generateToken(payload) });
   }
   res.status(Unauthorized).json({ message: 'Incorrect username or password' });

@@ -32,7 +32,7 @@ recipesController.post('/', checkRecipesData(userSchemas), async (req, res) => {
   if (!token) return res.status(Unauthorized).json({ message: 'jwt malformed' });
   const valid = validateToken(token);
   if (!valid) return res.status(Unauthorized).json({ message: 'jwt malformed' });
-  const recipe = await modelsRecipes.create(name, ingredients, preparation, valid._id);
+  const recipe = await modelsRecipes.create(name, ingredients, preparation, valid.idToken);
   res.status(Created).json({ recipe: recipe.ops[0] });
 });
 
@@ -54,11 +54,11 @@ recipesController.put('/:id', checkRecipesData(userSchemas), async (req, res) =>
   const token = req.headers.authorization;
   let result = '';
   const valid = validateToken(token);
-  console.log(valid);
-  // eslint-disable-next-line no-underscore-dangle
-  const { idToken } = valid._id;
+  // console.log(valid);
+  // // eslint-disable-next-line no-underscore-dangle
+  // const { idToken } = valid.idToken;
 
-  if (idToken || valid.role === 'admin') {
+  if (valid.idToken || valid.role === 'admin') {
     const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
     if (recipe.result.ok) result = await modelsRecipes.getById(id);
   }
