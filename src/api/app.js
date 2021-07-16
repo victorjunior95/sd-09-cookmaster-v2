@@ -3,6 +3,8 @@ const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
 const usersController = require('../Controllers/usersController');
 const loginController = require('../Controllers/loginController');
+const validateToken = require('./authorization/jwt');
+const recipesController = require('../Controllers/recipesController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +16,7 @@ app.get('/', (request, response) => {
 
 app.post('/users', rescue(usersController.createUser));
 app.post('/login', rescue(loginController.login));
+app.post('/recipes', rescue(validateToken), rescue(recipesController.create));
 
 app.use((err, _req, res, _next) => {
   if (err.status) return res.status(err.status).json({ message: err.message });
