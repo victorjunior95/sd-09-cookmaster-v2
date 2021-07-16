@@ -13,11 +13,8 @@ const createUser = async (name, email, password, role = 'user') => {
   };
 };
 
-const findUserByEmail = async (email) => {
-  console.log('busca por email');
-  return connection()
+const findUserByEmail = async (email) => connection()
     .then((db) => db.collection('users').findOne({ email }));
-};
 
 const findUser = async (email, password) => connection()
     .then((db) => db.collection('users').findOne({ email, password }));
