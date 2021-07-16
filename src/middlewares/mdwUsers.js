@@ -1,5 +1,4 @@
 const UsersService = require('../services/UsersServices');
-// const status = require('../services/allMessages');
 
 const usersGetAll = async (_req, res, _next) => {
   const data = await UsersService.usersGetAll();

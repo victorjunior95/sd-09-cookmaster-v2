@@ -29,15 +29,12 @@ const recipesGetOne = async (req, res, next) => {
 
 const recipeValidatorUserWillUpdate = async (req, res, next) => {
   const { id, name, ingredients, preparation, role } = req.body;
-  console.log('el boooooooody', req.body);
   const { idRecipe } = req.params;
   const dataRecipe = await RecipesServices.recipeVerifierUser(id, idRecipe, role);
   if (dataRecipe.error) { return next(dataRecipe); }
   const dataRecipeUpdated = await RecipesServices
     .recipeUpdateOne(idRecipe, name, ingredients, preparation);
-  
   dataRecipeUpdated.userId = id;
-
   res.status(200).json(dataRecipeUpdated);
 };
 

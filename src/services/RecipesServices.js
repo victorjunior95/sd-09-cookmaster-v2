@@ -49,9 +49,9 @@ async function recipeVerifierUser(idUser, recipeId, roleUser) {
   try {
     const idParsed = ObjectID(recipeId);
     const data = await RecipesModel.findOneRecipe({ _id: idParsed });
-    if (!data) throw statusError.type7;
+    if (!data.userId) throw statusError.type7;
     if (idUser === data.userId || roleUser === 'admin') return data;
-    throw statusError.type9;
+    throw statusError.type5;
   } catch (error) {
     return error;
   }
@@ -78,6 +78,17 @@ async function recipeDeleteOne(recipeId) {
   }
 }
 
+async function recipeUpdateAddImage(recipeId, imagePath) {
+  try {
+    const idParsed = ObjectID(recipeId);
+    const data = await RecipesModel.updateRecipeAddImage(idParsed, imagePath);
+    if (!data) throw statusError.type1;
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 module.exports = {
   recipeVerifier,
   recipeAdd,
@@ -86,4 +97,5 @@ module.exports = {
   recipeVerifierUser,
   recipeUpdateOne,
   recipeDeleteOne,
+  recipeUpdateAddImage,
 };

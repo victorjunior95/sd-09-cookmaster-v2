@@ -30,6 +30,17 @@ const updateOneRecipe = async (id, name, ingredients, preparation) => {
   return recipe;
 };
 
+const updateRecipeAddImage = async (id, image) => {
+  const recipe = await connection()
+    .then((db) => db.collection('recipes').updateOne(
+      { _id: id },
+      { $set: { image } },
+      { upsert: true },
+    ))
+    .then((result) => result.value);
+  return recipe;
+};
+
 const deleteOneRecipe = async (recipeObject) => {
   const recipe = await findOneRecipe(recipeObject);
   if (!recipe) return { error: 'recipe not found' };
@@ -43,4 +54,5 @@ module.exports = {
   findOneRecipe,
   updateOneRecipe,
   deleteOneRecipe,
+  updateRecipeAddImage,
 };

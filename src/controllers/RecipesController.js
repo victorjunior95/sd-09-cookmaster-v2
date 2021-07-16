@@ -20,4 +20,10 @@ recipesRouter.delete('/:id',
   mdw.mdwLogin.loginTokenValidator,
   mdw.mdwRecipes.recipeDelete);
 
+recipesRouter.put('/:idRecipe/image/',
+  mdw.mdwLogin.loginTokenValidator,
+  mdw.mdwImages.imageValidatorUserWillUpdate,
+  mdw.mdwImages.upload.single('image'),
+  mdw.mdwImages.putImage);
+
 module.exports = recipesRouter;
