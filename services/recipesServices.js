@@ -1,7 +1,7 @@
 const recipesModel = require('../models/recipesModel');
 
-const addRecipe = async (name, ingredients, preparation, userId) => {
-  const recipe = await recipesModel.addRecipe(
+const add = async (name, ingredients, preparation, userId) => {
+  const recipe = await recipesModel.add(
     name,
     ingredients,
     preparation,
@@ -11,14 +11,14 @@ const addRecipe = async (name, ingredients, preparation, userId) => {
   return { recipe };
 };
 
-const listRecipes = async () => {
-  const recipes = await recipesModel.listRecipes();
+const getAll = async () => {
+  const recipes = await recipesModel.getAll();
 
   return recipes;
 };
 
-const getRecipe = async (id) => {
-  const recipe = await recipesModel.getRecipe(id);
+const getById = async (id) => {
+  const recipe = await recipesModel.getById(id);
 
   if (!recipe) return null;
 
@@ -26,7 +26,7 @@ const getRecipe = async (id) => {
 };
 
 module.exports = {
-  addRecipe,
-  listRecipes,
-  getRecipe,
+  add,
+  getAll,
+  getById,
 };

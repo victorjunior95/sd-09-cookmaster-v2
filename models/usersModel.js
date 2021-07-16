@@ -2,15 +2,15 @@ const connection = require('./connection');
 
 const coll = 'users';
 
-const getUser = async (email) => {
+const getByEmail = async (email) => {
   const user = await connection()
   .then((db) => db.collection(coll).findOne({ email }));
 
   return user;
 };
 
-const addUser = async (name, email, password, role) => {
-  const emailAlreadyExists = await getUser(email);
+const add = async (name, email, password, role) => {
+  const emailAlreadyExists = await getByEmail(email);
 
   if (emailAlreadyExists) return null;
 
@@ -23,6 +23,6 @@ const addUser = async (name, email, password, role) => {
 };
 
 module.exports = {
-  addUser,
-  getUser,
+  add,
+  getByEmail,
 };

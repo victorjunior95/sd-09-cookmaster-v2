@@ -6,7 +6,7 @@ const jwtSecret = 'jwtsecret';
 
 const login = rescue(async (req, res, next) => {
   const { email, password } = req.body;
-  const user = await usersModel.getUser(email);
+  const user = await usersModel.getByEmail(email);
 
   if (!user || user.password !== password) {
     return next({

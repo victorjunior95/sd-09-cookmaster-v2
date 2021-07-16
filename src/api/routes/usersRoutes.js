@@ -4,6 +4,6 @@ const { validateUsersFields } = require('../../../middlewares');
 
 const router = express.Router();
 
-router.post('/', [validateUsersFields, usersController.addUser]);
+router.post('/', [validateUsersFields, usersController.add]);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const connection = require('./connection');
 
 const coll = 'recipes';
 
-const addRecipe = async (name, ingredients, preparation, userId) => {
+const add = async (name, ingredients, preparation, userId) => {
   const response = await connection().then((db) =>
     db.collection(coll).insertOne({ name, ingredients, preparation, userId }));
 
@@ -11,14 +11,14 @@ const addRecipe = async (name, ingredients, preparation, userId) => {
 
   return recipe;
 };
-const listRecipes = async () => {
+const getAll = async () => {
   const recipes = await connection()
     .then((db) => db.collection(coll).find().toArray());
 
   return recipes;
 };
 
-const getRecipe = async (id) => {
+const getById = async (id) => {
   try {
     const recipe = await connection()
     .then((db) => db.collection(coll).findOne({ _id: new ObjectId(id) }));
@@ -30,7 +30,7 @@ const getRecipe = async (id) => {
 };
 
 module.exports = {
-  addRecipe,
-  listRecipes,
-  getRecipe,
+  add,
+  getAll,
+  getById,
 };

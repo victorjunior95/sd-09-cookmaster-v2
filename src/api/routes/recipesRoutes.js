@@ -10,10 +10,10 @@ const router = express.Router();
 router.post('/', [
   validateToken,
   validateRecipesFields,
-  recipesController.addRecipe,
+  recipesController.add,
 ]);
 
-router.get('/', [recipesController.listRecipes]);
-router.get('/:id', [recipesController.getRecipe]);
+router.get('/', [recipesController.getAll]);
+router.get('/:id', [recipesController.getById]);
 
 module.exports = router;
