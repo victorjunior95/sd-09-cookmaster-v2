@@ -7,6 +7,8 @@ module.exports = (error, _req, res, _next) => {
       return res.status(400).json(body);
     case errors.ConflictError:
       return res.status(409).json(body);
+    case errors.AccessError:
+      return res.status(401).json(body);
     default:
       return res.status(500).json(body);
   }

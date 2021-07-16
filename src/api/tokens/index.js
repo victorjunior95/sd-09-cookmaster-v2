@@ -1,0 +1,17 @@
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = 'juroSolenementeNaoFazerNadaDeBom';
+
+const createJWT = (payload, [timeAmount, timeUnit]) => (
+  jwt.sign(payload, JWT_SECRET, { expiresIn: timeAmount + timeUnit })
+);
+
+module.exports = {
+  access: {
+    name: 'access token',
+    expiration: [15, 'm'],
+    create(payload) {
+      return createJWT(payload, this.expiration);
+    },
+  },
+};

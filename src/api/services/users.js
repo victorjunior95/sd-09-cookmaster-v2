@@ -1,9 +1,15 @@
 const Joi = require('joi');
 const { User } = require('../models');
-const { InvalidArgumentError, ConflictError } = require('../errors');
+const { InvalidArgumentError, ConflictError, AccessError } = require('../errors');
+const tokens = require('../tokens');
 
 const UserSchema = Joi.object({
   name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});
+
+const LoginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
@@ -24,5 +30,18 @@ module.exports = {
     const { password, ...serializedResponse } = response;
 
     return { user: serializedResponse };
+  },
+  async login(payload) {
+    const { error } = LoginSchema.validate(payload);
+
+    if (error) throw new AccessError('All fields must be filled');
+
+    const user = new User(payload);
+    const userDB = await user.verify();
+
+    if (!userDB) throw new AccessError('Incorrect username or password');
+
+    const token = tokens.access.create(userDB);
+    return { token };
   },
 };
