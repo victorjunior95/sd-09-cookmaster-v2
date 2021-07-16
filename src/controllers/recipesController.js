@@ -16,7 +16,17 @@ route.post('/recipes', validateJWT, async (req, res, next) => {
 route.get('/recipes', async (_req, res, next) => {
   try {
     const response = await recipesService.getAllRecipes();
-    res.status(200).json(response);
+    return res.status(200).json(response);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+route.get('/recipes/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const response = await recipesService.getById(id);
+    return res.status(200).json(response);
   } catch (error) {
     return next(error);
   }
