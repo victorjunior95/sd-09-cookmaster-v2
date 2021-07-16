@@ -3,6 +3,8 @@ const validateNewUser = require('./validateNewUser');
 const validateLoginInput = require('./validateLoginInput');
 const authCheck = require('./authCheck');
 const validateRecipeInput = require('./validateRecipeInput');
+const checkOwnerAdmin = require('./checkOwnerAdmin');
+const upload = require('./multer');
 
 module.exports = {
   errorHandler,
@@ -10,4 +12,6 @@ module.exports = {
   validateLoginInput,
   authCheck,
   validateRecipeInput,
+  checkOwnerAdmin,
+  upload,
 };

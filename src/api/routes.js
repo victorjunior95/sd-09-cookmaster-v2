@@ -34,6 +34,13 @@ recipeRouter.put('/:id', middlewares.authCheck, recipesController.updateRecipe);
 // 8 - Crie um endpoint para a exclusão de uma receita
 recipeRouter.delete('/:id', middlewares.authCheck, recipesController.deleteRecipe);
 
+// 9 - Crie um endpoint para a adição de uma imagem a uma receita
+recipeRouter.put('/:id/image',
+  middlewares.authCheck,
+  middlewares.checkOwnerAdmin,
+  middlewares.upload.single('image'),
+  recipesController.postRecipeImage);
+
 module.exports = {
   usersRouter,
   recipeRouter,

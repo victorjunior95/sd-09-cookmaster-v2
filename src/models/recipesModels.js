@@ -25,33 +25,63 @@ const getRecipeById = async (id) => {
     .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }))
     .catch((error) => ({ error: error.message }));
 
-  if (result === null || !result.name) return ({ code: 404, message: 'Recipe not found' });
+  if (result === null || !result.name) return ({ code: 404, message: 'recipe not found' });
 
   return result;
 };
 
+const checkOwnership = async ({ id, userId, role }) => {
+  const myRecipe = await getRecipeById(id);
+
+  // se não tem name é um error de not found
+  if (!myRecipe.name) return myRecipe;
+
+  // se não for o dono nem admin, não deixa fazer nada
+  if (myRecipe.userId !== userId && role !== 'admin') {
+    return { code: 401, message: 'Unauthorized' };
+  }
+
+return myRecipe;
+};
+
 const updateRecipe = async (data) => {
-  const { id, ...payload } = data;
+  const { id, userId, role } = data;
+
+  const checkedRecipe = await checkOwnership({ id, userId, role });
+
+  if (!checkedRecipe.name) return checkedRecipe;
+
+  const { name, ingredients, preparation } = data;
 
   const { modifiedCount } = await connection()
-    .then((db) => db.collection('recipes').updateOne({ _id: ObjectId(id) }, { $set: payload }));
+    .then((db) => db.collection('recipes')
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, ingredients, preparation } }));
   return { modifiedCount };
 };
 
 const deleteRecipe = async (data) => {
+  const checkedRecipe = await checkOwnership(data);
+
+  if (!checkedRecipe.name) return checkedRecipe;
+
   const { id } = data;
-  const myRecipe = await getRecipeById(id);
-
-  if (!myRecipe.name) return myRecipe;
-
-  const { userId, role } = data;
-
-  if (myRecipe.userId !== userId && role !== 'admin') {
-    return { code: 401, message: 'Unauthorized' };
-  }
   await connection()
     .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 return {};
+};
+
+const postRecipeImage = async (id) => {
+  const imagePath = `localhost:3000/src/uploads/${id}.jpeg`;
+  const { modifiedCount } = await connection()
+    .then((db) => db.collection('recipes')
+      .updateOne({ _id: ObjectId(id) }, { $set: { image: imagePath } }));
+
+  if (modifiedCount === 1) {
+    const myRecipe = await getRecipeById(id);
+    return myRecipe;
+  }
+
+  return { code: 400, message: 'Não houve mudança no path da imagem' };
 };
 
 module.exports = {
@@ -60,4 +90,6 @@ module.exports = {
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  checkOwnership,
+  postRecipeImage,
 };

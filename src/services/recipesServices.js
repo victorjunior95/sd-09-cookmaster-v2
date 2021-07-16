@@ -21,20 +21,9 @@ const getRecipeById = async (id) => {
 };
 
 const updateRecipe = async (data) => {
-  const { id } = data;
-  const recipeFound = await recipesModels.getRecipeById(id);
+  const result = await recipesModels.updateRecipe(data);
 
-  if (recipeFound.code) return recipeFound;
-
-  const { userId, role } = data;
-
-  if (recipeFound.userId !== userId && role !== 'admin') {
-    return { code: 401, message: 'Unauthorized' };
-  }
-
-  const { name, ingredients, preparation } = data;
-
-  const result = await recipesModels.updateRecipe({ id, name, ingredients, preparation });
+  if (result.code) return result;
 
   return result;
 };
@@ -45,10 +34,17 @@ const deleteRecipe = async (data) => {
   return result;
 };
 
+const postRecipeImage = async (id) => {
+  const result = await recipesModels.postRecipeImage(id);
+
+  return result;
+};
+
 module.exports = {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  postRecipeImage,
 };
