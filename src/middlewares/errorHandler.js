@@ -8,6 +8,12 @@ const errorHandler = (err, _req, res, _next) => {
   if (err instanceof Errors.EmailAlreadyExistError) {
     return res.status(StatusCode.conflict).json({ message: err.message });
   }
+  if (err instanceof Errors.LoginFieldMissingError) {
+    return res.status(StatusCode.unauthorized).json({ message: err.message });
+  }
+  if (err instanceof Errors.InvalidCredentialsError) {
+    return res.status(StatusCode.unauthorized).json({ message: err.message });
+  }
 };
 
 module.exports = errorHandler;
