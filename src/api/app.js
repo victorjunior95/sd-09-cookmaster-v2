@@ -20,6 +20,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 
+// 10 - Crie um endpoint para acessar a imagem de uma receita
 app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use(middlewares.errorHandler);

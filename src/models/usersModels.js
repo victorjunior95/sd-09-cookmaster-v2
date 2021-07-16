@@ -26,7 +26,26 @@ const postNewUser = async (userInfo) => {
   return { insertedId: result.insertedId };
 };
 
+// insere um novo admin no db
+const insertAdmin = async (userInfo) => {
+  const result = await connection()
+    .then((db) => db.collection('users').insertOne({ ...userInfo, role: 'admin' }));
+  return result;
+};
+
+const postNewAdmin = async (userInfo) => {
+  const user = await getUserByEmail(userInfo.email);
+
+  if (user) return user;
+
+  const result = await insertAdmin(userInfo);
+
+  // retorna com o id do admin cadastrado
+  return { insertedId: result.insertedId };
+};
+
 module.exports = {
   postNewUser,
   getUserByEmail,
+  postNewAdmin,
 };
