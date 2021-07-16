@@ -17,6 +17,11 @@ router.post('/', Validation.token, Validation.createRecipe, async (req, res, nex
   }
 });
 
+router.get('/', async (_req, res) => {
+  const recipesList = await RecipeService.findAll();
+  return res.status(StatusCode.ok).json(recipesList);
+});
+
 router.use(ErrorHandler);
 
 module.exports = router;
