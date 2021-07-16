@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const middlewares = require('../middlewares');
 const UserController = require('../controllers/UserController');
+const RecipeController = require('../controllers/RecipeController');
 
 const app = express();
 
@@ -22,5 +23,12 @@ app.post('/login',
   middlewares.verifyEmailAndPassword, 
   middlewares.isValidEmailOrPassword,
   UserController.login);
+
+app.post('/recipes',
+  middlewares.entriesValidator,
+  middlewares.validateJWT,
+  RecipeController.createRecipe);
+
+app.get('/recipes', RecipeController.getRecipes);
 
 module.exports = app;

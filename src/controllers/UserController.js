@@ -2,9 +2,8 @@ const UserService = require('../services/UserService');
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+  const { name, email, password } = req.body;
   const newUser = await UserService.createUser(name, email, password);
-
   return res.status(201).json(newUser);
   } catch (e) {
     return res.status(500).json({ message: 'Erro interno', error: e });
