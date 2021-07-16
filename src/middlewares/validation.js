@@ -14,7 +14,7 @@ const createUser = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
-  const { error } = Schemas.createUser.validate({ email, password });
+  const { error } = Schemas.login.validate({ email, password });
 
   if (error) throw new Errors.LoginFieldMissingError();
 
