@@ -33,6 +33,7 @@ const createRecipeModel = async ({ name, ingredients, preparation, userId }) => 
       name,
       ingredients,
       preparation,
+      userId,
     }));
 
   const recipeCreated = {
@@ -47,8 +48,15 @@ const createRecipeModel = async ({ name, ingredients, preparation, userId }) => 
   return recipeCreated;
 };
 
+const listAllRecipesModel = async () => {
+  const allRecipes = await connection()
+  .then((db) => db.collection('recipes').find().toArray());
+  return allRecipes;
+};
+
 module.exports = {
   createUserModel,
   findByemail,
   createRecipeModel,
+  listAllRecipesModel,
 };

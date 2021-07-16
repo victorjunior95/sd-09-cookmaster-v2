@@ -2,6 +2,7 @@ const {
     createUserService,
     validLoginService,
     createRecipeService,
+    listAllRecipesService,
 } = require('../services/createUserService');
 const { ok, created } = require('../utils/statusHttp');
 
@@ -41,8 +42,18 @@ const createRecipeController = async (req, res, next) => {
     }
 };
 
+const listAllRecipesController = async (req, res, next) => {
+    try {
+        const allRecipes = await listAllRecipesService();
+        res.status(ok).json(allRecipes);
+    } catch (error) {
+        return next(error);
+    }
+};
+
 module.exports = {
     createUserController,
     createTokenController,
     createRecipeController,
+    listAllRecipesController,
 };

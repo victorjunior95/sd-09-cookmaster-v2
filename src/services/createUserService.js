@@ -3,11 +3,16 @@ const {
   createToken,
   joiError,
 } = require('../utils/createToke');
-const { allFields, invalidEntries } = require('../dictionaryError');
+const {
+  allFields,
+  invalidEntries,
+  emailAlreadyExists,
+} = require('../dictionaryError');
 const {
   createUserModel,
   findByemail,
   createRecipeModel,
+  listAllRecipesModel,
 } = require('../models/createUserModel');
 
 const createUserSchema = Joi.object({
@@ -30,10 +35,10 @@ const recipeSchema = Joi.object({
 
 const createUserService = async ({ name, email, password, role }) => {
   const exixtEmail = await findByemail(email);
-  if (exixtEmail) return joiError({ message: 'Email already registered', status: 409 });
+  if (exixtEmail) return joiError(emailAlreadyExists());
   
   const { value, error } = createUserSchema.validate({ name, email, password, role });
-  if (error) return joiError({ message: 'Invalid entries. Try again.', status: 400 });
+  if (error) return joiError(invalidEntries());
   const userCreated = await createUserModel(value);
 
   return userCreated;
@@ -68,8 +73,14 @@ const createRecipeService = async ({ name, ingredients, preparation, userData })
   return recipeCreated;
 };
 
+const listAllRecipesService = async () => {
+  const allrecipes = await listAllRecipesModel();
+  return allrecipes;
+};
+
 module.exports = {
     createUserService,
     validLoginService,
     createRecipeService,
+    listAllRecipesService,
 };
