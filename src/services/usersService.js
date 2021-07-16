@@ -6,17 +6,18 @@ const {
 const errCreate = { message: 'Invalid entries. Try again.' };
 const errJaexiste = { message: 'Email already registered' };
 const regxp = /.+@[A-z]+[.]com/;
+const cd = 400;
 
 const checkName = async (req, res, next) => {
-if (!req.body) { return errCreate; }
-if (!req.body.name) { return errCreate; }
-if (!req.body.password) { return errCreate; }
+if (!req.body) { return res.status(cd).json(errCreate); }
+if (!req.body.name) { return res.status(cd).json(errCreate); }
+if (!req.body.password) { return res.status(cd).json(errCreate); }
 next();
 };
 
 const checkEmal = async (req, res, next) => {
-  if (!req.body.email) { return errCreate; }
-  if (!regxp.test(req.body.email)) { return errCreate; }
+  if (!req.body.email) { return res.status(cd).json(errCreate); }
+  if (!regxp.test(req.body.email)) { return res.status(cd).json(errCreate); }
   next();
   };
 const createUser = async (body) => {

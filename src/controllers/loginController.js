@@ -1,17 +1,19 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const { getByEmail } = require('../models/loginModel');
 
 const router = express.Router();
 // const { ObjectId } = require('mongodb');
-const { checkUser } = require('../services/loginService');
+const { checkUser, validatefilds } = require('../services/loginService');
 
-const cdi = 401;
 const cc = 200;
 
-router.post('/', async (req, res) => {
-  const result = await checkUser(req.body);
-  const dinamic = !result || result.message ? cdi : cc;
-
-  res.status(dinamic).send(result);
+router.post('/', validatefilds, checkUser, async (req, res) => {
+  const user = await getByEmail(req.body.email);
+  const secret = 'cookMaster';
+  const jwtConfig = { expiresIn: '7d', algorithm: 'HS256' };
+  const token = jwt.sign(user, secret, jwtConfig);
+  return res.status(cc).json({ token });
 });
 
 router.get('/', async (req, res) => {

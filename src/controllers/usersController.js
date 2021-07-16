@@ -22,7 +22,7 @@ const {
 const invalideEnties = 'Invalid entries. Try again.';
 const alreadRegistered = 'Email already registered';
 
-router.post('/', checkName, checkEmal, async (req, res) => {
+router.post('/', checkEmal, checkName, async (req, res) => {
   const result = await createUser(req.body);
   if (!result || result.message === invalideEnties) {
     return res.status(cd).json(result);  

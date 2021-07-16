@@ -13,13 +13,14 @@ const {
 const notfound = { message: 'recipe not found' };
 // const notToken = {message: 'missing auth token'};
 const entries = { message: 'Invalid entries. Try again.' };
-
+const cd = 400;
+const cdi = 401;
 // sem numeros magicos eslint
 const ii = 2;
 const i = 1;
 const nameValid = (req, res, next) => {
-  if (!req.body.name) { return entries; }
-  if (req.body.name.length < ii) { return entries; }
+  if (!req.body.name) { return res.status(cd).json(entries); }
+  if (req.body.name.length < ii) { return res.status(cdi).json(entries); }
   next();
 };
 
