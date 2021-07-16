@@ -1,4 +1,8 @@
+const path = require('path');
+const fs = require('fs/promises');
+
 const recipeService = require('../services/recipeService');
+const uploadFile = require('../middlewares/upload');
 
 const createRecipe = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
@@ -48,10 +52,36 @@ const deleteRecipe = async (req, res, _next) => {
   return res.status(204).end();
 };
 
+const uploadImage = [
+  uploadFile.single('image'),
+  async (req, res, next) => {
+    const { id } = req.params;
+    const { userId } = req;
+    const fileInformation = req.file;
+    const buffer = fileInformation.buffer || undefined;
+
+    if (!buffer) return next({ message: 'deu ruim', statusCode: 400 });
+
+    const filePath = path.join(__dirname, '..', 'uploads', fileInformation.originalname);
+
+    await fs.writeFile(filePath, buffer);
+
+    const imgPath = path.join('localhost:3000', 'src', 'uploads', `${id}.jpeg`);
+
+    const recipe = await recipeService.addRecipeImg(id, imgPath);
+
+    return res.json({
+      userId,
+      ...recipe,
+    });
+  },
+];
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  uploadImage,
 };

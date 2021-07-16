@@ -1,5 +1,6 @@
 const express = require('express');
 const rescue = require('express-rescue');
+const path = require('path');
 
 const bodyParser = require('body-parser');
 
@@ -18,6 +19,8 @@ app.get('/', (request, response) => {
 app.use('/users', rescue(routes.users));
 app.use('/login', rescue(routes.login));
 app.use('/recipes', rescue(routes.recipes));
+
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use((err, _req, res, _next) => {
   console.error(err);

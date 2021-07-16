@@ -35,10 +35,13 @@ const updateRecipe = async (id, name, ingredients, preparation) => {
 
 const deleteRecipe = async (id) => recipesModel.deleteRecipeFromDb(id);
 
+const addRecipeImg = async (id, imgPath) => recipesModel.insertRecipeImg(id, imgPath);
+
 module.exports = {
   validateNewRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  addRecipeImg,
 };
