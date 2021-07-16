@@ -48,7 +48,6 @@ const listRecipes = async () => {
 };
 
 const getRecipeById = async (id) => {
-
   const validId = validateId(id);
 
   if (validId) return validId;
