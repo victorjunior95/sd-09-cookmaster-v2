@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+// Iniciando o projeto!
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
