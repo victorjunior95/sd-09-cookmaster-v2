@@ -37,4 +37,5 @@ const userLogin = async ({ email, password }) => {
 module.exports = {
   registerUser,
   userLogin,
+  checkEmail,
 };

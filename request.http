@@ -18,3 +18,24 @@ Content-Type: application/json
   "email": "erickjacquin@gmail.com",
   "password": "12345678"
 }
+
+### GET ALL RECIPES
+GET {{url}}/recipes
+
+### GET RECIPE BY ID
+GET {{url}}/recipes/60f0ae981ac1de6e52918b98
+
+### EDIT A RECIPE
+PUT {{url}}/recipes/60f0aff16ca89e71bc0191b0
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZjBjMWM3YTg1MjA4OTA3OGNlNGIyOCIsIm5hbWUiOiJFcmljayBKYWNxdWluIiwiZW1haWwiOiJlcmlja2phY3F1aW5AZ21haWwuY29tIiwicm9sZSI6InVzZXIifSwiaWF0IjoxNjI2MzkxMDMzLCJleHAiOjE2MjYzOTQ2MzN9.dX-DlqdPe5md-e5nLLr8mhjp1v89pVtnsNZqRhS-1Xo
+
+{
+  "name": "Franguinho",
+  "ingredients": "frango e manteiga",
+  "preparation": "asse o frango jovem"
+}
+
+### DELETE A RECIPE
+DELETE {{url}}/recipes/60f0aff16ca89e71bc0191b0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZjBjMWM3YTg1MjA4OTA3OGNlNGIyOCIsIm5hbWUiOiJFcmljayBKYWNxdWluIiwiZW1haWwiOiJlcmlja2phY3F1aW5AZ21haWwuY29tIiwicm9sZSI6InVzZXIifSwiaWF0IjoxNjI2MzkxMDMzLCJleHAiOjE2MjYzOTQ2MzN9.dX-DlqdPe5md-e5nLLr8mhjp1v89pVtnsNZqRhS-1Xo

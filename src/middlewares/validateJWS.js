@@ -6,16 +6,19 @@ const validateJWT = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ error: 'Token não encontrado ou informado' });
+    return res.status(401).json({ message: 'missing auth token' });
   }
 
   try {
     const decoded = jwt.verify(token, SECRET);
 
-    console.log(decoded);
+    const { _id } = decoded.data;
+
+    req.userId = _id;
+
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Seu token é inválido.' });
+    return res.status(401).json({ message: 'jwt malformed' });
   }
 };
 
