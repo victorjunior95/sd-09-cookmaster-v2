@@ -31,7 +31,7 @@ const registerRecipeService = async (recipe) => {
     return { code: 400, response: errorInvalidEntries };
   }
   const registeredRecipe = await registerRecipe(recipe);
-  return { code: 201, response: registeredRecipe };
+  return { code: 201, response: { recipe: registeredRecipe } };
 };
 
 const getAllRecipesService = async () => {

@@ -11,6 +11,7 @@ const errorEmailExists = { message: 'Email already registered' };
 const errorInvalidEntries = { message: 'Invalid entries. Try again.' };
 const errorLoginCredentials = { message: 'All fields must be filled' };
 const errorIncorrectLogin = { message: 'Incorrect username or password' };
+const errorOnlyAdmins = { message: 'Only admins can register new admins' };
 
 // Validacoes
 
@@ -49,7 +50,7 @@ const registerUserService = async (user) => {
   const registeredUser = await registerUser(userWithRole);
   const { password, ...userNecessaryInfos } = registeredUser;
   
-  return { code: 201, response: userNecessaryInfos };
+  return { code: 201, response: { user: userNecessaryInfos } };
 };
 
 const loginService = async (userCredentials) => {
@@ -69,7 +70,25 @@ const loginService = async (userCredentials) => {
   return { code: 200, response: { token } };
 };
 
+const registerAdminService = async (user, creatorPayload) => {
+  const { error } = verifyUser(user);
+  if (error) {
+    return { code: 400, response: errorInvalidEntries };
+  }
+  const { role } = creatorPayload;
+  if (role !== 'admin') {
+    return { code: 403, response: errorOnlyAdmins };
+  }
+  const newAdmin = { ...user };
+  newAdmin.role = 'admin';
+  const registeredAdmin = await registerUser(newAdmin);
+  const { password, ...adminNecessaryInfos } = registeredAdmin;
+  
+  return { code: 201, response: { user: adminNecessaryInfos } };
+};
+
 module.exports = {
   registerUserService,
   loginService,
+  registerAdminService,
 };
