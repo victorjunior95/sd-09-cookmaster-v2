@@ -73,8 +73,6 @@ const remove = rescue(async (req, res, next) => {
       message: error.message,
     });
   }
-  
-
 });
 
 module.exports = {
