@@ -34,7 +34,7 @@ const uploadRecipeImage = async (id) => {
   const result = await connection() 
     .then((db) => db.collection('recipes').findOneAndUpdate(
       { _id: recipeId },
-      { $set: { image: `localhost:3000/src/uploads/${id}.png` } },
+      { $set: { image: `localhost:3000/src/uploads/${id}.jpeg` } },
       { returnOriginal: false },
     )).then((res) => res.value);
 

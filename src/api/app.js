@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
        return callback(new Error('missing "id"'));
      }
  
-     callback(null, `${id}.png`);
+     callback(null, `${id}.jpeg`);
    },
  });
 
@@ -53,6 +53,6 @@ app.get('/recipes/:id', getRecipeById)
    .put('/recipes/:id', validateToken, updateRecipe)
    .delete('/recipes/:id', validateToken, deleteRecipeById);
 
-app.post('/recipes/:id/image', validateToken, upload.single('image'), uploadPictures);
+app.put('/recipes/:id/image', validateToken, upload.single('image'), uploadPictures);
    
 module.exports = app;
