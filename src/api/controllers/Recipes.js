@@ -17,6 +17,13 @@ const registerRecipe = rescue(async (req, res, next) => {
   return res.status(STATUS.CREATED).json(newRecipe);
 });
 
+const listRecipes = rescue(async (_req, res, _next) => {
+  const recipeList = await Recipe.listRecipes();
+
+  return res.status(STATUS.OK).json(recipeList);
+});
+
 module.exports = {
   registerRecipe,
+  listRecipes,
 };

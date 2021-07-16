@@ -31,6 +31,13 @@ const registerRecipe = async (name, ingredients, preparation, userId) => {
   return result;
 };
 
+const listRecipes = async () => {
+  const recipeList = await Recipe.listRecipes();
+
+  return recipeList;
+};
+
 module.exports = {
   registerRecipe,
+  listRecipes,
 };
