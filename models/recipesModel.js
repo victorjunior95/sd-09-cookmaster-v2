@@ -56,10 +56,29 @@ const remove = async (id, userData) => {
   }
 };
 
+const upload = async (id, filename, userData) => {
+  const recipeToBeUpdated = await getById(id);
+
+  if (userData.userRole === 'admin' || recipeToBeUpdated.userId === userData.userId) {
+    await connection()
+    .then((db) => db.collection(coll).findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: { image: `localhost:3000/src/uploads/${filename}` } },
+    ));
+  } else {
+    return null;
+  }
+
+  const recipe = await getById(id);
+
+  return recipe;
+};
+
 module.exports = {
   add,
   getAll,
   getById,
   update,
   remove,
+  upload,
 };

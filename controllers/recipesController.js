@@ -75,10 +75,30 @@ const remove = rescue(async (req, res, next) => {
   }
 });
 
+const upload = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { userId, userRole } = req;
+  const { filename } = req.file;
+
+  const userData = { userId, userRole };
+  
+  const recipe = await recipesService.upload(id, filename, userData);
+
+  if (!recipe) {
+    return next({
+      status: 401,
+      message: 'something went wrong.',
+    });
+  }
+
+  return res.status(200).json(recipe);
+});
+
 module.exports = {
   add,
   getAll,
   getById,
   update,
   remove,
+  upload,
 };

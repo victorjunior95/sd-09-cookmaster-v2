@@ -35,10 +35,17 @@ const remove = async (id, userData) => {
   await recipesModel.remove(id, userData);
 };
 
+const upload = async (id, filename, userData) => {
+  const recipe = await recipesModel.upload(id, filename, userData);
+
+  return recipe;
+};
+
 module.exports = {
   add,
   getAll,
   getById,
   update,
   remove,
+  upload,
 };
