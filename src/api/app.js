@@ -30,5 +30,6 @@ app.post('/recipes',
   RecipeController.createRecipe);
 
 app.get('/recipes', RecipeController.getRecipes);
+app.get('/recipes/:id', RecipeController.getRecipeById);
 
 module.exports = app;
