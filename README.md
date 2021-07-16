@@ -128,7 +128,7 @@ Deverá ser possível adicionar uma imagem à uma receita, utilizando o upload d
 ## Data de Entrega
 
     - Serão `3` dias de projeto.
-    - Data de entrega para avaliação final do projeto: `26/07/2021 - 14:00h`.
+    - Data de entrega para avaliação final do projeto: `22/06/2021 - 14:00h`.
 
 ---
 
@@ -138,9 +138,9 @@ Deverá ser possível adicionar uma imagem à uma receita, utilizando o upload d
 
 1. Clone o repositório
 
-- `git clone https://github.com/tryber/sd-09-cookmaster.git`.
+- `git clone https://github.com/tryber/sd-0x-cookmaster.git`.
 - Entre na pasta do repositório que você acabou de clonar:
-  - `cd sd-09-cookmaster`
+  - `cd sd-0x-cookmaster`
 
 2. Instale as dependências [**Caso existam**]
 
@@ -373,7 +373,6 @@ npm test users.test.js
     "password": "string"
   }
   ```
-- Não use `bcrypt` ou outra biblioteca para encriptar a senha, para que o avaliador funcione corretamente.
 
 **Além disso, as seguintes verificações serão feitas:**
 
