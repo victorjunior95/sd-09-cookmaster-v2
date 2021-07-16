@@ -54,15 +54,15 @@ recipesController.put('/:id', checkRecipesData(userSchemas), async (req, res) =>
   const token = req.headers.authorization;
   let result = '';
   const valid = validateToken(token);
-  // console.log(valid);
+  console.log(valid);
   // // eslint-disable-next-line no-underscore-dangle
   // const { idToken } = valid.idToken;
 
-  if (valid.idToken || valid.role === 'admin') {
-    const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
-    if (recipe.result.ok) result = await modelsRecipes.getById(id);
-  }
-  res.status(OK).json(result);
+  // if (valid.idToken || valid.role === 'admin') {
+  //   const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
+  //   if (recipe.result.ok) result = await modelsRecipes.getById(id);
+  // }
+  // res.status(OK).json(result);
 });
 
 // recipesController.delete('/:id', checkToken, async (req, res) => {
