@@ -12,7 +12,8 @@ const usersRouter = express.Router();
 usersRouter.post('/', middlewares.validateNewUser, usersController.postNewUser);
 
 // 12 - Crie um endpoint para cadastro de pessoas administradoras
-usersRouter.post('/admin', middlewares.authCheck, usersController.postNewAdmin);
+usersRouter.post('/admin', middlewares.validateNewUser,
+  middlewares.authCheck, usersController.postNewAdmin);
 
 // Rotas de /login
 const loginRouter = express.Router();

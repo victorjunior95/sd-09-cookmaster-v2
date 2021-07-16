@@ -22,9 +22,8 @@ const getAllRecipes = async () => {
 
 const getRecipeById = async (id) => {
   const result = await connection()
-    .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }))
+    .then((db) => db.collection('recipes').findOne(ObjectId(id)))
     .catch((error) => ({ error: error.message }));
-
   if (result === null || !result.name) return ({ code: 404, message: 'recipe not found' });
 
   return result;
@@ -32,12 +31,11 @@ const getRecipeById = async (id) => {
 
 const checkOwnership = async ({ id, userId, role }) => {
   const myRecipe = await getRecipeById(id);
-
   // se não tem name é um error de not found
   if (!myRecipe.name) return myRecipe;
 
   // se não for o dono nem admin, não deixa fazer nada
-  if (myRecipe.userId !== userId && role !== 'admin') {
+  if (myRecipe.userId.toString() !== userId.toString() && role !== 'admin') {
     return { code: 401, message: 'Unauthorized' };
   }
 

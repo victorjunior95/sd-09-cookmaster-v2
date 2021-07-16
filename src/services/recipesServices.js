@@ -22,9 +22,7 @@ const getRecipeById = async (id) => {
 
 const updateRecipe = async (data) => {
   const result = await recipesModels.updateRecipe(data);
-
   if (result.code) return result;
-
   return result;
 };
 
