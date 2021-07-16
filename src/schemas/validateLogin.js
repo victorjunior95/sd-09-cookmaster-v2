@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const { getAllUsers, getByEmail } = require('../models/usersModels')
+const { getByEmail } = require('../models/usersModels');
 
 const FIELDS_MESSAGE_ERROR = 'All fields must be filled';
 const INCORRECT_INPUT_MESSAGE_ERROR = 'Incorrect username or password';
@@ -17,8 +17,7 @@ const schema = Joi.object({
 const authLogin = async ({ email, password }) => {
   const user = await getByEmail({ email });
 
-  if (!user || user.password !== password)
-    return false;
+  if (!user || user.password !== password) return false;
 
   return user;
 };
@@ -29,7 +28,9 @@ const validateLogin = async (req, res, next) => {
 
   const autorizatedUser = await authLogin(req.body);
 
-  if (!autorizatedUser) return res.status(UNAUTHORIZED).json({ message: INCORRECT_INPUT_MESSAGE_ERROR });
+  if (!autorizatedUser) {
+    return res.status(UNAUTHORIZED).json({ message: INCORRECT_INPUT_MESSAGE_ERROR });
+  }
 
   const { password: _, ...userWithoutPassword } = autorizatedUser;
   req.user = userWithoutPassword;

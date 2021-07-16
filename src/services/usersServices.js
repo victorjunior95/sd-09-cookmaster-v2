@@ -10,11 +10,6 @@ const createUser = async (name, email, password) => {
   return newUser;
 };
 
-const login = async (email, password) => {
-
-};
-
 module.exports = {
   createUser,
-  login,
 };

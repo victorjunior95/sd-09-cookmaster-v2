@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET = 'TaeKwonDo'
+const SECRET = 'TaeKwonDo';
 
 const jwtConfig = {
   expiresIn: '1d',
