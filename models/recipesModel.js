@@ -43,10 +43,17 @@ const update = async (id, infoToBeUpdated, userData) => {
   }
 
   const recipe = await getById(id);
-  
-  console.log(recipe);
 
   return recipe;
+};
+
+const remove = async (id, userData) => {
+  const recipeToBeRemoved = await getById(id);
+
+  if (userData.userRole === 'admin' || recipeToBeRemoved.userId === userData.userId) {
+    await connection()
+      .then((db) => db.collection(coll).deleteOne({ _id: new ObjectId(id) }));
+  }
 };
 
 module.exports = {
@@ -54,4 +61,5 @@ module.exports = {
   getAll,
   getById,
   update,
+  remove,
 };

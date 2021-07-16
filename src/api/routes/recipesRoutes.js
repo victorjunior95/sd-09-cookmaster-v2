@@ -7,15 +7,13 @@ const {
 
 const router = express.Router();
 
-router.post('/', [
-  validateToken,
-  validateRecipesFields,
-  recipesController.add,
-]);
+router.post('/', [validateToken, validateRecipesFields, recipesController.add]);
 
 router.get('/', [recipesController.getAll]);
 router.get('/:id', [recipesController.getById]);
 
 router.put('/:id', [validateToken, recipesController.update]);
+
+router.delete('/:id', [validateToken, recipesController.remove]);
 
 module.exports = router;

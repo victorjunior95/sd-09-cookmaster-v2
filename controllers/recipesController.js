@@ -57,9 +57,21 @@ const update = rescue(async (req, res, next) => {
   return res.status(200).json(recipe);
 });
 
+const remove = rescue(async (req, res, next) => {
+  const { userId, userRole } = req;
+  const { id } = req.params;
+
+  const userData = { userId, userRole };
+  
+  await recipesService.remove(id, userData);
+
+  return res.status(204).end();
+});
+
 module.exports = {
   add,
   getAll,
   getById,
   update,
+  remove,
 };
