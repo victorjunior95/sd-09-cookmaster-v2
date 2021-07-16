@@ -1,7 +1,6 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
-const usersModel = require('../models/usersModel');
 const recipeModel = require('../models/recipeModel');
 
 const secret = 'secret';
@@ -38,14 +37,16 @@ const recipeValidation = async (body) => {
   }
 };
 
+const underlineId = '_id';
+
 const createRecipe = async (body, user) => {
   const recipeToCreate = {
     recipe: {
       name: body.name,
       ingredients: body.ingredients,
       preparation: body.preparation,
-      userId: user._id,
-    }
+      userId: user[underlineId],
+    },
   };
   
   const createdRecipe = await recipeModel.createRecipe(recipeToCreate);

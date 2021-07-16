@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
@@ -23,7 +24,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     console.log(req.params.id);
-    callback(null, req.params.id + '.jpeg');
+    callback(null, `${req.params.id}.jpeg`);
   },
 });
 
@@ -67,7 +68,7 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const token = req.headers.authorization;
-  const body = req.body;
+  const { body } = req;
 
   if (!token) {
     return res.status(invalidTokenStatus).send({ message: 'missing auth token' });
@@ -99,10 +100,10 @@ router.get('/:id', async (req, res) => {
 
   if (recipeById) {
     return res.status(sucessAllRecipesStatus).json(recipeById);
-  };
+  }
 
   return res.status(failRecipeStatus).json({ 
-    message: 'recipe not found'
+    message: 'recipe not found',
   });
 });
 
@@ -121,7 +122,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const token = req.headers.authorization;
-  const body = req.body;
+  const { body } = req;
 
   const authorizatedToken = await recipesService.authToken(token);
 

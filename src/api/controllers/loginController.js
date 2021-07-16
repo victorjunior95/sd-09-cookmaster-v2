@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 const loginServices = require('../services/loginService');
@@ -13,9 +14,11 @@ router.post('/', async (req, res) => {
 
   if (validatedLoginInfos.isJoi) {
     return res.status(invalidStatus).send({
-      message: 'All fields must be filled'
+      message: 'All fields must be filled',
     });
-  } else if (validatedLoginInfos.message) {
+  }
+
+  if (validatedLoginInfos.message) {
     return res.status(invalidStatus).send(validatedLoginInfos);
   }
 
