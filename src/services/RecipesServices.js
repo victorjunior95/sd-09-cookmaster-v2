@@ -1,4 +1,5 @@
 // recipesService
+const myPath = require('path');
 const { ObjectID } = require('mongodb');
 const validators = require('./allValidators');
 const statusError = require('./allMessages');
@@ -89,6 +90,14 @@ async function recipeUpdateAddImage(recipeId, imagePath) {
   }
 }
 
+function recipeGetImagePath(idRecipe) {
+  try {
+    return myPath.resolve(__dirname, `../uploads/${idRecipe}.jpeg`);
+  } catch (error) {
+    return statusError.type7;
+  }
+}
+
 module.exports = {
   recipeVerifier,
   recipeAdd,
@@ -98,4 +107,5 @@ module.exports = {
   recipeUpdateOne,
   recipeDeleteOne,
   recipeUpdateAddImage,
+  recipeGetImagePath,
 };
