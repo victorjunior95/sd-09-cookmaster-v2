@@ -1,4 +1,5 @@
 const joi = require('joi');
+const { ObjectId } = require('mongodb');
 const RecipesModel = require('../models/recipesModel');
 const response = require('../middlewares/responseCodes');
 
@@ -32,8 +33,15 @@ const postRecipe = async (recipeInfo, userInfo) => {
 
 const getAllRecipes = async () => RecipesModel.getAllRecipes();
 
+const getRecipeById = async (recipeId) => {
+  if (!ObjectId.isValid(recipeId)) throw genError(response.NOT_FOUND, 'recipe not found');
+  const foundRecipe = await RecipesModel.getRecipeById(recipeId);
+  return foundRecipe;
+};
+
 module.exports = {
   postRecipe,
   validateRecipe,
   getAllRecipes,
+  getRecipeById,
 };
