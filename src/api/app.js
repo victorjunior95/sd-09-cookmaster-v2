@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const rescue = require('express-rescue');
+const path = require('path');
 const routerUser = require('../routers/user');
 const routerRecipes = require('../routers/recipes');
 const errorHandling = require('../middlewares/errorHandling');
 const loginController = require('../controllers/loginController');
-const recipesController = require('../controllers/recipesController');
+// const recipesController = require('../controllers/recipesController');
 
 const app = express();
 
@@ -13,7 +14,8 @@ app.use(bodyParser.json());
 
 app.use('/users', routerUser);
 app.post('/login', rescue(loginController.login));
-app.get('/images/:id', rescue(recipesController.getImage));
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+// app.get('/images/:id', rescue(recipesController.getImage));
 app.use('/recipes', routerRecipes);
 app.use(errorHandling);
 

@@ -21,10 +21,11 @@ const postImage = async (req, res) => {
 
 const getImage = async (req, res) => {
   const { id } = req.params;
-  const response = await recipesService.getImage(id);
+  const recipeId = id.split('.')[0];
+  const { image } = await recipesService.getById(recipeId);
   return res
     .status(200)
-    .json(response);
+    .json(image);
 };
 
 const getAll = async (_req, res) => {

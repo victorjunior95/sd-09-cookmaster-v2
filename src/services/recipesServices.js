@@ -30,6 +30,7 @@ const getById = async (id) => {
   if (!ObjectId.isValid(id)) throw validateError(404, recipeNotFound);
   const recipe = await recipesModel.getById(id);
   if (!recipe) throw validateError(404, recipeNotFound);
+  console.log(recipe);
   return recipe;
 };
 
@@ -55,10 +56,6 @@ const postImage = async (id, userId, image) => {
     return updatedRecipe;
   }
 };
-
-// const getImage = async (id) => {
-  
-// };
 
 module.exports = {
   create,
