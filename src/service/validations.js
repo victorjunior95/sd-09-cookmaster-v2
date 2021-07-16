@@ -43,7 +43,13 @@ const validateLogin = async (user) => {
   return { token };
 };
 
+const validateRecipe = (recipe) => {
+  const { name, ingredients, preparation } = recipe;
+  if (!name || !ingredients || !preparation) throw invalidEntriesError;
+};
+
 module.exports = {
   validateNewUser,
   validateLogin,
+  validateRecipe,
 };

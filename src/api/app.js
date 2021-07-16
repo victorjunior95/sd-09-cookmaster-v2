@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const usersRoute = require('../routes/usersRoute');
 const loginRoute = require('../routes/loginRoute');
+const recipesRoute = require('../routes/recipesRoute');
 
 const HTTP_STATUS_INTERNAL_SERVER_ERROR = 422;
 
@@ -13,6 +14,8 @@ app.use(bodyParser.json());
 app.use('/users', usersRoute);
 
 app.use('/login', loginRoute);
+
+app.use('/recipes', recipesRoute);
 
 app.use((err, _req, res, _next) => {
   if (err.err) return res.status(err.status).json({ message: err.err.message });

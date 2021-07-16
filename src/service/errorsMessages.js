@@ -1,5 +1,5 @@
 const HTTP_STATUS_BAD_REQUEST = 400;
-const HTTP_STATUS_BAD_UNAUTHORIZED = 401;
+const HTTP_STATUS_UNAUTHORIZED = 401;
 const HTTP_STATUS_CONFLICT = 409;
 
 const invalidEntriesError = {
@@ -17,16 +17,23 @@ const emailRegisteredError = {
 };
 
 const allFieldsError = {
-  status: HTTP_STATUS_BAD_UNAUTHORIZED,
+  status: HTTP_STATUS_UNAUTHORIZED,
   err: {
     message: 'All fields must be filled',
   },
 };
 
 const incorrectEmailOrPassword = {
-  status: HTTP_STATUS_BAD_UNAUTHORIZED,
+  status: HTTP_STATUS_UNAUTHORIZED,
   err: {
     message: 'Incorrect username or password',
+  },
+};
+
+const jwtMalformed = {
+  status: HTTP_STATUS_UNAUTHORIZED,
+  err: {
+    message: 'jwt malformed',
   },
 };
 
@@ -35,4 +42,5 @@ module.exports = {
   emailRegisteredError,
   allFieldsError,
   incorrectEmailOrPassword,
+  jwtMalformed,
 };
