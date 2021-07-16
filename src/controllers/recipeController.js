@@ -15,13 +15,24 @@ const createRecipe = [
   return res.status(httpStatus.CREATED).json(recipe);
 }];
 
-const getAllRecipes = async (req, res) => {
+const getAllRecipes = async (_req, res) => {
   const recipes = await recipeService.getAllRecipes();
 
   return res.status(httpStatus.OK).json(recipes);
 };
 
+const getRecipeById = async (req, res) => {
+  const { id } = req.params;
+  const recipe = await recipeService.getRecipeById(id);
+
+  if (recipe.message) {
+    return res.status(httpStatus.MOT_FOUND).json(recipe);
+  }
+  return res.status(httpStatus.OK).json(recipe);
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
+  getRecipeById,
 };
