@@ -20,7 +20,7 @@ const findById = async (id) => {
 
 const registerRecipe = async ({ name, ingredients, preparation, userId }) => {
   const insertResponse = await connection()
-  .then((db) => db.collection('recipes').insertOne({ name, ingredients, preparation }));
+  .then((db) => db.collection('recipes').insertOne({ name, ingredients, preparation, userId }));
   return {
     recipe: {
       _id: insertResponse.insertedId,
@@ -32,8 +32,18 @@ const registerRecipe = async ({ name, ingredients, preparation, userId }) => {
   };
 };
 
+const update = async ({ id, name, ingredients, preparation }) => {
+  if (!ObjectID.isValid(id)) throw validateError(100, 'Tomei no cu');
+  const { userId } = await findById(id);
+  await connection()
+  .then((db) => db.collection('recipes')
+  .update({ _id: new ObjectID(id) }, { $set: { name, ingredients, preparation } }));
+  return { _id: id, name, ingredients, preparation, userId };
+};
+
 module.exports = {
   listAllRecipes,
   registerRecipe,
   findById,
+  update,
 }; 

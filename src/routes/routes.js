@@ -17,6 +17,8 @@ router.get('/recipes', RecipeController.listRecipes);
 
 router.get('/recipes/:id', RecipeController.listOneRecipe);
 
+router.put('/recipes/:id', RecipeController.update);
+
 router.post('/recipes', validateRecipe, RecipeController.register);
 
 router.use(getError);

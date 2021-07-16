@@ -31,7 +31,7 @@ const login = async (req, res, next) => {
   try {
     const user = req.body;
     const userLogin = await UserService.loginUser(user);
-    const { _id, role, email } = userLogin;
+    const { _id, email, role } = userLogin;
     const payload = {
       id: _id,
       email,
