@@ -1,9 +1,13 @@
-const BAD_REQUEST = 400;
-const CONFLICT = 409;
+const OK = 200;
 const CREATED = 201;
+const BAD_REQUEST = 400;
+const UNAUTHORIZED = 401;
+const CONFLICT = 409;
 
 module.exports = {
-  BAD_REQUEST,
-  CONFLICT,
+  OK,
   CREATED,
+  BAD_REQUEST,
+  UNAUTHORIZED,
+  CONFLICT,
 };
