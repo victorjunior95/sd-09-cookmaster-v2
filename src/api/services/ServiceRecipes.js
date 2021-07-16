@@ -42,9 +42,9 @@ const editRecipe = async (id, token, { name, ingredients, preparation }) => {
   const { _id: userId } = validVerifyToken;
 
   const findRecipe = await ModelRecipes.getById(id);
-  const testando = await ModelUsers.getById(userId);
+  const user = await ModelUsers.getById(userId);
 
- if (testando.role !== 'admin' && findRecipe.userId !== userId) {
+ if (user.role !== 'admin' && findRecipe.userId !== userId) {
    throw invalidData('missing auth token', UNAUTHORIZED);
  }
 

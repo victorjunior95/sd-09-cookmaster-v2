@@ -26,13 +26,6 @@ const getAll = async () => {
   return getAllRecipes;
 };
 
-const findRecipeByUserId = async (userId) => {
-  const connect = await connection();
-  const findRecipe = await connect.collection('recipes').findOne({ userId });
-
-  return findRecipe;
-};
-
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
     return null;
@@ -71,5 +64,4 @@ module.exports = {
   getAll,
   getById,
   editRecipe,
-  findRecipeByUserId,
 };
