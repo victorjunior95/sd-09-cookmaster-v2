@@ -8,9 +8,9 @@ module.exports = async (body) => {
   if (validate.err) return validate;
 
   const findedUser = await users.findUserByEmail(email);
-  if (findedUser) return {
-    code: 'conflict', err: { message: 'Email already registered' }
-  };
+  if (findedUser) {
+    return { code: 'conflict', err: { message: 'Email already registered' } };
+  } 
 
   const data = await users.createUser(name, email, password);
 

@@ -4,9 +4,8 @@ const verifyUpdateRecipe = require('../services/verifyUpdateRecipe');
 module.exports = async (req, res, _next) => { 
   try {
     const { id } = req.params; 
-    // eslint-disable-next-line no-underscore-dangle
-    const userId = req.user._id;
-    const data = await verifyUpdateRecipe(id, userId, req.body);
+    // const userId = req.user._id;
+    const data = await verifyUpdateRecipe(id, req.user, req.body);
 
     return res.status(status.ok).json(data);
   } catch (error) {
