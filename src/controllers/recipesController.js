@@ -14,7 +14,14 @@ const getAllRecipes = async (_req, res, _next) => {
   res.status(HTTP_STATUS_OK).json(result);
 };
 
+const findOneRecipe = async (req, res, _next) => {
+  const { id } = req.params;
+  const result = await recipesService.findOneRecipe(id);
+  res.status(HTTP_STATUS_OK).json(result);
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
+  findOneRecipe,
 };

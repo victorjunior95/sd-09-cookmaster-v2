@@ -8,5 +8,6 @@ const recipesRoute = express.Router();
 
 recipesRoute.post('/', rescue(validateToken), rescue(recipesController.createRecipe));
 recipesRoute.get('/', rescue(recipesController.getAllRecipes));
+recipesRoute.get('/:id', rescue(recipesController.findOneRecipe));
 
 module.exports = recipesRoute;

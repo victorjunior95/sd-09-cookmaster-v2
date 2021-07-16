@@ -1,5 +1,6 @@
 const HTTP_STATUS_BAD_REQUEST = 400;
 const HTTP_STATUS_UNAUTHORIZED = 401;
+const HTTP_STATUS_NOT_FOUND = 404;
 const HTTP_STATUS_CONFLICT = 409;
 
 const invalidEntriesError = {
@@ -37,10 +38,18 @@ const jwtMalformed = {
   },
 };
 
+const recipeNotFound = {
+  status: HTTP_STATUS_NOT_FOUND,
+  err: {
+    message: 'recipe not found',
+  },
+};
+
 module.exports = {
   invalidEntriesError,
   emailRegisteredError,
   allFieldsError,
   incorrectEmailOrPassword,
   jwtMalformed,
+  recipeNotFound,
 };

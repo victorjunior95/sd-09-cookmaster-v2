@@ -19,7 +19,6 @@ const findUserById = async (id) => {
   if (!ObjectId(id)) return null;
   const db = await connection();
   const result = await db.collection('users').findOne(ObjectId(id));
-
   return result;
 };
 
