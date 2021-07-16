@@ -8,14 +8,14 @@ class User {
     this.password = user.password;
   }
 
-  getByEmail(email) {
+  getByEmail() {
     return connection()
       .then((db) => db.collection(this.collection))
-      .then((collection) => collection.findOne({ email }));
+      .then((collection) => collection.findOne({ email: this.email }));
   }
 
   async create() {
-    const existingUser = await this.getByEmail(this.email);
+    const existingUser = await this.getByEmail();
 
     if (existingUser) return null;
 
