@@ -15,7 +15,17 @@ const validateUser = (req, _res, next) => {
   next();
 };
 
+const validateLogin = (req, _res, next) => {
+  const { error } = Joi.object({
+    email: Joi.string().email().required().error(new Error('All fields must be filled')),
+    password: Joi.string().min(6).required().error(new Error('All fields must be filled')),
+  }).validate(req.body);
+  if (error) return next(validateError(401, error.message));
+  next();
+};
+
 module.exports = {
   validateError,
   validateUser,
+  validateLogin,
 };

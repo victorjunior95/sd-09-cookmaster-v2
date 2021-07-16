@@ -14,7 +14,17 @@ const registerUser = async (user) => {
   return newUser;
 };
 
+const loginUser = async (user) => {
+  const { email, password } = user;
+  const findEmail = await UserModel.findByEmail(email);
+  if (findEmail && password === findEmail.password) {
+    return findEmail;
+  }
+  throw validateError(401, 'Incorrect username or password');
+};
+
 module.exports = {
   listAllUsers,
   registerUser,
+  loginUser,
 };
