@@ -5,7 +5,7 @@ const postUserController = async (req, res) => {
 
   const request = await userServices.postUserServices(body);
 
-  res.status(request.status).json(request.response);
+  return res.status(request.status).json(request.response);
 };
 
 const loginController = async (req, res) => {
@@ -13,7 +13,7 @@ const loginController = async (req, res) => {
   
   const request = await userServices.loginService(body);
 
-  res.status(request.status).json(request.response);
+  return res.status(request.status).json(request.response);
 };
 
 module.exports = {

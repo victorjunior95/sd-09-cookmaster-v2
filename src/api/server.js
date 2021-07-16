@@ -9,10 +9,10 @@ app.use(bodyParser.json());
 
 // create user
 
-app.post('/users', findUser, userController.postUserController);
+app.post('/users', findUser.findUser, userController.postUserController);
 
 // login
 
-app.post('/login', userController.loginController);
+app.post('/login', findUser.checkUser, userController.loginController);
 
 app.listen(PORT, () => console.log(`conectado na porta ${PORT}`));

@@ -19,14 +19,11 @@ const postUserServices = async (data) => {
 const loginService = async (data) => {
   const { email, password } = data;
   const findUserByEmail = await userModels.findUserByEmail(email);
-  
-  if (!email) return errors.emptyFieldsErr;
 
-  if (!password) return errors.emptyFieldsErr;
+  if (!email || !password) return errors.emptyFieldsErr;
 
-  if (!emailRegex.test(email)) return errors.incorrectField;
-
-  if (password !== findUserByEmail.password) return errors.incorrectField;
+  if (password !== findUserByEmail.password 
+    || !emailRegex.test(email)) return errors.incorrectField;
 
   return { response: await userModels.loginModel(data), status: 200 };
 };
