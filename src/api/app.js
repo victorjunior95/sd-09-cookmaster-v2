@@ -1,6 +1,18 @@
+require('dotenv').config();
+
 const express = require('express');
+const bodyParser = require('body-parser');
+
+const routes = require('./routes');
+const { errorTreatment } = require('./middlewares');
 
 const app = express();
+
+app.use(bodyParser.json());
+
+app.use('/', routes);
+
+app.use(errorTreatment);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
