@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const errorMiddleware = require('./middlewares/error');
 require('dotenv').config();
+const users = require('./routes/users');
+const recipes = require('./routes/recipes');
 const { login } = require('./controllers/users');
 
 const app = express();
@@ -12,7 +14,9 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.use('/users', require('./routes/users'));
+app.use('/users', users);
+
+app.use('/recipes', recipes);
 
 app.post('/login', login);
 
