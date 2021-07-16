@@ -8,7 +8,17 @@ class User {
     this.password = user.password;
   }
 
-  create() {
+  getByEmail(email) {
+    return connection()
+      .then((db) => db.collection(this.collection))
+      .then((collection) => collection.findOne({ email }));
+  }
+
+  async create() {
+    const existingUser = await this.getByEmail(this.email);
+
+    if (existingUser) return null;
+
     const { collection, ...user } = this;
 
     return connection()
