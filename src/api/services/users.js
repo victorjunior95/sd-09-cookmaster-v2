@@ -1,4 +1,10 @@
+const SECRET = 'mysohiddensecret';
+const JWT_CONFIG = {
+  expiresIn: '15m',
+  algorithm: 'HS256',
+};
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 const model = require('../models/users');
 
 const UserSchema = Joi.object({
@@ -9,6 +15,11 @@ const UserSchema = Joi.object({
   role: Joi.string(),
 });
 
+const LoginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+});
+
 const create = async (user) => {
   const { error } = UserSchema.validate(user, { convert: false });
   if (error) {
@@ -16,8 +27,28 @@ const create = async (user) => {
   }
   const usedEmail = await model.findByEmail(user.email);
   if (usedEmail) return { err: { code: 'existing_email', message: 'Email already registered' } };
-  const newUser = await model.create(user);
-  return newUser.ops[0];
+  const { insertedId } = await model.create(user);
+  return insertedId;
 };
 
-module.exports = { create };
+const login = async ({ email, password }) => {
+  if (!email || !password) {
+    return { err: { code: 'unauthorized', message: 'All fields must be filled' } };
+  }
+  const { error } = LoginSchema.validate({ email, password });
+  const user = await model.loginMatch({ email, password });
+  if (error || !user) {
+    return { err: { code: 'unauthorized', message: 'Incorrect username or password' } };
+  }
+  const { _id, role } = user;
+  const token = jwt.sign(
+    {
+      data: { id: _id, email, role },
+    },
+  SECRET,
+  JWT_CONFIG,
+  );
+  return token;
+};
+
+module.exports = { create, login };

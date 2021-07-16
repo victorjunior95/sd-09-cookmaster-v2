@@ -23,4 +23,13 @@ const findByEmail = async (email) => (
     )
 );
 
-module.exports = { create, findByEmail };
+const loginMatch = async ({ email, password }) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('users')
+          .findOne({ email, password }),
+    )
+);
+
+module.exports = { create, findByEmail, loginMatch };
