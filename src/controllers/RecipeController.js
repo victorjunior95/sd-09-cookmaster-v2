@@ -1,5 +1,5 @@
 const RecipeService = require('../services/RecipeService');
-const { CREATED_STATUS, OK_STATUS } = require('../helpers/httpStatus');
+const { CREATED_STATUS, OK_STATUS, NO_CONTENT } = require('../helpers/httpStatus');
 
 const create = async (req, res) => {
   const recipeInfo = req.body;
@@ -35,9 +35,19 @@ const update = async (req, res) => {
     : res.status(OK_STATUS).json(updatedRecipe);
 };
 
+const remove = async (req, res) => {
+  const { id } = req.params;
+  const removedRecipe = await RecipeService.remove(id);
+
+  return removedRecipe.error
+  ? res.status(removedRecipe.status).json(removedRecipe.error)
+  : res.status(NO_CONTENT).json();
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  remove,
 };

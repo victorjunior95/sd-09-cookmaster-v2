@@ -30,9 +30,18 @@ const update = async (id, recipeNewInfo) => {
     : updatedRecipe;
 };
 
+const remove = async (id) => {
+  const removedRecipe = await RecipeModel.remove(id);
+
+  return !removedRecipe
+  ? error.RECIPE_NOT_FOUND
+  : removedRecipe;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  remove,
 };
