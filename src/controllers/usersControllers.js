@@ -1,6 +1,5 @@
 const usersServices = require('../services/usersServices');
 
-
 const createUser = async (req, res) => {
   const CONFLICT = 409;
   const CREATED = 201;
@@ -8,7 +7,7 @@ const createUser = async (req, res) => {
 
   const newUser = await usersServices.createUser(name, email, password);
 
-  if (newUser.message) return res.status(CONFLICT).json(newUser)
+  if (newUser.message) return res.status(CONFLICT).json(newUser);
 
   return res.status(CREATED).json(newUser);
 };

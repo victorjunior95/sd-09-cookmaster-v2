@@ -6,12 +6,11 @@ const createUser = async (name, email, password) => connection()
 
 const getAllUsers = async () => connection()
   .then((db) => db.collection('users').find().toArray())
-  .then(users => users.map(({ _id, name, email }) => ({ _id, name, email })));
+  .then((users) => users.map(({ _id, name, email }) => ({ _id, name, email })));
 
 const getByEmail = async ({ email }) => connection()
   .then((db) => db.collection('users').findOne({ email }))
-  .then(user => user);
-
+  .then((user) => (user));
 
 module.exports = {
   createUser,

@@ -1,4 +1,5 @@
 const Joi = require('joi');
+
 const MESSAGE_ERROR = 'Invalid entries. Try again.';
 
 const schema = Joi.object({
