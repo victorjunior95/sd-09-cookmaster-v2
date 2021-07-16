@@ -11,7 +11,7 @@ router.post('/', Validation.token, Validation.createRecipe, async (req, res, nex
     const { user } = req;
     const { name, ingredients, preparation } = req.body;
     const created = await RecipeService.create(user, name, ingredients, preparation);
-    return res.status(StatusCode.create).json({ recipe: created });
+    return res.status(StatusCode.created).json({ recipe: created });
   } catch (err) {
     next(err);
   }
