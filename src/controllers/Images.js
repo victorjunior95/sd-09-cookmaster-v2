@@ -1,4 +1,5 @@
 const { Router } = require('express');
+
 const OK = '200';
 
 const imagesController = Router();

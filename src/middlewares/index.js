@@ -3,6 +3,7 @@
 const { string } = require('joi');
 const { findEmail } = require('../models/Users');
 const { validateToken } = require('../services/tokenValidate');
+
 const msgMissingToken = 'missing auth token';
 const msgJWTMalformed = 'jwt malformed';
 
@@ -61,7 +62,6 @@ const checkToken = (req, res, next) => {
   if (!validateToken(token)) {
     res.status(Unauthorized).json({ message: msgJWTMalformed });
   }
-
 };
 
 module.exports = {
