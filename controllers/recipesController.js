@@ -1,7 +1,7 @@
 const rescue = require('express-rescue');
 const recipesService = require('../services/recipesServices');
 
-const addRecipe = rescue(async (req, res, next) => {
+const addRecipe = rescue(async (req, res) => {
   const { userId } = req;
   const { name, ingredients, preparation } = req.body;
 
