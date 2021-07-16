@@ -38,13 +38,14 @@ const token = async (req, res, next) => {
 
   if (!reqToken) throw new Errors.InvalidTokenError();
 
-  const { email } = Auth.validateToken(reqToken);
-
-  const { password, ...user } = await UserModel.findByEmail(email);
-
-  req.user = user;
-  
-  next();
+  try {
+    const decoded = Auth.validateToken(reqToken);
+    const { password, ...user } = await UserModel.findByEmail(decoded.email);
+    req.user = user;
+    next();
+  } catch (err) {
+    next(new Errors.InvalidTokenError());
+  }
 };
 
 module.exports = {
