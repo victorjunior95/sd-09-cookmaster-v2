@@ -23,14 +23,24 @@ const login = (req, res, next) => {
   next();
 };
 
-const token = (req, res, next) => {
+const createRecipe = (req, res, next) => {
+  const { name, ingredients, preparation } = req.body;
+
+  const { error } = Schemas.createRecipe.validate({ name, ingredients, preparation });
+
+  if (error) throw new Errors.InvalidRecipeFormError();
+
+  next();
+};
+
+const token = async (req, res, next) => {
   const reqToken = req.headers.authorization;
 
   if (!reqToken) throw new Errors.InvalidTokenError();
 
   const { email } = Auth.validateToken(reqToken);
 
-  const { password, ...user } = UserModel.findByEmail(email);
+  const { password, ...user } = await UserModel.findByEmail(email);
 
   req.user = user;
   
@@ -41,4 +51,5 @@ module.exports = {
   createUser,
   login,
   token,
+  createRecipe,
 };
