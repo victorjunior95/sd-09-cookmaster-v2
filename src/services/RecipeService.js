@@ -26,10 +26,16 @@ const updateRecipe = async (id, body, userId) => {
   return recipe;
 };
 
+const deleteRecipe = async (id) => {
+  const deleted = await RecipeModel.deleteRecipe(id);
+  return deleted;
+};
+
 module.exports = {
   createRecipe,
   findUserByEmail,
   getRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };

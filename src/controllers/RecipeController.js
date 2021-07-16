@@ -9,8 +9,6 @@ function getUserIdFromToken(token) {
 const createRecipe = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
   const { authorization } = req.headers;
-  // const { user } = req;
-
   const userId = getUserIdFromToken(authorization);
 
   const { _id } = await RecipeService.createRecipe(name, ingredients, preparation, userId);
@@ -20,11 +18,13 @@ const createRecipe = async (req, res) => {
 
 const getRecipes = async (_req, res) => {
   const recipes = await RecipeService.getRecipes();
+
   return res.status(200).json(recipes);
 };
 
 const getRecipeById = async (req, res) => {
   const { id } = req.params;
+
   const recipe = await RecipeService.getRecipeById(id);
 
   if (recipe === null) return res.status(404).json({ message: 'recipe not found' });
@@ -44,9 +44,20 @@ const updateRecipe = async (req, res) => {
   return res.status(200).json({ _id: id, ...body, userId });
 };
 
+const deleteRecipe = async (req, res) => {
+  const { id } = req.params;
+
+  const deleted = await RecipeService.deleteRecipe(id);
+
+  if (deleted === null) return res.status(404).json({ message: 'recipe not found' });
+  console.log(deleted);
+  return res.status(204).send('');
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };

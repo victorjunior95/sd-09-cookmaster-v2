@@ -36,4 +36,8 @@ app.put('/recipes/:id',
   middlewares.validateJWT, 
   RecipeController.updateRecipe);
 
+app.delete('/recipes/:id',
+  middlewares.validateJWT,
+  RecipeController.deleteRecipe);
+
 module.exports = app;
