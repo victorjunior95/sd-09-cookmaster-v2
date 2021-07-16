@@ -83,7 +83,7 @@ const recipeWithoutPreparation = {
   ingredients: "Segredo de Odin"
 };
 
-describe('POST /recipes', () => {
+describe.only('POST /recipes', () => {
 
   describe('Tenta adicionar receita sem o campo name', () => {
 
@@ -572,7 +572,7 @@ describe('GET /recipes/:id', () => {
   });
 
 });
-/*
+
 describe('PUT /recipes/:id', () => {
 
   describe('Tenta editar uma receita sem autenticacao', () => {
@@ -1184,4 +1184,3 @@ describe('PUT /recipes/:id/image', () => {
   });
 
 });
-*/
