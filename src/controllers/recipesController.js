@@ -19,6 +19,14 @@ const postImage = async (req, res) => {
     .json(response);
 };
 
+const getImage = async (req, res) => {
+  const { id } = req.params;
+  const response = await recipesService.getImage(id);
+  return res
+    .status(200)
+    .json(response);
+};
+
 const getAll = async (_req, res) => {
   const response = await recipesService.getAll();
   return res
@@ -67,4 +75,5 @@ module.exports = {
   updateById,
   deleteById,
   postImage,
+  getImage,
 };

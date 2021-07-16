@@ -10,13 +10,16 @@ module.exports = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, secret);
-    if (decoded.data.role === 'admin' && await userModel.getByEmail(decoded.data.email)) {
+    const exists = await userModel.getByEmail(decoded.data.email);
+    if (decoded.data.role === 'admin' && exists) {
+      console.log('deu bom');
       req.userId = decoded.data.role;
-      next();
-      return null;
+      return next();
     }
+    console.log('nao due');
     return res.status(403).json({ message: 'Only admins can register new admins' });
   } catch (err) {
+    console.log('sou admin');
     return res.status(401).json({ message: err.message });
   }
 };

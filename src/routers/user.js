@@ -1,6 +1,6 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const validateAdmin = require('../api/auth/validateJWT');
+const validateAdmin = require('../api/auth/validateAdmin');
 
 const router = express.Router();
 

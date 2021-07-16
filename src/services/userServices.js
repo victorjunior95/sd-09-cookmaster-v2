@@ -20,7 +20,6 @@ const create = async ({ name, email, password, role }) => {
   if (error) throw validateError(400, 'Invalid entries. Try again.');
   const userByEmail = await userModel.getByEmail(email);
   if (userByEmail.length > 0) throw validateError(409, 'Email already registered');
-
   const idObject = await userModel.create({ name, email, password, role });
   return idObject;
 };

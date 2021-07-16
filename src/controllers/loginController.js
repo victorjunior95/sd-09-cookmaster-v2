@@ -11,6 +11,7 @@ const login = async (req, res) => {
   };
   const { _id, role } = await userServices.login({ email, password });
   const token = jwt.sign({ data: { id: _id, email, role } }, secret, jwtConfig);
+  console.log(token);
   return res
     .status(200)
     .json({ token });
