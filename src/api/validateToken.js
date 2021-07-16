@@ -17,6 +17,8 @@ const validateToken = async (req, res, next) => {
     const result = await findUserById(id);
   
     if (!result) throw jwtMalformed;
+
+    req.body.userId = id;
   
     next();
   } catch (error) {
