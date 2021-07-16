@@ -5,6 +5,8 @@ const path = require('path');
 
 const usersRouter = require('../routes/usersRouter');
 const recipesRouter = require('../routes/recipesRouter');
+const imagesRouter = require('../routes/imagesRouter');
+const errorMiddleware = require('../middlewares/error');
 
 const app = express();
 
@@ -19,9 +21,8 @@ app.get('/', (request, response) => {
 
 app.use('/', usersRouter);
 app.use('/recipes', recipesRouter);
+app.use('/images', imagesRouter);
 
-app.use((err, _req, res, _next) => {
-  res.status(500).json({ message: err.message });
-}); // middleware error
+app.use(errorMiddleware);
 
 module.exports = app;

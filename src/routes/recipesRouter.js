@@ -11,6 +11,7 @@ const {
   getRecipeByIdController,
   updateRecipeByIdController,
   deleteRecipeByIdController,
+  addImageToRecipeController,
 } = require('../controllers/recipesController');
 
 recipesRouter.post('/', [
@@ -28,6 +29,12 @@ recipesRouter.delete('/:id', [
   validateJWT,
   validateUser,
   deleteRecipeByIdController,
+]);
+
+recipesRouter.put('/:id/image', [
+  validateJWT,
+  validateUser,
+  addImageToRecipeController,
 ]);
 
 module.exports = recipesRouter;

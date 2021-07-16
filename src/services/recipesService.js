@@ -10,6 +10,7 @@ const {
 
 const errorInvalidEntries = { message: 'Invalid entries. Try again.' };
 const errorRecipeNotFound = { message: 'recipe not found' };
+const errorPictureNotFound = { message: 'picture not found' };
 
 // Validacoes
 
@@ -30,7 +31,7 @@ const registerRecipeService = async (recipe) => {
     return { code: 400, response: errorInvalidEntries };
   }
   const registeredRecipe = await registerRecipe(recipe);
-  return { code: 200, response: registeredRecipe };
+  return { code: 201, response: registeredRecipe };
 };
 
 const getAllRecipesService = async () => {
@@ -64,10 +65,29 @@ const deleteRecipeByIdService = async (id) => {
   return { code: 204, response: '' };
 };
 
+const addImageToRecipeService = async (id, filePath) => {
+  const recipe = await getRecipeById(id);
+  await updateRecipeById(id, { image: filePath });
+  const recipeWithFilePath = { ...recipe, image: filePath };
+  return { code: 200, response: recipeWithFilePath };
+};
+
+const getImageService = async (id) => {
+  const [idWithoutExtension] = id.split('.');
+  const recipe = await getRecipeById(idWithoutExtension);
+  if (!recipe) {
+    return { code: 404, response: errorPictureNotFound };
+  }
+  const { image } = recipe;
+  return { code: 200, response: image };
+};
+
 module.exports = {
   registerRecipeService,
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
   deleteRecipeByIdService,
+  addImageToRecipeService,
+  getImageService,
 };
