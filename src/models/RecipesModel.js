@@ -30,9 +30,17 @@ const updateOneRecipe = async (id, name, ingredients, preparation) => {
   return recipe;
 };
 
+const deleteOneRecipe = async (recipeObject) => {
+  const recipe = await findOneRecipe(recipeObject);
+  if (!recipe) return { error: 'recipe not found' };
+  await connection().then((db) => db.collection('recipes').deleteOne(recipeObject));
+  return { success: 'recipe deleted' };
+};
+
 module.exports = {
   addRecipe,
   findAllRecipes,
   findOneRecipe,
   updateOneRecipe,
+  deleteOneRecipe,
 };

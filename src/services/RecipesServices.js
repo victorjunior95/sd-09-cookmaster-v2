@@ -67,6 +67,17 @@ async function recipeUpdateOne(id, name, ingredients, preparation) {
   }
 }
 
+async function recipeDeleteOne(recipeId) {
+  try {
+    const idParsed = ObjectID(recipeId);
+    const data = await RecipesModel.deleteOneRecipe({ _id: idParsed });
+    if (data.error) throw statusError.type7;
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 module.exports = {
   recipeVerifier,
   recipeAdd,
@@ -74,4 +85,5 @@ module.exports = {
   recipesGetOne,
   recipeVerifierUser,
   recipeUpdateOne,
+  recipeDeleteOne,
 };

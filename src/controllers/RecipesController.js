@@ -11,9 +11,13 @@ recipesRouter.post('/',
   mdw.mdwRecipes.newRecipeValidator,
   mdw.mdwRecipes.newRecipeAdd);
 
-  recipesRouter.put('/:idRecipe',
+recipesRouter.put('/:idRecipe',
   mdw.mdwLogin.loginTokenValidator,
   mdw.mdwRecipes.newRecipeValidator,
   mdw.mdwRecipes.recipeValidatorUserWillUpdate);
+
+recipesRouter.delete('/:id',
+  mdw.mdwLogin.loginTokenValidator,
+  mdw.mdwRecipes.recipeDelete);
 
 module.exports = recipesRouter;
