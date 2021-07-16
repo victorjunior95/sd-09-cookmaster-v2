@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const status = require('../status/httpCodes');
 const userModel = require('../models/userModel');
-const recipeModel = require('../models/recipeModel');
 
 const secret = 'parangaricutirimirruaro';
 
@@ -33,18 +32,13 @@ const validToken = async (req, res, next) => {
 
 const recipeValidation = async (req, res, next) => {
   const token = req.headers.authorization;
-  const { id } = req.params;
   if (!token) {
     return res.status(status.UNAUTHORIZED).json({ message: status.MISSING });
   }
   try {
     const decoded = jwt.verify(token, secret);
-    const user = await userModel.findUserByEmail(decoded.data);
-    const recipe = await recipeModel.getRecipeById(id);
-    if (!user._id === recipe.userId || !user.role === 'admin') {
-      return res.status(status.UNAUTHORIZED).json({ message: status.MALFORMED });
-    }
-    req.user = user;
+    req.userId = decoded.id;
+    req.userRole = decoded.role;
   } catch (err) {
     console.log(err);
     return res.status(status.UNAUTHORIZED).json({ message: status.MALFORMED });

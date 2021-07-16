@@ -42,9 +42,11 @@ const getRecipeById = async (req, res) => {
 const updateRecipe = async (req, res) => {
   try {
     const entries = req.body;
-    const userId = req.user._id;
+    const { userId, userRole } = req;
+    const data = { userId, userRole };
+
     const { id } = req.params;
-    const result = await recipeModel.updateRecipe(id, entries, userId);
+    const result = await recipeModel.updateRecipe(id, entries, data);
 
     return res.status(status.OK).json(result);
   } catch (err) {
