@@ -26,9 +26,9 @@ const getAll = async () => {
 
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) throw validateError(404, 'recipe not found');
-  const product = await recipesModel.getById(id);
-  if (!product) throw validateError(404, 'recipe not found');
-  return product;
+  const recipe = await recipesModel.getById(id);
+  if (!recipe) throw validateError(404, 'recipe not found');
+  return recipe;
 };
 
 const updateById = async (id, name, ingredients, preparation) => {
@@ -36,9 +36,18 @@ const updateById = async (id, name, ingredients, preparation) => {
   return recipe;
 };
 
+const deleteById = async (id, userId) => {
+  if (!ObjectId.isValid(id)) throw validateError(404, 'recipe not found');
+  const recipe = await recipesModel.getById(id);
+  if (!recipe) throw validateError(404, 'recipe not found');
+  if (recipe.userId === userId) await recipesModel.deleteById(id);
+  return true;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
+  deleteById,
 };
