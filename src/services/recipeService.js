@@ -20,8 +20,12 @@ const getRecipeById = async (id) => {
 
 const updateRecipe = async (productData) => {
   const updatedRecipe = await recipeModel.updateRecipe(productData);
-  console.log(updatedRecipe);
   return updatedRecipe;
+};
+
+const deleteRecipe = async (id) => {
+  const deletedRecipe = await recipeModel.deleteRecipe(id);
+  return deletedRecipe;
 };
 
 module.exports = {
@@ -29,4 +33,5 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };

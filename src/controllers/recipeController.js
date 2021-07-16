@@ -44,9 +44,21 @@ const updateRecipe = [
   },
 ];
 
+const deleteRecipe = [
+  middlewares.validateToken,
+  async (req, res) => {
+    const { id } = req.params;
+    const deletedRecipe = await recipeService.deleteRecipe(id);
+    if (deletedRecipe) {
+      return res.status(httpStatus.NO_CONTENT).json();
+    }
+  },
+];
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };
