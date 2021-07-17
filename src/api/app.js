@@ -15,12 +15,13 @@ app.get('/', (_request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.get('/recipes', controllers.getRecipesAllController);
+app.get('/recipes', rescue(controllers.getRecipesAllController));
+app.get('/recipes/:id', rescue(controllers.getRecipeByIdController));
 
 app.post('/users', rescue(controllers.createUserController));
 app.post('/login', rescue(controllers.loginController));
 app.post('/recipes', rescue(controllers.createRecipeController));
 
-app.use(middlewares.createErrorToken, middlewares.createErrorData, middlewares.errorResponse);
+app.use(middlewares);
 
 module.exports = app;
