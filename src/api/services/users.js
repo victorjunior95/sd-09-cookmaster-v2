@@ -5,6 +5,6 @@ const create = (userInfo) => users.create(userInfo)
   .then(({ password, ...user }) => ({ status: 201, user }));
 
 const login = ({ email }) => generateToken(email)
-  .then((token) => ({ status: 200, token }));
+  .then(({ token }) => ({ status: 200, token }));
 
 module.exports = { create, login };
