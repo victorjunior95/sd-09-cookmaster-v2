@@ -12,4 +12,7 @@ recipesController.createRecipes);
 router.get('/recipes', 
 recipesController.getAllRecipes);
 
+router.get('/recipes/:id', 
+recipesController.getByRecipes);
+
 module.exports = router;

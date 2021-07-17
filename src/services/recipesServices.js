@@ -18,7 +18,13 @@ const getAllRecipes = async () => {
   return result;
 };
 
+const getByRecipes = async (id) => {
+  const result = await recipesModels.getByRecipes(id);
+  return result;
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
+  getByRecipes,
 };
