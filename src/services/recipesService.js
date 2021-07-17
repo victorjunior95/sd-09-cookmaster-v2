@@ -1,4 +1,4 @@
-const path = require('path');
+// const path = require('path');
 
 const { ObjectId } = require('mongodb');
 const recipesModel = require('../models/recipesModel');
@@ -48,8 +48,8 @@ const exclude = async (id) => {
 };
 
 const addImage = async (id, nameImage) => {
-  const pathImage = (path.join(__dirname, '..', 'uploads')).split('/').splice(8, 10);
-  const urlImage = `localhost:3000/${pathImage[0]}/${pathImage[1]}/${nameImage}`;
+  // const pathImage = (path.join(__dirname, '..', 'uploads')).split('/').splice(8, 10);
+  const urlImage = `localhost:3000/src/uploads/${nameImage}`;
   const response = await recipesModel.addImage(id, urlImage);
   return response;
 };
