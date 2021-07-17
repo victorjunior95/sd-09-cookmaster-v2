@@ -20,10 +20,8 @@ const create = async (recipe) => {
   };
 };
 
-const getAll = () => {
-  return connection()
+const getAll = () => connection()
     .then((db) => db.collection('recipes').find().toArray());
-};
 
 const getById = (id) => {
   if (!ObjectID.isValid(id)) {

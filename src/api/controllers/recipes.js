@@ -15,13 +15,26 @@ const create = async (req, res, next) => {
   }
 };
 
-const getAll = async (req, res, _next) => {
+const getAll = async (_req, res, _next) => {
   const recipes = await recipesServices.getAll();
 
   return res.status(OK_STATUS).json(recipes);
 };
 
+const getById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const recipe = await recipesServices.getById(id);
+
+    return res.status(OK_STATUS).json(recipe);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
