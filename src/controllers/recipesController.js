@@ -18,8 +18,17 @@ const create = async (req, res) => {
   return res.status(200).json(result);
  };
 
+ const update = async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { name, ingredients, preparation } = req.body;
+  const result = await recipes.update({ name, ingredients, preparation }, token, id);
+  return res.status(200).json(result);
+ };
+
 module.exports = {
   create,
   findAll,
   findById,
+  update,
 };

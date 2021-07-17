@@ -11,6 +11,11 @@ const generateToken = (userData) => {
 };
 
 const verifyToken = (token) => {
+  if (!token) {
+    const err = { status: 401, message: 'missing auth token' };
+    throw err;
+  }
+
   try {
     const userData = jwt.verify(token, SECRET);
     const { _id } = userData;

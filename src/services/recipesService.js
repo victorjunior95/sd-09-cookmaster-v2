@@ -20,8 +20,16 @@ const findById = async (id) => {
   return result;
 };
 
+const update = async (recipe, token, id) => {
+  validate.fields(recipe);
+  verifyToken(token);
+  const result = await recipes.update(recipe, id);
+  return result;
+};
+
 module.exports = {
   create,
   findAll,
   findById,
+  update,
 };
