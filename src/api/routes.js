@@ -14,5 +14,6 @@ router.use('/login', validateLogin, createToken, usersControllers.login);
 router.post('/users', validateUser, usersControllers.createUser);
 router.post('/recipes', validateRecipe, validateToken, recipesControllers.createRecipes);
 router.get('/recipes', recipesControllers.getAllRecipes);
+router.get('/recipes/:id', recipesControllers.getRecipeById);
 
 module.exports = router;
