@@ -8,20 +8,12 @@ const create = async (name, email, password) => {
   return newUser.ops[0];
 };
 
-const findEmail = async (email) => {
-  const emailUser = await connection().then((db) =>
-    db.collection(collectionUsers).findOne({ email }));
-  if (!emailUser) return false;
-  return true;
-};
-
-const findUser = async (email, password) => {
+const findUser = async (email) => {
   const user = await connection().then((db) =>
-  db.collection(collectionUsers).findOne({ email, password }));
+  db.collection(collectionUsers).findOne({ email }));
     return user;
 };
 module.exports = {
   create,
-  findEmail,
   findUser,
 };

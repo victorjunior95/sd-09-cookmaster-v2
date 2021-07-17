@@ -40,7 +40,7 @@ const create = async ({ name, email, password }) => {
       status: HTTP_BADREQ_STATUS, err: 'Invalid entries. Try again.',
   };
 }
-  const existsUser = await usersModel.findEmail(email);
+  const existsUser = await usersModel.findUser(email);
   if (existsUser) {
     return {
       status: HTTP_CONFLIT_STATUS, err: 'Email already registered',
@@ -61,8 +61,8 @@ const findUserCreateToken = async (email, password) => {
       err: 'All fields must be filled',
     };
   }
-  const user = await usersModel.findUser(email, password);
-  if (!user) {
+  const user = await usersModel.findUser(email);
+  if (!user || user.password !== password) {
     return {
       status: HTTP_UNAUTHORIZED_STATUS,
       err: 'Incorrect username or password',
