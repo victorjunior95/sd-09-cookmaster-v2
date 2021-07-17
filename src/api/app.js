@@ -14,8 +14,10 @@ app.post('/recipes', recipeController.createRecipe);
 
 app.get('/recipes', recipeController.getAllRecipes);
 app.get('/recipes/:id', recipeController.getRecipeById);
+app.get('/images/:id', recipeController.getRecipeImage);
 
 app.put('/recipes/:id', recipeController.updateRecipe);
+app.put('/recipes/:id/image/', recipeController.updateRecipeImage);
 
 app.delete('/recipes/:id', recipeController.deleteRecipe);
 

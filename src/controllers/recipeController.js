@@ -1,6 +1,8 @@
+const path = require('path');
 const middlewares = require('../middlewares');
 const recipeService = require('../services/recipeService');
 const httpStatus = require('./httpStatus');
+const upload = require('../middlewares/upload');
 
 const createRecipe = [
   middlewares.validateToken,
@@ -55,10 +57,35 @@ const deleteRecipe = [
   },
 ];
 
+const updateRecipeImage = [
+  upload.single('image'),
+  middlewares.validateToken,
+  async (req, res) => {
+    const { filename } = req.file;
+    const { id } = req.params;
+    await recipeService.updateRecipeImage(id, filename);
+    const updatedRecipe = await recipeService.getRecipeById(id);
+    return res.status(httpStatus.OK).json(updatedRecipe);
+  },
+];
+
+const getRecipeImage = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const imageId = `localhost:3000/src/uploads/${id}`; 
+  const { image } = await recipeService.getRecipeImage(imageId);
+  const imageUrl = image.split('/')[3];
+  const IMAGE_PATH = path.join(__dirname, '..', `uploads/${imageUrl}`);
+  res.setHeader('content-type', 'image/jpeg');
+  return res.status(httpStatus.OK).sendFile(IMAGE_PATH);
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  updateRecipeImage,
+  getRecipeImage,
 };

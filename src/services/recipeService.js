@@ -1,4 +1,4 @@
-const recipeModel = require('../models/resipeModel');
+const recipeModel = require('../models/recipeModel');
 
 const createRecipe = async (name, ingredients, preparation, userId) => {
   const recipe = await recipeModel.createRecipe(name, ingredients, preparation, userId);
@@ -28,10 +28,22 @@ const deleteRecipe = async (id) => {
   return deletedRecipe;
 };
 
+const updateRecipeImage = async (id, filename) => {
+  const urlImage = await recipeModel.updateRecipeImage(id, filename);
+  return urlImage;
+};
+
+const getRecipeImage = async (imageId) => {
+  const image = await recipeModel.getRecipeImage(imageId);
+  return image;
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  updateRecipeImage,
+  getRecipeImage,
 };
