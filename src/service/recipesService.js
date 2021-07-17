@@ -22,11 +22,16 @@ const findRecipe = async (id) => {
 };
 
 const editRecipe = async (id, user, editedRecipe) => {
-  if (id.length !== 24) throw recipeNotFound;
   const recipeToEdit = await findRecipe(id);
-  await validateRecipeOwnerOrAdmin(user, recipeToEdit);
+  validateRecipeOwnerOrAdmin(user, recipeToEdit);
   await recipesModel.updateRecipe(id, editedRecipe);
   return { ...recipeToEdit, ...editedRecipe };
+};
+
+const deleteRecipe = async (id, user) => {
+  const recipeToDelete = await findRecipe(id);
+  validateRecipeOwnerOrAdmin(user, recipeToDelete);
+  await recipesModel.deleteRecipe(id);
 };
 
 module.exports = {
@@ -34,4 +39,5 @@ module.exports = {
   getAllRecipes,
   findRecipe,
   editRecipe,
+  deleteRecipe,
 };

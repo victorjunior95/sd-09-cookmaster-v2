@@ -1,7 +1,8 @@
 const recipesService = require('../service/recipesService');
 
-const HTTP_STATUS_CREATED = 201;
 const HTTP_STATUS_OK = 200;
+const HTTP_STATUS_CREATED = 201;
+const HTTP_STATUS_NO_CONTENT = 204;
 
 const createRecipe = async (req, res, _next) => {
   const { user: { _id: userId }, body: recipe } = req;
@@ -27,9 +28,17 @@ const editRecipe = async (req, res, _next) => {
   res.status(HTTP_STATUS_OK).json(result);
 };
 
+const deleteRecipe = async (req, res, _next) => {
+  const { id } = req.params;
+  const { user } = req;
+  await recipesService.deleteRecipe(id, user);
+  res.status(HTTP_STATUS_NO_CONTENT).json();
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   findRecipe,
   editRecipe,
+  deleteRecipe,
 };

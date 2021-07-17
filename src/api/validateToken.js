@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-const { findUserById } = require('../models/userModel');
 const { jwtMalformed, missingToken } = require('../service/errorsMessages');
 
 const secret = 'undefined';

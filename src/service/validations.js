@@ -49,7 +49,7 @@ const validateRecipe = (recipe) => {
   if (!name || !ingredients || !preparation) throw invalidEntriesError;
 };
 
-const validateRecipeOwnerOrAdmin = async (user, recipeToEdit) => {
+const validateRecipeOwnerOrAdmin = (user, recipeToEdit) => {
   const { _id: id, role } = user;
   if (id !== recipeToEdit.userId && role !== 'admin') throw notAllowed;
 };

@@ -10,5 +10,6 @@ recipesRoute.post('/', rescue(validateToken), rescue(recipesController.createRec
 recipesRoute.get('/', rescue(recipesController.getAllRecipes));
 recipesRoute.get('/:id', rescue(recipesController.findRecipe));
 recipesRoute.put('/:id', rescue(validateToken), rescue(recipesController.editRecipe));
+recipesRoute.delete('/:id', rescue(validateToken), rescue(recipesController.deleteRecipe));
 
 module.exports = recipesRoute;
