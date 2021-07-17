@@ -11,7 +11,6 @@ const login = async (mail, pass) => {
   const byEmail = await userModels.getByEmail(mail);
 
   if (!pass || !mail) { return undefined; }
-
   if (byEmail !== null) {
     const { password, email } = byEmail;
 
