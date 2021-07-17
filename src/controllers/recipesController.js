@@ -28,6 +28,14 @@ const editRecipe = async (req, res, _next) => {
   res.status(HTTP_STATUS_OK).json(result);
 };
 
+const editImageRecipe = async (req, res, _next) => {
+  console.log('controller1');
+  const { params: { id }, filePath, user } = req;
+  const result = await recipesService.editImageRecipe(id, filePath, user);
+  console.log('controller2');
+  res.status(HTTP_STATUS_OK).json(result);
+};
+
 const deleteRecipe = async (req, res, _next) => {
   const { id } = req.params;
   const { user } = req;
@@ -41,4 +49,5 @@ module.exports = {
   findRecipe,
   editRecipe,
   deleteRecipe,
+  editImageRecipe,
 };

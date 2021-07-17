@@ -10,6 +10,7 @@ const HTTP_STATUS_INTERNAL_SERVER_ERROR = 422;
 const app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/users', usersRoute);
 

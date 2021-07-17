@@ -20,15 +20,19 @@ const findRecipeById = async (id) => {
   return result;
 };
 
-const updateRecipe = async (id, { name, ingredients, preparation }) => {
-  const query = { $set: { name, ingredients, preparation } };
+const updateRecipe = async (id, { name, ingredients, preparation, image }) => {
+  let query;
+  if (!image) query = { $set: { name, ingredients, preparation } };
+  else query = { $set: { name, ingredients, preparation, image } };
   const db = await connection();
   await db.collection('recipes').updateOne({ _id: ObjectId(id) }, query); 
 };
 
 const deleteRecipe = async (id) => {
+  console.log('model1');
   const db = await connection();
   await db.collection('recipes').deleteOne({ _id: ObjectId(id) });
+  console.log('model2');
 };
 
 module.exports = {

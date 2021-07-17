@@ -28,6 +28,16 @@ const editRecipe = async (id, user, editedRecipe) => {
   return { ...recipeToEdit, ...editedRecipe };
 };
 
+const editImageRecipe = async (id, image, user) => {
+  const recipeToEdit = await findRecipe(id);
+  validateRecipeOwnerOrAdmin(user, recipeToEdit);
+  const recipeWithImage = { ...recipeToEdit, image };
+  console.log('service1');
+  await recipesModel.updateRecipe(id, recipeWithImage);
+  console.log('service2');
+  return recipeWithImage;
+};
+
 const deleteRecipe = async (id, user) => {
   const recipeToDelete = await findRecipe(id);
   validateRecipeOwnerOrAdmin(user, recipeToDelete);
@@ -39,5 +49,6 @@ module.exports = {
   getAllRecipes,
   findRecipe,
   editRecipe,
+  editImageRecipe,
   deleteRecipe,
 };
