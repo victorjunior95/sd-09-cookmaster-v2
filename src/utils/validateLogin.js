@@ -2,7 +2,7 @@ const users = require('../models/usersModel');
 
 const fields = (credentials) => {
   if (!credentials.email || !credentials.password) {
-    const err = { status: 401, message: { message: 'All fields must be filled' } };
+    const err = { status: 401, message: 'All fields must be filled' };
     throw err;
   }
   return null;
@@ -11,7 +11,7 @@ const fields = (credentials) => {
 const isValidEmail = async (credentials) => {
   const result = await users.findByEmail(credentials.email);
   if (!result || result.password !== credentials.password) {
-    const err = { status: 401, message: { message: 'Incorrect username or password' } }; 
+    const err = { status: 401, message: 'Incorrect username or password' }; 
     throw err;
   }
   return result;

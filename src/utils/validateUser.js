@@ -2,7 +2,7 @@ const users = require('../models/usersModel');
 
 const fields = (user) => {
   if (!user.name || !user.email || !user.password) {
-    const err = { status: 400, message: { message: 'Invalid entries. Try again.' } };
+    const err = { status: 400, message: 'Invalid entries. Try again.' };
     throw err;
   }
 };
@@ -10,7 +10,7 @@ const fields = (user) => {
 const validEmailFormat = (email) => {
   const isValidEmailFormat = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email);
   if (!isValidEmailFormat) {
-    const err = { status: 400, message: { message: 'Invalid entries. Try again.' } };
+    const err = { status: 400, message: 'Invalid entries. Try again.' };
     throw err;
   }
 };
@@ -18,7 +18,7 @@ const validEmailFormat = (email) => {
 const existEmail = async (email) => {
   const result = await users.findByEmail(email);
   if (result) {
-    const err = { status: 409, message: { message: 'Email already registered' } }; 
+    const err = { status: 409, message: 'Email already registered' }; 
     throw err;
   }  
 };
