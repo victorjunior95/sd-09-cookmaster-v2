@@ -1,13 +1,13 @@
 const recipesServices = require('../services/recipesServices');
 
+const { code: { CREATED } } = require('../utils');
+
 const createRecipes = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
   const { userId } = req.user;
-  console.log('=========userId=======>>>> ')
 
   const newRecipe = await recipesServices.createRecipes(name, ingredients, preparation, userId);
-  console.log('==================newRecipe================', newRecipe)
-
+  return res.status(CREATED).json(newRecipe);
 };
 
 module.exports = {

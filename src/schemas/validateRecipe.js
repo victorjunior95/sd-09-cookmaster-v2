@@ -13,6 +13,7 @@ const schema = Joi.object({
 
 const validateRecipe = (req, res, next) => {
   const { error } = schema.validate(req.body);
+  console.log('validateToken ======token', error);
   if (error) return res.status(BAD_REQUEST).json({ message: error.message });
 
   next();

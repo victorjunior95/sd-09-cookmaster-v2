@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const {
   code: { BAD_REQUEST },
-  message: { INVALID_ENTRYES }
+  message: { INVALID_ENTRYES },
 } = require('../utils');
 // const MESSAGE_ERROR = 'Invalid entries. Try again.';
 
