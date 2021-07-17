@@ -9,6 +9,12 @@ const create = async (recipe, token) => {
   return result;
 };
 
+const findAll = async () => {
+  const result = await recipes.findAll();
+  return result;
+};
+
 module.exports = {
   create,
+  findAll,
 };

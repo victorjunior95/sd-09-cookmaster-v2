@@ -16,7 +16,7 @@ const verifyToken = (token) => {
     const { _id } = userData;
     return _id;  
   } catch (error) {
-    const err = { status: 401, message: 'jwt malformed' };
+    const err = { status: 401, message: error.message };
     throw err;
   }
 };

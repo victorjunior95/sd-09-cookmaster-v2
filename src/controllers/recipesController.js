@@ -7,6 +7,12 @@ const create = async (req, res) => {
   return res.status(201).json(result);
  };
 
+ const findAll = async (req, res) => {
+  const result = await recipes.findAll();
+  return res.status(200).json(result);
+ };
+
 module.exports = {
   create,
+  findAll,
 };

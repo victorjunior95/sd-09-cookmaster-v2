@@ -6,6 +6,13 @@ const create = async (recipe, userId) => {
   return { recipe: result.ops[0] };
 };
 
+const findAll = async () => {
+  const db = await connection();
+  const result = await db.collection('recipes').find().toArray();
+  return result;
+};
+
 module.exports = {
   create,
+  findAll,
 };
