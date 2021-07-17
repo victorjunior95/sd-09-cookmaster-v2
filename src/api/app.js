@@ -14,6 +14,8 @@ app.get('/', (request, response) => {
 
 app.post('/users', usersController.create);
 
+app.post('/login', usersController.login);
+
 app.use(sendErrorMessage);
 
 module.exports = app;

@@ -1,8 +1,25 @@
 const joi = require('joi');
+const jwt = require('jsonwebtoken');
 const { messageError } = require('../middwares/errors');
 const userModels = require('../models/users');
-const { INVALID_ENTRIES, EMAIL_REGISTRED } = require('../middwares/errorMessages');
-const { BAD_REQUEST_STATUS, CONFLICT_STATUS } = require('../middwares/httpStatus');
+
+const SECRET = 'TrybeVQV!';
+
+const { 
+  INVALID_ENTRIES,
+  EMAIL_REGISTRED,
+  INCORRECT_USERNAME, 
+  ALL_FIELDS } = require('../middwares/errorMessages');
+
+const { 
+  BAD_REQUEST_STATUS,
+  CONFLICT_STATUS,
+  UNAUTHORIZED_STATUS } = require('../middwares/httpStatus');
+
+const jwtConfig = {
+  expiresIn: '30m',
+  algorithm: 'HS256',
+};
 
 const userSchema = joi.object({
   name: joi.string().required(),
@@ -10,9 +27,15 @@ const userSchema = joi.object({
   password: joi.string().required(),
 });
 
+const loginSchema = joi.object({
+  email: joi.string().email().required(),
+  password: joi.string().required(),
+});
+
 const create = async (user) => {
   const { name, email, password } = user;
   const validateUser = userSchema.validate(user);
+
   if (validateUser.error) {
     throw messageError(BAD_REQUEST_STATUS, INVALID_ENTRIES);
   }
@@ -35,6 +58,34 @@ const create = async (user) => {
   return newUser;
 };
 
+const login = async (user) => {
+  const { email, password } = user;
+  const validateUser = loginSchema.validate(user);
+
+  if (validateUser.error) {
+    throw messageError(UNAUTHORIZED_STATUS, ALL_FIELDS);
+  }
+
+  const findUser = await userModels.getByEmail(email);
+
+  if (!findUser || findUser.password !== password) {
+    throw messageError(UNAUTHORIZED_STATUS, INCORRECT_USERNAME);
+  }
+
+  const { _id, role } = findUser;
+
+  const jwtUser = {
+    _id,
+    email,
+    role,
+  };
+
+  const token = jwt.sign(jwtUser, SECRET, jwtConfig);
+
+  return token;
+};
+
 module.exports = {
   create,
+  login,
 };
