@@ -359,7 +359,7 @@ describe('RECIPES', () => {
       let response;
       let connectionMock;
       const DBServer = new MongoMemoryServer();
-      const NOT_FOUND_MESSAGE = 'recipe not found'
+      const NOT_FOUND_MESSAGE = 'recipe not found';
 
       before(async () => {
         const URLMock = await DBServer.getUri();
@@ -392,7 +392,7 @@ describe('RECIPES', () => {
             },
           ]);
 
-        const id = 'invalid_id'
+        const id = 'invalid_id';
 
         response = await chai.request(app).get(`/recipes/${id}`);
       });
@@ -407,11 +407,11 @@ describe('RECIPES', () => {
       });
 
       it('retorna um objeto que tem as chave "message"', () => {
-        expect(response.body).to.be.an('object').which.have.a.key('message')
+        expect(response.body).to.be.an('object').which.have.a.key('message');
       });
 
       it('a chave "message" do objeto retornado deve ter o valor esperado', () => {
-        expect(response.body.message).to.be.equal(NOT_FOUND_MESSAGE)
+        expect(response.body.message).to.be.equal(NOT_FOUND_MESSAGE);
       });
     });
   });
