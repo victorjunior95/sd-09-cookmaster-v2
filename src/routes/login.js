@@ -1,8 +1,8 @@
 const routes = require('express').Router();
 const rescue = require('express-rescue');
 
-const users = require('../controllers/usersController');
+const login = require('../controllers/loginController');
 
-routes.post('/', rescue(users.create));
+routes.post('/', rescue(login.create));
 
 module.exports = routes;
