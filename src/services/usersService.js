@@ -68,7 +68,8 @@ const findUserCreateToken = async (email, password) => {
       err: 'Incorrect username or password',
     };
   }
-  const token = jwt.sign({ email }, SECRET, jwtConfig);
+  const { password: _, ...userWithoutPassword } = user;
+  const token = jwt.sign(userWithoutPassword, SECRET, jwtConfig);
   return { status: HTTP_OK_STATUS, token };
 };
 module.exports = { 
