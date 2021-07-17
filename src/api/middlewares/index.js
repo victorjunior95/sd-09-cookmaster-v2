@@ -1,7 +1,9 @@
-const createError = require('./createError');
-const error = require('./error');
+const createErrorData = require('./createErrorData');
+const createErrorToken = require('./createErrorToken');
+const errorResponse = require('./errorResponse');
 
 module.exports = {
-  createError,
-  error,
+  createErrorData,
+  createErrorToken,
+  errorResponse,
 };

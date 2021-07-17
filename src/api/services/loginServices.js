@@ -17,6 +17,7 @@ module.exports = async (userData) => {
   if (!result) throw (Error('Incorrect username or password'));
 
   const { _id, email, role } = result;
+  const token = await createToken({ _id, email, role });
 
-  return createToken({ id: _id, email, role });
+  return { token };
 };

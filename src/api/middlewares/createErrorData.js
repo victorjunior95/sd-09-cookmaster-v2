@@ -1,4 +1,4 @@
-const createError = (err, _req, _res, next) => {
+module.exports = (err, _req, _res, next) => {
   if (err.message === 'Invalid entries. Try again.') {
     const newError = new Error(err.message);
     newError.status = 400;
@@ -20,5 +20,3 @@ const createError = (err, _req, _res, next) => {
 
   next(err);
 };
-
-module.exports = createError;

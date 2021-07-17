@@ -17,7 +17,8 @@ app.get('/', (_request, response) => {
 
 app.post('/users', rescue(controllers.createUserController));
 app.post('/login', rescue(controllers.loginController));
+app.post('/recipes', rescue(controllers.createRecipeController));
 
-app.use(middlewares.createError, middlewares.error);
+app.use(middlewares.createErrorToken, middlewares.createErrorData, middlewares.errorResponse);
 
 module.exports = app;
