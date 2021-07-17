@@ -8,16 +8,6 @@ const validateUserInfos = (name, email, password) => {
   }
 };
 
-const validateRegisteredEmail = (email) => {
-  console.log(email, 'EMAILLLENGTH');
-  if (email) {
-    return {
-      message: 'Email already registered',
-    };
-  }
-};
-
 module.exports = {
   validateUserInfos,
-  validateRegisteredEmail,
 };
