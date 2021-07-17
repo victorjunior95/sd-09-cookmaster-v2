@@ -15,7 +15,6 @@ app.get('/', (request, response) => {
 app.use(router);
 
 app.use((err, _req, res, _next) => {
-  console.log(err.status);
   if (err.message) return res.status(err.status).json({ message: err.message });
   return res.status(500).json({ message: 'Internal server error' });
 });

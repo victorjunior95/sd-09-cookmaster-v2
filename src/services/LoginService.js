@@ -4,7 +4,7 @@ const UsersModel = require('../models/UsersModel');
 const secret = 'segredosupersecreto';
 
 const jwtConfig = {
-  expiresIn: '1h',
+  expiresIn: '7d',
   algorithm: 'HS256',
 };
 
@@ -25,11 +25,12 @@ const validateLogin = async (email, password) => {
   if (!userData || userData.email !== email || userData.password !== password) throw errObj;
 };
 
-const login = async (email, password) => {
-  validateBody(email, password);
-  await validateLogin(email, password);
+const login = async (email, passwords) => {
+  validateBody(email, passwords);
+  await validateLogin(email, passwords);
   const user = await UsersModel.findEmail(email);
-  const token = jwt.sign({ user }, secret, jwtConfig);
+  const { password, ...userInfo } = user;
+  const token = jwt.sign({ userInfo }, secret, jwtConfig);
   return { token };
 };
 
