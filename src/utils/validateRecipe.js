@@ -6,6 +6,14 @@ const fields = (recipe) => {
   return null;
 };
 
+const recipeExists = (result) => {
+  if (!result) {
+    const err = { status: 404, message: 'recipe not found' };
+    throw err;
+  }
+};
+
 module.exports = {
   fields,
+  recipeExists,
 };

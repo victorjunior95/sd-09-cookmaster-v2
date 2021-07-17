@@ -12,7 +12,14 @@ const create = async (req, res) => {
   return res.status(200).json(result);
  };
 
+ const findById = async (req, res) => {
+  const { id } = req.params;
+  const result = await recipes.findById(id);
+  return res.status(200).json(result);
+ };
+
 module.exports = {
   create,
   findAll,
+  findById,
 };

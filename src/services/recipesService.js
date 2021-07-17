@@ -14,7 +14,14 @@ const findAll = async () => {
   return result;
 };
 
+const findById = async (id) => {
+  const result = await recipes.findById(id);
+  validate.recipeExists(result);
+  return result;
+};
+
 module.exports = {
   create,
   findAll,
+  findById,
 };
