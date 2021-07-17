@@ -45,6 +45,20 @@ const recipeNotFound = {
   },
 };
 
+const missingToken = {
+  status: HTTP_STATUS_UNAUTHORIZED,
+  err: {
+    message: 'missing auth token',
+  },
+};
+
+const notAllowed = {
+  status: HTTP_STATUS_UNAUTHORIZED,
+  err: {
+    message: 'user not allowed to edit',
+  },
+};
+
 module.exports = {
   invalidEntriesError,
   emailRegisteredError,
@@ -52,4 +66,6 @@ module.exports = {
   incorrectEmailOrPassword,
   jwtMalformed,
   recipeNotFound,
+  missingToken,
+  notAllowed,
 };

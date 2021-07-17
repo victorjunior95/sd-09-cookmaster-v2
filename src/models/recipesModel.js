@@ -14,14 +14,21 @@ const getAllRecipes = async () => {
   return result;
 };
 
-const findOneRecipeById = async (id) => {
+const findRecipeById = async (id) => {
   const db = await connection();
   const result = await db.collection('recipes').findOne(ObjectId(id));
   return result;
 };
 
+const updateRecipe = async (id, { name, ingredients, preparation }) => {
+  const query = { $set: { name, ingredients, preparation } };
+  const db = await connection();
+  await db.collection('recipes').updateOne({ _id: ObjectId(id) }, query); 
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
-  findOneRecipeById,
+  findRecipeById,
+  updateRecipe,
 };

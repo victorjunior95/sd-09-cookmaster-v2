@@ -1,10 +1,11 @@
 const recipesModel = require('../models/recipesModel');
-const { validateRecipe } = require('./validations');
+const { validateRecipe, validateRecipeOwnerOrAdmin } = require('./validations');
 const { recipeNotFound } = require('./errorsMessages');
 
-const createRecipe = async (recipe) => {
+const createRecipe = async (userId, recipe) => {
   validateRecipe(recipe);
-  const result = await recipesModel.createRecipe(recipe);
+  const recipeToCreate = { ...recipe, userId };
+  const result = await recipesModel.createRecipe(recipeToCreate);
   return { recipe: result };
 };
 
@@ -13,15 +14,24 @@ const getAllRecipes = async () => {
   return result;
 };
 
-const findOneRecipe = async (id) => {
+const findRecipe = async (id) => {
   if (id.length !== 24) throw recipeNotFound;
-  const result = await recipesModel.findOneRecipeById(id);
+  const result = await recipesModel.findRecipeById(id);
   if (!result) throw recipeNotFound;
   return result;
+};
+
+const editRecipe = async (id, user, editedRecipe) => {
+  if (id.length !== 24) throw recipeNotFound;
+  const recipeToEdit = await findRecipe(id);
+  await validateRecipeOwnerOrAdmin(user, recipeToEdit);
+  await recipesModel.updateRecipe(id, editedRecipe);
+  return { ...recipeToEdit, ...editedRecipe };
 };
 
 module.exports = {
   createRecipe,
   getAllRecipes,
-  findOneRecipe,
+  findRecipe,
+  editRecipe,
 };
