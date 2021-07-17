@@ -71,7 +71,6 @@ const updateRecipeImage = [
 
 const getRecipeImage = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const imageId = `localhost:3000/src/uploads/${id}`; 
   const { image } = await recipeService.getRecipeImage(imageId);
   const imageUrl = image.split('/')[3];
