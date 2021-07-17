@@ -22,6 +22,8 @@ app.post('/users', rescue(controllers.createUserController));
 app.post('/login', rescue(controllers.loginController));
 app.post('/recipes', rescue(controllers.createRecipeController));
 
+app.put('/recipes/:id', rescue(controllers.updateRecipeController));
+
 app.use(middlewares);
 
 module.exports = app;

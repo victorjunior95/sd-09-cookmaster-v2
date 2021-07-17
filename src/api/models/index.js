@@ -4,6 +4,7 @@ const login = require('./login');
 const createRecipe = require('./createRecipe');
 const getRecipesAll = require('./getRecipesAll');
 const getRecipeById = require('./getRecipeById');
+const updateRecipe = require('./updateRecipe');
 
 module.exports = {
   createUser,
@@ -12,4 +13,5 @@ module.exports = {
   createRecipe,
   getRecipesAll,
   getRecipeById,
+  updateRecipe,
 };

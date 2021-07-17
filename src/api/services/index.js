@@ -3,6 +3,7 @@ const loginServices = require('./loginServices');
 const createRecipeServices = require('./createRecipeServices');
 const getRecipesAllService = require('./getRecipesAllServices');
 const getRecipeByIdService = require('./getRecipeByIdServices');
+const updateRecipeService = require('./updateRecipeServices');
 
 module.exports = {
   createUserServices,
@@ -10,4 +11,5 @@ module.exports = {
   createRecipeServices,
   getRecipesAllService,
   getRecipeByIdService,
+  updateRecipeService,
 };
