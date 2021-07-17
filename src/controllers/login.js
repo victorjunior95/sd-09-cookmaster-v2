@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const userServices = require('../services/userService');
 
-const secret = 'secret';
+const secret = 'mySecret';
 
 const statusSucess = 200;
 
