@@ -41,9 +41,14 @@ const updateRecipe = async (id, newDataRecipe) => {
   return response;
 };
 
+const exclude = async (id) => {
+  await recipesModel.exclude(id);
+};
+
 module.exports = {
   addRecipe,
   getAllRecipes,
   getById,
   updateRecipe,
+  exclude,
 };

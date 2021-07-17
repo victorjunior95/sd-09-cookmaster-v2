@@ -43,4 +43,14 @@ route.put('/recipes/:id', validateJWT, validateUser, async (req, res, next) => {
   }
 });
 
+route.delete('/recipes/:id', validateJWT, validateUser, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await recipesService.exclude(id);
+    return res.status(204).json();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = route;

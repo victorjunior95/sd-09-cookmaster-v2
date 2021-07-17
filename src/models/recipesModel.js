@@ -27,15 +27,14 @@ const updateRecipe = async (id, newDataRecipe) => {
   const db = await connection();
   await db.collection(recipes).updateOne(
     { _id: ObjectId(id) },
-    { $set: {
-        name,
-        ingredients,
-        preparation,
-        userId,
-      },
-    },
+    { $set: { ...newDataRecipe } },
   );
   return { _id: id, name, ingredients, preparation, userId };
+};
+
+const exclude = async (id) => {
+  const db = await connection();
+  await db.collection(recipes).deleteOne({ _id: ObjectId(id) });
 };
 
 module.exports = {
@@ -43,4 +42,5 @@ module.exports = {
   getAllRecipes,
   getById,
   updateRecipe,
+  exclude,
 };
