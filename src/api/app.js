@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { sendErrorMessage } = require('./middwares/errors');
+const { validateToken } = require('./middwares/validateToken');
 const usersController = require('./controllers/users');
+const recipesController = require('./controllers/recipes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,6 +17,8 @@ app.get('/', (request, response) => {
 app.post('/users', usersController.create);
 
 app.post('/login', usersController.login);
+
+app.post('/recipes', validateToken, recipesController.create);
 
 app.use(sendErrorMessage);
 

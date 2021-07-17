@@ -1,9 +1,9 @@
 const joi = require('joi');
 const jwt = require('jsonwebtoken');
 const { messageError } = require('../middwares/errors');
-const userModels = require('../models/users');
+const usersModels = require('../models/users');
 
-const SECRET = 'TrybeVQV!';
+const SECRET = require('../middwares/secret');
 
 const { 
   INVALID_ENTRIES,
@@ -40,7 +40,7 @@ const create = async (user) => {
     throw messageError(BAD_REQUEST_STATUS, INVALID_ENTRIES);
   }
 
-  const findEmail = await userModels.getByEmail(email);
+  const findEmail = await usersModels.getByEmail(email);
 
   if (findEmail) {
     throw messageError(CONFLICT_STATUS, EMAIL_REGISTRED);
@@ -53,25 +53,32 @@ const create = async (user) => {
     role: 'user',
   };
 
-  const newUser = await userModels.create(completeUser);
+  const newUser = await usersModels.create(completeUser);
 
   return newUser;
 };
 
+const getUserByEmail = async (email) => {
+  const user = await usersModels.getByEmail(email);
+
+  return user;
+};
+
 const login = async (user) => {
   const { email, password } = user;
+
   const validateUser = loginSchema.validate(user);
 
   if (validateUser.error) {
     throw messageError(UNAUTHORIZED_STATUS, ALL_FIELDS);
   }
 
-  const findUser = await userModels.getByEmail(email);
+  const findUser = await getUserByEmail(email);
 
   if (!findUser || findUser.password !== password) {
     throw messageError(UNAUTHORIZED_STATUS, INCORRECT_USERNAME);
   }
-
+  
   const { _id, role } = findUser;
 
   const jwtUser = {
@@ -82,10 +89,11 @@ const login = async (user) => {
 
   const token = jwt.sign(jwtUser, SECRET, jwtConfig);
 
-  return token;
+  return ({ token });
 };
 
 module.exports = {
   create,
   login,
+  getUserByEmail,
 };
