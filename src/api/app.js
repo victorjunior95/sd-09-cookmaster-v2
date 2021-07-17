@@ -15,6 +15,8 @@ app.get('/', (_request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
+app.get('/recipes', controllers.getRecipesAllController);
+
 app.post('/users', rescue(controllers.createUserController));
 app.post('/login', rescue(controllers.loginController));
 app.post('/recipes', rescue(controllers.createRecipeController));
