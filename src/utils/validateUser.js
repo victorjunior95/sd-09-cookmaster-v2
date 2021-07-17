@@ -5,6 +5,7 @@ const fields = (user) => {
     const err = { status: 400, message: 'Invalid entries. Try again.' };
     throw err;
   }
+  return null;
 };
 
 const validEmailFormat = (email) => {
@@ -13,6 +14,7 @@ const validEmailFormat = (email) => {
     const err = { status: 400, message: 'Invalid entries. Try again.' };
     throw err;
   }
+  return null;
 };
 
 const existEmail = async (email) => {
@@ -20,7 +22,8 @@ const existEmail = async (email) => {
   if (result) {
     const err = { status: 409, message: 'Email already registered' }; 
     throw err;
-  }  
+  }
+  return null;
 };
 
 const user = async (userFields) => {

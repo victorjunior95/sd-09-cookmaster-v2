@@ -35,11 +35,22 @@ const update = async (recipe, id) => {
   return result.value;
 };
 
-const exclude = async (id, userId) => {
+const exclude = async (id) => {
   if (!ObjectId.isValid(id)) return null;
   const db = await connection();
-  await db.collection('recipes').findOneAndDelete({ _id: ObjectId(id) }, { userId });
+  await db.collection('recipes').findOneAndDelete({ _id: ObjectId(id) });
   return null;
+};
+
+const addImage = async (id, urlImage) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const result = await db.collection('recipes').findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: { image: urlImage } },
+    { returnOriginal: false },
+  );
+  return result.value;
 };
 
 module.exports = {
@@ -48,4 +59,5 @@ module.exports = {
   findById,
   update,
   exclude,
+  addImage,
 };

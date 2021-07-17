@@ -11,6 +11,7 @@ const recipeExists = (result) => {
     const err = { status: 404, message: 'recipe not found' };
     throw err;
   }
+  return null;
 };
 
 module.exports = {

@@ -4,7 +4,7 @@ const { verifyToken } = require('../utils/validateToken');
 
 const create = async (recipe, token) => {
   validate.fields(recipe);
-  const userId = verifyToken(token);
+  const { userId } = verifyToken(token);
   const result = await recipes.create(recipe, userId);
   return result;
 };
@@ -28,8 +28,15 @@ const update = async (recipe, token, id) => {
 };
 
 const exclude = async (token, id) => {
-  const userId = verifyToken(token);
+  const { userId } = verifyToken(token);
   const result = await recipes.exclude(id, userId);
+  return result;
+};
+
+const addImage = async (token, id, filePath) => {
+  verifyToken(token);
+  const urlImage = (`localhost:3000/src/uploads/${filePath.split('uploads/')[1]}`);
+  const result = await recipes.addImage(id, urlImage);
   return result;
 };
 
@@ -39,4 +46,5 @@ module.exports = {
   findById,
   update,
   exclude,
+  addImage,
 };
