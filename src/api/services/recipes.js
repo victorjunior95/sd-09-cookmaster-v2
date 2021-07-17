@@ -33,6 +33,11 @@ const create = async (recipe, user) => {
   return newRecipe;
 };
 
+const getAll = async () => {
+  return recipesModels.getAll();
+};
+
 module.exports = {
   create,
+  getAll,
 };

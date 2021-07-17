@@ -20,6 +20,11 @@ const create = async (recipe) => {
   };
 };
 
+const getAll = () => {
+  return connection()
+    .then((db) => db.collection('recipes').find().toArray());
+};
+
 const getById = (id) => {
   if (!ObjectID.isValid(id)) {
     return null;
@@ -48,6 +53,7 @@ const remove = async (id) => {
   
 module.exports = {
   create,
+  getAll,
   getById,
   remove,
 };

@@ -1,4 +1,4 @@
-const { CREATED_STATUS } = require('../middwares/httpStatus');
+const { CREATED_STATUS, OK_STATUS } = require('../middwares/httpStatus');
 
 const recipesServices = require('../services/recipes');
 
@@ -15,6 +15,13 @@ const create = async (req, res, next) => {
   }
 };
 
+const getAll = async (req, res, _next) => {
+  const recipes = await recipesServices.getAll();
+
+  return res.status(OK_STATUS).json(recipes);
+};
+
 module.exports = {
   create,
+  getAll,
 };
