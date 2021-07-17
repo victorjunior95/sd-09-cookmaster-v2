@@ -1,6 +1,6 @@
 const recipesServices = require('../services/recipesServices');
 
-const { code: { CREATED } } = require('../utils');
+const { code: { CREATED, OK } } = require('../utils');
 
 const createRecipes = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
@@ -10,6 +10,14 @@ const createRecipes = async (req, res) => {
   return res.status(CREATED).json(newRecipe);
 };
 
+const getAllRecipes = async (req, res) => {
+  const allRecipes = await recipesServices.getAllRecipes();
+  if (!allRecipes.length) return res.status(204).json({ message: RECIPE_NOT_FOUND});
+
+  return res.status(OK).json(allRecipes);
+};
+
 module.exports = {
   createRecipes,
+  getAllRecipes,
 };

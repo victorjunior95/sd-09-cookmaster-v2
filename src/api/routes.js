@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.use('/login', validateLogin, createToken, usersControllers.login);
 router.post('/users', validateUser, usersControllers.createUser);
-router.use('/recipes', validateRecipe, validateToken, recipesControllers.createRecipes);
+router.post('/recipes', validateRecipe, validateToken, recipesControllers.createRecipes);
+router.get('/recipes', recipesControllers.getAllRecipes);
 
 module.exports = router;
