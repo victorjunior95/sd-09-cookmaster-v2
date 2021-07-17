@@ -20,7 +20,15 @@ const getByEmail = async (email) => {
   return findEmail;
 };
 
+const userLogin = async (email, password) => {
+  const user = await connection().then((db) => db.collection('users')
+    .findOne({ email, password }));
+
+  return user;
+};
+
 module.exports = {
   create,
   getByEmail,
+  userLogin,
 };
