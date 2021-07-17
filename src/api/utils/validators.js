@@ -40,10 +40,14 @@ const recipe = async ({ name, ingredients, preparation }) => {
 const token = async ({ authorization }) => {
   const secret = '60f25632bbd8eb246fbe3170';
   if (!authorization) {
-    const err = { message: 'jwt malformed' };
+    const err = { message: 'missing auth token' };
     throw err;
   }
   const payload = jwt.verify(authorization, secret);
+  if (!payload) {
+    const err = { message: 'jwt malformed' };
+    throw err;
+  }
   const { password, ...userDB } = await users.getByEmail(payload.email);
   if (!userDB) {
     const err = { message: 'Invalid entries. Try again.' };

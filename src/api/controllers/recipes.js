@@ -9,4 +9,11 @@ const getAll = (_req, res) => recipes.getAll()
 const getById = (req, res) => recipes.getById(req.params.id)
   .then(({ status, data }) => res.status(status).json(data));
 
-module.exports = { create, getAll, getById };
+const update = (req, res) => recipes.update(req.params.id, req.body, req.user)
+  .then(({ status, userId }) =>
+    res.status(status).json({ _id: req.params.id, ...req.body, userId }));
+
+const remove = (req, res) => recipes.remove(req.params.id)
+  .then(({ status }) => res.status(status).json());
+
+module.exports = { create, getAll, getById, update, remove };
