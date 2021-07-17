@@ -1,18 +1,21 @@
 const Joi = require('joi');
 
-const MESSAGE_ERROR = 'Invalid entries. Try again.';
+const {
+  code: { BAD_REQUEST },
+  message: { INVALID_ENTRYES }
+} = require('../utils');
+// const MESSAGE_ERROR = 'Invalid entries. Try again.';
 
 const schema = Joi.object({
   name: Joi.string().required(),
-  email: Joi.string().email().message(MESSAGE_ERROR).required(),
+  email: Joi.string().email().message(INVALID_ENTRYES).required(),
   password: Joi.string().required(),
 }).messages({
-  'any.required': MESSAGE_ERROR,
-  'string.empty': MESSAGE_ERROR,
+  'any.required': INVALID_ENTRYES,
+  'string.empty': INVALID_ENTRYES,
 });
 
 const validateUser = (req, res, next) => {
-  const BAD_REQUEST = 400;
   const { error } = schema.validate(req.body);
   if (error) return res.status(BAD_REQUEST).json({ message: error.message });
 
