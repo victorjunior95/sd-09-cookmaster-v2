@@ -27,9 +27,16 @@ const update = async (recipe, token, id) => {
   return result;
 };
 
+const exclude = async (token, id) => {
+  const userId = verifyToken(token);
+  const result = await recipes.exclude(id, userId);
+  return result;
+};
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
+  exclude,
 };

@@ -26,9 +26,17 @@ const create = async (req, res) => {
   return res.status(200).json(result);
  };
 
+ const exclude = async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const result = await recipes.exclude(token, id);
+  return res.status(204).json(result);
+ };
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
+  exclude,
 };

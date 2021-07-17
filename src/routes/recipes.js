@@ -7,5 +7,6 @@ routes.post('/', rescue(recipes.create));
 routes.get('/', rescue(recipes.findAll));
 routes.get('/:id', rescue(recipes.findById));
 routes.put('/:id', rescue(recipes.update));
+routes.delete('/:id', rescue(recipes.exclude));
 
 module.exports = routes;
