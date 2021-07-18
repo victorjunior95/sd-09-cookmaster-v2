@@ -6,6 +6,7 @@ const HTTP_UNAUTHORIZED_STATUS = 401;
 
 const validateToken = async (req, _res, next) => {
   const token = req.headers.authorization;
+
   if (!token) {
     return next({ status: HTTP_UNAUTHORIZED_STATUS, err: 'jwt malformed' });
   }

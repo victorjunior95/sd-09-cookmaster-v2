@@ -10,7 +10,7 @@ routerLogin.post('/', async (req, res, next) => {
   if (dataLogin.err) {
     return next(dataLogin);
   }
-  return res.status(dataLogin.status).json(dataLogin.token);
+  return res.status(dataLogin.status).json({ token: dataLogin.token });
   } catch (error) {
     return next(error);
   }

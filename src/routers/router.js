@@ -1,5 +1,5 @@
 const express = require('express');
-const { usersController, loginController } = require('../controllers');
+const { usersController, loginController, recipesController } = require('../controllers');
 const error = require('../middlewares/error');
 const validateToken = require('../middlewares/validateToken');
 // criando uma rota, variável router
@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use('/users', usersController);
 router.use('/login', loginController);
-router.use('/recipes', validateToken);
+router.use('/recipes', validateToken, recipesController);
 router.use(error);
 
 module.exports = router;

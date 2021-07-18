@@ -5,7 +5,7 @@ const usersModel = require('../models/usersModel');
 const SECRET = 'cookmaster';
 
 const jwtConfig = {
-  expiresIn: '15m',
+  expiresIn: '6000m',
   algorithm: 'HS256',
 };
 
