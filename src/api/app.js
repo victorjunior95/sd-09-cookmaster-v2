@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userController = require('../Controllers/userController');
-const loginController = require('../Controllers/login');
+const loginController = require('../Controllers/login.js');
 
 const app = express();
 
