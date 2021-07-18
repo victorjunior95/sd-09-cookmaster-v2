@@ -5,14 +5,16 @@ const validateRecipe = require('../schemas/validateRecipe');
 const validateToken = require('../schemas/validateToken');
 const createToken = require('../schemas/createToken');
 const authToEdit = require('../schemas/authToEdit');
+const validateAdmin = require('../schemas/validateAdmin');
 
 const usersControllers = require('../controllers/usersControllers');
 const recipesControllers = require('../controllers/recipesControllers');
 
 const router = express.Router();
 
+router.use('/users/admin', validateUser, validateToken, validateAdmin,
+  usersControllers.createAdmin);
 router.use('/users', validateUser, usersControllers.createUser);
-router.use('/admin', validateUser, usersControllers.createUser);
 router.post('/login', validateLogin, createToken, usersControllers.login);
 router.post('/recipes', validateRecipe, validateToken, recipesControllers.createRecipes);
 

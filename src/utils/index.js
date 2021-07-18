@@ -17,6 +17,6 @@ module.exports = {
     JWT_MALFORMED: 'jwt malformed',
     RECIPE_NOT_FOUND: 'recipe not found',
     MISSING_AUTH_TOKEN: 'missing auth token',
-    ONLY_ADMIN: 'only admins can register new admins',
+    ONLY_ADMIN: 'Only admins can register new admins',
   },
 };

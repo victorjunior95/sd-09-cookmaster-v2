@@ -1,8 +1,8 @@
 const usersServices = require('../services/usersServices');
 
-const CONFLICT = 409;
-const CREATED = 201;
-const OK = 200;
+const {
+  code: { CONFLICT, CREATED, OK },
+} = require('../utils');
 
 const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -14,6 +14,16 @@ const createUser = async (req, res) => {
   return res.status(CREATED).json(newUser);
 };
 
+const createAdmin = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const newAdmin = await usersServices.createAdmin(name, email, password);
+
+  if (newAdmin.message) return res.status(CONFLICT).json(newAdmin);
+
+  return res.status(CREATED).json(newAdmin);
+};
+
 const login = async (req, res) => {
   const { token } = req;
 
@@ -23,4 +33,5 @@ const login = async (req, res) => {
 module.exports = {
   createUser,
   login,
+  createAdmin,
 };

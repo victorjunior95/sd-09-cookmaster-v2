@@ -4,7 +4,6 @@ const {
   code: { BAD_REQUEST },
   message: { INVALID_ENTRYES },
 } = require('../utils');
-// const MESSAGE_ERROR = 'Invalid entries. Try again.';
 
 const schema = Joi.object({
   name: Joi.string().required(),
