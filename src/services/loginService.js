@@ -1,18 +1,27 @@
+const jwt = require('jsonwebtoken');
 const usersModel = require('../models/usersModel');
 const errorMiddleware = require('../middlewares/errorMiddleware');
-
 // primeiro as validações e depois o token
+
+const SECRET = 'mysupersecret';
+
+const jwtConfig = {
+  expiresIn: '30min',
+  algorithm: 'HS256',
+};
 
 const userLoginService = async (email, password) => {
   const loginUser = await usersModel.loginUsers(email, password);
   if (!loginUser || loginUser.password !== password) {
-    // verificação de login se o email e senha são inválidos
+    // usuário não existe ou senha inválida
     throw errorMiddleware.validateError(401, 'Incorrect username or password');
   }
-  // gerar o token
-  const { password: passdb, ...loginUserWithout } = loginUser;
 
-  return loginUserWithout;
+  const { password: _, ...loginUserWithout } = loginUser; // apagar a senha
+  // o "_" em password serve para não utilizar essa senha para mais nada
+  const token = jwt.sign(loginUserWithout, SECRET, jwtConfig);
+
+  return { token };
 };
 
 module.exports = {

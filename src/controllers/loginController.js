@@ -5,7 +5,7 @@ const userLoginController = async (req, res, next) => {
     const { email, password } = req.body;
 
     const login = await loginService.userLoginService(email, password);
-    return res.status(201).json({ login });
+    return res.status(200).json(login);
   } catch (error) {
   return next(error);
   }

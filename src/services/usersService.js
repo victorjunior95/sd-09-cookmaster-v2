@@ -12,8 +12,8 @@ const createUserService = async (email, name, password) => {
   if (userUnique) throw errorMiddleware.validateError(409, 'Email already registered');
 
   const newUser = await usersModel.createUser(email, name, password);
-  const { password: passdb, ...newUserWithout } = newUser; // apagando o password
-
+  const { password: _, ...newUserWithout } = newUser; // apagando o password
+  // passdb
   return newUserWithout;
 };
 
