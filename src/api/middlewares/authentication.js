@@ -6,7 +6,6 @@ module.exports = (req, _res, next) => {
   try {
     const token = req.headers.authorization;
     const payload = tokens.access.verify(token);
-    console.log(payload);
 
     const user = new User(payload);
     const userDB = user.getByEmail();
