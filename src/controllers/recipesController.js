@@ -18,6 +18,20 @@ try {
   }
 });
 
+routerRecipes.get('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const recipe = await recipesService.getRecipeById(id);
+    if (recipe.err) {
+      return next(recipe);
+    }
+    return res.status(recipe.status).json(recipe.recipeById);
+  } catch (error) {
+    return next(error);
+  }
+});
+
 routerRecipes.get('/', async (_req, res, next) => {
   try {
     const recipes = await recipesService.listAllRecipes();
@@ -25,5 +39,6 @@ routerRecipes.get('/', async (_req, res, next) => {
   } catch (error) {
     return next(error);
   }
-}); 
+});
+
 module.exports = routerRecipes;
