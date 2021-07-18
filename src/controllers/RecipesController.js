@@ -14,4 +14,15 @@ RecipesRouter.post('/', rescue(authorization), rescue(async (req, res) => {
   return res.status(201).json(newRecipe);
 }));
 
+RecipesRouter.get('/', rescue(async (req, res) => {
+  const allRecipes = await RecipesService.getAllRecipes();
+  return res.status(200).json(allRecipes);
+}));
+
+RecipesRouter.get('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const oneRecipe = await RecipesService.getOneRecipe(id);
+  return res.status(200).json(oneRecipe);
+}));
+
 module.exports = RecipesRouter;

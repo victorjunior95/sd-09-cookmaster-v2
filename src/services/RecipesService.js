@@ -8,12 +8,33 @@ const verifyRecipe = (name, ingredients, preparation) => {
   if (!name || !ingredients || !preparation) throw errObj;
 };
 
+const verifyGetOneRecipe = (recipe) => {
+  const errObj = {
+    status: 404,
+    message: 'recipe not found',
+  };  
+  if (!recipe) throw errObj;
+};
+
 const createRecipe = async (name, ingredients, preparation, id) => {
   verifyRecipe(name, ingredients, preparation);
   const newRecipe = await RecipesModel.createRecipe(name, ingredients, preparation, id);
   return newRecipe;
 };
 
+const getAllRecipes = async () => {
+  const allRecipes = await RecipesModel.getAllRecipes();
+  return allRecipes;
+};
+
+const getOneRecipe = async (id) => {
+  const oneRecipe = await RecipesModel.getOneRecipe(id);
+  verifyGetOneRecipe(oneRecipe);
+  return oneRecipe;
+};
+
 module.exports = {
-createRecipe,
+  createRecipe,
+  getAllRecipes,
+  getOneRecipe,
 };
