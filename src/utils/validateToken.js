@@ -18,8 +18,8 @@ const verifyToken = (token) => {
 
   try {
     const userData = jwt.verify(token, SECRET);
-    const { _id: userId } = userData;
-    return { userId };
+    const { _id: userId, role } = userData;
+    return { userId, role };
   } catch (error) {
     const err = { status: 401, message: error.message };
     throw err;

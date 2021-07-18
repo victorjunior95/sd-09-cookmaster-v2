@@ -32,6 +32,14 @@ const user = async (userFields) => {
   await existEmail(userFields.email);
 };
 
+const userAdmin = (userAuth) => {
+  if (userAuth.role !== 'admin') {
+    const err = { status: 403, message: 'Only admins can register new admins' };
+    throw err;
+  }
+};
+
 module.exports = {
   user,
+  userAdmin,
 };
