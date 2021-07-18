@@ -31,8 +31,18 @@ const getOne = async (id) => {
   return recipe;
 };
 
+const update = async (id, { _id }, recipe) => {
+  const newRecipe = await recipesModel.update(id, recipe);
+  const schemaRecipe = {
+    ...newRecipe,
+    userId: _id,
+  };
+  return schemaRecipe;
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
+  update,
 };

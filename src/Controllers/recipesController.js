@@ -16,8 +16,15 @@ const getOne = async (req, res) => {
   return res.status(200).json(recipe);
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const newRecipe = await recipesService.update(id, req.user, req.body);
+  return res.status(200).json(newRecipe);
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
+  update,
 };
