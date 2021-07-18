@@ -17,6 +17,6 @@
       newError.message = 'missing auth token';
       return next(newError);
     }
-    
+        
     return next(err);
   };

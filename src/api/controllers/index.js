@@ -5,6 +5,7 @@ const getRecipesAllController = require('./getRecipesAllControllers');
 const getRecipeByIdController = require('./getRecipeByIdControllers');
 const updateRecipeController = require('./updateRecipeControllers');
 const deleteRecipeController = require('./deleteRecipeControllers');
+const updateUrlImageRecipeController = require('./updateUrlImageRecipeControllers');
 
 module.exports = {
   createUserController,
@@ -14,4 +15,5 @@ module.exports = {
   getRecipeByIdController,
   updateRecipeController,
   deleteRecipeController,
+  updateUrlImageRecipeController,
 };
