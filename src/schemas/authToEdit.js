@@ -7,7 +7,10 @@ const {
 
 const authToEdit = async (req, res, next) => {
   const { id: recipeId } = req.params;
-  let { _id: userId } = req.user;
+  let { _id: userId, role } = req.user;
+
+  console.log('Estive aqui 2 ==========ADMIN=========req.user==', req.user);
+  if( role === 'admin') next();
 
   const recipe = await getRecipeById(recipeId);
 
