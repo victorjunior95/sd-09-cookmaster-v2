@@ -23,7 +23,7 @@ const insertUser = async (name, email, password) => {
     }))
     .then((result) => getInsertedUser(
       {
-        _id: result.id,
+        _id: result.insertedId,
         name,
         email,
         role,
@@ -31,6 +31,10 @@ const insertUser = async (name, email, password) => {
     ));
 };
 
+const getUserByEmail = async (email) => connection()
+    .then((db) => db.collection('users').findOne({ email }));
+
 module.exports = {
   insertUser,
+  getUserByEmail,
 };
