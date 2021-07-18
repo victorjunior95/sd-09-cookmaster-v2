@@ -7,9 +7,10 @@ const {
 
 const authToEdit = async (req, res, next) => {
   const { id: recipeId } = req.params;
-  let { _id: userId, role } = req.user;
+  const { role } = req.user;
+  let { _id: userId } = req.user;
 
-  if( role === 'admin') next();
+  if (role === 'admin') next();
 
   const recipe = await getRecipeById(recipeId);
 
@@ -18,7 +19,7 @@ const authToEdit = async (req, res, next) => {
 
   if (!recipe) return res.status(NOT_FOUND).json({ message: RECIPE_NOT_FOUND });
 
-  if (recipeUserId !== userId) return res.status(UNAUTHORIZED).json({ message: JWT_MALFORMED })
+  if (recipeUserId !== userId) return res.status(UNAUTHORIZED).json({ message: JWT_MALFORMED });
   console.log('Estive aqui 2 ==========authToEdit=========next==');
 
   next();

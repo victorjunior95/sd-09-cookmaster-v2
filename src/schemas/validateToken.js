@@ -10,15 +10,15 @@ const {
 
 const getByEmailAndCompareId = async ({ email, _id: id }) => {
   const userGeted = await usersModels.getByEmail({ email });
+
   if (!userGeted) throw new Error();
 
   let { _id: userId } = userGeted;
 
   userId = JSON.stringify(userId);
-  id = JSON.stringify(id);
+  const idUserDecoded = JSON.stringify(id);
 
-  if (userId !== id) return false;
-  console.log('==========getByEmailAndCompareId ======OK=====');
+  if (userId !== idUserDecoded) return false;
 
   return userGeted;
 };
