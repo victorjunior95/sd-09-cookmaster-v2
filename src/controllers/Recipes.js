@@ -6,7 +6,7 @@ const { checkRecipesData, checkToken } = require('../middlewares');
 const userSchemas = require('../schemas');
 
 const Created = '201';
-const Unauthorized = '401';
+// const Unauthorized = '401';
 const OK = '200';
 const NotFound = '404';
 const NotContent = '204';
