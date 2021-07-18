@@ -1,8 +1,7 @@
 const recipesModel = require('../models/recipesModel');
 
-const error = { status: 400, message: 'Invalid entries. Try again.' };
-
 const validateRecipe = ({ name, ingredients, preparation }) => {
+  const error = { status: 400, message: 'Invalid entries. Try again.' };
   if (!name || !ingredients || !preparation) throw error;
 };
 
@@ -23,7 +22,17 @@ const getAll = async () => {
   return recipes;
 };
 
+const getOne = async (id) => {
+  const recipe = await recipesModel.getOne(id);
+  if (!recipe) {
+    const error = { status: 404, message: 'recipe not found' };
+    throw error;
+  }
+  return recipe;
+};
+
 module.exports = {
   create,
   getAll,
+  getOne,
 };
