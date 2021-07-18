@@ -6,7 +6,7 @@ const addUser = async (name, email) =>
         .then((result) => result.ops[0]);
 
 const findByEmail = async (email) => connection()
-        .then((db) => db.collection('users').findOne({ email }));
+    .then((db) => db.collection('users').findOne({ email }));
 
 module.exports = {
     addUser,

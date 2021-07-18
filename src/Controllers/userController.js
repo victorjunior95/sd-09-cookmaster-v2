@@ -1,33 +1,29 @@
 // const { findByEmail } = require('../Models/userModel');
 const userServices = require('../Services/userService');
 
-const emptyNotAllowed = (name, email, password) => {
-    if (name === undefined || email === undefined || password === undefined) {
+const emptyNotAllowed = (email, name, password) => {
+    if (email === undefined || name === undefined || password === undefined) {
         return true;
-    }
-    return false;
+    } return false;
 };
 
 const testEmail = (email) => {
     const rgx = /\S+@\S+\.\S+/;
-    // const user = await userServices.addUser(email);
-    // console.log(user.email, 'testEmail');
-    // if (user === null || user.email === undefined || user.email === null) {
-    //     return false;
-    // }
     return rgx.test(email);
 };
 
 const addUser = async (req, res) => {
     const { name, email, password } = req.body;
-    const test = testEmail(email);
     const user = await userServices.addUser(name, email, password);
-    if (emptyNotAllowed(name, email, password) === true || test === false) {
-        return res.status(400).json({ message: 'Invalid entries. Try again.' });
+    const isEmpty = emptyNotAllowed(email, name, password);
+    const testMail = testEmail(email);
+    if (user === null) {
+        return res.status(409).json({ message: 'Email already registered' });
     }
-    if (emptyNotAllowed(name, email, password) === false && test === true) {
+    if (user !== null && isEmpty === false && testMail === true) {
         return res.status(201).json({ user });
     }
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
 };
 
 module.exports = {
