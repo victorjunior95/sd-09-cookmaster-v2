@@ -22,9 +22,16 @@ const update = async (req, res) => {
   return res.status(200).json(newRecipe);
 };
 
+const exclude = async (req, res) => {
+  const { id } = req.params;
+  await recipesService.exclude(id);
+  return res.status(204).json();
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
   update,
+  exclude,
 };

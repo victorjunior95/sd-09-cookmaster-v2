@@ -40,9 +40,14 @@ const update = async (id, { _id }, recipe) => {
   return schemaRecipe;
 };
 
+const exclude = async (id) => {
+  await recipesModel.exclude(id);
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
   update,
+  exclude,
 };
