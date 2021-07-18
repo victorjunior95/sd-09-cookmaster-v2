@@ -35,7 +35,7 @@ const exclude = async (token, id) => {
 
 const addImage = async (token, id, filePath) => {
   verifyToken(token);
-  const urlImage = (`localhost:3000/src/uploads/${filePath.split('uploads/')[1]}`);
+  const urlImage = (`localhost:3000/src/${filePath.split('src/')[1]}`);
   const result = await recipes.addImage(id, urlImage);
   return result;
 };
