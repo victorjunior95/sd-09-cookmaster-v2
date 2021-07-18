@@ -14,4 +14,7 @@ router.get('/:id', recipesController.getById);
 // Update a recipe
 router.put('/:id', middlewares.authentication, recipesController.update);
 
+// Remove a recipe
+router.delete('/:id', middlewares.authentication, recipesController.remove);
+
 module.exports = router;

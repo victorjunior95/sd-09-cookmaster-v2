@@ -52,4 +52,14 @@ module.exports = {
 
     return response;
   },
+  async remove(id) {
+    const recipe = new Recipe({ id });
+    const response = await recipe.remove();
+
+    if (!response) {
+      throw new InvalidArgumentError('Invalid entries. Try again again');
+    } else if (!Object.keys(response).length) {
+      throw new NotFoundError('recipe');
+    }
+  },
 };

@@ -44,4 +44,15 @@ module.exports = {
       next(err);
     }
   },
+  async remove(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const response = await recipesService.remove(id);
+
+      res.status(204).json(response);
+    } catch (err) {
+      next(err);
+    }
+  },
 };

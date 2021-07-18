@@ -50,6 +50,23 @@ class Recipe {
       ))
         .then((result) => result.value || {});
   }
+
+  async remove() {
+    if (!ObjectID.isValid(this.id)) return null;
+
+    const { collection: _, ...recipeData } = this;
+
+    return connection()
+      .then((db) => db.collection(this.collection))
+      .then((collection) => collection.findOneAndDelete(
+        { _id: ObjectID(this.id) },
+        {
+          $set: recipeData,
+        },
+        { returnOriginal: false },
+      ))
+        .then((result) => result.value || {});
+  }
 }
 
 module.exports = Recipe;
