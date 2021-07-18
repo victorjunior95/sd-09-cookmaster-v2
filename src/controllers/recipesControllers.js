@@ -7,7 +7,8 @@ const {
 
 const createRecipes = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
-  const { userId } = req.user;
+  const { _id: userId } = req.user;
+
   const newRecipe = await recipesServices.createRecipes(name, ingredients, preparation, userId);
 
   return res.status(CREATED).json(newRecipe);
@@ -28,8 +29,19 @@ const getRecipeById = async (req, res) => {
   return res.status(OK).json(recipe);
 };
 
+const editRecipeById = async (req, res) => {
+  const { id: recipeId } = req.params;
+  const { body: payload } = req;
+  const { _id: userId } = req.user;
+
+  const editedRecipe = await recipesServices.editRecipeById(recipeId, userId, payload);
+
+  return res.status(OK).json(editedRecipe);
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getRecipeById,
+  editRecipeById,
 };

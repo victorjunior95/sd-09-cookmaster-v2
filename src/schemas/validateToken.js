@@ -10,11 +10,15 @@ const {
 
 const getByEmailAndCompareId = async ({ email, _id: id }) => {
   const userGeted = await usersModels.getByEmail({ email });
-  if (!userGeted) return false;
+  if (!userGeted) throw new Error();
 
-  const { _id: userId } = userGeted;
+  let { _id: userId } = userGeted;
 
-  if ((JSON.stringify(userId) !== JSON.stringify(id))) return false;
+  userId = JSON.stringify(userId);
+  id = JSON.stringify(id);
+
+  if (userId !== id) return false;
+  console.log('==========getByEmailAndCompareId ======OK=====');
 
   return userGeted;
 };
@@ -27,11 +31,12 @@ const validateToken = async (req, res, next) => {
   try {
     const userDecoded = jwt.verify(token, SECRET);
 
-    const user = await getByEmailAndCompareId(userDecoded);
+    const userGeted = await getByEmailAndCompareId(userDecoded);
 
-    if (!user) throw new Error();
+    const { password, ...userWithoutPassword } = userGeted;
 
-    req.user = user;
+    req.user = userWithoutPassword;
+    console.log('Estive aqui 1 ==========validateToken===========');
 
     next();
   } catch (error) {
