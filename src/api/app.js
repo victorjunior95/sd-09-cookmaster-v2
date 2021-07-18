@@ -10,6 +10,6 @@ app.get('/', (request, response) => {
 
 app.use(bodyParser.json());
 
-app.get('/users', userController.login);
+app.post('/users', userController.addUser);
 
 module.exports = app;

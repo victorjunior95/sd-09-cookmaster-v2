@@ -1,11 +1,11 @@
 const userModels = require('../Models/user');
 
-const login = async () => {
-    const user = await userModels.login();
+const addUser = async (name, email, password) => {
+    const user = await userModels.addUser(name, email, password);
     console.log(user, 'service');
     return user;
 };
 
 module.exports = {
-    login,
+    addUser,
 };
