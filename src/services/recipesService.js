@@ -18,6 +18,12 @@ const create = async ({ _id }, recipe) => {
   };
 };
 
+const getAll = async () => {
+  const recipes = await recipesModel.getAll();
+  return recipes;
+};
+
 module.exports = {
   create,
+  getAll,
 };

@@ -17,6 +17,7 @@ app.get('/', (request, response) => {
 app.post('/users', rescue(usersController.createUser));
 app.post('/login', rescue(loginController.login));
 app.post('/recipes', rescue(validateToken), rescue(recipesController.create));
+app.get('/recipes', recipesController.getAll);
 
 app.use((err, _req, res, _next) => {
   if (err.status) return res.status(err.status).json({ message: err.message });
