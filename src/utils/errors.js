@@ -26,9 +26,28 @@ const incorrectField = {
   status: 401,
 };
 
+const jwtErr = {
+  response: { 
+    message: 'jwt malformed', 
+  },
+  status: 401,
+};
+
+const notFoundErr = {
+  response: {
+    message: 'recipe not found',
+  },
+  status: 404,
+};
+
+const missingToken = { response: { message: 'missing auth token' }, status: 401 };
+
 module.exports = {
   emptyValuesErr,
   emailExistErr,
   emptyFieldsErr,
   incorrectField,
+  jwtErr,
+  notFoundErr,
+  missingToken,
 };

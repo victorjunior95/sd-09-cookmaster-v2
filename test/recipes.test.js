@@ -699,6 +699,7 @@ describe('7 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
+        console.log(body);
         result = JSON.parse(body);
         expect(result).toHaveProperty('_id');
         expect(result).toHaveProperty('userId');
