@@ -1,15 +1,15 @@
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const create = async (name, ingredients, preparation, userId) =>
   connection().then((db) =>
     db.collection('recipes').insertOne({ name, ingredients, preparation, userId }));
 
-// const getById = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
-//   return connection().then((db) =>
-//     db.collection('recipes').findOne(new ObjectId(id)));
-// };
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection().then((db) =>
+    db.collection('recipes').findOne(new ObjectId(id)));
+};
 
 const getAll = async () => 
   connection() 
@@ -38,4 +38,4 @@ const getAll = async () =>
 //     db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 // };
 
-module.exports = { create, getAll }; // getById, , update, del, addImage };
+module.exports = { create, getAll, getById }; // , , update, del, addImage };

@@ -8,7 +8,7 @@ const userSchemas = require('../schemas');
 const Created = '201';
 // const Unauthorized = '401';
 const OK = '200';
-// const NotFound = '404';
+const NotFound = '404';
 // const NotContent = '204';
 
 // const storage = multer.diskStorage({
@@ -41,12 +41,12 @@ recipesController.get('/', async (_req, res) => {
   res.status(OK).send(recipes);
 });
 
-// recipesController.get('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const recipe = await modelsRecipes.getById(id);
-//   if (!recipe) return res.status(NotFound).json({ message: 'recipe not found' });
-//   res.status(OK).json(recipe);
-// });
+recipesController.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const recipe = await modelsRecipes.getById(id);
+  if (!recipe) return res.status(NotFound).json({ message: 'recipe not found' });
+  res.status(OK).json(recipe);
+});
 
 // recipesController.put('/:id', checkRecipesData(userSchemas), async (req, res) => {
 //   const { id } = req.params;
