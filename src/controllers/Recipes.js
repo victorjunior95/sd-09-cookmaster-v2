@@ -7,7 +7,7 @@ const userSchemas = require('../schemas');
 
 const Created = '201';
 // const Unauthorized = '401';
-// const OK = '200';
+const OK = '200';
 // const NotFound = '404';
 // const NotContent = '204';
 
@@ -36,10 +36,10 @@ recipesController.post('/', checkRecipesData(userSchemas), checkToken, async (re
   res.status(Created).json({ recipe: recipe.ops[0] });
 });
 
-// recipesController.get('/', async (_req, res) => {
-//   const recipes = await modelsRecipes.getAll();
-//   res.status(OK).send(recipes);
-// });
+recipesController.get('/', async (_req, res) => {
+  const recipes = await modelsRecipes.getAll();
+  res.status(OK).send(recipes);
+});
 
 // recipesController.get('/:id', async (req, res) => {
 //   const { id } = req.params;

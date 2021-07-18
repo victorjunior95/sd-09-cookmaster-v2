@@ -11,9 +11,9 @@ const create = async (name, ingredients, preparation, userId) =>
 //     db.collection('recipes').findOne(new ObjectId(id)));
 // };
 
-// const getAll = async () => 
-//   connection() 
-//     .then((db) => db.collection('recipes').find().toArray());
+const getAll = async () => 
+  connection() 
+    .then((db) => db.collection('recipes').find().toArray());
     
 // const update = async (id, name, ingredients, preparation) =>
 //   connection().then((db) =>
@@ -38,4 +38,4 @@ const create = async (name, ingredients, preparation, userId) =>
 //     db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 // };
 
-module.exports = { create }; // getById, getAll, update, del, addImage };
+module.exports = { create, getAll }; // getById, , update, del, addImage };
