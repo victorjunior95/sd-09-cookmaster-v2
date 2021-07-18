@@ -16,6 +16,12 @@ class Recipe {
       .then((col) => col.insertOne({ ...recipeData, userId }))
       .then((result) => result.ops[0]);
   }
+
+  getAll() {
+    return connection()
+      .then((db) => db.collection(this.collection))
+      .then((collection) => collection.find().toArray());
+  }
 }
 
 module.exports = Recipe;

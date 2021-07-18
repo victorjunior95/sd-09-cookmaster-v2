@@ -5,4 +5,7 @@ const middlewares = require('../middlewares');
 // Create a recipe
 router.post('/', middlewares.authentication, recipesController.create);
 
+// Get all recipes
+router.get('/', recipesController.getAll);
+
 module.exports = router;

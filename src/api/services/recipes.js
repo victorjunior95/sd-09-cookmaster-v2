@@ -19,4 +19,11 @@ module.exports = {
 
     return { recipe: response };
   },
+
+  async getAll() {
+    const recipe = new Recipe({});
+    const response = await recipe.getAll();
+
+    return response;
+  },
 };
