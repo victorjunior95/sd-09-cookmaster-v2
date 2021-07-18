@@ -1,5 +1,4 @@
 const { Router } = require('express');
-// const models = require('../models/Users');
 const { findEmail } = require('../models/Users');
 const { generateToken } = require('../services/tokenGenerate');
 const { checkLoginData } = require('../middlewares');
