@@ -31,10 +31,15 @@ const editRecipeById = async (recipeId, userId, payload) => {
 const deleteRecipeById = async (recipeId) => connection()
   .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(recipeId) }));
 
+const getRecipeImagesById = async (imageId) => connection()
+  .then((db) => db.collection('recipes').findOne(ObjectId(imageId)))
+  .then();
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getRecipeById,
   editRecipeById,
   deleteRecipeById,
+  getRecipeImagesById,
 };
