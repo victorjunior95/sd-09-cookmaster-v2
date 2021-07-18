@@ -36,7 +36,7 @@ const checkRecipesData = (validateData) => (req, res, next) => {
     } else {
       const { details } = error;
       const message = details.map((i) => i.message).join(',');
-      res.status(BadRequest).json({ message });
+      return res.status(BadRequest).json({ message });
     }
   };
 
@@ -55,10 +55,10 @@ const checkLoginData = (validateData) => (req, res, next) => {
   
 const checkToken = (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) res.status(Unauthorized).json({ message: msgMissingToken }); 
+  if (!token) return res.status(Unauthorized).json({ message: msgMissingToken }); 
   if (!validateToken(token)) {
-    res.status(Unauthorized).json({ message: msgJWTMalformed });
-  }
+    return res.status(Unauthorized).json({ message: msgJWTMalformed });
+  } 
   next();
 };
 

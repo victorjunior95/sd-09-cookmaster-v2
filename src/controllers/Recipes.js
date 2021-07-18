@@ -2,13 +2,13 @@ const { Router } = require('express');
 // const multer = require('multer');
 const modelsRecipes = require('../models/Recipes');
 const { validateToken } = require('../services/tokenValidate');
-const { checkRecipesData } = require('../middlewares');
+const { checkRecipesData, checkToken } = require('../middlewares');
 const userSchemas = require('../schemas');
 
 const Created = '201';
-const Unauthorized = '401';
-const OK = '200';
-const NotFound = '404';
+// const Unauthorized = '401';
+// const OK = '200';
+// const NotFound = '404';
 // const NotContent = '204';
 
 // const storage = multer.diskStorage({
@@ -26,40 +26,40 @@ const NotFound = '404';
 // const upload = multer({ storage });
 const recipesController = Router();
 
-recipesController.post('/', checkRecipesData(userSchemas), async (req, res) => {
+recipesController.post('/', checkRecipesData(userSchemas), checkToken, async (req, res) => {
   const { name, ingredients, preparation } = req.body;
   const token = req.headers.authorization;
-  if (!token) return res.status(Unauthorized).json({ message: 'jwt malformed' });
+  // if (!token) return res.status(Unauthorized).json({ message: 'jwt malformed' });
   const valid = validateToken(token);
-  if (!valid) return res.status(Unauthorized).json({ message: 'jwt malformed' });
+  // if (!valid) return res.status(Unauthorized).json({ message: 'jwt malformed' });
   const recipe = await modelsRecipes.create(name, ingredients, preparation, valid.idToken);
   res.status(Created).json({ recipe: recipe.ops[0] });
 });
 
-recipesController.get('/', async (_req, res) => {
-  const recipes = await modelsRecipes.getAll();
-  res.status(OK).send(recipes);
-});
+// recipesController.get('/', async (_req, res) => {
+//   const recipes = await modelsRecipes.getAll();
+//   res.status(OK).send(recipes);
+// });
 
-recipesController.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  const recipe = await modelsRecipes.getById(id);
-  if (!recipe) return res.status(NotFound).json({ message: 'recipe not found' });
-  res.status(OK).json(recipe);
-});
+// recipesController.get('/:id', async (req, res) => {
+//   const { id } = req.params;
+//   const recipe = await modelsRecipes.getById(id);
+//   if (!recipe) return res.status(NotFound).json({ message: 'recipe not found' });
+//   res.status(OK).json(recipe);
+// });
 
-recipesController.put('/:id', checkRecipesData(userSchemas), async (req, res) => {
-  const { id } = req.params;
-  const { name, ingredients, preparation } = req.body;
-  const token = req.headers.authorization;
-  let result = '';
-  const valid = validateToken(token);
-  if (valid.idToken || valid.role === 'admin') {
-    const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
-    if (recipe.result.ok) result = await modelsRecipes.getById(id);
-  }
-  res.status(OK).json(result);
-});
+// recipesController.put('/:id', checkRecipesData(userSchemas), async (req, res) => {
+//   const { id } = req.params;
+//   const { name, ingredients, preparation } = req.body;
+//   const token = req.headers.authorization;
+//   let result = '';
+//   const valid = validateToken(token);
+//   if (valid.idToken || valid.role === 'admin') {
+//     const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
+//     if (recipe.result.ok) result = await modelsRecipes.getById(id);
+//   }
+//   res.status(OK).json(result);
+// });
 
 // recipesController.delete('/:id', checkToken, async (req, res) => {
 //   const { id } = req.params;
