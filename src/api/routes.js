@@ -11,11 +11,13 @@ const recipesControllers = require('../controllers/recipesControllers');
 
 const router = express.Router();
 
-router.use('/login', validateLogin, createToken, usersControllers.login);
 router.post('/users', validateUser, usersControllers.createUser);
+router.post('/login', validateLogin, createToken, usersControllers.login);
 router.post('/recipes', validateRecipe, validateToken, recipesControllers.createRecipes);
+
 router.get('/recipes', recipesControllers.getAllRecipes);
 router.get('/recipes/:id', recipesControllers.getRecipeById);
+
 router.put('/recipes/:id', validateToken, authToEdit, recipesControllers.editRecipeById);
 
 module.exports = router;
