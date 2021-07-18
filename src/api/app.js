@@ -15,9 +15,9 @@ app.get('/', (request, response) => {
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use('/users', usersController);
-app.use('/login', loginController);
-app.use('/recipes', recipesController);
+// app.use('/login', loginController);
+// app.use('/recipes', recipesController);
 // app.use('/images', imagesController);
-app.use('/images', express.static(resolve(join(__dirname, '..'), 'uploads')));
+// app.use('/images', express.static(resolve(join(__dirname, '..'), 'uploads')));
 
 module.exports = app;
