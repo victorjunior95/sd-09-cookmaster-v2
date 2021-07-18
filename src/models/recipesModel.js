@@ -16,6 +16,9 @@ const listAll = async () => {
 };
 
 const getRecipeById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
   const recipeById = await connection().then((db) => 
     db.collection(collectionRecipes).findOne(new ObjectId(id)));
     return recipeById;
