@@ -14,7 +14,6 @@ const schema = Joi.object({
 const validateRecipe = (req, res, next) => {
   const { error } = schema.validate(req.body);
   if (error) return res.status(BAD_REQUEST).json({ message: error.message });
-  console.log('==========validateRecipe ======OKI ==== next =====');
 
   next();
 };

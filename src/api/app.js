@@ -14,4 +14,8 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
+app.use((error, _req, _res, _next) =>
+  console.log('Console de erro: ', error)
+);
+
 module.exports = app;
