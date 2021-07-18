@@ -1,13 +1,20 @@
 const usersService = require('../services/usersService');
 
-const createUser = async (req, res) => {
-  const user = req.body;
+const createUser = async (req, res, next) => {
+  try {
+    const user = req.body;
 
-  const registrationResult = await usersService.createUser(user);
+    const registrationResult = await usersService.createUser(user);
 
-  return res.status(registrationResult.status).json({
-    user: registrationResult.result
-  });
+    // if (registrationResult.message) return next()
+
+    return res.status(registrationResult.status).json({
+      user: registrationResult.result
+    });
+  } catch (err) {
+    console.log('Error user Controller: ', err.message);
+    return next(err);
+  }
 }
 
 module.exports = {
