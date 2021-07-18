@@ -1,15 +1,16 @@
 const express = require('express');
 const rescue = require('express-rescue');
+
 const router = express.Router();
 
+const multer = require('multer');
 const recipesServices = require('../services/recipesService');
 
 const { validateRecipe } = require('../schemas/recipesSchema');
 const { validateJWT } = require('../auth/validateJWT');
-const StatusCode = require('../schemas/StatusCode.js');
+const StatusCode = require('../schemas/StatusCode');
 
 /* --------------- multer and storage to upload files --------------- */
-const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -19,65 +20,68 @@ const storage = multer.diskStorage({
     callback(null, `${req.params.id}.jpeg`);
   },
   path: (req, file, callback) => {
-    callback(null, );
-  }
+    callback(null);
+  },
 });
 const uploads = multer({ storage });
 
 /* --------------- multer and storage to upload files --------------- */
 
-router.get('/', rescue(async(_req, res) => {
+router.get('/', rescue(async (_req, res) => {
   const recipes = await recipesServices.getAllRecipes();
 
-  if (!recipes) return res.status(StatusCode.NOT_FOUND).json({ 
-    message: 'recipes not found' 
-  });
+  if (!recipes) {
+return res.status(StatusCode.NOT_FOUND).json({ 
+    message: 'recipes not found', 
+  }); 
+}
 
   res.status(StatusCode.OK).json(recipes);
 }));
 
-router.get('/:id', rescue(async(req, res) => {
+router.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const recipe = await recipesServices.getRecipeById(id);
 
-  if (!recipe) return res.status(StatusCode.NOT_FOUND).json({ 
-    message: 'recipe not found' 
-  });
+  if (!recipe) {
+ return res.status(StatusCode.NOT_FOUND).json({ 
+    message: 'recipe not found', 
+  }); 
+}
 
   res.status(StatusCode.OK).json(recipe);
 }));
 
-router.post('/', validateRecipe, validateJWT, rescue(async(req, res) => {
+router.post('/', validateRecipe, validateJWT, rescue(async (req, res) => {
   const { name, ingredients, preparation } = req.body;
-  const userId = req._id;
+  const { _id } = req;
   const createdNewRecipe = await recipesServices
-    .createRecipe(name, ingredients, preparation, userId);
+    .createRecipe(name, ingredients, preparation, _id);
 
   res.status(StatusCode.CREATED).json(createdNewRecipe);
 }));
 
-router.put('/:id', validateJWT, rescue(async(req, res) => {
+router.put('/:id', validateJWT, rescue(async (req, res) => {
   const { id } = req.params;
   const recipe = req.body;
-  const user = req.user;
-  const userId = user._id;
+  const { _id } = req;
 
   const updatedRecipe = await recipesServices
-    .updateRecipeById(id, recipe, userId);
+    .updateRecipeById(id, recipe, _id);
 
   res.status(StatusCode.OK).json(updatedRecipe);
 }));
 
-router.delete('/:id', validateJWT, rescue(async(req, res) => {
+router.delete('/:id', validateJWT, rescue(async (req, res) => {
   const { id } = req.params;
-  const user = req.user;
+  const { user } = req;
 
   await recipesServices.deleteRecipeById(id, user);
 
-  res.status(StatusCode.NO_CONTENT).json({ message: 'success '});
+  res.status(StatusCode.NO_CONTENT).json({ message: 'success ' });
 }));
 
-router.put('/:id/image', validateJWT, uploads.single('image'), rescue(async(req, res) => {
+router.put('/:id/image', validateJWT, uploads.single('image'), rescue(async (req, res) => {
   const { path } = req.file;
   const { id } = req.params;
   const { host } = req.headers;

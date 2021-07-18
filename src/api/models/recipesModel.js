@@ -1,5 +1,5 @@
-const connection = require('./connection');
 const { ObjectId } = require('mongodb');
+const connection = require('./connection');
 
 const getAll = async () => connection()
   .then((db) => db.collection('recipes').find().toArray())
@@ -16,8 +16,8 @@ const updateById = async (id, recipeData, userId) => connection()
       { $set: { 
         name: recipeData.name, 
         ingredients: recipeData.ingredients, 
-        preparation: recipeData.preparation 
-      } }
+        preparation: recipeData.preparation, 
+      } },
     ))
   .then(() => ({ _id: id, ...recipeData, userId }));
 
@@ -31,14 +31,14 @@ const create = async (name, ingredients, preparation, userId) => connection()
       ingredients,
       preparation,
       userId,
-    }
+    },
   }));
 
 const uploadImage = async (id, image) => connection()
   .then((db) => db.collection('recipes')
     .updateOne(
       { _id: ObjectId(id) },
-      { $set: { image } }
+      { $set: { image } },
     ));
 
 const deleteById = async (id) => connection()
@@ -50,5 +50,5 @@ module.exports = {
   updateById,
   create,
   uploadImage,
-  deleteById
+  deleteById,
 };

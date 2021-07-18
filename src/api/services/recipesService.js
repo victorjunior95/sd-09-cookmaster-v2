@@ -1,5 +1,5 @@
-const recipesModel = require('../models/recipesModel');
 const { ObjectId } = require('mongodb');
+const recipesModel = require('../models/recipesModel');
 
 const getAllRecipes = async () => recipesModel.getAll();
 
@@ -8,7 +8,7 @@ const getRecipeById = async (id) => {
 
   const recipe = await recipesModel.findById(id);
   
-  if(!recipe) return null;
+  if (!recipe) return null;
 
   return recipe;
 };
@@ -18,7 +18,7 @@ const updateRecipeById = async (id, recipeData, userId) => {
 
   const recipe = await recipesModel.updateById(id, recipeData, userId);
   
-  if(!recipe) return null;
+  if (!recipe) return null;
 
   return recipe;
 };
@@ -34,7 +34,7 @@ const deleteRecipeById = async (recipeId, user) => {
     await recipesModel.deleteById(recipeId);
   } else {
     return { message: 'something bad happened' };
-  };
+  }
 };
 
 const createRecipe = async (name, ingredients, preparation, userId) =>
@@ -54,5 +54,5 @@ module.exports = {
   updateRecipeById,
   deleteRecipeById,
   createRecipe,
-  uploadRecipeImage
+  uploadRecipeImage,
 };
