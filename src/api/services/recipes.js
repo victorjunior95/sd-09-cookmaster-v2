@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const { Recipe } = require('../models');
-const { InvalidArgumentError } = require('../errors');
+const { InvalidArgumentError, NotFoundError } = require('../errors');
 
 const RecipeSchema = Joi.object({
   name: Joi.string().required(),
@@ -19,10 +19,19 @@ module.exports = {
 
     return { recipe: response };
   },
-
   async getAll() {
     const recipe = new Recipe({});
     const response = await recipe.getAll();
+
+    return response;
+  },
+  async getById(id) {
+    const recipe = new Recipe({ id });
+    const response = await recipe.getById();
+
+    if (!response || !Object.keys(response).length) {
+      throw new NotFoundError('recipe');
+    }
 
     return response;
   },

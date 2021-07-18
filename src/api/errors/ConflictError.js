@@ -7,6 +7,7 @@ class ConflictError extends Error {
   constructor(field) {
     super();
     this.name = 'ConflictError';
+    this.http = 409;
     this.message = `${field} already registered`;
   }
 }

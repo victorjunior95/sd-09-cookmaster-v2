@@ -7,6 +7,7 @@ class InvalidArgumentError extends Error {
   constructor(message) {
     super();
     this.name = 'InvalidArgumentError';
+    this.http = 400;
     this.message = message;
   }
 }

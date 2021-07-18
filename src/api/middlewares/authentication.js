@@ -1,4 +1,4 @@
-const { JsonWebTokenError } = require('jsonwebtoken');
+const { JWTError } = require('../errors');
 const tokens = require('../tokens');
 const { User } = require('../models');
 
@@ -6,11 +6,12 @@ module.exports = (req, _res, next) => {
   try {
     const token = req.headers.authorization;
     const payload = tokens.access.verify(token);
+    console.log(payload);
 
     const user = new User(payload);
     const userDB = user.getByEmail();
 
-    if (!userDB) throw new JsonWebTokenError();
+    if (!userDB) throw new JWTError();
 
     const { password: _, ...userData } = userDB;
     req.user = userData;

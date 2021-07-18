@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { JWTError } = require('../errors');
 
 const JWT_SECRET = 'juroSolenementeNaoFazerNadaDeBom';
 
@@ -6,9 +7,13 @@ const createJWT = (payload, [timeAmount, timeUnit]) => (
   jwt.sign(payload, JWT_SECRET, { expiresIn: timeAmount + timeUnit })
 );
 
-const verifyJWT = (token) => (
-  jwt.verify(token, JWT_SECRET)
-);
+const verifyJWT = (token) => jwt.verify(token, JWT_SECRET, (error, decoded) => {
+    if (error) {
+      throw new JWTError();
+    }
+
+    return decoded;
+  });
 
 module.exports = {
   access: {

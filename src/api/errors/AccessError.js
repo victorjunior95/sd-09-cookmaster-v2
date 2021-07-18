@@ -6,6 +6,7 @@ class AccessError extends Error {
   constructor(message) {
     super();
     this.name = 'AccessError';
+    this.http = 401;
     this.message = message;
   }
 }

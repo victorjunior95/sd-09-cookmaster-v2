@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const connection = require('./connection');
 
 class Recipe {
@@ -6,6 +7,7 @@ class Recipe {
     this.name = recipe.name;
     this.ingredients = recipe.ingredients;
     this.preparation = recipe.preparation;
+    this.id = recipe.id;
   }
 
   async create(userId) {
@@ -21,6 +23,15 @@ class Recipe {
     return connection()
       .then((db) => db.collection(this.collection))
       .then((collection) => collection.find().toArray());
+  }
+
+  async getById() {
+    if (!ObjectID.isValid(this.id)) return null;
+
+    return connection()
+      .then((db) => db.collection(this.collection))
+      .then((collection) => collection.findOne({ _id: ObjectID(this.id) }))
+      .then((result) => result || {});
   }
 }
 
