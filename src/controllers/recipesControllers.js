@@ -1,7 +1,7 @@
 const recipesServices = require('../services/recipesServices');
 
 const {
-  code: { CREATED, OK, NOT_FOUND },
+  code: { CREATED, OK, NOT_FOUND, NO_CONTENT },
   message: { RECIPE_NOT_FOUND },
 } = require('../utils');
 
@@ -22,8 +22,8 @@ const getAllRecipes = async (req, res) => {
 };
 
 const getRecipeById = async (req, res) => {
-  const { id } = req.params;
-  const recipe = await recipesServices.getRecipeById(id);
+  const { id: recipeId } = req.params;
+  const recipe = await recipesServices.getRecipeById(recipeId);
   if (!recipe) return res.status(NOT_FOUND).json({ message: RECIPE_NOT_FOUND });
 
   return res.status(OK).json(recipe);
@@ -39,9 +39,17 @@ const editRecipeById = async (req, res) => {
   return res.status(OK).json(editedRecipe);
 };
 
+const deleteRecipeById = async (req, res) => {
+  const { id: recipeId } = req.params;
+
+  await recipesServices.deleteRecipeById(recipeId);
+  return res.status(NO_CONTENT).json();
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getRecipeById,
   editRecipeById,
+  deleteRecipeById,
 };

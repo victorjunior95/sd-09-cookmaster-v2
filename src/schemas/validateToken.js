@@ -36,7 +36,6 @@ const validateToken = async (req, res, next) => {
     const { password, ...userWithoutPassword } = userGeted;
 
     req.user = userWithoutPassword;
-    console.log('Estive aqui 1 ==========validateToken===========');
 
     next();
   } catch (error) {
