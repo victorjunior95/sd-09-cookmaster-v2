@@ -1,6 +1,3 @@
-// const { ObjectId } = require('mongodb');
-// const Joi = require('joi');
-// const { string } = require('joi');
 const { findEmail } = require('../models/Users');
 const { validateToken } = require('../services/tokenValidate');
 
