@@ -7,7 +7,7 @@ const {
 
 const authToEdit = async (req, res, next) => {
   const { id: recipeId } = req.params;
-  const { role } = req.user;
+  // const { role } = req.user;
   let { _id: userId } = req.user;
 
   // if (role === 'admin') next();
