@@ -1,9 +1,10 @@
 const express = require('express');
 const recipesService = require('../services/recipesService');
+const validateToken = require('../middlewares/validateToken');
 
 const routerRecipes = express.Router();
 
-routerRecipes.post('/', async (req, res, next) => {
+routerRecipes.post('/', validateToken, async (req, res, next) => {
   const { _id } = req.user;
   const { name, ingredients, preparation } = req.body;
 try {
@@ -17,4 +18,12 @@ try {
   }
 });
 
+routerRecipes.get('/', async (_req, res, next) => {
+  try {
+    const recipes = await recipesService.listAllRecipes();
+    return res.status(recipes.status).json(recipes.recipesAll);
+  } catch (error) {
+    return next(error);
+  }
+}); 
 module.exports = routerRecipes;

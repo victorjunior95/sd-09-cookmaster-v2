@@ -3,6 +3,7 @@ const recipesModel = require('../models/recipesModel');
 
 const HTTP_BADREQ_STATUS = 400;
 const HTTP_CREATED_STATUS = 201;
+const HTTP_OK_STATUS = 200;
 
 const schemaValidateRecipes = Joi.object({
   name: Joi.string()
@@ -26,4 +27,11 @@ const create = async (name, ingredients, preparation, userId) => {
   };
 };
 
-module.exports = { create };
+const listAllRecipes = async () => {
+  const recipesAll = await recipesModel.listAll();
+  return {
+    status: HTTP_OK_STATUS, recipesAll,
+  };
+};
+
+module.exports = { create, listAllRecipes };
