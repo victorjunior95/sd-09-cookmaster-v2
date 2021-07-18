@@ -15,6 +15,20 @@ const create = async (req, res, next) => {
   }
 };
 
+const edit = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const recipe = req.body;
+    const { user } = req;
+
+    const token = await recipesServices.edit(id, recipe, user);
+
+    return res.status(OK_STATUS).json(token);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getAll = async (_req, res, _next) => {
   const recipes = await recipesServices.getAll();
 
@@ -35,6 +49,7 @@ const getById = async (req, res, next) => {
 
 module.exports = {
   create,
+  edit,
   getAll,
   getById,
 };

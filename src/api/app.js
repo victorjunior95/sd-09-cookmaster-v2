@@ -24,6 +24,8 @@ app.get('/recipes', recipesController.getAll);
 
 app.get('/recipes/:id', recipesController.getById);
 
+app.put('/recipes/:id', validateToken, recipesController.edit);
+
 app.use(sendErrorMessage);
 
 module.exports = app;

@@ -20,6 +20,19 @@ const create = async (recipe) => {
   };
 };
 
+const edit = (id, recipe) => {
+  const { name, ingredients, preparation, userId } = recipe;
+ 
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
+
+  return connection()
+    .then((db) => db.collection('recipes').updateOne({ _id: ObjectId(id) },
+      { $set: { name, ingredients, preparation, userId } }))
+    .then(() => ({ _id: id, name, ingredients, preparation, userId }));
+};
+
 const getAll = () => connection()
     .then((db) => db.collection('recipes').find().toArray());
 
@@ -51,6 +64,7 @@ const remove = async (id) => {
   
 module.exports = {
   create,
+  edit,
   getAll,
   getById,
   remove,

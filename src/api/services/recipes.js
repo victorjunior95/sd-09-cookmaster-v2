@@ -19,7 +19,7 @@ const recipeSchema = joi.object({
 const create = async (recipe, user) => {
   const { name, ingredients, preparation } = recipe;
 
-   const validateRecipe = recipeSchema.validate(recipe);
+  const validateRecipe = recipeSchema.validate(recipe);
 
   if (validateRecipe.error) {
     throw messageError(BAD_REQUEST_STATUS, INVALID_ENTRIES);
@@ -37,6 +37,28 @@ const create = async (recipe, user) => {
   return newRecipe;
 };
 
+const edit = async (id, recipe, user) => {
+  const { name, ingredients, preparation } = recipe;
+  const { _id: userId } = user;
+
+  const validateRecipe = recipeSchema.validate(recipe);
+
+  if (validateRecipe.error) {
+    throw messageError(BAD_REQUEST_STATUS, INVALID_ENTRIES);
+  }
+
+  const completeRecipe = {
+    name,
+    ingredients,
+    preparation,
+    userId,
+  };
+
+  const updateRecipe = await recipesModels.edit(id, completeRecipe);
+
+  return updateRecipe;
+};
+
 const getAll = async () => recipesModels.getAll();
 
 const getById = async (id) => {
@@ -51,6 +73,7 @@ const getById = async (id) => {
 
 module.exports = {
   create,
+  edit,
   getAll,
   getById,
 };
