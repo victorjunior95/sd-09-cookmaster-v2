@@ -48,18 +48,18 @@ recipesController.get('/:id', async (req, res) => {
   res.status(OK).json(recipe);
 });
 
-// recipesController.put('/:id', checkRecipesData(userSchemas), async (req, res) => {
-//   const { id } = req.params;
-//   const { name, ingredients, preparation } = req.body;
-//   const token = req.headers.authorization;
-//   let result = '';
-//   const valid = validateToken(token);
-//   if (valid.idToken || valid.role === 'admin') {
-//     const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
-//     if (recipe.result.ok) result = await modelsRecipes.getById(id);
-//   }
-//   res.status(OK).json(result);
-// });
+recipesController.put('/:id', checkRecipesData(userSchemas), checkToken, async (req, res) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const token = req.headers.authorization;
+  let result = '';
+  const valid = validateToken(token);
+  if (valid.idToken || valid.role === 'admin') {
+    const recipe = await modelsRecipes.update(id, name, ingredients, preparation);
+    if (recipe.result.ok) result = await modelsRecipes.getById(id);
+  }
+  res.status(OK).json(result);
+});
 
 recipesController.delete('/:id', checkToken, async (req, res) => {
   const { id } = req.params;

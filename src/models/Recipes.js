@@ -15,13 +15,13 @@ const getAll = async () =>
   connection() 
     .then((db) => db.collection('recipes').find().toArray());
     
-// const update = async (id, name, ingredients, preparation) =>
-//   connection().then((db) =>
-//     db.collection('recipes')
-//       .updateOne(
-//         { _id: ObjectId(id) },
-//         { $set: { name, ingredients, preparation } },
-//       ));
+const update = async (id, name, ingredients, preparation) =>
+  connection().then((db) =>
+    db.collection('recipes')
+      .updateOne(
+        { _id: ObjectId(id) },
+        { $set: { name, ingredients, preparation } },
+      ));
 
 // const addImage = async (id, image) =>
 //   connection().then((db) =>
@@ -38,4 +38,4 @@ const del = async (id) => {
     db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 };
 
-module.exports = { create, getAll, getById, del }; // , , update, , addImage };
+module.exports = { create, getAll, getById, del, update }; // , , , , addImage };
