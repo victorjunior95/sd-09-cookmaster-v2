@@ -1,4 +1,4 @@
-const { CREATED_STATUS, OK_STATUS } = require('../middwares/httpStatus');
+const { CREATED_STATUS, OK_STATUS, NO_CONTENT_STATUS } = require('../middwares/httpStatus');
 
 const recipesServices = require('../services/recipes');
 
@@ -47,9 +47,22 @@ const getById = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await recipesServices.getById(id);
+
+    return res.status(NO_CONTENT_STATUS).json();
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   create,
   edit,
   getAll,
   getById,
+  remove,
 };
