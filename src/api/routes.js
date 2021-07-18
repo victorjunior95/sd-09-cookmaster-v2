@@ -11,7 +11,7 @@ const recipesControllers = require('../controllers/recipesControllers');
 
 const router = express.Router();
 
-router.post('/users', validateUser, usersControllers.createUser);
+router.use('/users', validateUser, usersControllers.createUser);
 router.post('/login', validateLogin, createToken, usersControllers.login);
 router.post('/recipes', validateRecipe, validateToken, recipesControllers.createRecipes);
 
