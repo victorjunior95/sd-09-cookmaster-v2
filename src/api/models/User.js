@@ -6,6 +6,7 @@ class User {
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
+    this.role = user.role;
   }
 
   getByEmail() {
@@ -23,7 +24,7 @@ class User {
 
     return connection()
       .then((db) => db.collection(this.collection))
-      .then((col) => col.insertOne({ ...user, role: 'user' }))
+      .then((col) => col.insertOne({ ...user }))
       .then((result) => result.ops[0]);
   }
 
