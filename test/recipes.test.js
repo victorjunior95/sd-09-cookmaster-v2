@@ -1,192 +1,192 @@
-// const frisby = require('frisby');
-// const { MongoClient } = require('mongodb');
-// const fs = require('fs');
-// const path = require('path');
+const frisby = require('frisby');
+const { MongoClient } = require('mongodb');
+const fs = require('fs');
+const path = require('path');
 
-// const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
-// const url = 'http://localhost:3000';
+const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
+const url = 'http://localhost:3000';
 
-// describe('3 - Crie um endpoint para o cadastro de receitas', () => {
-//   let connection;
-//   let db;
+describe('3 - Crie um endpoint para o cadastro de receitas', () => {
+  let connection;
+  let db;
 
-//   beforeAll(async () => {
-//     connection = await MongoClient.connect(mongoDbUrl, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     db = connection.db('Cookmaster');
-//   });
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('Cookmaster');
+  });
 
-//   beforeEach(async () => {
-//     await db.collection('users').deleteMany({});
-//     await db.collection('recipes').deleteMany({});
-//     const users = [
-//       { name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' },
-//       {
-//         name: 'Erick Jacquin',
-//         email: 'erickjacquin@gmail.com',
-//         password: '12345678',
-//         role: 'user',
-//       },
-//     ];
-//     await db.collection('users').insertMany(users);
-//   });
+  beforeEach(async () => {
+    await db.collection('users').deleteMany({});
+    await db.collection('recipes').deleteMany({});
+    const users = [
+      { name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' },
+      {
+        name: 'Erick Jacquin',
+        email: 'erickjacquin@gmail.com',
+        password: '12345678',
+        role: 'user',
+      },
+    ];
+    await db.collection('users').insertMany(users);
+  });
 
-//   afterAll(async () => {
-//     await connection.close();
-//   });
+  afterAll(async () => {
+    await connection.close();
+  });
 
-//   it('Será validado que não é possível cadastrar receita sem o campo "name"', async () => {
-//     await frisby
-//       .post(`${url}/login/`, {
-//         email: 'erickjacquin@gmail.com',
-//         password: '12345678',
-//       })
-//       .expect('status', 200)
-//       .then((response) => {
-//         const { body } = response;
-//         const result = JSON.parse(body);
-//         return frisby
-//           .setup({
-//             request: {
-//               headers: {
-//                 Authorization: result.token,
-//                 'Content-Type': 'application/json',
-//               },
-//             },
-//           })
-//           .post(`${url}/recipes`, {
-//             ingredients: 'Frango',
-//             preparation: '10 min no forno',
-//           })
-//           .expect('status', 400)
-//           .then((responseLogin) => {
-//             const { json } = responseLogin;
-//             expect(json.message).toBe('Invalid entries. Try again.');
-//           });
-//       });
-//   });
+  it('Será validado que não é possível cadastrar receita sem o campo "name"', async () => {
+    await frisby
+      .post(`${url}/login/`, {
+        email: 'erickjacquin@gmail.com',
+        password: '12345678',
+      })
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post(`${url}/recipes`, {
+            ingredients: 'Frango',
+            preparation: '10 min no forno',
+          })
+          .expect('status', 400)
+          .then((responseLogin) => {
+            const { json } = responseLogin;
+            expect(json.message).toBe('Invalid entries. Try again.');
+          });
+      });
+  });
 
-//   it('Será validado que não é possível cadastrar receita sem o campo "preparation"', async () => {
-//     await frisby
-//       .post(`${url}/login/`, {
-//         email: 'erickjacquin@gmail.com',
-//         password: '12345678',
-//       })
-//       .expect('status', 200)
-//       .then((response) => {
-//         const { body } = response;
-//         const result = JSON.parse(body);
-//         return frisby
-//           .setup({
-//             request: {
-//               headers: {
-//                 Authorization: result.token,
-//                 'Content-Type': 'application/json',
-//               },
-//             },
-//           })
-//           .post(`${url}/recipes`, {
-//             name: 'Frango assado',
-//             ingredients: 'Frango',
-//           })
-//           .expect('status', 400)
-//           .then((responseLogin) => {
-//             const { json } = responseLogin;
-//             expect(json.message).toBe('Invalid entries. Try again.');
-//           });
-//       });
-//   });
+  it('Será validado que não é possível cadastrar receita sem o campo "preparation"', async () => {
+    await frisby
+      .post(`${url}/login/`, {
+        email: 'erickjacquin@gmail.com',
+        password: '12345678',
+      })
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post(`${url}/recipes`, {
+            name: 'Frango assado',
+            ingredients: 'Frango',
+          })
+          .expect('status', 400)
+          .then((responseLogin) => {
+            const { json } = responseLogin;
+            expect(json.message).toBe('Invalid entries. Try again.');
+          });
+      });
+  });
 
-//   it('Será validado que não é possível cadastrar receita sem o campo "ingredients"', async () => {
-//     await frisby
-//       .post(`${url}/login/`, {
-//         email: 'erickjacquin@gmail.com',
-//         password: '12345678',
-//       })
-//       .expect('status', 200)
-//       .then((response) => {
-//         const { body } = response;
-//         const result = JSON.parse(body);
-//         return frisby
-//           .setup({
-//             request: {
-//               headers: {
-//                 Authorization: result.token,
-//                 'Content-Type': 'application/json',
-//               },
-//             },
-//           })
-//           .post(`${url}/recipes`, {
-//             name: 'Frango assado',
-//             preparation: '10 min no forno',
-//           })
-//           .expect('status', 400)
-//           .then((responseLogin) => {
-//             const { json } = responseLogin;
-//             expect(json.message).toBe('Invalid entries. Try again.');
-//           });
-//       });
-//   });
+  it('Será validado que não é possível cadastrar receita sem o campo "ingredients"', async () => {
+    await frisby
+      .post(`${url}/login/`, {
+        email: 'erickjacquin@gmail.com',
+        password: '12345678',
+      })
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post(`${url}/recipes`, {
+            name: 'Frango assado',
+            preparation: '10 min no forno',
+          })
+          .expect('status', 400)
+          .then((responseLogin) => {
+            const { json } = responseLogin;
+            expect(json.message).toBe('Invalid entries. Try again.');
+          });
+      });
+  });
 
-//   it('Será validado que não é possível cadastrar uma receita com token invalido', async () => {
-//     await frisby
-//       .setup({
-//         request: {
-//           headers: {
-//             Authorization: '6437658488',
-//             'Content-Type': 'application/json',
-//           },
-//         },
-//       })
-//       .post(`${url}/recipes`, {
-//         name: 'Frango do jacquin',
-//         ingredients: 'Frango',
-//         preparation: '10 min no forno',
-//       })
-//       .expect('status', 401)
-//       .then((responseLogin) => {
-//         const { json } = responseLogin;
-//         expect(json.message).toBe('jwt malformed');
-//       });
-//   });
+  it('Será validado que não é possível cadastrar uma receita com token invalido', async () => {
+    await frisby
+      .setup({
+        request: {
+          headers: {
+            Authorization: '6437658488',
+            'Content-Type': 'application/json',
+          },
+        },
+      })
+      .post(`${url}/recipes`, {
+        name: 'Frango do jacquin',
+        ingredients: 'Frango',
+        preparation: '10 min no forno',
+      })
+      .expect('status', 401)
+      .then((responseLogin) => {
+        const { json } = responseLogin;
+        expect(json.message).toBe('jwt malformed');
+      });
+  });
 
-//   it('Será validado que é possível cadastrar uma receita com sucesso', async () => {
-//     await frisby
-//       .post(`${url}/login/`, {
-//         email: 'erickjacquin@gmail.com',
-//         password: '12345678',
-//       })
-//       .expect('status', 200)
-//       .then((response) => {
-//         const { body } = response;
-//         const result = JSON.parse(body);
-//         return frisby
-//           .setup({
-//             request: {
-//               headers: {
-//                 Authorization: result.token,
-//                 'Content-Type': 'application/json',
-//               },
-//             },
-//           })
-//           .post(`${url}/recipes`, {
-//             name: 'Frango do jacquin',
-//             ingredients: 'Frango',
-//             preparation: '10 min no forno',
-//           })
-//           .expect('status', 201)
-//           .then((responseLogin) => {
-//             const { json } = responseLogin;
-//             expect(json.recipe).toHaveProperty('_id');
-//             expect(json.recipe.name).toBe('Frango do jacquin');
-//             expect(json.recipe.ingredients).toBe('Frango');
-//             expect(json.recipe.preparation).toBe('10 min no forno');
-//           });
-//       });
-//   });
-// });
+  it('Será validado que é possível cadastrar uma receita com sucesso', async () => {
+    await frisby
+      .post(`${url}/login/`, {
+        email: 'erickjacquin@gmail.com',
+        password: '12345678',
+      })
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: result.token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post(`${url}/recipes`, {
+            name: 'Frango do jacquin',
+            ingredients: 'Frango',
+            preparation: '10 min no forno',
+          })
+          .expect('status', 201)
+          .then((responseLogin) => {
+            const { json } = responseLogin;
+            expect(json.recipe).toHaveProperty('_id');
+            expect(json.recipe.name).toBe('Frango do jacquin');
+            expect(json.recipe.ingredients).toBe('Frango');
+            expect(json.recipe.preparation).toBe('10 min no forno');
+          });
+      });
+  });
+});
 
 // describe('4 - Crie um endpoint para a listagem de receitas', () => {
 //   let connection;
