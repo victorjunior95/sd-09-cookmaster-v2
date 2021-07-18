@@ -32,10 +32,10 @@ const getAll = async () =>
 //         { $set: { image } },
 //       ));
 
-// const del = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
-//   return connection().then((db) =>
-//     db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
-// };
+const del = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection().then((db) =>
+    db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
+};
 
-module.exports = { create, getAll, getById }; // , , update, del, addImage };
+module.exports = { create, getAll, getById, del }; // , , update, , addImage };
