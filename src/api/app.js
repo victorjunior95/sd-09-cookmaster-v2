@@ -12,6 +12,6 @@ app.get('/', (request, response) => {
 app.use(bodyParser.json());
 
 app.post('/users', userController.addUser);
-app.post('/login', loginController.login);
+app.post('/login', loginController);
 
 module.exports = app;
