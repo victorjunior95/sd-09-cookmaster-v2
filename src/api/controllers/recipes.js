@@ -32,4 +32,16 @@ module.exports = {
       next(err);
     }
   },
+  async update(req, res, next) {
+    try {
+      const { id } = req.params;
+      const payload = req.body;
+
+      const response = await recipesService.update({ ...payload, id });
+
+      res.status(200).json(response);
+    } catch (err) {
+      next(err);
+    }
+  },
 };

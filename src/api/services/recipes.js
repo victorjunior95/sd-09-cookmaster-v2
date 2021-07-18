@@ -6,6 +6,7 @@ const RecipeSchema = Joi.object({
   name: Joi.string().required(),
   ingredients: Joi.string().required(),
   preparation: Joi.string().required(),
+  id: Joi.string(),
 });
 
 module.exports = {
@@ -30,6 +31,22 @@ module.exports = {
     const response = await recipe.getById();
 
     if (!response || !Object.keys(response).length) {
+      throw new NotFoundError('recipe');
+    }
+
+    return response;
+  },
+  async update(payload) {
+    const { error } = RecipeSchema.validate(payload);
+
+    if (error) throw new InvalidArgumentError('Invalid entries. Try again again');
+
+    const recipe = new Recipe(payload);
+    const response = await recipe.update();
+
+    if (!response) {
+      throw new InvalidArgumentError('Invalid entries. Try again again');
+    } else if (!Object.keys(response).length) {
       throw new NotFoundError('recipe');
     }
 

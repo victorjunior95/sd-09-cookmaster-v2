@@ -11,4 +11,7 @@ router.get('/', recipesController.getAll);
 // Get recipe by ID
 router.get('/:id', recipesController.getById);
 
+// Update a recipe
+router.put('/:id', middlewares.authentication, recipesController.update);
+
 module.exports = router;

@@ -1,9 +1,11 @@
 class JWTError extends Error {
-  constructor() {
+  constructor(message) {
     super();
     this.name = 'JWTError';
     this.http = 401;
-    this.message = 'jwt malformed';
+    this.message = message === 'jwt must be provided'
+      ? 'missing auth token'
+      : message;
   }
 }
 

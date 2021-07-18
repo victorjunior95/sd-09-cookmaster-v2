@@ -13,7 +13,7 @@ const createJWT = (payload, [timeAmount, timeUnit]) => (
 // https://github.com/auth0/node-jsonwebtoken#jsonwebtokenerror
 const verifyJWT = (token) => jwt.verify(token, JWT_SECRET, (error, decoded) => {
     if (error) {
-      throw new JWTError();
+      throw new JWTError(error.message);
     }
 
     return decoded;
