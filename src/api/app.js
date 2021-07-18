@@ -24,6 +24,8 @@ app.post('/recipes', rescue(controllers.createRecipeController));
 
 app.put('/recipes/:id', rescue(controllers.updateRecipeController));
 
+app.delete('/recipes/:id', rescue(controllers.deleteRecipeController));
+
 app.use(middlewares);
 
 module.exports = app;

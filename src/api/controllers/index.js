@@ -3,7 +3,8 @@ const loginController = require('./loginControllers');
 const createRecipeController = require('./createRecipeControllers');
 const getRecipesAllController = require('./getRecipesAllControllers');
 const getRecipeByIdController = require('./getRecipeByIdControllers');
-const updateRecipeController = require('./updateRecipeCrontrollers');
+const updateRecipeController = require('./updateRecipeControllers');
+const deleteRecipeController = require('./deleteRecipeControllers');
 
 module.exports = {
   createUserController,
@@ -12,4 +13,5 @@ module.exports = {
   getRecipesAllController,
   getRecipeByIdController,
   updateRecipeController,
+  deleteRecipeController,
 };
