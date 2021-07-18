@@ -1,11 +1,14 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
+const userController = require('../Controllers/userController')
 const app = express();
-
-// Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
-  response.send();
+  response.send('aaa');
 });
-// Não remover esse end-point, ele é necessário para o avaliador
+
+app.use(bodyParser.json());
+app.get('/users', userController.login )
+
+
 
 module.exports = app;
