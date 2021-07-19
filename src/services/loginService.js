@@ -12,6 +12,7 @@ const jwtConfig = {
 
 const userLoginService = async (email, password) => {
   const loginUser = await usersModel.loginUsers(email, password);
+  // console.log('loginUser', loginUser);
   if (!loginUser || loginUser.password !== password) {
     // usuário não existe ou senha inválida
     throw errorMiddleware.validateError(401, 'Incorrect username or password');

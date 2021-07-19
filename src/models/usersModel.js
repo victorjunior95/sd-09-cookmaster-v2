@@ -1,6 +1,5 @@
 const connection = require('./connection');
 
-console.log(connection);
 const createUser = async (email, name, password) => {
   const newUser = await connection()
     .then((db) => db.collection('users')
