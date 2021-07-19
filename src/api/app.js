@@ -5,7 +5,6 @@ require('dotenv').config();
 const users = require('./routes/users');
 const recipes = require('./routes/recipes');
 const { login } = require('./controllers/users');
-const tokenValidate = require('./middlewares/tokenValidate');
 
 const app = express();
 
@@ -17,7 +16,7 @@ app.get('/', (request, response) => {
 
 app.use('/users', users);
 
-app.use('/recipes', tokenValidate, recipes);
+app.use('/recipes', recipes);
 
 app.post('/login', login);
 
