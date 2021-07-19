@@ -5,6 +5,8 @@ const app = express();
 
 const { createUser, login } = require('../controllers/userController');
 
+const { createRecipe } = require('../controllers/recipeController');
+
 app.use(bodyParser.json());
 
 // Não remover esse end-point, ele é necessário para o avaliador
@@ -15,5 +17,6 @@ app.get('/', (request, response) => {
 
 app.post('/users', createUser);
 app.post('/login', login);
+app.post('/recipes', createRecipe);
 
 module.exports = app;
