@@ -10,8 +10,8 @@ const recipeSchema = Joi.object({
 const create = async (recipe) => {
   const { error } = recipeSchema.validate(recipe);
   if (error) return { err: { code: 'invalid_data', message: 'Invalid entries. Try again' } };
-    const newRecipe = await model.create(recipe);
-    return newRecipe;
+    const { insertedId } = await model.create(recipe);
+    return insertedId;
 };
 
 module.exports = { create };
