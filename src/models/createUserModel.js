@@ -94,6 +94,18 @@ const deleteRecipe = async (recipeId) => {
   return recipeDeleted;
 };
 
+const addURLimage = async (recipeId, urlImage) => {
+  if (!ObjectId.isValid(recipeId)) return null;
+  
+  const recipes = await connection()
+    .then((db) => db.collection('recipes').updateOne(
+      { _id: ObjectId(recipeId) },
+      { $set: { image: urlImage } },
+    ));
+
+    return recipes;
+};
+
 module.exports = {
   createUserModel,
   findByemail,
@@ -103,4 +115,5 @@ module.exports = {
   updateRecipe,
   listRecipeByUserId,
   deleteRecipe,
+  addURLimage,
 };

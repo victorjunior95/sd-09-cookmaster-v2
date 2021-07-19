@@ -18,6 +18,7 @@ const {
   listRecipeById,
   updateRecipe,
   deleteRecipe,
+  addURLimage,
 } = require('../models/createUserModel');
 
 const createUserSchema = Joi.object({
@@ -90,16 +91,15 @@ const listRecipeByIdService = async (id) => {
 };
 
 const canChangeRecipe = (role, userID, recipe) => {
-  if (role !== 'adim') return true;
-  if (recipe.userId === userID) return true;
+  if (role === 'admin') return true;
+  if (JSON.stringify(recipe.userId) === JSON.stringify(userID)) return true;
   return false;
 };
 
 const updateRecipeService = async (recipeData, userId, role) => {
   const { ingredients, name, preparation, recipeId } = recipeData;
   const oldRecipe = await listRecipeById(recipeId);
-  
-  // if (!oldRecipe || oldRecipe.userId !== userId) return joiError(missingAuthToken());
+
   if (!canChangeRecipe(role, userId, oldRecipe)) return joiError(missingAuthToken());
   
   await updateRecipe(name, ingredients, preparation, recipeId);
@@ -117,6 +117,17 @@ const deleteRecipeService = async (recipeId, userId, role) => {
   return oldRecipe;
 };
 
+const addURLimageService = async (recipeId, path, role, userId) => {
+  const oldRecipe = await listRecipeById(recipeId);
+
+  if (!canChangeRecipe(role, userId, oldRecipe)) return joiError(missingAuthToken());
+
+  const urlImage = `localhost:3000/${path}`;
+  await addURLimage(recipeId, urlImage);
+  const recipeUpdated = await listRecipeById(recipeId);
+  return recipeUpdated;
+};
+
 module.exports = {
     createUserService,
     validLoginService,
@@ -125,4 +136,5 @@ module.exports = {
     listRecipeByIdService,
     updateRecipeService,
     deleteRecipeService,
+    addURLimageService,
 };

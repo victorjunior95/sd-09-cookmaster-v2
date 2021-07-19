@@ -1,3 +1,4 @@
+// const fs = require('fs').promises;
 const {
     createUserService,
     validLoginService,
@@ -6,7 +7,9 @@ const {
     listRecipeByIdService,
     updateRecipeService,
     deleteRecipeService,
+    addURLimageService,
 } = require('../services/createUserService');
+const upload = require('./upload');
 const { ok, created, noContent } = require('../utils/statusHttp');
 
 const createUserController = async (req, res, next) => {
@@ -94,6 +97,22 @@ const deleteRecipeController = async (req, res, next) => {
     }
 };
 
+const uploadPicture = [
+    upload.single('image'),
+    async (req, res, next) => {
+        try {
+            const { _id, role } = req.user;
+            const { id } = req.params;
+            const { path } = req.file;
+            const userID = _id;
+            const recipeUpdated = await addURLimageService(id, path, role, userID);
+            return res.status(ok).json(recipeUpdated);
+        } catch (error) {
+            return next(error);
+        }
+    }, 
+];
+
 module.exports = {
     createUserController,
     createTokenController,
@@ -102,4 +121,5 @@ module.exports = {
     listRecipeByIdController,
     updateRecipeController,
     deleteRecipeController,
+    uploadPicture,
 };

@@ -8,6 +8,7 @@ const {
   listRecipeByIdController,
   updateRecipeController,
   deleteRecipeController,
+  uploadPicture,
 } = require('../controllers/createUserController');
 const { validateToken } = require('../middlware/validateToken');
 const { errorGeneric } = require('../middlware/errorGeneric');
@@ -35,6 +36,8 @@ app.get('/recipes/:id', listRecipeByIdController);
 app.put('/recipes/:id', validateToken, updateRecipeController);
 
 app.delete('/recipes/:id', validateToken, deleteRecipeController);
+
+app.put('/recipes/:id/image', validateToken, uploadPicture);
 
 app.use(errorGeneric);
 
