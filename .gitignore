@@ -294,4 +294,4 @@ $RECYCLE.BIN/
 **/uploads/*
 !**/uploads/ratinho.jpg
 
-src/api/connection.js
+./src/api/connection.js
