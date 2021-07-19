@@ -29,12 +29,14 @@ const getRecipeById = async (recipeId) => {
 };
 
 const updateRecipe = async (recipeId, recipeInfo) => {
+  const { name, ingredients, preparation } = recipeInfo;
   const updatedRecipe = await connection()
-    .then((db) => db.collection('recipes').updateOne(
+    .then((db) => db.collection('recipes').findOneAndUpdate(
       { _id: ObjectId(recipeId) },
-      { $set: { recipe: recipeInfo } },
+      { $set: { name, ingredients, preparation } },
+      { returnOriginal: false },
       ));
-  return updatedRecipe;
+  return updatedRecipe.value;
 };
 
 module.exports = {

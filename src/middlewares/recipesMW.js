@@ -1,3 +1,4 @@
+// const { ObjectId } = require('mongodb');
 const RecipesServices = require('../services/recipesServices');
 const response = require('./responseCodes');
 
@@ -38,25 +39,41 @@ const getRecipeById = async (req, res, next) => {
   }
 };
 
-const authUser = async (req, res, next) => {
-  const recipeId = req.params.id;
-  const { _id, role } = req.user;
-  try {
-    const foundRecipe = await RecipesServices.getRecipeById(recipeId);
-    if (foundRecipe.userId !== _id || !role === 'admin') return next(foundRecipe);
+// const authUser = async (req, res, next) => {
+//   const recipeId = req.params.id;
+//   const { _id, role } = req.user;
+//   try {
+//     const foundRecipe = await RecipesServices.getRecipeById(recipeId);
+//     if (foundRecipe.userId !== _id || !role === 'admin') return next(foundRecipe);
+//     return next();
+//   } catch (error) {
+//     return error;
+//   }
+// };
+
+const allowEditing = async (req, res, next) => {
+    const { _id: loggedId, role } = req.user;
+    const { userId } = await RecipesServices.getRecipeById(req.params.id);
+    const idtest = loggedId.toString();
+    const idtest2 = userId.toString();
+    if (role === 'admin') return next();
+    if (idtest !== idtest2) {
+      console.log(idtest, idtest2);
+      return res.status(response.UNAUTHORIZED).json({ message: 'jwt malformed' });
+    }
     return next();
-  } catch (error) {
-    return error;
-  }
 };
 
 const updateRecipe = async (req, res, _next) => {
-  const recipeInfo = req.body;
-  const recipeId = req.params.id;
-  const { user } = req;
-
-  const updatedRecipe = await RecipesServices.updateRecipe(recipeId, recipeInfo, user);
-  return res.status(response.STATUS_OK).json(updatedRecipe);
+  try {
+    const recipeInfo = req.body;
+    const recipeId = req.params.id;
+  
+    const updatedRecipe = await RecipesServices.updateRecipe(recipeId, recipeInfo);
+    return res.status(response.STATUS_OK).json(updatedRecipe);
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {
@@ -64,6 +81,7 @@ module.exports = {
   validateRecipe,
   getAllRecipes,
   getRecipeById,
-  authUser,
+  // authUser,
   updateRecipe,
+  allowEditing,
 };

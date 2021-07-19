@@ -40,14 +40,9 @@ const getRecipeById = async (recipeId) => {
   return foundRecipe;
 };
 
-const updateRecipe = async (recipeId, recipeInfo, userId) => {
-  try {
-    const foundRecipe = await RecipesModel.getRecipeById(recipeId);
-    if (foundRecipe.userId !== userId) throw genError(response.UNAUTHORIZED, 'jwt malformed');
-  } catch (error) {
-    return error;
-  }
-};
+const updateRecipe = async (recipeId, recipeInfo) => (
+  RecipesModel.updateRecipe(recipeId, recipeInfo)
+);
 
 module.exports = {
   postRecipe,
