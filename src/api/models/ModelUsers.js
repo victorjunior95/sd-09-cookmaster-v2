@@ -1,8 +1,7 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const create = async ({ name, email, password }) => {
-  const role = 'user';
+const create = async ({ name, email, password, role }) => {
   const connect = await connection();
 
   const createdUser = await connect.collection('users')

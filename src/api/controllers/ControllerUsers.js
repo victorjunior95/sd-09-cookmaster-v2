@@ -7,7 +7,7 @@ const create = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    const createdUser = await ServiceUsers.create({ name, email, password });
+    const createdUser = await ServiceUsers.create({ name, email, password, role: 'user' });
 
     return res.status(CREATED).json(createdUser);
   } catch (error) {
@@ -27,7 +27,21 @@ const login = async (req, res, next) => {
   }
 };
 
+const createAdmin = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+    const { role } = req.user;
+
+    const createdUser = await ServiceUsers.createAdmin({ name, email, password, role });
+
+    return res.status(CREATED).json(createdUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
   login,
+  createAdmin,
 };
