@@ -21,6 +21,7 @@ app.get('/recipes', recipesController.getAll);
 app.get('/recipes/:id', rescue(recipesController.getOne));
 app.put('/recipes/:id', rescue(validateToken), recipesController.update);
 app.delete('/recipes/:id', rescue(validateToken), recipesController.exclude);
+app.put('/recipes/:id/image', rescue(validateToken), recipesController.imgUpload);
 
 app.use((err, _req, res, _next) => {
   if (err.status) return res.status(err.status).json({ message: err.message });

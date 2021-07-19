@@ -44,10 +44,16 @@ const exclude = async (id) => {
   await recipesModel.exclude(id);
 };
 
+const upload = async (id, path) => {
+  const recipe = await recipesModel.upload(id, path);
+  return recipe;
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
   update,
   exclude,
+  upload,
 };
