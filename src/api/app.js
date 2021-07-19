@@ -19,7 +19,7 @@ app.post('/users', validateUser, usersController);
 app.post('/login', validateLogin, userLoginController);
 app.post('/recipes', validateRecipe, validateToken, recipesController.recipesController);
 app.get('/recipes', recipesController.listRecipeController);
-
+app.get('/recipes/:id', recipesController.recipeIdController);
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use(errorMiddleware.errorMidd);
 // Não remover esse end-point, ele é necessário para o avaliador

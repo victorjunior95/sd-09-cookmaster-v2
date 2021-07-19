@@ -15,7 +15,24 @@ const listRecipesService = async () => {
   return listRecipes;
 };
 
+const recipesIdService = async (id) => {
+  const recipe = await recipesModel.recipesId(id);
+
+  console.log(recipe);
+
+  if (!recipe) {
+    return {
+      err: {
+        status: 404,
+        message: 'recipe not found',
+      },
+    };
+  }
+  return recipe;
+};
+
 module.exports = {
   createRecipesService,
   listRecipesService,
+  recipesIdService,
 };

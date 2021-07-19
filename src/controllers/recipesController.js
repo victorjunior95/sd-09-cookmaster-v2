@@ -17,7 +17,20 @@ const listRecipeController = async (_req, res) => {
 
   return res.status(200).json(listRecipes);
 };
+
+const recipeIdController = async (req, res, next) => {
+  const { id } = req.params;
+  // console.log('id controller', id);
+  const recipeId = await recipesService.recipesIdService(id);
+  if (recipeId.err) {
+    return next(recipeId.err);
+  }
+  // console.log('recipeId controller:', recipeId);
+  return res.status(200).json(recipeId);
+};
+
 module.exports = {
   recipesController,
   listRecipeController,
+  recipeIdController,
 };
