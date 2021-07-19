@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
 const { findByemail } = require('../models/createUserModel');
 const { secret } = require('../utils/createToke');
-const { jwtMalformed } = require('../dictionaryError');
+const { jwtMalformed, missingAuthToken } = require('../dictionaryError');
 
 async function validateToken(req, _res, next) {
     const token = req.headers.authorization;
     if (!token) {
-        return next(jwtMalformed());
+        return next(missingAuthToken());
     }
     try {
         const { email } = jwt.verify(token, secret);

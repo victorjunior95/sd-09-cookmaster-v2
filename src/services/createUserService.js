@@ -8,6 +8,7 @@ const {
   invalidEntries,
   emailAlreadyExists,
   recipeNotFound,
+  missingAuthToken,
 } = require('../dictionaryError');
 const {
   createUserModel,
@@ -15,6 +16,7 @@ const {
   createRecipeModel,
   listAllRecipesModel,
   listRecipeById,
+  updateRecipe,
 } = require('../models/createUserModel');
 
 const createUserSchema = Joi.object({
@@ -86,10 +88,30 @@ const listRecipeByIdService = async (id) => {
   return recipe;
 };
 
+const canChangeRecipe = (role, userID, recipe) => {
+  if (role !== 'adim') return true;
+  if (recipe.userId === userID) return true;
+  return false;
+};
+
+const updateRecipeService = async (recipeData, userId, role) => {
+  const { ingredients, name, preparation, recipeId } = recipeData;
+  const oldRecipe = await listRecipeById(recipeId);
+  
+  // if (!oldRecipe || oldRecipe.userId !== userId) return joiError(missingAuthToken());
+  if (!canChangeRecipe(role, userId, oldRecipe)) return joiError(missingAuthToken());
+  
+  await updateRecipe(name, ingredients, preparation, recipeId);
+  const updatedRecipe = await listRecipeById(recipeId);
+  
+  return updatedRecipe;
+};
+
 module.exports = {
     createUserService,
     validLoginService,
     createRecipeService,
     listAllRecipesService,
     listRecipeByIdService,
+    updateRecipeService,
 };

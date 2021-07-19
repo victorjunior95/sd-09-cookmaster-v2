@@ -35,4 +35,9 @@ module.exports = {
         status: notFound,
         message: 'recipe not found',
     }),
+
+    missingAuthToken: () => ({
+        status: unauthorized,
+        message: 'missing auth token',
+    }),
 };

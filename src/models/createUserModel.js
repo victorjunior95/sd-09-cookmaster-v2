@@ -63,10 +63,32 @@ const listRecipeById = async (id) => {
   return recipeById;
 };
 
+const listRecipeByUserId = async (userId) => {
+  if (!ObjectId.isValid(userId)) return null;
+
+  const recipeByUserId = await connection()
+  .then((db) => db.collection('recipes').findOne({ userId: ObjectId(userId) }));
+
+  return recipeByUserId;
+};
+
+const updateRecipe = async (name, ingredients, preparation, recipeId) => {
+  if (!ObjectId.isValid(recipeId)) return null;
+
+  const recipeUpdated = await connection()
+    .then((db) => db.collection('recipes').updateOne(
+      { _id: ObjectId(recipeId) },
+      { $set: { name, ingredients, preparation } },
+    ));
+  return recipeUpdated.result;
+};
+
 module.exports = {
   createUserModel,
   findByemail,
   createRecipeModel,
   listAllRecipesModel,
   listRecipeById,
+  updateRecipe,
+  listRecipeByUserId,
 };
