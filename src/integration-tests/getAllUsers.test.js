@@ -17,9 +17,9 @@ const usersToBeRegistered = [
   { name: 'Elon Musk', password: 'elmusktheboss', email: 'elonMusk@tesla.com' },
 ]
 
-describe('/GET - GET ALL - return a list off all users on data base;', () => {
+describe('/GET - GET ALL USERS - return a list off all users on data base;', () => {
 
-  describe('The body property email cant be registered twice', () => {     
+  describe('Should return an array list of all users', () => {     
     let connectionMock;
     let response;
     before ( async () => {
@@ -30,7 +30,7 @@ describe('/GET - GET ALL - return a list off all users on data base;', () => {
       sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
       await connectionMock.db('Cookmaster').collection('users').insertMany(usersToBeRegistered);
-      response = await chai.request(server).get('/users/').send();
+      response = await chai.request(server).get('/users/');
     });
 
     after(async () => {
@@ -42,8 +42,9 @@ describe('/GET - GET ALL - return a list off all users on data base;', () => {
       expect(response).to.have.status(200);
     });
 
-    it('Should return an object', () => {
+    it('Should return an array with four elements', () => {
       expect(response.body).to.be.an('array');
+      expect(response.body.length).to.equal(4);
     });
 
     it('Should have the array with users, who was previously registered', () => {
