@@ -43,10 +43,10 @@ const editRecipe = async (id, token, { name, ingredients, preparation }) => {
 
   const findRecipe = await ModelRecipes.getById(id);
   const user = await ModelUsers.getById(userId);
-
- if (user.role !== 'admin' && findRecipe.userId !== userId) {
-   throw invalidData('missing auth token', UNAUTHORIZED);
- }
+  // Dica Yoneda: colocar o userId como string, sem isso ele não passa nos testes de verificação - .toString()
+  if (user.role !== 'admin' && findRecipe.userId !== userId) {
+    throw invalidData('missing auth token', UNAUTHORIZED);
+  }
 
   const editedRecipe = await ModelRecipes
     .editRecipe(id, userId, { name, ingredients, preparation });
