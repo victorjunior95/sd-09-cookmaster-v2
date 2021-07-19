@@ -18,7 +18,6 @@ const verifyEmail = async (email) => {
     message: 'Email already registered',
   };
   const userEmail = await UsersModel.findEmail(email);
-  console.log('verificação', userEmail);
   if (userEmail) throw err;
 };
 

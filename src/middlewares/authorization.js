@@ -3,16 +3,23 @@ const UsersModel = require('../models/UsersModel');
 
 const secret = 'segredosupersecreto';
 
+const jwtMalformed = {
+  status: 401,
+  message: 'jwt malformed',
+};
+
+const missingToken = {
+  status: 401,
+  message: 'missing auth token',
+};
+
 const authorization = async (req, res, next) => {
   const { authorization: token } = req.headers;
-  const errObj = {
-    status: 401,
-    message: 'jwt malformed',
-  };
-  if (!token) throw errObj;
+
+  if (!token) throw missingToken;
 
   const userEmail = jwt.verify(token, secret, (err, decode) => {
-    if (err) throw errObj;
+    if (err) throw jwtMalformed;
     const { email } = decode.userInfo;
     return email;
   });

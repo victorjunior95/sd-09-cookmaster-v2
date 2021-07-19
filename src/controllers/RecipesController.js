@@ -25,4 +25,11 @@ RecipesRouter.get('/:id', rescue(async (req, res) => {
   return res.status(200).json(oneRecipe);
 }));
 
+RecipesRouter.put('/:id', rescue(authorization), rescue(async (req, res) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const newRecipe = await RecipesService.editRecipe(name, ingredients, preparation, id);
+  return res.status(200).json(newRecipe);
+}));
+
 module.exports = RecipesRouter;
