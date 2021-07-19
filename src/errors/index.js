@@ -5,6 +5,7 @@ const InvalidCredentialsError = require('./InvalidCredentialsError');
 const InvalidTokenError = require('./InvalidTokenError');
 const InvalidRecipeFormError = require('./InvalidRecipeFormError');
 const RecipeNotFoundError = require('./RecipeNotFoundError');
+const MissingTokenError = require('./MissingTokenError');
 
 module.exports = {
   InvalidUserFormError,
@@ -14,4 +15,5 @@ module.exports = {
   InvalidTokenError,
   InvalidRecipeFormError,
   RecipeNotFoundError,
+  MissingTokenError,
 };

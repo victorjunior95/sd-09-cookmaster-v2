@@ -36,7 +36,7 @@ const createRecipe = (req, res, next) => {
 const token = async (req, res, next) => {
   const reqToken = req.headers.authorization;
 
-  if (!reqToken) throw new Errors.InvalidTokenError();
+  if (!reqToken) next(new Errors.MissingTokenError());
 
   try {
     const decoded = Auth.validateToken(reqToken);
