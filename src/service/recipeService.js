@@ -27,9 +27,18 @@ const update = async (id, { name, ingredients, preparation }) => {
   return updated;
 };
 
+const remove = async (id) => {
+  const recipe = await RecipeModel.findById(id);
+
+  if (!recipe) throw new Errors.RecipeNotFoundError();
+
+  await RecipeModel.remove(id);
+};
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
+  remove,
 };

@@ -43,6 +43,16 @@ router.put('/:id', Validation.token, Validation.createRecipe, async (req, res, n
   }
 });
 
+router.delete('/:id', Validation.token, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await RecipeService.remove(id);
+    return res.status(StatusCode.notContent).json();
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use(ErrorHandler);
 
 module.exports = router;

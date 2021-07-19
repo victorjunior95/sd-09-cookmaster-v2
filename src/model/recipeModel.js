@@ -43,9 +43,19 @@ const update = async (id, name, ingredients, preparation) => {
   return value;
 };
 
+const remove = async (id) => {
+  const recipesCollection = await connection()
+  .then((db) => db.collection('recipes'));
+
+  if (!ObjectId.isValid(id)) throw new Errors.RecipeNotFoundError();
+
+  await recipesCollection.deleteOne({ _id: id });
+};
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
+  remove,
 };
