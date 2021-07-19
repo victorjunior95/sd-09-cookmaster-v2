@@ -12,7 +12,7 @@ const update = (id, recipe, { _id: userId }) => recipes.update(id, recipe, userI
 
 const remove = (id) => recipes.remove(id).then(() => ({ status: 204 }));
 
-const putImage = (id) => recipes.putImage(id, `localhost:3000/src/uploads/${id}.jpeg`)
+const putImage = (id, path) => recipes.putImage(id, `localhost:3000/${path}`)
   .then(() => recipes.getById(id).then((data) => ({ status: 200, data })));
 
 module.exports = { create, getAll, getById, update, remove, putImage };

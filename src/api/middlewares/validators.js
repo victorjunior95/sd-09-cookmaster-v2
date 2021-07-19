@@ -17,10 +17,7 @@ const recipe = (req, _res, next) => validate.recipe(req.body)
   .catch(({ message }) => next({ status: 400, message }));
 
 const token = (req, _res, next) => validate.token(req.headers)
-  .then((data) => {
-    req.user = data;
-    next();
-  })
+  .then((data) => { req.user = data; next(); })
   .catch(({ message }) => next({ status: 401, message }));
 
 const recipeId = (req, _res, next) => validate.recipeId(req.params.id)

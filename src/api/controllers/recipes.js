@@ -17,7 +17,8 @@ const update = (req, res) => recipes.update(req.params.id, req.body, req.user)
 const remove = (req, res) => recipes.remove(req.params.id)
   .then(({ status }) => res.status(status).json());
 
-const putImage = [upload.single('image'), (req, res) => recipes.putImage(req.params.id)
-  .then(({ status, data }) => res.status(status).json(data))];
+const putImage = [upload.single('image'),
+  (req, res) => recipes.putImage(req.params.id, req.file.path)
+    .then(({ status, data }) => res.status(status).json(data))];
 
 module.exports = { create, getAll, getById, update, remove, putImage };
