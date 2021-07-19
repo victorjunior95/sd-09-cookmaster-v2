@@ -14,6 +14,7 @@ const verifyToken = (req, _res, next) => {
     const payload = jwt.verify(token, 'secret');
 
     req.userId = payload.id;
+    req.userRole = payload.role;
 
     next();
   } catch (err) {

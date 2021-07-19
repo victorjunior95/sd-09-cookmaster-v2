@@ -62,7 +62,7 @@ const uploadImage = [
 
     if (!buffer) return next({ message: 'deu ruim', statusCode: 400 });
 
-    const filePath = path.join(__dirname, '..', 'uploads', fileInformation.originalname);
+    const filePath = path.join(__dirname, '..', 'uploads', `${id}.jpeg`);
 
     await fs.writeFile(filePath, buffer);
 

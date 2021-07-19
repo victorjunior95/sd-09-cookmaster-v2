@@ -1,7 +1,7 @@
-const models = require('../models/usersModel');
+const userModel = require('../models/usersModel');
 const { validateEmail, emailExists } = require('../validations/emailValidation');
 
-const validateNewUser = async (name, email, password) => {
+const validateNewUser = async (name, email, password, userRole = 'user') => {
   const verifyEmail = validateEmail(email);
   const emailAlreadyExists = await emailExists(email);
 
@@ -19,7 +19,7 @@ const validateNewUser = async (name, email, password) => {
     };
   }
 
-  return models.postIntoDb(name, email, password);
+  return userModel.postIntoDb(name, email, password, userRole);
 };
 
 module.exports = {
