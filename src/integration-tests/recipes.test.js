@@ -250,6 +250,7 @@ describe('RECIPES', () => {
           .db('Cookmaster')
           .collection('recipes')
           .deleteMany({});
+
         await connectionMock
           .db('Cookmaster')
           .collection('recipes')
@@ -412,6 +413,604 @@ describe('RECIPES', () => {
 
       it('a chave "message" do objeto retornado deve ter o valor esperado', () => {
         expect(response.body.message).to.be.equal(NOT_FOUND_MESSAGE);
+      });
+    });
+  });
+
+  describe('PUT /recipes/:id', () => {
+    describe('SUCESSO', () => {
+      let response;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      describe('Quando o usuário está autenticado', () => {
+        before(async () => {
+          const URLMock = await DBServer.getUri();
+          connectionMock = await MongoClient.connect(URLMock, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          });
+
+          sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'name-test-success',
+            email: 'email@email.com',
+            password: 'password-test-success',
+            _id: 'user-id',
+          });
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .insertOne({
+              name: 'name-test-success',
+              ingredients: 'ingredients-test-success',
+              preparation: 'preparation-test-success',
+              userId: 'user-id',
+            });
+
+          const JWT_TOKEN = await chai
+            .request(app)
+            .post('/login')
+            .send({
+              email: 'email@email.com',
+              password: 'password-test-success',
+            })
+            .then(({ body }) => body.token);
+
+          const id = await chai
+            .request(app)
+            .get('/recipes')
+            .then((response) => response.body[0]['_id']);
+
+          response = await chai
+            .request(app)
+            .put(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN,
+            })
+            .send({
+              name: 'successful-update',
+              ingredients: 'successful-update',
+              preparation: 'successful-update',
+            });
+        });
+
+        after(async () => {
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').deleteOne({
+            name: 'admin',
+          });
+
+          MongoClient.connect.restore();
+          await DBServer.stop();
+        });
+
+        it('retorna o código 200', () => {
+          expect(response).to.have.status(200);
+        });
+
+        it('retorna um objeto que tem as chaves esperadas', () => {
+          expect(response.body)
+            .to.be.an('object')
+            .which.includes.all.keys(
+              '_id',
+              'name',
+              'ingredients',
+              'preparation',
+              'userId'
+            );
+        });
+
+        it('as chaves "name", "ingredients", "preparation" do objeto retornado devem ter o valor "successful-update"', () => {
+          expect(response.body.name).to.be.equal('successful-update');
+          expect(response.body.ingredients).to.be.equal('successful-update');
+          expect(response.body.preparation).to.be.equal('successful-update');
+        });
+      });
+
+      describe('Quando o usuário é admin', () => {
+        before(async () => {
+          const URLMock = await DBServer.getUri();
+          connectionMock = await MongoClient.connect(URLMock, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          });
+
+          sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'admin',
+            email: 'root@email.com',
+            password: 'admin',
+            role: 'admin',
+          });
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .insertOne({
+              name: 'name-test-success',
+              ingredients: 'ingredients-test-success',
+              preparation: 'preparation-test-success',
+              userId: 'mock-id',
+            });
+
+          const JWT_TOKEN = await chai
+            .request(app)
+            .post('/login')
+            .send({
+              email: 'root@email.com',
+              password: 'admin',
+            })
+            .then(({ body }) => body.token);
+
+          const id = await chai
+            .request(app)
+            .get('/recipes')
+            .then((response) => response.body[0]['_id']);
+
+          response = await chai
+            .request(app)
+            .put(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN,
+            })
+            .send({
+              name: 'successful-update',
+              ingredients: 'successful-update',
+              preparation: 'successful-update',
+            });
+        });
+
+        after(async () => {
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').deleteOne({
+            name: 'admin',
+          });
+
+          MongoClient.connect.restore();
+          await DBServer.stop();
+        });
+
+        it('retorna o código 200', () => {
+          expect(response).to.have.status(200);
+        });
+
+        it('retorna um objeto que tem as chaves esperadas', () => {
+          expect(response.body)
+            .to.be.an('object')
+            .which.includes.all.keys(
+              '_id',
+              'name',
+              'ingredients',
+              'preparation',
+              'userId'
+            );
+        });
+
+        it('as chaves "name", "ingredients", "preparation" do objeto retornado devem ter o valor "successful-update"', () => {
+          expect(response.body.name).to.be.equal('successful-update');
+          expect(response.body.ingredients).to.be.equal('successful-update');
+          expect(response.body.preparation).to.be.equal('successful-update');
+        });
+      });
+    });
+
+    describe('FALHA', () => {
+      let response;
+      let JWT_TOKEN;
+      let id;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').insertOne({
+          name: 'admin',
+          email: 'root@email.com',
+          password: 'admin',
+          role: 'admin',
+        });
+
+        await connectionMock.db('Cookmaster').collection('recipes').insertOne({
+          name: 'name-test-success',
+          ingredients: 'ingredients-test-success',
+          preparation: 'preparation-test-success',
+          userId: 'mock-id',
+        });
+
+        JWT_TOKEN = await chai
+          .request(app)
+          .post('/login')
+          .send({
+            email: 'root@email.com',
+            password: 'admin',
+          })
+          .then(({ body }) => body.token);
+
+        id = await chai
+          .request(app)
+          .get('/recipes')
+          .then((response) => response.body[0]['_id']);
+      });
+
+      after(async () => {
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').deleteOne({
+          name: 'admin',
+        });
+
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      describe('Quando o usuário não está autenticado', () => {
+        before(async () => {
+          response = await chai.request(app).put(`/recipes/${id}`).send({
+            name: 'fail-update',
+            ingredients: 'fail-update',
+            preparation: 'fail-update',
+          });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('missing auth token');
+        });
+      });
+
+      describe('Quando o token é invalido', () => {
+        before(async () => {
+          response = await chai
+            .request(app)
+            .put(`/recipes/${id}`)
+            .set({
+              authorization: 1234567890,
+            })
+            .send({
+              name: 'fail-update',
+              ingredients: 'fail-update',
+              preparation: 'fail-update',
+            });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('jwt malformed');
+        });
+      });
+    });
+  });
+
+  describe('DELETE /recipes/:id', () => {
+    describe('SUCESSO', () => {
+      let response;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      describe('Quando o usuário está autenticado', () => {
+        before(async () => {
+          const URLMock = await DBServer.getUri();
+          connectionMock = await MongoClient.connect(URLMock, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          });
+
+          sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'name-test-success',
+            email: 'email@email.com',
+            password: 'password-test-success',
+            _id: 'user-id',
+          });
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .insertOne({
+              name: 'name-test-success',
+              ingredients: 'ingredients-test-success',
+              preparation: 'preparation-test-success',
+              userId: 'user-id',
+            });
+
+          const JWT_TOKEN = await chai
+            .request(app)
+            .post('/login')
+            .send({
+              email: 'email@email.com',
+              password: 'password-test-success',
+            })
+            .then(({ body }) => body.token);
+
+          const id = await chai
+            .request(app)
+            .get('/recipes')
+            .then((response) => response.body[0]['_id']);
+
+          response = await chai
+            .request(app)
+            .delete(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN,
+            })
+        });
+
+        after(async () => {
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').deleteOne({
+            name: 'admin',
+          });
+
+          MongoClient.connect.restore();
+          await DBServer.stop();
+        });
+
+        it('retorna o código 204', () => {
+          expect(response).to.have.status(204);
+        });
+
+        it('não retorna conteúdo', () => {
+          expect(response.body).to.be.empty
+        });
+      });
+
+      describe('Quando o usuário é admin', () => {
+        before(async () => {
+          const URLMock = await DBServer.getUri();
+          connectionMock = await MongoClient.connect(URLMock, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          });
+
+          sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'admin',
+            email: 'root@email.com',
+            password: 'admin',
+            role: 'admin',
+          });
+
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .insertOne({
+              name: 'name-test-success',
+              ingredients: 'ingredients-test-success',
+              preparation: 'preparation-test-success',
+              userId: 'mock-id',
+            });
+
+          const JWT_TOKEN = await chai
+            .request(app)
+            .post('/login')
+            .send({
+              email: 'root@email.com',
+              password: 'admin',
+            })
+            .then(({ body }) => body.token);
+
+          const id = await chai
+            .request(app)
+            .get('/recipes')
+            .then((response) => response.body[0]['_id']);
+
+          response = await chai
+            .request(app)
+            .delete(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN,
+            })
+        });
+
+        after(async () => {
+          await connectionMock
+            .db('Cookmaster')
+            .collection('recipes')
+            .deleteMany({});
+
+          await connectionMock.db('Cookmaster').collection('users').deleteOne({
+            name: 'admin',
+          });
+
+          MongoClient.connect.restore();
+          await DBServer.stop();
+        });
+
+        it('retorna o código 204', () => {
+          expect(response).to.have.status(204);
+        });
+
+        it('não retorna conteúdo', () => {
+          expect(response.body).to.be.empty;
+        });
+      });
+    });
+
+    describe('FALHA', () => {
+      let response;
+      let id;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').insertOne({
+          name: 'admin',
+          email: 'root@email.com',
+          password: 'admin',
+          role: 'admin',
+        });
+
+        await connectionMock.db('Cookmaster').collection('recipes').insertOne({
+          name: 'name-test-success',
+          ingredients: 'ingredients-test-success',
+          preparation: 'preparation-test-success',
+          userId: 'mock-id',
+        });
+
+        id = await chai
+          .request(app)
+          .get('/recipes')
+          .then((response) => response.body[0]['_id']);
+      });
+
+      after(async () => {
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').deleteOne({
+          name: 'admin',
+        });
+
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      describe('Quando o usuário não está autenticado', () => {
+        before(async () => {
+          response = await chai.request(app).delete(`/recipes/${id}`).send({
+            name: 'fail-update',
+            ingredients: 'fail-update',
+            preparation: 'fail-update',
+          });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('missing auth token');
+        });
+      });
+
+      describe('Quando o token é invalido', () => {
+        before(async () => {
+          response = await chai
+            .request(app)
+            .delete(`/recipes/${id}`)
+            .set({
+              authorization: 1234567890,
+            })
+            .send({
+              name: 'fail-update',
+              ingredients: 'fail-update',
+              preparation: 'fail-update',
+            });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('jwt malformed');
+        });
       });
     });
   });
