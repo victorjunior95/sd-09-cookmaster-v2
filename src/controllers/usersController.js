@@ -8,6 +8,14 @@ const createUser = async (req, res, _next) => {
   return res.status(HTTP_STATUS_CREATED).json({ user: result });
 };
 
+const createAdmin = async (req, res, _next) => {
+  const newAdmin = req.body;
+  const { user } = req;
+  const result = await usersService.createAdmin(newAdmin, user);
+  res.status(HTTP_STATUS_CREATED).json({ user: result });
+};
+
 module.exports = {
   createUser,
+  createAdmin,
 };
