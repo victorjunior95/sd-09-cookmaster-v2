@@ -9,6 +9,7 @@ const userLoginController = require('../controllers/loginController');
 const validateToken = require('../middlewares/validateToken');
 const recipesController = require('../controllers/recipesController');
 const validateRecipe = require('../middlewares/validateRecipes');
+// const listRecipeController = require('../controllers/recipesController');
 
 const app = express();
 
@@ -16,7 +17,8 @@ app.use(bodyParser);
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/users', validateUser, usersController);
 app.post('/login', validateLogin, userLoginController);
-app.post('/recipes', validateRecipe, validateToken, recipesController);
+app.post('/recipes', validateRecipe, validateToken, recipesController.recipesController);
+app.get('/recipes', recipesController.listRecipeController);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use(errorMiddleware.errorMidd);
