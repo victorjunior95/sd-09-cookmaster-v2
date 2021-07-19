@@ -32,6 +32,17 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+router.put('/:id', Validation.token, Validation.createRecipe, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, ingredients, preparation } = req.body;
+    const updated = await RecipeService.update(id, { name, ingredients, preparation });
+    return res.status(StatusCode.ok).json(updated);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use(ErrorHandler);
 
 module.exports = router;
