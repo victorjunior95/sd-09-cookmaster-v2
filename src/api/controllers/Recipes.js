@@ -46,6 +46,18 @@ const editRecipe = rescue(async (req, res, next) => {
   return res.status(STATUS.OK).json(recipe);
 });
 
+const putImage = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const { filename } = req.file;
+
+  const image = await Recipe.putImage(id, filename);
+
+  if (image.message) return next(image);
+
+  return res.status(STATUS.OK).json(image);
+});
+
 const deleteRecipe = rescue(async (req, res, next) => {
   const { id } = req.params;
 
@@ -62,4 +74,5 @@ module.exports = {
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  putImage,
 };

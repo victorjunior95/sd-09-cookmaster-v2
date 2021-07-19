@@ -77,10 +77,23 @@ const deleteRecipe = async (id) => {
   await Recipe.deleteRecipe(id);
 };
 
+const putImage = async (id, image) => {
+  const validId = validateId(id);
+
+  if (validId) return validId;
+
+  const img = `localhost:3000/src/uploads/${image}`;
+
+  const recipe = await Recipe.putImage(id, img);
+
+  return recipe;
+};
+
 module.exports = {
   registerRecipe,
   listRecipes,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  putImage,
 };
