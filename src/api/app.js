@@ -19,7 +19,7 @@ app.post('/users', Users.userCreate);
 app.post('/login', Users.userLogin);
 app.post('/recipes', recipeValidate, Recipes.recipeCreate);
 app.get('/recipes', Recipes.getAll);
-
+app.get('/recipes/:id', Recipes.getOne);
 app.use(errorMiddleware); 
 
 module.exports = app;

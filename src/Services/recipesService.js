@@ -23,7 +23,18 @@ const getAll = async () => {
   return recipes;
 };
 
+const getOne = async (id) => {
+  const recipe = await Recipes.getOne(id);
+
+  if (!recipe) {
+    throw validateRecipeData(404, 'recipe not found');
+  }
+
+  return recipe;
+};
+
 module.exports = {
   recipeCreate,
   getAll,
+  getOne,
 };
