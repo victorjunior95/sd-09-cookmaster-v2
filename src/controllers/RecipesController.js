@@ -32,4 +32,10 @@ RecipesRouter.put('/:id', rescue(authorization), rescue(async (req, res) => {
   return res.status(200).json(newRecipe);
 }));
 
+RecipesRouter.delete('/:id', rescue(authorization), rescue(async (req, res) => {
+  const { id } = req.params;
+  const deleted = await RecipesService.deleteRecipe(id);
+  return res.status(204).json(deleted);
+}));
+
 module.exports = RecipesRouter;
