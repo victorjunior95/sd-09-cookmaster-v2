@@ -31,9 +31,9 @@ const editRecipeById = async (recipeId, userId, payload) => {
 const deleteRecipeById = async (recipeId) => connection()
   .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(recipeId) }));
 
-const getRecipeImagesById = async (imageId) => connection()
-  .then((db) => db.collection('recipes').findOne(ObjectId(imageId)))
-  .then();
+// const getRecipeImagesById = async (imageId) => connection()
+//   .then((db) => db.collection('recipes').findOne(ObjectId(imageId)))
+//   .then();
 
 const uploadImage = async (recipeId, recipeUpDated) => connection()
   .then((db) => db.collection('recipes').updateOne({ _id: ObjectId(recipeId) },
@@ -45,6 +45,6 @@ module.exports = {
   getRecipeById,
   editRecipeById,
   deleteRecipeById,
-  getRecipeImagesById,
+  // getRecipeImagesById,
   uploadImage,
 };

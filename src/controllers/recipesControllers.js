@@ -55,12 +55,12 @@ const uploadImage = async (req, res) => {
   return res.status(OK).json(uploadRecipeImage);
 };
 
-const getRecipeImagesById = async (req, res) => {
-  const { id: imageId } = req.params;
+// const getRecipeImagesById = async (req, res) => {
+//   const { id: imageId } = req.params;
 
-  const images = await recipesServices.getRecipeImagesById(imageId);
-  return res.status(OK).json(images);
-};
+//   const images = await recipesServices.getRecipeImagesById(imageId);
+//   return res.status(OK).json(images);
+// };
 
 module.exports = {
   createRecipes,
@@ -68,6 +68,6 @@ module.exports = {
   getRecipeById,
   editRecipeById,
   deleteRecipeById,
-  getRecipeImagesById,
+  // getRecipeImagesById,
   uploadImage,
 };

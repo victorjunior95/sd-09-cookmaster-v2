@@ -26,7 +26,7 @@ router.get('/recipes/:id', recipesControllers.getRecipeById);
 router.put('/recipes/:id', validateToken, authToEdit, recipesControllers.editRecipeById);
 router.delete('/recipes/:id', validateToken, authToEdit, recipesControllers.deleteRecipeById);
 
-router.get('/images/:id', recipesControllers.getRecipeImagesById);
+// router.get('/images/:id', recipesControllers.getRecipeImagesById);
 router.use('/recipes/:id/image/',
   validateToken, authToEdit, upload, recipesControllers.uploadImage);
 

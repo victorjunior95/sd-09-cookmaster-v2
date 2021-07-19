@@ -33,10 +33,10 @@ const uploadImage = async (recipeId, image) => {
   return recipeUpDated;
 };
 
-const getRecipeImagesById = async (imageId) => {
-  const recipeImagesById = await recipesModels.getRecipeImagesById(imageId);
-  return recipeImagesById;
-};
+// const getRecipeImagesById = async (imageId) => {
+//   const recipeImagesById = await recipesModels.getRecipeImagesById(imageId);
+//   return recipeImagesById;
+// };
 
 module.exports = {
   createRecipes,
@@ -44,6 +44,6 @@ module.exports = {
   getRecipeById,
   editRecipeById,
   deleteRecipeById,
-  getRecipeImagesById,
+  // getRecipeImagesById,
   uploadImage,
 };
