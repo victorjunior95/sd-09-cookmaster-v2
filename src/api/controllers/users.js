@@ -6,7 +6,7 @@ const create = (req, res) => users.create(req.body)
 const login = (req, res) => users.login(req.body)
   .then(({ status, token }) => res.status(status).json({ token }));
 
-const createAdmin = (req, res) => users.createAdmin(req.body)
+const createAdmin = (req, res) => users.create(req.body, 'admin')
   .then(({ status, user }) => res.status(status).json({ user }));
 
 module.exports = { create, login, createAdmin };
