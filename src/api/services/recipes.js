@@ -19,4 +19,9 @@ const find = async (query) => {
   return Recipes;
 };
 
-module.exports = { create, find };
+const findOne = async (id) => {
+  const Recipe = await model.findOne(id);
+  return Recipe;
+};
+
+module.exports = { create, find, findOne };
