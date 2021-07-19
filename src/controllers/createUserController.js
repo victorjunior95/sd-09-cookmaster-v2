@@ -5,8 +5,9 @@ const {
     listAllRecipesService,
     listRecipeByIdService,
     updateRecipeService,
+    deleteRecipeService,
 } = require('../services/createUserService');
-const { ok, created } = require('../utils/statusHttp');
+const { ok, created, noContent } = require('../utils/statusHttp');
 
 const createUserController = async (req, res, next) => {
     try {
@@ -81,6 +82,18 @@ const updateRecipeController = async (req, res, next) => {
     }
 };
 
+const deleteRecipeController = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { _id, role } = req.user;
+        const userID = _id;
+        await deleteRecipeService(id, userID, role);
+        res.status(noContent).json();
+    } catch (error) {
+        return next(error);
+    }
+};
+
 module.exports = {
     createUserController,
     createTokenController,
@@ -88,4 +101,5 @@ module.exports = {
     listAllRecipesController,
     listRecipeByIdController,
     updateRecipeController,
+    deleteRecipeController,
 };

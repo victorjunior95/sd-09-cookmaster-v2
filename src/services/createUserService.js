@@ -17,6 +17,7 @@ const {
   listAllRecipesModel,
   listRecipeById,
   updateRecipe,
+  deleteRecipe,
 } = require('../models/createUserModel');
 
 const createUserSchema = Joi.object({
@@ -107,6 +108,15 @@ const updateRecipeService = async (recipeData, userId, role) => {
   return updatedRecipe;
 };
 
+const deleteRecipeService = async (recipeId, userId, role) => {
+  const oldRecipe = await listRecipeById(recipeId);
+  
+  if (!canChangeRecipe(role, userId, oldRecipe)) return joiError(missingAuthToken());
+  
+  await deleteRecipe(recipeId);
+  return oldRecipe;
+};
+
 module.exports = {
     createUserService,
     validLoginService,
@@ -114,4 +124,5 @@ module.exports = {
     listAllRecipesService,
     listRecipeByIdService,
     updateRecipeService,
+    deleteRecipeService,
 };

@@ -83,6 +83,17 @@ const updateRecipe = async (name, ingredients, preparation, recipeId) => {
   return recipeUpdated.result;
 };
 
+const deleteRecipe = async (recipeId) => {
+  if (!ObjectId.isValid(recipeId)) return null;
+  
+  const recipeDeleted = await connection()
+    .then((db) => db.collection('recipes').deleteOne(
+      { _id: ObjectId(recipeId) },
+    ));
+
+  return recipeDeleted;
+};
+
 module.exports = {
   createUserModel,
   findByemail,
@@ -91,4 +102,5 @@ module.exports = {
   listRecipeById,
   updateRecipe,
   listRecipeByUserId,
+  deleteRecipe,
 };
