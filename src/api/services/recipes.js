@@ -8,6 +8,7 @@ const recipeSchema = Joi.object({
   preparation: Joi.string().not().empty().required(),
   userId: Joi.object().not().empty().required(),
 });
+
 const create = async (recipe) => {
   const { error } = recipeSchema.validate(recipe);
   if (error) return { err: { code: 'invalid_data', message: 'Invalid entries. Try again.' } };
@@ -26,4 +27,10 @@ const findOne = async (id) => {
   return Recipe;
 };
 
-module.exports = { create, find, findOne };
+const update = async (recipe) => {
+  const { error } = recipeSchema.validate(recipe);
+  if (error) return { err: { code: 'invalid_data', message: 'Invalid entries. Try again.' } };
+  await model.update(recipe);
+};
+
+module.exports = { create, find, findOne, update };
