@@ -27,10 +27,10 @@ const findOne = async (id) => {
   return Recipe;
 };
 
-const update = async (recipe) => {
+const updateOne = async (recipe) => {
   const { error } = recipeSchema.validate(recipe);
   if (error) return { err: { code: 'invalid_data', message: 'Invalid entries. Try again.' } };
-  await model.update(recipe);
+  await model.updateOne(recipe);
 };
 
-module.exports = { create, find, findOne, update };
+module.exports = { create, find, findOne, updateOne };
