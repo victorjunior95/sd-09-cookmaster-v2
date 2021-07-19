@@ -4,8 +4,11 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const { createUser, login } = require('../controllers/userController');
-
-const { createRecipe, getAllRecipes } = require('../controllers/recipeController');
+const {
+  createRecipe,
+  getAllRecipes,
+  getRecipeById,
+} = require('../controllers/recipeController');
 
 app.use(bodyParser.json());
 
@@ -19,5 +22,6 @@ app.post('/users', createUser);
 app.post('/login', login);
 app.post('/recipes', createRecipe);
 app.get('/recipes', getAllRecipes);
+app.get('/recipes/:id', getRecipeById);
 
 module.exports = app;
