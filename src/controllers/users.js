@@ -12,9 +12,6 @@ const createUser = async (req, res, next) => {
 
 const createAdmin = async (req, res, next) => {
   const { name, email, password, role = 'admin' } = req.body;
-  const { user } = req;
-
-  console.log(user);
 
   const newUser = await usersService.createUser(name, email, password, role);
 
