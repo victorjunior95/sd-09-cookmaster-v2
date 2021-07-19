@@ -26,9 +26,28 @@ const editRecipeController = async (req, res) => {
   return res.status(request.status).json(request.response);
 };
 
+const deleteRecipeController = async (req, res) => {
+ const { id } = req.params;
+ const request = await recipeServices.deleteRecipeService(id);
+
+ return res.status(request.status).json(request.response);
+};
+
+const uploadPictureController = async (req, res) => {
+  const { id } = req.params;
+
+  const { user } = req;
+
+  const request = await recipeServices.uploadPictureService(id, user);
+
+  return res.status(request.status).json(request.response);
+};
+
 module.exports = {
   postRecipeController,
   getRecipeController,
   getRecipeByIdController,
   editRecipeController,
+  deleteRecipeController,
+  uploadPictureController,
 };

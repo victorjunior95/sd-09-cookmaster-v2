@@ -7,7 +7,6 @@ const SECRET = 'cookMaster';
 const validateToken = async (req, res, next) => {
   const token = req.headers.authorization;
 
-  console.log();
   if (!token) {
    return res.status(errors.missingToken.status).json(errors.missingToken.response);
   }

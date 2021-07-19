@@ -35,9 +35,31 @@ const editRecipeService = async (id, data, user) => {
   return { response: request, status: 200 };
 };
 
+const deleteRecipeService = async (id) => {
+  const findRecipe = await recipeModel.getRecipeByIdModel(id);
+  if (!findRecipe) return errors.notFoundErr;
+
+  const request = await recipeModel.deleteRecipeModel(id);
+
+  return { response: request, status: 204 };
+};
+
+const uploadPictureService = async (id, user) => {
+  const findUser = await recipeModel.getRecipeByIdModel(id);
+  if (!findUser) return errors.notFoundErr;
+  if (findUser.email !== user.email || user.role === 'admin') {
+    const request = await recipeModel.uploadPictureModel(id);
+    return { response: request, status: 200 };
+  }
+  // console.log({ isTrue: findUser.email !== user.email });
+  // if (findUser.email !== user.email) return errors.wrongUser;
+};
+
 module.exports = {
   postRecipeService,
   getAllRecipeService,
   getRecipeByIdService,
   editRecipeService,
+  deleteRecipeService,
+  uploadPictureService,
 };

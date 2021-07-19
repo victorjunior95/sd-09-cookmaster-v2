@@ -38,9 +38,33 @@ const editRecipeModel = async (id, data) => {
   return request;
 };
 
+const deleteRecipeModel = async (id) => {
+  const request = await connection().then((db) =>
+    db.collection(DB_COLLECTION).deleteOne({ _id: ObjectId(id) }));
+  return request;
+};
+
+const uploadPictureModel = async (id) => {
+  const imagePath = `localhost:3000/src/uploads/${id}.jpeg`;
+  const { modifiedCount } = await connection().then((db) => 
+  db.collection(DB_COLLECTION).updateOne(
+    { _id: ObjectId(id) }, 
+    { $set: { image: imagePath } },
+));
+
+  if (modifiedCount === 1) {
+    const myRecipe = await getRecipeByIdModel(id);
+    return myRecipe;
+}
+
+  return { message: 'Same path' };
+};
+
 module.exports = {
   postRecipeModel,
   getAllRecipeModel,
   getRecipeByIdModel,
   editRecipeModel,
+  deleteRecipeModel,
+  uploadPictureModel,
 };

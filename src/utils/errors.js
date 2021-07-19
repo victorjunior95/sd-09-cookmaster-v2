@@ -42,6 +42,8 @@ const notFoundErr = {
 
 const missingToken = { response: { message: 'missing auth token' }, status: 401 };
 
+const wrongUser = { response: { message: 'without permission' }, status: 200 };
+
 module.exports = {
   emptyValuesErr,
   emailExistErr,
@@ -50,4 +52,5 @@ module.exports = {
   jwtErr,
   notFoundErr,
   missingToken,
+  wrongUser,
 };

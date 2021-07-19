@@ -1114,6 +1114,7 @@ describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () 
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
+        console.log(JSON.parse(body))
         result = JSON.parse(body);
         expect(result.image).toBe(`localhost:3000/src/uploads/${resultRecipes.recipe._id}.jpeg`);
         expect(result).toHaveProperty('_id');
