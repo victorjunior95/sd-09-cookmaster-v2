@@ -63,7 +63,7 @@ module.exports = {
       }
 
       const { path } = req.file;
-      const image = `localhost:3000/src/${path}`;
+      const image = `localhost:3000/src/${path.replace('\\', '/')}`;
 
       const response = await recipesService.update({ ...req.recipe, image });
 

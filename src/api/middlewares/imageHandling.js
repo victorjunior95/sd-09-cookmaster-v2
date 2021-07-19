@@ -16,6 +16,6 @@ module.exports = async (req, _res, next) => {
 
     throw new PermissionError('You\'re not allowed to do this!');
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };

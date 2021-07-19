@@ -15,8 +15,8 @@ module.exports = async (req, _res, next) => {
     const { password: _, ...userData } = userDB;
     req.user = userData;
 
-    next();
+    return next();
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };

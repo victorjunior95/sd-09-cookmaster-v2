@@ -4,8 +4,10 @@ const { recipesController } = require('../controllers');
 const middlewares = require('../middlewares');
 
 const storage = multer.diskStorage({
-  destination: (req, file, callback) => { callback(null, 'uploads'); },
-  filename: (req, file, callback) => { callback(null, `${req.recipe.id}.jpeg`); },
+  destination: 'uploads',
+  filename: (req, _file, callback) => {
+    callback(null, `${req.recipe.id}.jpeg`);
+  },
 });
 const upload = multer({
   storage,
