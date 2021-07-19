@@ -9,6 +9,12 @@ const addUser = async (name, email, password) => {
     return user;
 };
 
+// const findByEmail = async (email) => {
+//     const userEmail = await userModels.findByEmail(email);
+//     return userEmail;
+// };
+
 module.exports = {
     addUser,
+    // findByEmail,
 };

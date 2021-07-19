@@ -26,6 +26,3 @@ const auth = async (req, res, next) => {
 module.exports = {
   auth,
 };
-
-//  consultei o repositório de Ana-Karine para criação deste middleware
-//  https://github.com/tryber/sd-08-cookmaster/pull/70
