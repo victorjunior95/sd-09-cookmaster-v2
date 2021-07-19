@@ -47,7 +47,7 @@ const getRecipeById = async (id) => {
   };
 };
 
-const updateRecipesByIdOrByUser = async (idUser, id, name, ingredients, preparation, role) => {
+const updateRecipesByIdOrByUser = async (idUser, id, { name, ingredients, preparation }, role) => {
   const recipe = await getRecipeById(id);
   if (recipe.err) {
     return recipe;

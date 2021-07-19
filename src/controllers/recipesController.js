@@ -50,11 +50,10 @@ routerRecipes.get('/', async (_req, res, next) => {
 routerRecipes.put('/:id', validateToken, async (req, res, next) => {
   const { _id, role } = req.user;
   const { id } = req.params;
-  const { name, ingredients, preparation } = req.body;
+  const recipeAlter = req.body;
   try {
     const recipe = await recipesService
-    .updateRecipesByIdOrByUser(_id, id, name,
-      ingredients, preparation, role);
+    .updateRecipesByIdOrByUser(_id, id, recipeAlter, role);
     if (recipe.err) return next(recipe);
     return res.status(recipe.status).json(recipe.recipeUpdate);
   } catch (error) {
