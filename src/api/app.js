@@ -1,4 +1,4 @@
-const bodyParser = require('body-parser').json();
+const bodyParser = require('body-parser');
 
 const express = require('express');
 
@@ -9,7 +9,9 @@ const errorMiddleware = require('../middlewares/error');
 
 const app = express();
 
-app.use(bodyParser);
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/users', users);
 

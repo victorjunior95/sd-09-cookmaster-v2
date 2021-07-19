@@ -36,10 +36,16 @@ const deleteRes = async (id) => {
   return result;
 };
 
+const addImage = async (id, path) => {
+  const result = await recipeModel.addImageToRecipe(id, path);
+  return result;
+};
+
 module.exports = {
   registerNewRecipe,
   getRecipes,
   getById,
   update,
   deleteRes,
+  addImage,
 };
