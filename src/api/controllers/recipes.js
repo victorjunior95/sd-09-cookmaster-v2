@@ -4,7 +4,7 @@ const { CREATED } = require('../constants/http.json');
 
 const create = rescue(async (request, response, next) => {
   const { name, ingredients, preparation } = request.body;
-  const { id: userId } = request.user;
+  const { _id: userId } = request.user;
   const newRecipe = await service
     .create({ name, ingredients, preparation, userId });
   if (newRecipe.err) return next(newRecipe.err);
