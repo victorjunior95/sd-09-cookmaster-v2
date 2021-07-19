@@ -32,4 +32,13 @@ const findOne = async (id) => (
     )
 );
 
-module.exports = { create, find, findOne };
+const updateOne = async (recipe) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('recipes')
+          .updateOne(recipe),
+    )
+);
+
+module.exports = { create, find, findOne, updateOne };
