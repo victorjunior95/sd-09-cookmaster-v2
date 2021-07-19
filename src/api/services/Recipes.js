@@ -59,8 +59,19 @@ const getRecipeById = async (id) => {
   return recipe;
 };
 
+const editRecipe = async (id, name, ingredients, preparation) => {
+  const validRecipeInfo = validateRecipeInfo(name, ingredients, preparation);
+
+  if (validRecipeInfo) return validRecipeInfo;
+
+  const recipeToEdit = await Recipe.editRecipe(id, name, ingredients, preparation);
+
+  return recipeToEdit;
+};
+
 module.exports = {
   registerRecipe,
   listRecipes,
   getRecipeById,
+  editRecipe,
 };

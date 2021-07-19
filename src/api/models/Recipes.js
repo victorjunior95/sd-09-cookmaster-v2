@@ -15,8 +15,18 @@ const listRecipes = () => connection()
 const getRecibeById = (_id) => connection().then((db) => db.collection('recipes')
   .findOne(new ObjectId(_id)));
 
+const editRecipe = (id, name, ingredients, preparation) => connection()
+  .then((db) => db.collection('recipes')
+    .findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: { name, ingredients, preparation } },
+      { returnOriginal: false },
+    ))
+    .then((result) => result.value);
+
 module.exports = {
   registerRecipe,
   listRecipes,
   getRecibeById,
+  editRecipe,
 };

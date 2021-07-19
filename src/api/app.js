@@ -25,6 +25,8 @@ app.get('/recipes', Recipes.listRecipes);
 
 app.get('/recipes/:id', Recipes.getRecipeById);
 
+app.put('/recipes/:id', validateJWT, Recipes.editRecipe);
+
 app.use(middleware);
 
 module.exports = app;
