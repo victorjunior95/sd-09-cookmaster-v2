@@ -23,17 +23,26 @@ const validateRecipes = async (name, ingredients, preparation) => {
 };
 
 const validateJWT = async (token) => {
-  const secret = 'tokensecret';
-  const decoded = jwt.verify(token, secret);
-  const userData = await findUserByEmail(decoded.data.email);
-
-  if (!userData) {
+  try {
+    const secret = 'tokensecret';
+    const decoded = await jwt.verify(token, secret);
+    const userData = await findUserByEmail(decoded.data.email);
+   
+    const { _id: userId } = decoded.data;
+  
+    if (!userData || !decoded) {
+      return { isError: true,
+        message: error.invalidToken,
+        status: status.unauthorized,
+      };
+    }
+    return userId;
+  } catch (err) {
     return { isError: true,
       message: error.invalidToken,
       status: status.unauthorized,
     };
   }
-  return true;
 };
 
 module.exports = {
