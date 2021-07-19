@@ -26,7 +26,8 @@ const find = rescue(async (request, response, next) => {
 });
 
 const findOne = rescue(async (request, response, next) => {
-  const Recipe = await service.findOne(request.params);
+  const { id } = request.params;
+  const Recipe = await service.findOne(id);
   if (Recipe.err) return next(Recipe.err);
   response.status(OK).json(Recipe);
 });

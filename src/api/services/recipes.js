@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { ObjectId } = require('mongodb');
 const model = require('../models/recipes');
 
 const recipeSchema = Joi.object({
@@ -20,7 +21,8 @@ const find = async (query) => {
 };
 
 const findOne = async (id) => {
-  const Recipe = await model.findOne(id);
+  if (!ObjectId.isValid(id)) return { err: { code: 'not_found', message: 'recipe not found' } };
+  const [Recipe] = await model.findOne(new ObjectId(id));
   return Recipe;
 };
 
