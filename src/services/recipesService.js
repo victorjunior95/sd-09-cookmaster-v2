@@ -3,6 +3,7 @@ const {
   createRecipe,
   getAllRecipes,
   getById,
+  updateRecipe,
 } = require('../models/recipesModel');
 
 const createRecipeService = async (name, ingredients, preparation, token) => {
@@ -33,8 +34,17 @@ const getByIdService = async (id) => {
   return recipe;
 };
 
+const updateRecipeService = async (id, recipe, token) => {
+  const jwtIsValid = await validateJWT(token);
+  const editedRecipe = await updateRecipe(id, jwtIsValid, recipe);
+
+  if (jwtIsValid.isError) return jwtIsValid;
+  return editedRecipe;
+};
+
 module.exports = {
   createRecipeService,
   getAllRecipesService,
   getByIdService,
+  updateRecipeService,
 };
