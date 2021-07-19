@@ -14,4 +14,6 @@ router.get('/:id', recipesControllers.getRecipeById);
 
 router.put('/:id', tokenValidation, recipesControllers.updateRecipe);
 
+router.delete('/:id', tokenValidation, recipesControllers.deleteRecipe);
+
 module.exports = router;
