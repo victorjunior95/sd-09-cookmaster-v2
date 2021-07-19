@@ -23,4 +23,13 @@ const find = async (query) => (
     )
 );
 
-module.exports = { create, find };
+const findOne = async (id) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('recipes')
+          .find(id).toArray(),
+    )
+);
+
+module.exports = { create, find, findOne };
