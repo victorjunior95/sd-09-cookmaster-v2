@@ -30,7 +30,7 @@ const getAllRecipes = async (req, res) => {
 const getByRecipes = async (req, res) => {
   const { id } = req.params;
   const result = await recipesServices.getByRecipes(id);
-    if (result == null) {
+  if (result == null) {
     return res.status(status.NOT_FOUND).json({ message: status.MESSAGE });
   }
 
@@ -41,8 +41,20 @@ const getByRecipes = async (req, res) => {
   }
 };
 
+const updateRecipes = async (req, res) => {
+  const { id } = req.params;
+  const { _id } = req.user;
+  const upRecipe = req.body;
+
+  const result = await recipesServices.updateRecipes(
+    id, upRecipe, _id,
+  );
+  res.status(status.ok).json(result);
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getByRecipes,
+  updateRecipes,
 };

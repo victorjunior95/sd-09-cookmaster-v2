@@ -7,13 +7,15 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
+const verifyPassAndMail = (mail, pass) => {
+  if (!pass || !mail) { return undefined; }
+};
+
 const login = async (mail, pass) => {
   const byEmail = await userModels.getByEmail(mail);
-
-  if (!pass || !mail) { return undefined; }
+  verifyPassAndMail(mail, pass);
   if (byEmail !== null) {
     const { password, email } = byEmail;
-
     if (password === pass) {
       const token = jwt.sign({ data: email }, secret, jwtConfig);
       return token;
@@ -22,6 +24,23 @@ const login = async (mail, pass) => {
     return 'null';
   }
 };
+
+// const login = async (mail, pass) => {
+//   const byEmail = await userModels.getByEmail(mail);
+
+//   if (!pass || !mail) { return undefined; }
+
+//   if (byEmail !== null) {
+//     const { password, email } = byEmail;
+
+//     if (password === pass) {
+//       const token = jwt.sign({ data: email }, secret, jwtConfig);
+//       return token;
+//     }
+//   } else {
+//     return 'null';
+//   }
+// };
 
 module.exports = {
   login,
