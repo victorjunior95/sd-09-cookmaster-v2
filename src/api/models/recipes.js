@@ -19,7 +19,7 @@ const find = async (query) => (
     .then(
       (db) => db
         .collection('recipes')
-          .find(query),
+          .find(query).toArray(),
     )
 );
 
