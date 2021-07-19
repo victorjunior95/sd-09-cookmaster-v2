@@ -12,14 +12,14 @@ const errorHandling = (status, message) => ({
   message,
 });
 
-const create = async (name, ingredients, preparation) => {
+const create = async (name, ingredients, preparation, userId) => {
   const { error } = schemaRecipe.validate({ name, ingredients, preparation });
 
   if (error) {
     throw errorHandling(400, 'Invalid entries. Try again.');
   }
 
-  const recipe = await RecipeModel.create(name, ingredients, preparation);
+  const recipe = await RecipeModel.create(name, ingredients, preparation, userId);
 
   return recipe;
 };
@@ -40,8 +40,15 @@ const getById = async (id) => {
   return recipe;
 };
 
+const update = async (id, name, ingredients, preparation) => {
+  const recipeUpdate = await RecipeModel.update(id, name, ingredients, preparation);
+
+  return recipeUpdate;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

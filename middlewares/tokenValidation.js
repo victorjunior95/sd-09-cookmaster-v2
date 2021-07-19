@@ -7,13 +7,21 @@ const errorHandling = (status, message) => ({
   message,
 });
 
-const tokenValidation = (req, res, next) => {
-  const { authorization } = req.headers;
+const tokenValidation = async (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return next(errorHandling(401, 'missing auth token'));
+  }
 
   try {
-    jwt.verify(authorization, secret);
+    const payload = jwt.verify(token, secret);
+
+    const { _id: id } = payload;
+
+    req.userId = id;
   } catch (_error) {
-    next(errorHandling(401, 'jwt malformed'));
+    return next(errorHandling(401, 'jwt malformed'));
   }
 
   next();
