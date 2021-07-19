@@ -4,6 +4,7 @@ const AccessError = require('./AccessError');
 const NotFoundError = require('./NotFoundError');
 const JWTError = require('./JWTError');
 const PermissionError = require('./PermissionError');
+const ExtensionError = require('./ExtensionError');
 
 module.exports = {
   InvalidArgumentError,
@@ -12,4 +13,5 @@ module.exports = {
   NotFoundError,
   JWTError,
   PermissionError,
+  ExtensionError,
 };

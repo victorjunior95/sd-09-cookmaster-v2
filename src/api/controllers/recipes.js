@@ -1,4 +1,5 @@
 const { recipesService } = require('../services');
+const { ExtensionError } = require('../errors');
 
 module.exports = {
   async create(req, res, next) {
@@ -51,6 +52,22 @@ module.exports = {
       const response = await recipesService.remove(id);
 
       res.status(204).json(response);
+    } catch (err) {
+      next(err);
+    }
+  },
+  async addImage(req, res, next) {
+    try {
+      if (req.fileValidationError) {
+        throw new ExtensionError('File must be ".jpg"');
+      }
+
+      const { path } = req.file;
+      const image = `localhost:3000/src/${path}`;
+
+      const response = await recipesService.update({ ...req.recipe, image });
+
+      res.status(200).json(response);
     } catch (err) {
       next(err);
     }

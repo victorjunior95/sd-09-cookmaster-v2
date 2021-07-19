@@ -8,6 +8,7 @@ class Recipe {
     this.ingredients = recipe.ingredients;
     this.preparation = recipe.preparation;
     this.id = recipe.id;
+    this.image = recipe.image;
   }
 
   async create(userId) {
