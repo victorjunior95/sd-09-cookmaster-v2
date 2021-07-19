@@ -18,6 +18,7 @@ app.get('/', (request, response) => {
 app.post('/users', UserController.create);
 app.post('/login', UserController.userLogin);
 app.post('/recipes', tokenValidation, RecipeController.create);
+app.get('/recipes', RecipeController.getAll);
 
 app.use(errorMiddleware);
 
