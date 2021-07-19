@@ -43,7 +43,7 @@ const updateRecipeService = async (id, recipe, token) => {
   return editedRecipe;
 };
 
-const deleteRecipeService= async (id, token) => {
+const deleteRecipeService = async (id, token) => {
   const jwtIsValid = await validateJWT(token);
   const deleted = await deleteRecipe(id);
   if (jwtIsValid.isError) return jwtIsValid;
