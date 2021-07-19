@@ -1,19 +1,19 @@
-const userServices = require('../services/userServices');
+const UsersService = require('../services/userServices');
 
 const CREATED = 201;
 const ERROR = 500;
 
-const creteUSers = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const newUser = await userServices.createUsers(name, email, password);
-    const { password: pass, ...users } = newUser.ops[0];
-    return res.status(CREATED).json({ user: users });
+    const newUser = await UsersService.createUser(name, email, password);
+    const { password: pass, ...userInfo } = newUser.ops[0];
+    return res.status(CREATED).json({ user: userInfo });
   } catch (err) {
-    res.status(ERROR).json({ message: err });
+    res.status(ERROR).json(err);
   }
 };
 
 module.exports = {
-    creteUSers,
+  createUser,
 };

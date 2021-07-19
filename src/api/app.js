@@ -1,19 +1,20 @@
 const express = require('express');
-
-const userRoutes = require('../routes/users');
-const loginRoutes = require('../routes/login');
+const UsersRouter = require('../routes/users');
+const LoginRouter = require('../routes/login');
+// const RecipesRouter = require('../routes/RecipesRouter');
 
 const app = express();
 app.use(express.json());
 
-app.use(express.static(`${__dirname}/uploads`));
-
-app.use('/users', userRoutes);
-app.use('/login', loginRoutes);
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
 });
 // Não remover esse end-point, ele é necessário para o avaliador
+app.use(express.static(`${__dirname}/uploads`));
+
+app.use('/users', UsersRouter);
+app.use('/login', LoginRouter);
+// app.use('/recipes', RecipesRouter);
 
 module.exports = app;

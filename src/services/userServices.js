@@ -1,10 +1,13 @@
-const { getAll, create } = require('../models/userModel');
+const UsersModel = require('../models/userModel');
 
-const getAllUsers = async () => getAll();
+const getAllUsers = async () => UsersModel.getAll();
 
-const createUsers = async (name, email, password) => create(name, email, password);
+const createUser = async (name, email, password) => {
+  const create = await UsersModel.create(name, email, password);
+  return create;
+};
 
 module.exports = {
-    getAllUsers,
-    createUsers,
+  getAllUsers,
+  createUser,
 };
