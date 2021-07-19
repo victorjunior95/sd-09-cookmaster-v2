@@ -29,7 +29,7 @@ const loginService = async (data) => {
 const createUserAdminService = async (user, data) => {
   const { role } = user;
 
-  if (role !== 'admin') return errors.wrongUser;
+  if (role !== 'admin') return errors.notAdminErr;
 
   const request = await userModels.createAdminModel(data);
 

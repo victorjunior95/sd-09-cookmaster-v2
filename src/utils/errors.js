@@ -44,6 +44,13 @@ const missingToken = { response: { message: 'missing auth token' }, status: 401 
 
 const wrongUser = { response: { message: 'without permission' }, status: 200 };
 
+const notAdminErr = {
+  response: {
+    message: 'Only admins can register new admins',
+  },
+  status: 403,
+};
+
 module.exports = {
   emptyValuesErr,
   emailExistErr,
@@ -53,4 +60,5 @@ module.exports = {
   notFoundErr,
   missingToken,
   wrongUser,
+  notAdminErr,
 };
