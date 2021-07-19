@@ -1,4 +1,5 @@
 const multer = require('multer');
+const path = require('path');
 const RecipeModel = require('../models/RecipesModel');
 const UsersModel = require('../models/UsersModel');
 
@@ -39,9 +40,7 @@ const isertUrlImage = async (id, url) => {
 };
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'src/uploads/');
-  },
+  destination: path.join(__dirname, '..', 'uploads/'),
   filename: (req, file, cb) => {
     const { id } = req.params;
     cb(null, `${id}.jpeg`);
