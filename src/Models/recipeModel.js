@@ -26,11 +26,10 @@ const updateRecipe = async (id, data) => {
           preparation: data.preparation } }));
     return recipe;
   };
-
-
+  
 module.exports = {
     addRecipe,
     getAllRecipes,
     getRecipe,
-    updateRecipe
+    updateRecipe,
 };
