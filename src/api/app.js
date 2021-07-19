@@ -18,6 +18,7 @@ app.get('/', (request, response) => {
 app.post('/users', Users.userCreate);
 app.post('/login', Users.userLogin);
 app.post('/recipes', recipeValidate, Recipes.recipeCreate);
+app.get('/recipes', Recipes.getAll);
 
 app.use(errorMiddleware); 
 
