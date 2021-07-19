@@ -5,7 +5,7 @@ module.exports = {
     const newUser = await connection().then((db) =>
       db.collection('users').insertOne({ name, email, password, role: 'user' }));
 
-    return {
+      return {
       user: {
         name: newUser.ops[0].name,
         email: newUser.ops[0].email,
@@ -27,5 +27,12 @@ module.exports = {
       db.collection('users').findOne({ email }));
 
     return listByEmail;
+  },
+
+  listByEmailAndPassword: async (email, password) => {
+    const checkedLogin = await connection().then((db) =>
+      db.collection('users').findOne({ email, password }));
+
+    return checkedLogin;
   },
 };
