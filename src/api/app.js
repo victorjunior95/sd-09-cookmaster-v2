@@ -9,6 +9,7 @@ const {
   getAllRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 } = require('../controllers/recipeController');
 
 app.use(bodyParser.json());
@@ -25,5 +26,6 @@ app.post('/recipes', createRecipe);
 app.get('/recipes', getAllRecipes);
 app.get('/recipes/:id', getRecipeById);
 app.put('/recipes/:id', updateRecipe);
+app.delete('/recipes/:id', deleteRecipe);
 
 module.exports = app;
