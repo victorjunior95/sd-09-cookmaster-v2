@@ -1,4 +1,5 @@
 const recipes = require('../services/recipes');
+const upload = require('../middlewares/upload');
 
 const create = (req, res) => recipes.create(req.body, req.user)
   .then(({ status, recipe }) => res.status(status).json({ recipe }));
@@ -16,4 +17,7 @@ const update = (req, res) => recipes.update(req.params.id, req.body, req.user)
 const remove = (req, res) => recipes.remove(req.params.id)
   .then(({ status }) => res.status(status).json());
 
-module.exports = { create, getAll, getById, update, remove };
+const putImage = [upload.single('image'), (req, res) => recipes.putImage(req.params.id)
+  .then(({ status, data }) => res.status(status).json(data))];
+
+module.exports = { create, getAll, getById, update, remove, putImage };
