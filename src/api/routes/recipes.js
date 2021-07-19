@@ -8,4 +8,6 @@ recipes.post('/', tokenValidate, controller.create);
 
 recipes.get('/', controller.find);
 
+recipes.get('/:id', controller.findOne);
+
 module.exports = recipes;
