@@ -8,4 +8,6 @@ const recipeValidation = require('../middlewares/recipeValidation');
 
 router.post('/', tokenValidation, recipeValidation, recipesControllers.registerRecipe);
 
+router.get('/', recipesControllers.getAllRecipes);
+
 module.exports = router;

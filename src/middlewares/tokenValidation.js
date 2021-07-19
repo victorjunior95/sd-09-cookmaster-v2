@@ -27,10 +27,10 @@ const tokenValidation = async (req, res, next) => {
     const payload = jwt.verify(token, SECRET);
     const user = await userModel.findUserById(payload.id);
     verifyUserExistence(user);
-    next();
+    return next();
   } catch (error) {
     const err = { code: 401, message: error.message };
-    next(err);
+    return next(err);
   }
 };
 

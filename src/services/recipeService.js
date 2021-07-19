@@ -9,4 +9,12 @@ const registerNewRecipe = async (name, ingredients, preparation, token) => {
   return newRecipe;
 };
 
-module.exports = { registerNewRecipe };
+const getRecipes = async () => {
+  const result = await recipeModel.getAllRecipes();
+  return result;
+};
+
+module.exports = {
+  registerNewRecipe,
+  getRecipes,
+};
