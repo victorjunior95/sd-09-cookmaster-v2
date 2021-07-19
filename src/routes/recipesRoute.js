@@ -6,7 +6,6 @@ const tokenValidation = require('../middlewares/tokenValidation');
 const recipesControllers = require('../controllers/recipesControllers');
 const recipeValidation = require('../middlewares/recipeValidation');
 const upload = require('../middlewares/multer');
-const tokenValidationToAddImage = require('../middlewares/tokenValidationToAddImage');
 
 router.post('/', tokenValidation, recipeValidation, recipesControllers.registerRecipe);
 
@@ -20,7 +19,7 @@ router.delete('/:id', tokenValidation, recipesControllers.deleteRecipe);
 
 router.put(
     '/:id/image',
-    tokenValidationToAddImage,
+    tokenValidation,
     upload.single('image'),
     recipesControllers.addImageToRecipe,
   );
