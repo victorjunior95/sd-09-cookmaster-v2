@@ -24,12 +24,13 @@ const deleteRecipeById = async (recipeId) => {
   await recipesModels.deleteRecipeById(recipeId);
 };
 
-const uploadImage = async (recipeId, image) => {
+const uploadImage = async (recipeId, path) => {
   const recipe = await recipesModels.getRecipeById(recipeId);
+  const image = { image: `localhost:3000/${path}` };
 
-  const recipeUpDated = { ...recipe, image: `localhost:3000/${image.path}` };
-  await recipesModels.uploadImage(recipeId, recipeUpDated);
+  await recipesModels.uploadImage(recipeId, image);
 
+  const recipeUpDated = { ...recipe, ...image };
   return recipeUpDated;
 };
 
