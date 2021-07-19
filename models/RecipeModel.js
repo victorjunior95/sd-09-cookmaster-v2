@@ -26,7 +26,7 @@ const getById = async (id) => {
 
   const recipe = await connection()
   .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }));
-  console.log(recipe);
+
   return recipe;
 };
 
