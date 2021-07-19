@@ -25,4 +25,10 @@ const find = rescue(async (request, response, next) => {
   response.status(OK).json(Recipes);
 });
 
-module.exports = { create, find };
+const findOne = rescue(async (request, response, next) => {
+  const Recipe = await service.findOne(request.params);
+  if (Recipe.err) return next(Recipe.err);
+  response.status(OK).json(Recipe);
+});
+
+module.exports = { create, find, findOne };
