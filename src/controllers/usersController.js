@@ -12,7 +12,7 @@ const createUser = async (req, res, next) => {
       user: registrationResult.result
     });
   } catch (err) {
-    console.log('Error user Controller: ', err.message);
+    console.log('[Error user Controller] > ', err.message);
     return next(err);
   }
 }
