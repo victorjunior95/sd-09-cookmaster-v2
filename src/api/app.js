@@ -16,5 +16,5 @@ app.use(bodyParser.json());
 app.post('/users', userController.addUser);
 app.post('/login', loginController);
 app.post('/recipes', auth, recipesController.addRecipe);
-
+app.get('/recipes', recipesController.getAllRecipes);
 module.exports = app;

@@ -5,6 +5,10 @@ const addRecipe = async (name, ingredients, preparation) =>
         .then((db) => db.collection('recipes').insertOne({ name, ingredients, preparation }))
         .then((result) => result.ops[0]);
 
+const getAllRecipes = async () => connection()
+    .then((db) => db.collection('recipes').find().toArray());
+
 module.exports = {
     addRecipe,
+    getAllRecipes,
 };
