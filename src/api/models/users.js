@@ -1,4 +1,3 @@
-// const { ObjectID } = require('mongodb');
 const connection = require('./connection');
 
 const create = (user) => connection().then((db) =>
@@ -7,4 +6,7 @@ const create = (user) => connection().then((db) =>
 const getByEmail = (email) => connection().then((db) =>
   db.collection('users').findOne({ email }));
 
-module.exports = { create, getByEmail };
+const createAdmin = (user) => connection().then((db) =>
+  db.collection('users').insertOne({ ...user, role: 'admin' }).then(({ ops }) => ops[0]));
+
+module.exports = { create, getByEmail, createAdmin };

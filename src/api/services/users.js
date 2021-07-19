@@ -7,4 +7,7 @@ const create = (userInfo) => users.create(userInfo)
 const login = ({ email }) => generateToken(email)
   .then(({ token }) => ({ status: 200, token }));
 
-module.exports = { create, login };
+  const createAdmin = (userInfo) => users.createAdmin(userInfo)
+  .then(({ password, ...user }) => ({ status: 201, user }));
+
+module.exports = { create, login, createAdmin };
