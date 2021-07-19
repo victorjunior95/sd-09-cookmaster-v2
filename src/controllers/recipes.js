@@ -4,7 +4,7 @@ const createRecipe = rescue(async (req, res, _next) => {
   const addRecipe = req.body;
   return res.status(200).json(addRecipe);
 });
-const getRecipes = rescue(async (req, res, _next) => res.status(200).json(addRecipe));
+const getRecipes = rescue(async (_req, res, _next) => res.status(200).json('all recipes'));
 
 const getById = rescue(async (req, res, _next) => {
   const { id } = req.params;
