@@ -10,6 +10,6 @@ recipes.get('/', controller.find);
 
 recipes.get('/:id', controller.findOne);
 
-recipes.put('/:id', controller.update);
+recipes.put('/:id', tokenValidate, controller.update);
 
 module.exports = recipes;

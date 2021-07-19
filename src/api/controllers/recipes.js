@@ -32,4 +32,14 @@ const findOne = rescue(async (request, response, next) => {
   response.status(OK).json(Recipe);
 });
 
-module.exports = { create, find, findOne };
+const update = rescue(async (request, response, next) => {
+  const { params: { id }, user: { _id, role }, body: { name, ingredients, preparation } } = request;
+  const { _id: recipeUserId } = await service.findOne(id);
+  if (recipeUserId === _id || role === 'admin') {
+    const newRecipe = await service.update({ name, ingredients, preparation });
+    if (newRecipe.err) return next(newRecipe.err);
+    response.status(OK).json(newRecipe);
+  }
+});
+
+module.exports = { create, find, findOne, update };
