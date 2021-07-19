@@ -32,12 +32,9 @@ const create = async (user) => {
 };
 
 const login = async ({ email, password }) => {
-  if (!email || !password) {
-    return { err: { code: 'unauthorized', message: 'All fields must be filled' } };
-  }
   const { error } = LoginSchema.validate({ email, password });
   const user = await model.loginMatch({ email, password });
-  if (error || !user) {
+  if (!user || (error && user.role !== 'admin')) {
     return { err: { code: 'unauthorized', message: 'Incorrect username or password' } };
   }
   const { _id, role } = user;

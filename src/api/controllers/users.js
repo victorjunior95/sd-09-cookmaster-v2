@@ -18,6 +18,9 @@ const create = rescue(async (request, response, next) => {
 
 const login = rescue(async (request, response, next) => {
   const { email, password } = request.body;
+  if (!email || !password) {
+    return next({ code: 'unauthorized', message: 'All fields must be filled' });
+  }
   const token = await service.login({ email, password });
   if (token.err) return next(token.err);
   response.status(OK).json({ token });
