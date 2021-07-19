@@ -7,5 +7,4 @@ const router = Router();
 router.route('/')
   .post(usersController.createUser);
 
-
 module.exports = router;

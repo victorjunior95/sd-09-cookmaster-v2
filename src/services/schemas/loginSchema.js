@@ -6,8 +6,8 @@ const validateError = (status, message) => ({
 });
 
 const schema = Joi.object({
-  email: Joi.required().messages({ 'any.required': 'All fields must be filled'}),
-  password: Joi.required().messages({ 'any.required': 'All fields must be filled'}),
+  email: Joi.required().messages({ 'any.required': 'All fields must be filled' }),
+  password: Joi.required().messages({ 'any.required': 'All fields must be filled' }),
 });
 
 module.exports = { validateError, schema };

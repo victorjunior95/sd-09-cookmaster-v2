@@ -6,9 +6,9 @@ const userSchema = Joi.object({
   name: Joi.string().required().messages({ 'any.required': 'Invalid entries. Try again.' }),
   email: Joi.string().email().required().messages({
     'any.required': 'Invalid entries. Try again.',
-    'any.email': 'Invalid entries. Try again.'
+    'string.email': 'Invalid entries. Try again.',
   }),
-  password: Joi.string().required().messages({ 'any.required': 'Invalid entries. Try again.'}),
+  password: Joi.string().required().messages({ 'any.required': 'Invalid entries. Try again.' }),
 });
 
 const validateError = (status, message) => ({
@@ -18,6 +18,9 @@ const validateError = (status, message) => ({
 
 const createUser = async (user) => {
   const { error } = userSchema.validate(user);
+  const teste = userSchema.validate(user);
+
+  console.log(teste);
 
   if (error) throw validateError(400, error.message);
 

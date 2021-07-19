@@ -9,7 +9,7 @@ const chekLogin = async (req, res, next) => {
     return res.status(200).json(validationResult);
   } catch (err) {
     console.log('[Error login Controller] > ', err.message);
-    return next(err)
+    return next(err);
   }
 };
 
