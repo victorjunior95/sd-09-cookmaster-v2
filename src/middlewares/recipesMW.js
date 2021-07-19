@@ -1,5 +1,6 @@
 // const { ObjectId } = require('mongodb');
 const RecipesServices = require('../services/recipesServices');
+const RecipesModel = require('../models/recipesModel');
 const response = require('./responseCodes');
 
 const validateRecipe = (req, res, next) => {
@@ -39,18 +40,6 @@ const getRecipeById = async (req, res, next) => {
   }
 };
 
-// const authUser = async (req, res, next) => {
-//   const recipeId = req.params.id;
-//   const { _id, role } = req.user;
-//   try {
-//     const foundRecipe = await RecipesServices.getRecipeById(recipeId);
-//     if (foundRecipe.userId !== _id || !role === 'admin') return next(foundRecipe);
-//     return next();
-//   } catch (error) {
-//     return error;
-//   }
-// };
-
 const allowEditing = async (req, res, next) => {
     const { _id: loggedId, role } = req.user;
     const { userId } = await RecipesServices.getRecipeById(req.params.id);
@@ -76,12 +65,23 @@ const updateRecipe = async (req, res, _next) => {
   }
 };
 
+const deleteRecipe = async (req, res, next) => {
+  try {
+    const recipeId = req.params.id;
+    const deletedRecipe = await RecipesModel.deleteRecipe(recipeId);
+    if (!deletedRecipe) return res.status(response.BAD_REQUEST);
+    return res.status(response.NO_CONTENT).json({});
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   postRecipe,
   validateRecipe,
   getAllRecipes,
   getRecipeById,
-  // authUser,
   updateRecipe,
   allowEditing,
+  deleteRecipe,
 };

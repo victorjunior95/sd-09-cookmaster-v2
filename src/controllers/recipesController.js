@@ -19,4 +19,9 @@ RecipesRouter.put('/:id',
   recipesMW.allowEditing,
   recipesMW.updateRecipe);
 
+  RecipesRouter.delete('/:id',
+  authToken,
+  recipesMW.allowEditing,
+  recipesMW.deleteRecipe);
+
 module.exports = RecipesRouter;
