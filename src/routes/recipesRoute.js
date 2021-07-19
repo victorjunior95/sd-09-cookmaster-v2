@@ -10,4 +10,6 @@ router.post('/', tokenValidation, recipeValidation, recipesControllers.registerR
 
 router.get('/', recipesControllers.getAllRecipes);
 
+router.get('/:id', recipesControllers.getRecipeById);
+
 module.exports = router;

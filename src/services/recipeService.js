@@ -14,7 +14,20 @@ const getRecipes = async () => {
   return result;
 };
 
+const getById = async (id) => {
+  const result = await recipeModel.getRecipeById(id);
+  if (!result) {
+    const ObjectError = {
+      code: 404,
+      message: 'recipe not found',
+    };
+    throw ObjectError;
+  }
+  return result;
+};
+
 module.exports = {
   registerNewRecipe,
   getRecipes,
+  getById,
 };
