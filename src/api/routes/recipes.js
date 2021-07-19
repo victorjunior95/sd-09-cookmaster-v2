@@ -10,4 +10,6 @@ recipes.get('/', controller.find);
 
 recipes.get('/:id', controller.findOne);
 
+recipes.put('/:id', controller.update);
+
 module.exports = recipes;
