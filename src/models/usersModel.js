@@ -10,9 +10,10 @@ const create = async (name, email, password) => {
 
 const findUser = async (email) => {
   const user = await connection().then((db) =>
-  db.collection(collectionUsers).findOne({ email }));
-    return user;
+  db.collection(collectionUsers).findOne({ email })); 
+  return user;
 };
+
 module.exports = {
   create,
   findUser,

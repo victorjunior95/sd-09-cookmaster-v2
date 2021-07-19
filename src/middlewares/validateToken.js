@@ -8,7 +8,7 @@ const validateToken = async (req, _res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return next({ status: HTTP_UNAUTHORIZED_STATUS, err: 'jwt malformed' });
+    return next({ status: HTTP_UNAUTHORIZED_STATUS, err: 'missing auth token' });
   }
   try {
     const payload = jwt.verify(token, SECRET);
