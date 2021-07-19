@@ -33,4 +33,20 @@ router.get('/:id', async (req, res, next) => {
   return res.status(statusSucess).json(recipe);
 });
 
+router.put('/:id', validation, async (req, res, next) => {
+  const { id } = req.params;
+  const { userId } = req;
+  const { name, ingredients, preparation } = req.body;
+  const recipe = await recipesService.update(name, ingredients, preparation, id);
+
+  if (recipe.error) return next(recipe);
+
+  const response = {
+    ...recipe,
+    userId, 
+  };
+
+  res.status(statusSucess).json(response);
+});
+
 module.exports = router;
