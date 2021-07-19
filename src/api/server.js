@@ -55,6 +55,14 @@ app.put(
   recipeController.uploadPictureController,
   );
 
+// Create user admin
+
+app.post(
+  '/users/admin',
+  validateLogin.validateToken,
+  userController.createAdminController,
+  );
+
 app.listen(PORT, () => console.log(`conectado na porta ${PORT}`));
 
 // pendiente terminar la camada service, model, controllr de la primera request de recetas

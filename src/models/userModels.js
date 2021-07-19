@@ -29,8 +29,16 @@ const loginModel = async (data) => {
   return { token: tokenData };
 };
 
+const createAdminModel = async (data) => {
+  const request = await connection().then((db) =>
+    db.collection(DB_COLLECTION).insertOne({ ...data, role: 'admin' }));
+  const { password, ...userData } = request.ops[0];
+  return { user: { ...userData } };
+};
+
 module.exports = {
   postUserModel,
   findUserByEmail,
   loginModel,
+  createAdminModel,
 };

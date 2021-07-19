@@ -26,7 +26,18 @@ const loginService = async (data) => {
   return { response: await userModels.loginModel(data), status: 200 };
 };
 
+const createUserAdminService = async (user, data) => {
+  const { role } = user;
+
+  if (role !== 'admin') return errors.wrongUser;
+
+  const request = await userModels.createAdminModel(data);
+
+  return { response: request, status: 201 };
+};
+
 module.exports = {
   postUserServices,
   loginService,
+  createUserAdminService,
 };

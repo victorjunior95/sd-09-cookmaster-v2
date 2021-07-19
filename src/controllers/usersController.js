@@ -16,7 +16,16 @@ const loginController = async (req, res) => {
   return res.status(request.status).json(request.response);
 };
 
+const createAdminController = async (req, res) => {
+  const { user, body } = req;
+
+  const request = await userServices.createUserAdminService(user, body);
+
+  return res.status(request.status).json(request.response);
+};
+
 module.exports = {
   postUserController,
   loginController,
+  createAdminController,
 };
