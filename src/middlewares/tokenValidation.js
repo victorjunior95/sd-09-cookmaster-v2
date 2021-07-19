@@ -19,9 +19,9 @@ const tokenValidation = async (req, res, next) => {
   if (!token) {
     const objectError = {
       code: 401,
-      message: 'jwt malformed',
+      message: 'missing auth token',
     };
-    throw objectError;
+    next(objectError);
   }
   try {
     const payload = jwt.verify(token, SECRET);
