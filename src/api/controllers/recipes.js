@@ -59,10 +59,23 @@ const remove = async (req, res, next) => {
   }
 };
 
+const upload = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const image = `localhost:3000/${req.file.path}`;
+
+    const uploadImage = await recipesServices.upload(id, image);
+    return res.status(OK_STATUS).json(uploadImage);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   create,
   edit,
   getAll,
   getById,
   remove,
+  upload,
 };

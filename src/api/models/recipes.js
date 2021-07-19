@@ -45,7 +45,7 @@ const getById = (id) => {
     .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }))
     .catch(() => null);
 };
-  
+
 const remove = async (id) => {
   if (!ObjectID.isValid(id)) {
     return null;
@@ -61,6 +61,27 @@ const remove = async (id) => {
 
   return removed;
   };
+
+const upload = async (id, image) => {
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
+  return connection()
+    .then((db) => db.collection('recipes').updateOne({ _id: ObjectId(id) },
+      { $set: { image } }))
+      .then(() => getById(id)
+      .then((data) => {
+        const { _id, name, ingredients, preparation, userId } = data;
+        return {
+         _id,
+         name,
+         ingredients,
+         preparation,
+         userId,
+         image,
+        };
+      }));
+};
   
 module.exports = {
   create,
@@ -68,4 +89,5 @@ module.exports = {
   getAll,
   getById,
   remove,
+  upload,
 };
