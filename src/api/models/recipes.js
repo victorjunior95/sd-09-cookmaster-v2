@@ -14,4 +14,13 @@ const create = async ({ name, ingredients, preparation, userId }) => (
     )
 );
 
-module.exports = { create };
+const find = async (query) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('recipes')
+          .find(query),
+    )
+);
+
+module.exports = { create, find };

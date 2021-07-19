@@ -15,7 +15,7 @@ const create = async (recipe) => {
 };
 
 const find = async (query) => {
-  const Recipes = !query ? await model.find() : await model.find(query);
+  const Recipes = await model.find(query || null);
   return Recipes;
 };
 
