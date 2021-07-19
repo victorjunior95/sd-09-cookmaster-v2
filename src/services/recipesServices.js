@@ -2,7 +2,6 @@ const recipesModels = require('../models/recipesModels');
 
 const createRecipes = async (name, ingredients, preparation, userId) => {
   const newRecipe = await recipesModels.createRecipes(name, ingredients, preparation, userId);
-  console.log('========newRecipe============', newRecipe);
   return { recipe: newRecipe };
 };
 
@@ -25,9 +24,18 @@ const deleteRecipeById = async (recipeId) => {
   await recipesModels.deleteRecipeById(recipeId);
 };
 
+const uploadImage = async (recipeId, image) => {
+  const recipe = await recipesModels.getRecipeById(recipeId);
+
+  const recipeUpDated = { ...recipe, image: `localhost:3000/${image.path}` };
+  await recipesModels.uploadImage(recipeId, recipeUpDated);
+
+  return recipeUpDated;
+};
+
 const getRecipeImagesById = async (imageId) => {
-  const getRecipeImagesById = await recipesModels.getRecipeImagesById(imageId);
-  return getRecipeImagesById;
+  const recipeImagesById = await recipesModels.getRecipeImagesById(imageId);
+  return recipeImagesById;
 };
 
 module.exports = {
@@ -37,4 +45,5 @@ module.exports = {
   editRecipeById,
   deleteRecipeById,
   getRecipeImagesById,
+  uploadImage,
 };

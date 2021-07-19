@@ -35,6 +35,10 @@ const getRecipeImagesById = async (imageId) => connection()
   .then((db) => db.collection('recipes').findOne(ObjectId(imageId)))
   .then();
 
+const uploadImage = async (recipeId, recipeUpDated) => connection()
+  .then((db) => db.collection('recipes').updateOne({ _id: ObjectId(recipeId) },
+    { $set: recipeUpDated }));
+
 module.exports = {
   createRecipes,
   getAllRecipes,
@@ -42,4 +46,5 @@ module.exports = {
   editRecipeById,
   deleteRecipeById,
   getRecipeImagesById,
+  uploadImage,
 };

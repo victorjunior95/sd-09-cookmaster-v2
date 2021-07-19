@@ -1,4 +1,6 @@
 const express = require('express');
+const upload = require('../middlewares/upload');
+
 const validateUser = require('../schemas/validateUser');
 const validateLogin = require('../schemas/validateLogin');
 const validateRecipe = require('../schemas/validateRecipe');
@@ -25,5 +27,7 @@ router.put('/recipes/:id', validateToken, authToEdit, recipesControllers.editRec
 router.delete('/recipes/:id', validateToken, authToEdit, recipesControllers.deleteRecipeById);
 
 router.get('/images/:id', recipesControllers.getRecipeImagesById);
+router.use('/recipes/:id/image/',
+  validateToken, authToEdit, upload, recipesControllers.uploadImage);
 
 module.exports = router;
