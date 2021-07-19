@@ -19,6 +19,7 @@ app.post('/users', UserController.create);
 app.post('/login', UserController.userLogin);
 app.post('/recipes', tokenValidation, RecipeController.create);
 app.get('/recipes', RecipeController.getAll);
+app.get('/recipes/:id', RecipeController.getById);
 
 app.use(errorMiddleware);
 
