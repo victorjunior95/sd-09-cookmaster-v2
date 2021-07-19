@@ -1,7 +1,7 @@
 const verifyEntries = require('../schemas/verifyEntries');
 const users = require('../Models/users');
 
-module.exports = async (body) => {
+module.exports = async (body, role = 'user') => {
   const { name, email, password } = body;
 
   const validate = verifyEntries(body);
@@ -12,7 +12,7 @@ module.exports = async (body) => {
     return { code: 'conflict', err: { message: 'Email already registered' } };
   } 
 
-  const data = await users.createUser(name, email, password);
+  const data = await users.createUser(name, email, password, role);
 
   return data;
 };

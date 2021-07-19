@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const createUser = async (name, email, password, role = 'user') => {
+const createUser = async (name, email, password, role) => {
   const result = await connection()
     .then((db) => db.collection('users').insertOne({ name, email, password, role }));
     // .then((result) => result.ops[0]);
@@ -13,6 +13,13 @@ const createUser = async (name, email, password, role = 'user') => {
   };
 };
 
+const listAllUsers = async () => {
+  const result = await connection()
+    .then((db) => db.collection('users').find().toArray());
+
+  return result;
+};
+
 const findUserByEmail = async (email) => connection()
     .then((db) => db.collection('users').findOne({ email }));
 
@@ -21,6 +28,7 @@ const findUser = async (email, password) => connection()
 
 module.exports = {
   createUser,
+  listAllUsers,
   findUserByEmail,
   findUser,
 };

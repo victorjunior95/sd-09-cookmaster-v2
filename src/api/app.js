@@ -12,6 +12,8 @@ const getRecipeById = require('../controllers/getRecipeById');
 const updateRecipe = require('../controllers/updateRecipe');
 const deleteRecipeById = require('../controllers/deleteRecipeById');
 const uploadPictures = require('../controllers/uploadPictures');
+const getAllUsers = require('../controllers/getAllUsers');
+const createAdmin = require('../controllers/createAdmin');
 
 const app = express();
 
@@ -39,8 +41,11 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
+app.get('/users', getAllUsers);
+
 // New User
 app.post('/users', createUser);
+app.post('/users/admin', validateToken, createAdmin);
 
 // Login
 app.post('/login', login);
