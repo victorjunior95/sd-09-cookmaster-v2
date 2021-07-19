@@ -42,8 +42,11 @@ router.put('/:id', validation, async (req, res, next) => {
   if (recipe.error) return next(recipe);
 
   const response = {
-    ...recipe,
+    _id: id, 
     userId, 
+    name, 
+    ingredients,
+    preparation,
   };
 
   res.status(statusSucess).json(response);
