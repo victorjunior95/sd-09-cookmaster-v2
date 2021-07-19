@@ -1,10 +1,12 @@
 const loginModel = require('../models/loginModel');
-const { validateError } = require('./schemas/loginSchema');
+const { validateError, schema } = require('./schemas/loginSchema');
 
 const login = async (email, password) => {
-  const result = await loginModel.findUser(email, password);
+  const { error } = schema.validate({ email, password });
 
-  console.log('[find user] >', result);
+  if (error) throw validateError(401, error.message);
+
+  const result = await loginModel.findUser(email, password);
 
   if (!result) throw validateError(401, 'Incorrect username or password');
 
