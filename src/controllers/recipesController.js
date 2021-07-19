@@ -61,4 +61,17 @@ routerRecipes.put('/:id', validateToken, async (req, res, next) => {
   }
 });
 
+routerRecipes.delete('/:id', validateToken, async (req, res, next) => {
+  const { _id, role } = req.user;
+  const { id } = req.params;
+  try {
+    const recipe = await recipesService
+      .deleteRecipeByIdAutentication(id, _id, role);
+    if (recipe.err) return next(recipe);
+    return res.status(recipe.status).json();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = routerRecipes;
