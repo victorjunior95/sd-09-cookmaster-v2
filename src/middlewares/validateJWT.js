@@ -11,10 +11,10 @@ const recipesJWT = async (req, res, next) => {
   if (!token) {
     return res.status(status.UNAUTHORIZED).json({ message: status.MISSING });
   }
+  
   try {
     const decode = jwt.verify(token, secret);
 
-    // console.log(token);
     if (!decode) {
       return res.status(status.UNAUTHORIZED).json({ message: status.MALFORMED });
     }
