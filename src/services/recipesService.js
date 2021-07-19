@@ -1,5 +1,5 @@
 const { validateRecipes, validateJWT } = require('../middlewares/validateRecipe');
-const { createRecipe } = require('../models/recipesModel');
+const { createRecipe, getAllRecipes } = require('../models/recipesModel');
 
 const createRecipeService = async (name, ingredients, preparation, token) => {
   const recipeIsValid = await validateRecipes(name, ingredients, preparation);
@@ -12,4 +12,12 @@ const createRecipeService = async (name, ingredients, preparation, token) => {
   return recipe.ops[0];
 };
 
-module.exports = { createRecipeService };
+const getAllRecipesService = async () => {
+  const recipes = await getAllRecipes();
+  return recipes;
+};
+
+module.exports = {
+  createRecipeService,
+  getAllRecipesService,
+};
