@@ -14,6 +14,13 @@ const postRecipe = async (req, res) => {
   res.status(status).json({ recipe });
 };
 
+const getAll = async (req, res) => {
+  const result = await service.recipes.getAll();
+
+  res.status(200).json(result);
+};
+
 module.exports = {
   postRecipe,
+  getAll,
 };

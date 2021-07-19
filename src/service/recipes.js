@@ -17,6 +17,13 @@ const postRecipe = async (name, ingredients, preparation, userId) => {
   };
 };
 
+const getAll = async () => {
+  const result = await model.recipes.getAll();
+
+  return result;
+};
+
 module.exports = {
   postRecipe,
+  getAll,
 };

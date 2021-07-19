@@ -15,6 +15,7 @@ app.get('/', (request, response) => {
 app.post('/users', controller.users.signIn);
 app.post('/login', controller.users.login);
 app.post('/recipes', validateJWT, controller.recipes.postRecipe);
+app.get('/recipes', controller.recipes.getAll);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 
