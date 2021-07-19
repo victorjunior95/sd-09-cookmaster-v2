@@ -69,9 +69,18 @@ const editRecipe = async (id, name, ingredients, preparation) => {
   return recipeToEdit;
 };
 
+const deleteRecipe = async (id) => {
+  const validId = validateId(id);
+
+  if (validId) return validId;
+
+  await Recipe.deleteRecipe(id);
+};
+
 module.exports = {
   registerRecipe,
   listRecipes,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };

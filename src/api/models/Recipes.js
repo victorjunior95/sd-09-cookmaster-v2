@@ -24,9 +24,13 @@ const editRecipe = (id, name, ingredients, preparation) => connection()
     ))
     .then((result) => result.value);
 
+const deleteRecipe = (id) => connection()
+  .then((db) => db.collection('recipes').remove({ _id: ObjectId(id) }));
+
 module.exports = {
   registerRecipe,
   listRecipes,
   getRecibeById,
   editRecipe,
+  deleteRecipe,
 };
