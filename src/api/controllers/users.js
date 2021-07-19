@@ -18,9 +18,7 @@ const create = rescue(async (request, response, next) => {
 
 const login = rescue(async (request, response, next) => {
   const { email, password } = request.body;
-  console.log(email);
   const token = await service.login({ email, password });
-  console.log(token);
   if (token.err) return next(token.err);
   response.status(OK).json({ token });
 });
