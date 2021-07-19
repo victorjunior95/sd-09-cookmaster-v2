@@ -1,22 +1,15 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const chaiHttp = require('chai-http');
+const { getconnectionMock } = require('./getConnection');
 
 const server = require('../api/app');
 
 const { MongoClient } = require('mongodb');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-
-const DBServer = new MongoMemoryServer();
-
-const getconnectionMock = async () => {
-  const URLMock = await DBServer.getUri();
-  return MongoClient.connect(URLMock, { useNewUrlParser: true, useUnifiedTopology: true });
-}
 
 describe('POST /login', () => {
   describe('quando nao tem email', () => {
@@ -151,10 +144,10 @@ describe('POST /login', () => {
     });
 
     after(async () => {
-      MongoClient.connect.restore();
       await connectionMock.db('Cookmaster')
       .collection('users')
       .deleteMany({});
+      MongoClient.connect.restore();
     });
 
     it('retorna o codigo de status 200', () => {
