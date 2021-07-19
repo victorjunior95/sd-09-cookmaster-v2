@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const userModel = require('../models/usersModel');
 
 const validateDataRegister = (userData) => {
@@ -45,6 +46,44 @@ const userRegisterService = async (userData) => {
   return userWithouPass;
 };
 
+const generateToken = (userData) => {
+  const jwtConfig = {
+    expiresIn: '1d',
+    algorithm: 'HS256',
+  };
+  const secret = '1234';
+  const token = jwt.sign({ data: JSON.stringify(userData) }, secret, jwtConfig);
+  if (!token) {
+    const erro = {
+      status: 400,
+      message: 'tokenn xxx',
+    };
+  throw erro;
+  }
+  return { token };
+};
+
+const loginService = async (userData) => {
+  const { email, password } = userData;
+  if (!email || !password) {
+    const erro = {
+      status: 401,
+      message: 'All fields must be filled',
+    };
+    throw erro;
+  }
+  const result = await userModel.validadeLogin(email, password);
+  if (!result) {
+    const erro = {
+      status: 401,
+      message: 'Incorrect username or password',
+    };
+    throw erro;
+  }
+  return generateToken(userData);
+};
+
 module.exports = {
   userRegisterService,
+  loginService,
 };

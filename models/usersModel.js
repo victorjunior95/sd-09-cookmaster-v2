@@ -15,7 +15,15 @@ const findEmail = async (email) => {
   return result;
 };
 
+const validadeLogin = async (email, password) => {
+  const db = await connection();
+  const collection = await db.collection('users');
+  const result = await collection.findOne({ email, password });
+  return result;
+};
+
 module.exports = {
   userRegisterModel,
   findEmail,
+  validadeLogin,
 };
