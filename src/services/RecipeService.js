@@ -38,10 +38,19 @@ const remove = async (id) => {
   : removedRecipe;
 };
 
+const uploadImage = async (id) => {
+  const updatedRecipe = await RecipeModel.uploadImage(id);
+
+  return !updatedRecipe
+    ? error.RECIPE_NOT_FOUND
+    : updatedRecipe;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  uploadImage,
 };
