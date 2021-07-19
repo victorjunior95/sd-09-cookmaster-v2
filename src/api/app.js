@@ -2,7 +2,9 @@ require('dotenv/config');
 const bodyParser = require('body-parser').json();
 const express = require('express');
 const UserController = require('../../controllers/UserController');
+const RecipeController = require('../../controllers/RecipeController');
 const errorMiddleware = require('../../middlewares/error');
+const { tokenValidation } = require('../../middlewares/tokenValidation');
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.get('/', (request, response) => {
 
 app.post('/users', UserController.create);
 app.post('/login', UserController.userLogin);
+app.post('/recipes', tokenValidation, RecipeController.create);
 
 app.use(errorMiddleware);
 

@@ -56,7 +56,9 @@ const userLogin = async (email, password) => {
     algorithm: 'HS256',
   };
 
-  const token = jwt.sign({ data: user }, secret, jwtConfig);
+  const { password: _, ...userWithoutPassword } = user;
+
+  const token = jwt.sign({ data: userWithoutPassword }, secret, jwtConfig);
 
   return token;
 };
