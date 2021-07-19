@@ -17,6 +17,7 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
   });
 
   beforeEach(async () => {
+      a
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
     const users = {
