@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const model = require('../model');
 const response = require('../helpers/response');
 
@@ -34,8 +35,29 @@ const getById = async (id) => {
   };
 };
 
+const updateRecipe = async (id, body, user) => {
+  const { name, ingredients, preparation } = body;
+
+  const { userId } = await model.recipes.getById(id);
+  const objectUserId = new ObjectId(userId);
+
+  const { _id, role } = user;
+  const reqId = new ObjectId(_id);
+  
+  if (objectUserId.equals(reqId) || role === 'admin') {
+    const recipe = await model.recipes.updateRecipe(id, name, ingredients, preparation);
+    if (!recipe) return response(400, 'recipe not found');
+    return {
+      status: 200,
+      recipe,
+    };
+  }
+  return response(401, 'access denied');
+};
+
 module.exports = {
   postRecipe,
   getAll,
   getById,
+  updateRecipe,
 };
