@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser').json();
 
 const router = require('./routes/router');
-const { errorHandler, serverErrorHandler } = require('./middlewares/errorHandlers');
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
@@ -16,6 +16,6 @@ app.get('/', (request, response) => {
 
 app.use(router);
 
-app.use(errorHandler, serverErrorHandler);
+app.use(errorHandler);
 
 module.exports = app;
