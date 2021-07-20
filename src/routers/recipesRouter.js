@@ -5,19 +5,23 @@ const validateJWT = require('../middlewares/validateJWT');
 
 const router = express.Router();
 
-router.post('/recipes', 
-validate.validateAllRecipes,
-validate.validateJWT,
-recipesController.createRecipes);
+router.post('/recipes',
+  validate.validateAllRecipes,
+  validate.validateJWT,
+  recipesController.createRecipes);
 
-router.get('/recipes', 
-recipesController.getAllRecipes);
+router.get('/recipes',
+  recipesController.getAllRecipes);
 
-router.get('/recipes/:id', 
-recipesController.getByRecipes);
+router.get('/recipes/:id',
+  recipesController.getByRecipes);
 
-router.put('/recipes/:id', 
-validateJWT.recipesJWT,
-recipesController.updateRecipes);
+router.put('/recipes/:id',
+  validateJWT.recipesJWT,
+  recipesController.updateRecipes);
+
+router.delete('/recipes/:id',
+  validateJWT.recipesJWT,
+  recipesController.deleteById);
 
 module.exports = router;
