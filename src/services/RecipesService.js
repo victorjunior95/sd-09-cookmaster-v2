@@ -17,11 +17,10 @@ const RecipesSchema = Joi.object({
 });
 
 const addRecipe = async (recipe, token) => {
-  if (!token) throw createErrorMsg(401, 'jwt malformed');
-  console.log(token);
-  const payload = jwt.verify(token, SECRET);
   const { error } = RecipesSchema.validate({ ...recipe });
   if (error !== undefined) throw createErrorMsg(400, 'Invalid entries. Try again.');
+  
+  const payload = jwt.verify(token, SECRET); 
 
   const currentUser = await UsersModel.findByEmail(payload.email);
   console.log(currentUser);
@@ -38,6 +37,12 @@ const addRecipe = async (recipe, token) => {
   } } };
 };
 
+const listRecipes = async (id) => {
+  const recipes = await RecipesModel.find(id);
+  return { status: 200, result: recipes };
+};
+
 module.exports = {
   addRecipe,
+  listRecipes,
 };
