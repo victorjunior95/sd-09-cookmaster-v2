@@ -1,6 +1,11 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
+const recipeNotFound = Object.assign(
+  new Error('recipe not found'),
+  { code: 'notFound' },
+);
+
 const getAll = async () => {
   const recipes = await connection()
     .then((db) => db.collection('recipes')
@@ -11,10 +16,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
-    throw Object.assign(
-      new Error('recipe not found'),
-      { code: 'notFound' },
-   );
+    throw recipeNotFound;
   }
 
   const recipe = await connection()
@@ -22,10 +24,7 @@ const getById = async (id) => {
       .findOne({ _id: ObjectId(id) }));
       
   if (!recipe) {
-    throw Object.assign(
-      new Error('recipe not found'),
-      { code: 'notFound' },
-    );
+    throw recipeNotFound;
   }
 
   return recipe;
@@ -39,8 +38,27 @@ const create = async (name, ingredients, preparation, userId) => {
   return result.ops[0];
 };
 
+const update = async (id, name, ingredients, preparation) => {
+  if (!ObjectId.isValid(id)) {
+    throw recipeNotFound;
+  }
+
+  const result = await connection().then((db) =>
+    db
+      .collection('recipes')
+      .updateOne(
+        { _id: ObjectId(id) },
+        { $set: { name, ingredients, preparation } },
+      ));
+
+  if (result.modifiedCount) {
+    return getById(id);
+  }
+};
+
 module.exports = {
   getById,
   getAll,
   create,
+  update,
 };

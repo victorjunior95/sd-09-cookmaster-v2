@@ -30,4 +30,19 @@ recipesController.post('/', validateJWT, rescue(async (req, res) => {
   return res.status(created).json({ recipe: newRecipe });
 }));
 
+recipesController.put('/:id', validateJWT, rescue(async (req, res) => {
+    const { id: recipeId } = req.params;
+    const recipeNewData = req.body;
+    const { _id: userId, role } = req.user;
+
+    const updatedRecipe = await recipesServices.update(
+      recipeId,
+      recipeNewData,
+      userId,
+      role,
+    );
+
+    return res.status(ok).json(updatedRecipe);
+  }));
+
 module.exports = recipesController;

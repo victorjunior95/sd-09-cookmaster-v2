@@ -34,8 +34,29 @@ const create = async (name, ingredients, preparation, userId) => {
   return newRecipe;
 };
 
+const update = async (recipeId, recipeNewData, userId, role) => {
+  const { name, ingredients, preparation } = recipeNewData;
+  const recipeValidation = recipeSchema.validate({ name, ingredients, preparation }); 
+  
+  if (recipeValidation.error) {
+    throw Object.assign(
+      new Error('Invalid entries. Try again.'),
+      { code: 'badRequest' },
+   );
+  }
+  
+  const recipe = await recipesModel.getById(recipeId);
+
+  if (recipe.userId.toString() === userId.toString() || role === 'admin') {
+    const updatedRecipe = await recipesModel.update(recipeId, name, ingredients, preparation);
+
+    return updatedRecipe;
+  }
+};
+
 module.exports = {
   findAll,
   findById,
   create,
+  update,
 };
