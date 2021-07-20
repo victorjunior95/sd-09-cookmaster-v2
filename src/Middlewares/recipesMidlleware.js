@@ -6,11 +6,11 @@ const JWTmalformed = { message: 'jwt malformed' };
 const auth = async (req, res, next) => {
   const token = req.headers.authorization;
   const JWT_SECRET = 'meuSegredoSuperSecreto';
-  console.log(token, 'token');
   if (!token) {
     res.status(401).json(missingAuthToken);
   }
   try {
+    if (token !== undefined) {
     const payload = jwt.verify(token, JWT_SECRET);
     console.log(payload, 'payload');
     if (!payload) {
@@ -18,6 +18,7 @@ const auth = async (req, res, next) => {
     } 
       req.user = payload;
       next();
+  }
   } catch (error) {
     return res.status(401).json(JWTmalformed);
   }
