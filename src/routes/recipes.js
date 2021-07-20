@@ -28,5 +28,6 @@ router.delete(
   middlewares.tokenValidation,
   recipesController.deleteRecipes,
 );
+router.put('/:id/image', middlewares.tokenValidation, recipesController.addImage);
 
 module.exports = router;

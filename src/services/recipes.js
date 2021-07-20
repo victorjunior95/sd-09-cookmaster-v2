@@ -20,11 +20,21 @@ const getAll = async () => recipesModel.getAll();
 const recipesById = async (id) => recipesModel.recipesById(id);
 
 const updateRecipeById = async (id, name, ingredients, preparation) => {
-    const update = await recipesModel.uptadeRecipes(id, name, ingredients, preparation);
-    return update;
-  };
+  const update = await recipesModel.uptadeRecipes(
+    id,
+    name,
+    ingredients,
+    preparation,
+  );
+  return update;
+};
 
 const deleteRecipes = async (id) => recipesModel.deletRecipes(id);
+
+const updateImage = async (id, filename) => {
+  const getImage = await recipesModel.updateImage(id, filename);
+  return getImage;
+};
 
 module.exports = {
   createRecipes,
@@ -32,4 +42,5 @@ module.exports = {
   recipesById,
   updateRecipeById,
   deleteRecipes,
+  updateImage,
 };
