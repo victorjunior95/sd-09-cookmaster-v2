@@ -55,9 +55,27 @@ const updateRecipe = async (id, body, user) => {
   return response(401, 'access denied');
 };
 
+const deleteRecipe = async (id, user) => {
+  const { userId } = await model.recipes.getById(id);
+  const objectUserId = new ObjectId(userId);
+
+  const { _id, role } = user;
+  const reqId = new ObjectId(_id);
+  
+  if (objectUserId.equals(reqId) || role === 'admin') {
+    const recipe = await model.recipes.deleteRecipe(id);
+    if (!recipe) return response(400, 'recipe not found');
+    return {
+      status: 204,
+    };
+  }
+  return response(401, 'access denied');
+};
+
 module.exports = {
   postRecipe,
   getAll,
   getById,
   updateRecipe,
+  deleteRecipe,
 };
