@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 
-const secret = 'trybe123';
+const secret = 'senhaPower';
 const OK = 200;
 
 const login = async (userEmail) => {

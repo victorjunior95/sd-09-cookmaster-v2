@@ -1,7 +1,7 @@
 const express = require('express');
 const UsersRouter = require('../routes/users');
 const LoginRouter = require('../routes/login');
-// const RecipesRouter = require('../routes/RecipesRouter');
+const RecipesRouter = require('../routes/recipes');
 
 const app = express();
 app.use(express.json());
@@ -15,6 +15,6 @@ app.use(express.static(`${__dirname}/uploads`));
 
 app.use('/users', UsersRouter);
 app.use('/login', LoginRouter);
-// app.use('/recipes', RecipesRouter);
+app.use('/recipes', RecipesRouter);
 
 module.exports = app;

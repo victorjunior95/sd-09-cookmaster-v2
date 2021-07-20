@@ -15,9 +15,8 @@ const validate = (req, res, next) => {
 
 const validateUserEmail = async (req, res, next) => {
   const { email } = req.body;
-  const getAllUsers = await UsersModel.getAll();
-  const filterEmail = getAllUsers.some((userEmail) => userEmail.email === email);
-  if (filterEmail) {
+  const users = await UsersModel.getUserByEmail(email);
+  if (users) {
     return res.status(CONFLICT).json({ message: 'Email already registered' });
   }
   next();
