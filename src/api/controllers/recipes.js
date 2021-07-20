@@ -1,7 +1,7 @@
 const rescue = require('express-rescue');
 const { ObjectId } = require('mongodb');
 const service = require('../services/recipes');
-const { CREATED, OK } = require('../constants/http.json');
+const { CREATED, OK, NO_CONTENT } = require('../constants/http.json');
 
 const create = rescue(async (request, response, next) => {
   const { name, ingredients, preparation } = request.body;
@@ -47,7 +47,17 @@ const updateOne = rescue(async (request, response, next) => {
       userId,
     });
   }
-  return { err: { code: 'unauthorized', message: 'unable to edit recipe' } };
+  return next({ code: 'unauthorized', message: 'unable to edit recipe' });
 });
 
-module.exports = { create, find, findOne, updateOne };
+const deleteOne = rescue(async (request, response, next) => {
+  const { params: { id }, user: { _id, role } } = request;
+  const { userId } = await service.findOne(id);
+  if (role === 'admin' || ObjectId(userId).toString() === ObjectId(_id).toString()) {
+    await service.deleteOne(id);
+    return response.status(NO_CONTENT).send();
+  }
+  return next({ code: 'unauthorized', message: 'unable to delete recipe' });
+});
+
+module.exports = { create, find, findOne, updateOne, deleteOne };
