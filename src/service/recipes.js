@@ -23,7 +23,19 @@ const getAll = async () => {
   return result;
 };
 
+const getById = async (id) => {
+  const recipe = await model.recipes.getById(id);
+
+  if (!recipe) return response(404, 'recipe not found');
+
+  return {
+    status: 200,
+    recipe,
+  };
+};
+
 module.exports = {
   postRecipe,
   getAll,
+  getById,
 };

@@ -20,7 +20,18 @@ const getAll = async (req, res) => {
   res.status(200).json(result);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  const { status, recipe, message } = await service.recipes.getById(id);
+
+  if (status !== 200) return res.status(status).json({ message });
+
+  res.status(status).json({ ...recipe });
+};
+
 module.exports = {
   postRecipe,
   getAll,
+  getById,
 };
