@@ -26,7 +26,7 @@ const doRestrictAction = async ({ id, userId, callback, params }) => {
     const user = await UsersModel.findByQuery(ObjectID(userId));
     isUserAdmin = user && user.role === 'admin';
   }
-
+  
   if (isUserOwner || isUserAdmin) {
     await callback(...params);
     recipe = await getById({ id });

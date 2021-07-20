@@ -51,10 +51,28 @@ const remove = async (req, res) => {
   return res.status(403).json(recipe);
 };
 
+const addImage = async (req, res, _next) => {
+  const { id } = req.params;
+  const { userId, file } = req;
+  const host = req.get('host');
+  const image = `${host}/src/uploads/${file.filename}`;
+
+  const recipe = await RecipesService.update({
+    id,
+    newData: { image },
+    userId,
+  });
+
+  // if (recipe.error) return next(recipe);
+
+  return res.status(200).json(recipe);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  addImage,
 };
