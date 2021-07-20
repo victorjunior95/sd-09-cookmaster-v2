@@ -41,10 +41,22 @@ const deleteRecipe = rescue(async (req, res) => {
   return res.status(204).end();
 });
 
+const addImage = rescue(async (req, res) => {
+  const { id } = req.params;
+  const { filename } = req.file;
+
+  const image = `localhost:3000/src/uploads/${filename}`;
+
+  const recipeWithImage = await RecipeService.addImage(id, image);
+
+  return res.status(200).json(recipeWithImage);
+});
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   deleteRecipe,
+  addImage,
 };

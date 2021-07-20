@@ -56,10 +56,26 @@ const deleteRecipe = async (id) => {
   return recipe;
 };
 
+const addImage = async (id, image) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const recipeWithImage = await connection()
+  .then((db) => db.collection('recipes').findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: { image } },
+    { returnOriginal: false },
+  ));
+
+  return recipeWithImage.value;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   deleteRecipe,
+  addImage,
 };

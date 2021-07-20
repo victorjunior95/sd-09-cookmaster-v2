@@ -5,6 +5,7 @@ const UserController = require('../../controllers/UserController');
 const RecipeController = require('../../controllers/RecipeController');
 const errorMiddleware = require('../../middlewares/error');
 const { tokenValidation } = require('../../middlewares/tokenValidation');
+const upload = require('../../middlewares/upload');
 
 const app = express();
 
@@ -22,6 +23,12 @@ app.get('/recipes', RecipeController.getAll);
 app.get('/recipes/:id', RecipeController.getById);
 app.put('/recipes/:id', tokenValidation, RecipeController.update);
 app.delete('/recipes/:id', tokenValidation, RecipeController.deleteRecipe);
+app.put(
+  '/recipes/:id/image/',
+  tokenValidation,
+  upload.single('image'),
+  RecipeController.addImage,
+);
 
 app.use(errorMiddleware);
 
