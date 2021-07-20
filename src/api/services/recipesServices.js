@@ -1,0 +1,27 @@
+const Joi = require('joi');
+const recipesModel = require('../models/recipesModel');
+
+const userSchema = Joi.object({
+  name: Joi.string().required(),
+  ingredients: Joi.string().required(),
+  preparation: Joi.string().required(),
+});
+
+const create = async (name, ingredients, preparation, userId) => {
+  const recipeValidation = userSchema.validate({ name, ingredients, preparation }); 
+  
+  if (recipeValidation.error) {
+    throw Object.assign(
+      new Error('Invalid entries. Try again.'),
+      { code: 'badRequest' },
+   );
+  }
+
+  const newRecipe = await recipesModel.create(name, ingredients, preparation, userId);
+
+  return newRecipe;
+};
+
+module.exports = { 
+  create,
+};

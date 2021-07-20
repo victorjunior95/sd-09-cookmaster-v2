@@ -26,7 +26,7 @@ const login = async (email, password) => {
    );
   }
 
-  if (!user || email !== user.email || password !== user.password) {
+  if (!user || password !== user.password) {
     throw Object.assign(
       new Error('Incorrect username or password'),
       { code: 'unauthorized' },
