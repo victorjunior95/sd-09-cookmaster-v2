@@ -32,12 +32,15 @@ const findOne = async (id) => (
     )
 );
 
-const updateOne = async (recipe) => (
+const updateOne = async (id, { name, ingredients, preparation }) => (
   connection()
     .then(
       (db) => db
         .collection('recipes')
-          .updateOne(recipe),
+          .updateOne(
+            { _id: id },
+            { $set: { name, ingredients, preparation } },
+          ),
     )
 );
 
