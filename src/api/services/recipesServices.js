@@ -13,6 +13,12 @@ const findAll = async () => {
   return recipes;
 };
 
+const findById = async (id) => {
+  const recipe = await recipesModel.getById(id);
+
+  return recipe;
+};
+
 const create = async (name, ingredients, preparation, userId) => {
   const recipeValidation = recipeSchema.validate({ name, ingredients, preparation }); 
   
@@ -30,5 +36,6 @@ const create = async (name, ingredients, preparation, userId) => {
 
 module.exports = {
   findAll,
+  findById,
   create,
 };

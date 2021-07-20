@@ -13,6 +13,14 @@ recipesController.get('/', rescue(async (_req, res) => {
   res.status(ok).json(recipes); 
 }));
 
+recipesController.get('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const recipe = await recipesServices.findById(id);
+
+  res.status(ok).json(recipe); 
+}));
+
 recipesController.post('/', validateJWT, rescue(async (req, res) => {
   const { name, ingredients, preparation } = req.body;
   const { _id: userId } = req.user;
