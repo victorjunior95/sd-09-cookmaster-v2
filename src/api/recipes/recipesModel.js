@@ -9,7 +9,11 @@ const create = async (recipeData) => collection()
 const findByQuery = async (query) => collection()
   .then((coll) => coll.findOne(query));
 
+const getAll = async () => collection()
+  .then((coll) => coll.find().toArray());
+
 module.exports = {
   create,
   findByQuery,
+  getAll,
 };
