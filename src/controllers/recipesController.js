@@ -4,8 +4,9 @@ const router = express.Router();
 const recipesService = require('../services/recipesService');
 const validation = require('../middlewares/validation');
 
-const statusSucessCreate = 201;
-const statusSucess = 200;
+const created = 201;
+const ok = 200;
+const noContent = 204;
 
 router.post('/', validation, async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
@@ -15,14 +16,14 @@ router.post('/', validation, async (req, res, next) => {
   if (recipe.error) return next(recipe);
 
   res
-    .status(statusSucessCreate)
+    .status(created)
     .json({ recipe: { name, ingredients, preparation, userId, _id: recipe.id } });
 });
 
 router.get('/', async (_req, res, _next) => {
   const recipes = await recipesService.getAll();
 
-  return res.status(statusSucess).json(recipes);
+  return res.status(ok).json(recipes);
 });
 
 router.get('/:id', async (req, res, next) => {
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res, next) => {
 
   if (recipe.error) return next(recipe);
 
-  return res.status(statusSucess).json(recipe);
+  return res.status(ok).json(recipe);
 });
 
 router.put('/:id', validation, async (req, res, next) => {
@@ -49,7 +50,13 @@ router.put('/:id', validation, async (req, res, next) => {
     preparation,
   };
 
-  res.status(statusSucess).json(response);
+  res.status(ok).json(response);
+});
+
+router.delete('/:id', validation, async (req, res, next) => {
+ const recipe = await recipesService.deleteRecipe(req.params.id);
+  if (recipe.error) return next(recipe);
+  res.status(noContent).json('');
 });
 
 module.exports = router;
