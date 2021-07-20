@@ -26,7 +26,6 @@ function verify(name, email, password) {
 
 const testEmail = async (email) => {
   const checkEmail = await model.findByEmail({ email });
-  console.log(checkEmail);
   return checkEmail;
 };
 

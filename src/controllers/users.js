@@ -3,7 +3,7 @@ const services = require('../services/users');
 const loginServices = require('../services/login');
 
     const jwtConfig = {
-      expiresIn: 60 * 5,
+      expiresIn: '7d',
       algorithm: 'HS256',
     };
 
