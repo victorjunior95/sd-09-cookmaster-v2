@@ -1,12 +1,13 @@
-const jwt = require('jsonwebtoken');
+// const { error } = require('shelljs');
 const userModel = require('../models/usersModel');
+const tokenService = require('./token');
 
 const validateDataRegister = (userData) => {
   if (!userData.name || !userData.email || !userData.password) {
     const erro = {
-        status: 400,
-        message: 'Invalid entries. Try again.',
-      };
+      status: 400,
+      message: 'Invalid entries. Try again.',
+    };
     throw erro;
   }
 };
@@ -26,7 +27,7 @@ const emailValidator = async (email) => {
       status: 409,
       message: 'Email already registered',
     };
-  throw erro;
+    throw erro;
   }
 };
 
@@ -46,25 +47,8 @@ const userRegisterService = async (userData) => {
   return userWithouPass;
 };
 
-const generateToken = (userData) => {
-  const jwtConfig = {
-    expiresIn: '1d',
-    algorithm: 'HS256',
-  };
-  const secret = '1234';
-  const token = jwt.sign({ data: JSON.stringify(userData) }, secret, jwtConfig);
-  if (!token) {
-    const erro = {
-      status: 400,
-      message: 'tokenn xxx',
-    };
-  throw erro;
-  }
-  return { token };
-};
-
 const loginService = async (userData) => {
-  const { email, password } = userData;
+  const { email, password, id, role } = userData;
   if (!email || !password) {
     const erro = {
       status: 401,
@@ -80,10 +64,28 @@ const loginService = async (userData) => {
     };
     throw erro;
   }
-  return generateToken(userData);
+  return tokenService.generateToken(email, id, role);
+};
+
+const createRecipeService = async (bodyObject) => {
+  const { name, ingredients, preparation } = bodyObject;
+  const result = await userModel.createRecipeModel(
+    name,
+    ingredients,
+    preparation,
+  );
+  if (!name || !ingredients || !preparation) {
+    const erro = {
+      message: 'Invalid entries. Try again.',
+      status: 400,
+    };
+    throw erro;
+  }
+  return result;
 };
 
 module.exports = {
   userRegisterService,
   loginService,
+  createRecipeService,
 };

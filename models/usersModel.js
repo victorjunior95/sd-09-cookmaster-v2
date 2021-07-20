@@ -22,8 +22,16 @@ const validadeLogin = async (email, password) => {
   return result;
 };
 
+const createRecipeModel = async (name, ingredients, preparation) => {
+  const db = await connection();
+  const collection = await db.collection('users');
+  const result = await collection.insertOne({ name, ingredients, preparation });
+  return { recipe: result.ops[0] };
+};
+
 module.exports = {
   userRegisterModel,
   findEmail,
   validadeLogin,
+  createRecipeModel,
 };

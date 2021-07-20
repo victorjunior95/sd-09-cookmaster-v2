@@ -13,8 +13,18 @@ const userRegister = async (req, res, next) => {
 const userLogin = async (req, res, next) => {
   try {
     const result = await service.loginService(req.body);
-    console.log(result);
-    return res.status(200).json(result);
+    return res.status(200).json({ token: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const userCreateRecipes = async (req, res, next) => {
+  try {
+    const result = await service.createRecipeService(req.body);
+    const { _id } = req.user;
+    result.recipe.userId = _id;
+    return res.status(201).json(result);
   } catch (error) {
     next(error);
   }
@@ -23,4 +33,5 @@ const userLogin = async (req, res, next) => {
 module.exports = {
   userRegister,
   userLogin,
+  userCreateRecipes,
 };
