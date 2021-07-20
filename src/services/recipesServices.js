@@ -24,8 +24,14 @@ const getByRecipes = async (id) => {
 };
 
 const updateRecipes = async (id, upRecipe, userId) => {
+  const idd = userId;
+
+  const { name: n, email, role, ...userIdSplead } = idd;
+  // console.log(userIdSplead);
+  const idOb = Object.values(userIdSplead).join();
+
   const result = await recipesModels.updateRecipes(
-    id, upRecipe, userId,
+    id, upRecipe, idOb,
     );
   return result;
 };

@@ -43,13 +43,13 @@ const getByRecipes = async (req, res) => {
 
 const updateRecipes = async (req, res) => {
   const { id } = req.params;
-  const { _id } = req.user;
+  const userId = req.user;
   const upRecipe = req.body;
 
   const result = await recipesServices.updateRecipes(
-    id, upRecipe, _id,
+    id, upRecipe, userId,
   );
-  res.status(status.ok).json(result);
+  res.status(status.OK).json(result);
 };
 
 module.exports = {

@@ -3,7 +3,7 @@ const status = require('../statuscode/status');
 
 const userModels = require('../models/userModels');
 
-const secret = 'trybe-t8';
+const secret = 'trybe-t9';
 
 const recipesJWT = async (req, res, next) => {
   const token = req.headers.authorization;
@@ -11,7 +11,8 @@ const recipesJWT = async (req, res, next) => {
   if (!token) {
     return res.status(status.UNAUTHORIZED).json({ message: status.MISSING });
   }
-
+  // const decode = jwt.verify(token, secret);
+  // console.log(decode);
   try {
     const decode = jwt.verify(token, secret);
 
