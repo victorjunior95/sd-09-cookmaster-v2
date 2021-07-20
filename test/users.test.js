@@ -144,6 +144,7 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
+        console.log(result);
         expect(result.user.name).toBe('Erick Jacquin');
         expect(result.user.email).toBe('erickjaquin@gmail.com');
         expect(result.user.role).toBe('user');
