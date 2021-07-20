@@ -12,8 +12,12 @@ const findByQuery = async (query) => collection()
 const getAll = async () => collection()
   .then((coll) => coll.find().toArray());
 
+const update = async (_id, newData) => collection()
+  .then((coll) => coll.updateOne({ _id }, { $set: { ...newData } }));
+
 module.exports = {
   create,
   findByQuery,
   getAll,
+  update,
 };

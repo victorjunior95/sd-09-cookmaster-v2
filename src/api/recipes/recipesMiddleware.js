@@ -6,7 +6,6 @@ const jwtSecret = require('../jwtSecret');
 
 const validateAuth = async (req, _res, next) => {
   const { authorization } = req.headers;
-  console.log('authorization', authorization);
 
   if (!authorization) return next({ error: 'missingToken' });
 
