@@ -17,26 +17,41 @@ const getById = async ({ id }) => {
   return recipe;
 };
 
-const update = async ({ id, newData, userId }) => {
+const doRestrictAction = async ({ id, userId, callback, params }) => {
   let recipe = await getById({ id });
   const isUserOwner = recipe.userId === userId;
-  let isUserAdmin = null;
+  let isUserAdmin = false;
   
   if (!isUserOwner) {
-    const { role } = await UsersModel.findByQuery(ObjectID(userId));
-    isUserAdmin = role === 'admin';
+    const user = await UsersModel.findByQuery(ObjectID(userId));
+    isUserAdmin = user && user.role === 'admin';
   }
 
   if (isUserOwner || isUserAdmin) {
-    await RecipesModel.update(ObjectID(id), newData);
+    await callback(...params);
     recipe = await getById({ id });
   }
 
   return recipe;
 };
 
+const update = async ({ id, newData, userId }) => doRestrictAction({
+  id,
+  userId,
+  callback: RecipesModel.update,
+  params: [ObjectID(id), newData],
+});
+
+const remove = async ({ id, userId }) => doRestrictAction({
+  id,
+  userId,
+  callback: RecipesModel.remove,
+  params: [ObjectID(id)],
+});
+
 module.exports = {
   create,
   getById,
+  remove,
   update,
 };
