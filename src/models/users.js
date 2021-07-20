@@ -20,7 +20,11 @@ const findByEmail = async (email) => {
   return true;
 };
 
+const getUser = async (email) => connection()
+  .then((db) => db.collection('users').findOne({ email }));
+
 module.exports = {
   create,
   findByEmail,
+  getUser,
 };
