@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 const Joi = require('joi');
 const { ObjectId } = require('mongodb');
 const path = require('path');
