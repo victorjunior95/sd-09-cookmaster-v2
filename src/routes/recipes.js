@@ -15,5 +15,5 @@ router.post(
 );
 
 router.get('/', recipesController.getAllRecipes);
-
+router.get('/:id', middlewares.validateId, recipesController.getRecipesById);
 module.exports = router;

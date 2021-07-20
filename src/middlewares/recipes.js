@@ -66,6 +66,7 @@ const tokenMalformed = async (req, res, next) => {
 
 const validateId = async (req, res, next) => {
     const { id } = req.params;
+    console.log(id);
     if (id.length < ID_LENGTH) {
         return res.status(NOT_FOUND).json({ message: 'recipe not found' });
     }
