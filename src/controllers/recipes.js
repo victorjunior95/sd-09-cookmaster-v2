@@ -1,8 +1,10 @@
 const rescue = require('express-rescue');
+const Recipe = require('../services/recipes');
 
 const createRecipe = rescue(async (req, res, _next) => {
   const addRecipe = req.body;
-  return res.status(200).json(addRecipe);
+  const newRecipe = await Recipe.createRecipe(addRecipe);
+  return res.status(200).json(newRecipe);
 });
 const getRecipes = rescue(async (_req, res, _next) => res.status(200).json('all recipes'));
 
