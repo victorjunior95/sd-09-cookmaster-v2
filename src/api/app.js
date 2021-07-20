@@ -1,7 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 
 const app = express();
+const { resolve } = require('path');
 
 const { createUser, login } = require('../controllers/userController');
 const {
@@ -15,7 +15,7 @@ const {
 
 const { imageUpload } = require('./multer');
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
@@ -23,6 +23,7 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
+app.get('/images/:id', express.static(resolve(__dirname, '..', 'uploads')));
 app.post('/users', createUser);
 app.post('/login', login);
 app.post('/recipes', createRecipe);
