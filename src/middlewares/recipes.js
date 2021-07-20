@@ -1,4 +1,4 @@
-const jwt = require('mongodb');
+const jwt = require('jsonwebtoken');
 const recipesModel = require('../models/recipes');
 
 const secret = 'senhaPower';
@@ -41,13 +41,13 @@ const TokenAuthorization = async (req, res, next) => {
     const { id: recipeId } = req.params;
     const token = req.headers.authorization;
     const { id, role } = jwt.verify(token, secret);
-    const { userId } = await recipesModel.recipesById(recipeId);
 
+    const { userId } = await recipesModel.recipesById(recipeId);
     if (!role === 'admin' || !id === userId) {
       return res.status(UNAUTHORIZED).json({ message: 'jwt malformed' });
     }
-  } catch (error) {
-    res.status(ERROR).json(error);
+  } catch (err) {
+    res.status(ERROR).json(err);
   }
   next();
 };

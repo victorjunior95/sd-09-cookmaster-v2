@@ -16,4 +16,11 @@ router.post(
 
 router.get('/', recipesController.getAllRecipes);
 router.get('/:id', middlewares.validateId, recipesController.getRecipesById);
+router.put(
+  '/:id',
+  middlewares.tokenValidation,
+  middlewares.tokenMalformed,
+  middlewares.TokenAuthorization,
+  recipesController.updateRecipes,
+);
 module.exports = router;

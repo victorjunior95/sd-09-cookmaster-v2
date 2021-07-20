@@ -42,8 +42,26 @@ const getRecipesById = async (req, res) => {
   }
 };
 
+const updateRecipes = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, ingredients, preparation } = req.body;
+    const updatedRecipe = await recipesServices.updateRecipeById(
+      id,
+      name,
+      ingredients,
+      preparation,
+    );
+    // console.log(updatedRecipe.value);
+    return res.status(OK).json(updatedRecipe.value);
+  } catch (err) {
+    res.status(ERROR).json({ message: err });
+  }
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getRecipesById,
+  updateRecipes,
 };
