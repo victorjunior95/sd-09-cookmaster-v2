@@ -23,6 +23,8 @@ app.get('/recipes', recipesController.listRecipeController);
 app.get('/recipes/:id', recipesController.recipeIdController);
 
 app.put('/recipes/:id', validateToken, recipesController.recipeEditController);
+app.delete('/recipes/:id', validateToken, recipesController.deleteRecipeController);
+
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use(errorMiddleware.errorMidd);
 // Não remover esse end-point, ele é necessário para o avaliador

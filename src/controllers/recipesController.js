@@ -42,9 +42,20 @@ const recipeEditController = async (req, res, _next) => {
   return res.status(200).json(recipesEdit);
 };
 
+const deleteRecipeController = async (req, res, next) => {
+  const { id } = req.params;
+
+  const excludeRecipe = await recipesService.deleteRecipes(id);
+  if (excludeRecipe.err) {
+    return next(excludeRecipe.err);
+  }
+  return res.status(204).json(excludeRecipe);
+};
+
 module.exports = {
   recipesController,
   listRecipeController,
   recipeIdController,
   recipeEditController,
+  deleteRecipeController,
 };
