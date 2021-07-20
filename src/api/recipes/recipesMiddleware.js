@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { ObjectID } = require('mongodb');
 const Joi = require('joi');
 
 const jwtSecret = require('../jwtSecret');
@@ -28,7 +29,14 @@ const validateRecipe = async (req, _res, next) => {
   next();
 };
 
+const validateRecipeId = async (req, _res, next) => {
+  const { id } = req.params;
+  if (!ObjectID.isValid(id)) return next({ error: 'recipeNotFound' });
+  next();
+};
+
 module.exports = {
   validateAuth,
   validateRecipe,
+  validateRecipeId,
 };

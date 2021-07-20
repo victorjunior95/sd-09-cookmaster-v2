@@ -5,6 +5,7 @@ const errors = {
   invalidLoginData: { code: 401, message: 'Incorrect username or password' },
   missingToken: { code: 401, message: 'missing auth token' },
   invalidToken: { code: 401, message: 'jwt malformed' },
+  recipeNotFound: { code: 404, message: 'recipe not found' },
 };
 
 module.exports = async (err, _req, res, _next) => {
