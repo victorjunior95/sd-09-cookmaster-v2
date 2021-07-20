@@ -29,7 +29,7 @@ const validateJWT = async (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(401).json({ message: err.message });
+    return res.status(unauthorized).json({ message: err.message });
   }
 };
 

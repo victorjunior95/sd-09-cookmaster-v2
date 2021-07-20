@@ -3,9 +3,15 @@ const rescue = require('express-rescue');
 
 const recipesServices = require('../services/recipesServices');
 const validateJWT = require('../middlewares/validateJWT');
-const { created } = require('../utils/httpStatusCodes');
+const { ok, created } = require('../utils/httpStatusCodes');
 
 const recipesController = express.Router();
+
+recipesController.get('/', rescue(async (_req, res) => {
+  const recipes = await recipesServices.findAll();
+
+  res.status(ok).json(recipes); 
+}));
 
 recipesController.post('/', validateJWT, rescue(async (req, res) => {
   const { name, ingredients, preparation } = req.body;

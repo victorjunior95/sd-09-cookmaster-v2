@@ -1,14 +1,20 @@
 const Joi = require('joi');
 const recipesModel = require('../models/recipesModel');
 
-const userSchema = Joi.object({
+const recipeSchema = Joi.object({
   name: Joi.string().required(),
   ingredients: Joi.string().required(),
   preparation: Joi.string().required(),
 });
 
+const findAll = async () => {
+  const recipes = await recipesModel.getAll();
+
+  return recipes;
+};
+
 const create = async (name, ingredients, preparation, userId) => {
-  const recipeValidation = userSchema.validate({ name, ingredients, preparation }); 
+  const recipeValidation = recipeSchema.validate({ name, ingredients, preparation }); 
   
   if (recipeValidation.error) {
     throw Object.assign(
@@ -22,6 +28,7 @@ const create = async (name, ingredients, preparation, userId) => {
   return newRecipe;
 };
 
-module.exports = { 
+module.exports = {
+  findAll,
   create,
 };
