@@ -24,9 +24,17 @@ const validadeLogin = async (email, password) => {
 
 const createRecipeModel = async (name, ingredients, preparation) => {
   const db = await connection();
-  const collection = await db.collection('users');
+  const collection = await db.collection('recipes');
   const result = await collection.insertOne({ name, ingredients, preparation });
   return { recipe: result.ops[0] };
+};
+
+const getAllRecipes = async () => {
+  const db = await connection();
+  const collection = await db.collection('recipes');
+  const result = await collection.find({ }).toArray();
+  console.log(result);
+  return result;
 };
 
 module.exports = {
@@ -34,4 +42,5 @@ module.exports = {
   findEmail,
   validadeLogin,
   createRecipeModel,
+  getAllRecipes,
 };

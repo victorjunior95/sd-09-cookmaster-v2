@@ -30,8 +30,15 @@ const userCreateRecipes = async (req, res, next) => {
   }
 };
 
+const getAllRecipes = async (_req, res) => {
+  const result = await service.allRecipesService();
+  if (!result) return res.status(404).json({ message: 'not found' });
+  return res.status(200).json(result);
+};
+
 module.exports = {
   userRegister,
   userLogin,
   userCreateRecipes,
+  getAllRecipes,
 };

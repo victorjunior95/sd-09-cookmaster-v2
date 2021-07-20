@@ -84,8 +84,14 @@ const createRecipeService = async (bodyObject) => {
   return result;
 };
 
+const allRecipesService = async () => {
+  const result = await userModel.getAllRecipes();
+  return result;
+};
+
 module.exports = {
   userRegisterService,
   loginService,
   createRecipeService,
+  allRecipesService,
 };
