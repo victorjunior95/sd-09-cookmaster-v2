@@ -10,7 +10,10 @@ const {
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  uploadImage,
 } = require('../controllers/recipeController');
+
+const { imageUpload } = require('./multer');
 
 app.use(bodyParser.json());
 
@@ -27,5 +30,6 @@ app.get('/recipes', getAllRecipes);
 app.get('/recipes/:id', getRecipeById);
 app.put('/recipes/:id', updateRecipe);
 app.delete('/recipes/:id', deleteRecipe);
+app.put('/recipes/:id/image', imageUpload.single('image'), uploadImage);
 
 module.exports = app;

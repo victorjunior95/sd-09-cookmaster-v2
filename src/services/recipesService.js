@@ -5,6 +5,7 @@ const {
   getById,
   updateRecipe,
   deleteRecipe,
+  uploadPicture,
 } = require('../models/recipesModel');
 
 const createRecipeService = async (name, ingredients, preparation, token) => {
@@ -50,10 +51,25 @@ const deleteRecipeService = async (id, token) => {
   return deleted;
 };
 
+const uploadPictureService = async (id, image, token) => {
+  const jwtIsValid = await validateJWT(token);
+  await uploadPicture(id, image);
+  if (jwtIsValid.isError) return jwtIsValid;
+  const recipe = await getById(id);
+  if (!recipe) {
+    return { isError: true,
+      message: 'recipe not found',
+      status: 404,
+    };
+  }
+  return recipe;
+};
+
 module.exports = {
   createRecipeService,
   getAllRecipesService,
   getByIdService,
   updateRecipeService,
   deleteRecipeService,
+  uploadPictureService,
 };
