@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const UsersModel = require('./usersModel');
+const jwtSecret = require('../jwtSecret');
 
-const jwtSecret = 'Cookmaster Secret';
 const jwtOptions = {
   expiresIn: '7d',
   algorithm: 'HS256',
