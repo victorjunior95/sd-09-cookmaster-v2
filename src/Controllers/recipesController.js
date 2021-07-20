@@ -34,10 +34,19 @@ const updateRecipe = async (req, res) => {
             preparation: body.preparation,
             userId: id,
         },
-);
+    );
+};
+
+const delRecipe = async (req, res) => {
+    const { id } = req.params;
+    await recipeService.delRecipe(id);
+    res.status(204).json(
+
+    );
 };
 
 module.exports = {
+    delRecipe,
     addRecipe,
     getAllRecipes,
     updateRecipe,

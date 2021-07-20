@@ -20,7 +20,13 @@ const updateRecipe = async (id, data) => {
     return recipe;
 };
 
+const delRecipe = async (id) => {
+    const recipe = await reciperModels.delRecipe(id);
+    return recipe;
+};
+
 module.exports = {
+    delRecipe,
     addRecipe,
     getAllRecipes,
     getRecipe,

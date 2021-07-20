@@ -19,4 +19,5 @@ app.post('/recipes', auth, recipesController.addRecipe);
 app.get('/recipes/:id', recipesController.getRecipe);
 app.get('/recipes', recipesController.getAllRecipes);
 app.put('/recipes/:id', auth, recipesController.updateRecipe);
+app.delete('/recipes/:id', auth, recipesController.delRecipe);
 module.exports = app;
