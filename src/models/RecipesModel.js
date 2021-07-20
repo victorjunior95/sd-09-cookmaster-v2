@@ -40,10 +40,20 @@ const deleteRecipe = async (id) => {
   return response;
 };
 
+const uploadFile = async (id, image) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  await db.collection('recipes')
+  .updateOne({ _id: ObjectId(id) }, { $set: { image } });
+  const recipe = await db.collection('recipes').findOne({ _id: ObjectId(id) });
+  return recipe;
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getOneRecipe,
   editRecipe,
   deleteRecipe,
+  uploadFile,
 };

@@ -43,10 +43,18 @@ const deleteRecipe = async (id) => {
   return deleted;
 };
 
+const uploadFile = async (id, file) => {
+  const filePath = `localhost:3000/src/uploads/${file}`;
+  console.log(filePath);
+  const uploadedFile = await RecipesModel.uploadFile(id, filePath);
+  return uploadedFile;
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getOneRecipe,
   editRecipe,
   deleteRecipe,
+  uploadFile,
 };

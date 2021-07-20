@@ -1,5 +1,7 @@
 const express = require('express');
+const multer = require('multer');
 const rescue = require('express-rescue');
+const multerConfig = require('../config/multer');
 
 const authorization = require('../middlewares/authorization');
 
@@ -36,6 +38,15 @@ RecipesRouter.delete('/:id', rescue(authorization), rescue(async (req, res) => {
   const { id } = req.params;
   const deleted = await RecipesService.deleteRecipe(id);
   return res.status(204).json(deleted);
+}));
+
+RecipesRouter.put('/:id/image', rescue(authorization),
+rescue(multer(multerConfig).single('image')),
+rescue(async (req, res) => {
+    const { id } = req.params;
+    const { filename } = req.file;
+    const uploadedFile = await RecipesService.uploadFile(id, filename);
+    return res.status(200).json(uploadedFile);
 }));
 
 module.exports = RecipesRouter;
