@@ -65,6 +65,7 @@ const upload = rescue(async (request, response, next) => {
   const { userId, name, ingredients, preparation } = await service.findOne(id);
   if (role === 'admin' || ObjectId(userId).toString() === ObjectId(_id).toString()) {
     const image = await service.upload(file, id, host);
+    if (image.err) return next(image.err);
     return response.status(OK).json({
       _id: id,
       name,

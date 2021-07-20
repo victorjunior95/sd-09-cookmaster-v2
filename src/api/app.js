@@ -13,6 +13,8 @@ app.get('/', (request, response) => {
   response.send();
 });
 
+app.use('/images', express.static(`${__dirname}/../uploads/`));
+
 app.use('/users', users);
 
 app.use('/recipes', recipes);

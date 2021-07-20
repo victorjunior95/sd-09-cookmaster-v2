@@ -51,6 +51,7 @@ const upload = async ({ buffer, mimetype }, id, host) => {
     await model.upload(new ObjectId(id), imagePath);
     return imagePath;
   }
+  return { err: { code: 'forbidden', message: 'extension must be jpg' } };
 };
 
 module.exports = { create, find, findOne, updateOne, deleteOne, upload };
