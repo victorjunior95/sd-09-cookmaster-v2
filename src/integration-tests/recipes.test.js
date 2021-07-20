@@ -1014,4 +1014,132 @@ describe('RECIPES', () => {
       });
     });
   });
+  
+  describe('GET /recipes/:id', () => {
+    describe('SUCESSO', () => {
+      let response;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .insertMany([
+            {
+              name: 'name-test-fail',
+              ingredients: 'ingredients-test-fail',
+              preparation: 'preparation-test-fail',
+              userId: 'mock-id',
+            },
+            {
+              name: 'name-test-fail',
+              ingredients: 'ingredients-test-fail',
+              preparation: 'preparation-test-fail',
+              userId: 'mock-id',
+            },
+          ]);
+
+        const id = await chai
+          .request(app)
+          .get('/recipes')
+          .then((response) => response.body[0]['_id']);
+
+        response = await chai.request(app).get(`/recipes/${id}`);
+      });
+
+      after(async () => {
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      it('retorna o código 200', () => {
+        expect(response).to.have.status(200);
+      });
+
+      it('retorna um objeto que tem as chaves esperadas', () => {
+        expect(response.body)
+          .to.be.an('object')
+          .which.includes.all.keys(
+            '_id',
+            'name',
+            'ingredients',
+            'preparation',
+            'userId'
+          );
+      });
+    });
+
+    describe('FALHA', () => {
+      let response;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+      const NOT_FOUND_MESSAGE = 'recipe not found';
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .insertMany([
+            {
+              name: 'name-test-fail',
+              ingredients: 'ingredients-test-fail',
+              preparation: 'preparation-test-fail',
+              userId: 'mock-id',
+            },
+            {
+              name: 'name-test-fail',
+              ingredients: 'ingredients-test-fail',
+              preparation: 'preparation-test-fail',
+              userId: 'mock-id',
+            },
+          ]);
+
+        const id = 'invalid_id';
+
+        response = await chai.request(app).get(`/recipes/${id}`);
+      });
+
+      after(async () => {
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      it('retorna o código 404', () => {
+        expect(response).to.have.status(404);
+      });
+
+      it('retorna um objeto que tem as chave "message"', () => {
+        expect(response.body).to.be.an('object').which.have.a.key('message');
+      });
+
+      it('a chave "message" do objeto retornado deve ter o valor esperado', () => {
+        expect(response.body.message).to.be.equal(NOT_FOUND_MESSAGE);
+      });
+    });
+  });
 });
