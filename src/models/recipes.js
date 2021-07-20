@@ -9,6 +9,14 @@ const create = async (name, ingredients, preparation, userId) => {
 return { name, ingredients, preparation, userId, _id: newRecipe.insertedId };
 };
 
+const getAll = async () => {
+  const getRecipes = await connection()
+  .then((db) => db.collection('recipes').find());
+  console.log({ getRecipes });
+  return { getRecipes };
+};
+
 module.exports = { 
   create,
+  getAll,
  };

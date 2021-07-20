@@ -9,5 +9,6 @@ router.post('/users', users.createUser);
 router.post('/login', users.login);
 
 router.post('/recipes', validateToken, recipes.createRecipe);
+router.get('/recipes', recipes.getRecipes);
 
 module.exports = router;
