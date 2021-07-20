@@ -2,6 +2,8 @@ const Joi = require('joi');
 const { ObjectId } = require('mongodb');
 const recipesModel = require('../models/recipesModel');
 
+const recipeNotFound = 'recipe not found';
+
 const validateRecipe = Joi.object({
   name: Joi.string().required(),
   preparation: Joi.string().required(),
@@ -22,9 +24,9 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  if (!ObjectId.isValid(id)) return { error: 'recipe not found', status: 404 };
+  if (!ObjectId.isValid(id)) return { error: recipeNotFound, status: 404 };
   const recipe = await recipesModel.getById(id);
-  if (!recipe) return { error: 'recipe not found', status: 404 };
+  if (!recipe) return { error: recipeNotFound, status: 404 };
   return recipe;
 };
 
@@ -35,12 +37,21 @@ const update = async (name, ingredients, preparation, recipeId) => {
 };
 
 const deleteRecipe = async (id) => {
-  if (!ObjectId.isValid(id)) return { error: 'recipe not found', status: 404 };
+  if (!ObjectId.isValid(id)) return { error: recipeNotFound, status: 404 };
   const recipe = await recipesModel.getById(id);
 
-  if (!recipe) return { error: 'recipe not found', status: 404 };
+  if (!recipe) return { error: recipeNotFound, status: 404 };
 
   return recipesModel.deleteRecipe(id);
+};
+
+const uploadImage = async (id, image) => {
+  if (!ObjectId.isValid(id)) return { error: recipeNotFound, status: 404 };
+
+  const recipe = await recipesModel.getById(id);
+  if (!recipe) return { error: recipeNotFound, status: 404 };
+  
+  return recipesModel.uploadImage(id, image);
 };
 
 module.exports = {
@@ -49,4 +60,5 @@ module.exports = {
   getById,
   update,
   deleteRecipe,
+  uploadImage,
 };

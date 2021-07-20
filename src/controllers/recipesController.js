@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const recipesService = require('../services/recipesService');
 const validation = require('../middlewares/validation');
+const upload = require('../middlewares/upload');
 
 const created = 201;
 const ok = 200;
@@ -59,4 +60,11 @@ router.delete('/:id', validation, async (req, res, next) => {
   res.status(noContent).json('');
 });
 
+router.put('/:id/image/', validation, upload.single('image'), async (req, res, next) => {
+  const { id } = req.params;
+  const image = req.file.filename;
+  const recipe = await recipesService.uploadImage(id, image);
+   if (recipe.error) return next(recipe);
+   res.status(ok).json(recipe);
+ });
 module.exports = router;
