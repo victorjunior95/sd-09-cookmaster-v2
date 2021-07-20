@@ -3,7 +3,7 @@ const rescue = require('express-rescue');
 
 const recipesServices = require('../services/recipesServices');
 const validateJWT = require('../middlewares/validateJWT');
-const { ok, created } = require('../utils/httpStatusCodes');
+const { ok, created, notContent } = require('../utils/httpStatusCodes');
 
 const recipesController = express.Router();
 
@@ -43,6 +43,15 @@ recipesController.put('/:id', validateJWT, rescue(async (req, res) => {
     );
 
     return res.status(ok).json(updatedRecipe);
+  }));
+
+  recipesController.delete('/:id', validateJWT, rescue(async (req, res) => {
+    const { id: recipeId } = req.params;
+    const { _id: userId, role } = req.user;
+  
+    await recipesServices.exclude(recipeId, userId, role);
+  
+    return res.status(notContent).json();
   }));
 
 module.exports = recipesController;

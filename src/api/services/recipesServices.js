@@ -54,9 +54,18 @@ const update = async (recipeId, recipeNewData, userId, role) => {
   }
 };
 
+const exclude = async (recipeId, userId, role) => {
+  const recipe = await recipesModel.getById(recipeId);
+
+  if (recipe.userId.toString() === userId.toString() || role === 'admin') {
+    await recipesModel.exclude(recipeId);
+  }
+};
+
 module.exports = {
   findAll,
   findById,
   create,
   update,
+  exclude,
 };

@@ -44,16 +44,27 @@ const update = async (id, name, ingredients, preparation) => {
   }
 
   const result = await connection().then((db) =>
-    db
-      .collection('recipes')
-      .updateOne(
-        { _id: ObjectId(id) },
-        { $set: { name, ingredients, preparation } },
-      ));
+  db
+  .collection('recipes')
+  .updateOne(
+    { _id: ObjectId(id) },
+    { $set: { name, ingredients, preparation } },
+    ));
 
+  const updatedRecipe = await getById(id);
+    
   if (result.modifiedCount) {
-    return getById(id);
+    return updatedRecipe;
   }
+};
+
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw recipeNotFound;
+  }
+  
+  await connection().then((db) => db.collection('recipes')
+    .removeOne({ _id: ObjectId(id) }));
 };
 
 module.exports = {
@@ -61,4 +72,5 @@ module.exports = {
   getAll,
   create,
   update,
+  exclude,
 };
