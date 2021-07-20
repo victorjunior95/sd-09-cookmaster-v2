@@ -89,9 +89,22 @@ const allRecipesService = async () => {
   return result;
 };
 
+const getOneRecipeService = async (id) => {
+  const result = await userModel.getOneRecipe(id);
+  // if (!result) {
+  //   const erro = {
+  //     message: 'recipe not found',
+  //     status: 404,
+  //   };
+  //   throw erro;
+  // }
+  return result;
+};
+
 module.exports = {
   userRegisterService,
   loginService,
   createRecipeService,
   allRecipesService,
+  getOneRecipeService,
 };
