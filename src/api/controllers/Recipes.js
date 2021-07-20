@@ -1,4 +1,5 @@
 const rescue = require('express-rescue');
+const path = require('path');
 const Recipe = require('../services/Recipes');
 
 const STATUS = {
@@ -68,6 +69,14 @@ const deleteRecipe = rescue(async (req, res, next) => {
   return res.status(STATUS.NOCONTENT).end();
 });
 
+const getRecipeImage = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const image = path.resolve(__dirname, '..', '..', 'uploads', id);
+
+  return res.status(STATUS.OK).sendFile(image);
+});
+
 module.exports = {
   registerRecipe,
   listRecipes,
@@ -75,4 +84,5 @@ module.exports = {
   editRecipe,
   deleteRecipe,
   putImage,
+  getRecipeImage,
 };
