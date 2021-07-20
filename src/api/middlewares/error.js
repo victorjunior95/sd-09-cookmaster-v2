@@ -1,6 +1,8 @@
 const errors = {
   invalidEntries: { code: 400, message: 'Invalid entries. Try again.' },
   existingEmail: { code: 409, message: 'Email already registered' },
+  emptyLoginFields: { code: 401, message: 'All fields must be filled' },
+  invalidLoginData: { code: 401, message: 'Incorrect username or password' },
 };
 
 module.exports = (err, _req, res, _next) => {
