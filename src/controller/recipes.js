@@ -2,7 +2,7 @@
 const recipesServices = require('../services/recipes');
 
 const ERROR = 500;
-// const OK = 200;
+const OK = 200;
 // const NO_CONTENT = 204;
 const CREATE = 201;
 
@@ -23,6 +23,16 @@ const createRecipes = async (req, res) => {
   }
 };
 
+const getAllRecipes = async (req, res) => {
+  try {
+    const recipes = await recipesServices.getAll();
+    return res.status(OK).json(recipes);
+  } catch (error) {
+    res.status(ERROR).json(error);
+  }
+};
+
 module.exports = {
   createRecipes,
+  getAllRecipes,
 };
