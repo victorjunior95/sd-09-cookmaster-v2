@@ -31,10 +31,15 @@ const uptadeRecipes = async (id, name, ingredients, preparation) => {
   return setUpdate;
 };
 
+const deletRecipes = async (id) => connection().then((db) => db.collection('recipes').deleteOne({
+    _id: ObjectId(id),
+  }));
+
 module.exports = {
   createRecipes,
   recipesById,
   recipesByname,
   getAll,
   uptadeRecipes,
+  deletRecipes,
 };

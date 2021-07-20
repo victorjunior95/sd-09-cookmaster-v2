@@ -23,4 +23,10 @@ router.put(
   middlewares.TokenAuthorization,
   recipesController.updateRecipes,
 );
+router.delete(
+  '/:id',
+  middlewares.tokenValidation,
+  recipesController.deleteRecipes,
+);
+
 module.exports = router;

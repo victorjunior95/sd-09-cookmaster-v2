@@ -3,7 +3,7 @@ const recipesServices = require('../services/recipes');
 
 const ERROR = 500;
 const OK = 200;
-// const NO_CONTENT = 204;
+const NO_CONTENT = 204;
 const CREATE = 201;
 
 const createRecipes = async (req, res) => {
@@ -59,9 +59,20 @@ const updateRecipes = async (req, res) => {
   }
 };
 
+const deleteRecipes = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteRecipe = await recipesServices.deleteRecipes(id);
+    return res.status(NO_CONTENT).json(deleteRecipe);
+  } catch (error) {
+    res.status(ERROR).json(error);
+  }
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getRecipesById,
   updateRecipes,
+  deleteRecipes,
 };
