@@ -1,14 +1,31 @@
-const express = require('express');
-const postUsersMidd = require('../middlewares/postUsersMidd');
-const getUsersMidd = require('../middlewares/getUsersMidd');
-const getByEmailMidd = require('../middlewares/getByEmailMidd');
+const validate = require('../services/userServices');
 
-const userRouters = express.Router();
+module.exports = {
+  addUser: async (req, res) => {
+    const { name, email, password } = req.body;
 
-userRouters.post('/', postUsersMidd);
+    const newUser = await validate.validateUser(name, email, password);
 
-userRouters.get('/', getUsersMidd);
+    if (newUser.status) {
+      return res.status(newUser.status).json({ message: newUser.message });
+    }
 
-userRouters.get('/:email', getByEmailMidd);
+    return res.status(201).json(newUser);
+  },
 
-module.exports = userRouters;
+  listAllUsers: async (_req, res) => {
+    const users = await validate.findAllUsers();
+
+    return res.status(200).json({ users });
+  },
+
+  listOneUser: async (req, res) => {
+    const { email } = req.params;
+
+    const listUser = await validate.findOneUser(email);
+
+    if (listUser.err) return res.status(400).json(listUser);
+
+    return res.status(200).json(listUser);
+  },
+};
