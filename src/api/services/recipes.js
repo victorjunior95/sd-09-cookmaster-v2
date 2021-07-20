@@ -39,4 +39,6 @@ const updateOne = async (id, recipe) => {
   return model.updateOne(id, recipe);
 };
 
-module.exports = { create, find, findOne, updateOne };
+const deleteOne = async (id) => model.deleteOne(id);
+
+module.exports = { create, find, findOne, updateOne, deleteOne };
