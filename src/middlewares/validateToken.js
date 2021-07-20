@@ -19,7 +19,6 @@ const validateToken = async (req, res, next) => {
   }
 
   const tokenVerify = verifyToken(token);
- // console.log(tokenVerify.id);
     if (tokenVerify.message) {
       return res.status(tokenVerify.code).json({ message: tokenVerify.message });
     }

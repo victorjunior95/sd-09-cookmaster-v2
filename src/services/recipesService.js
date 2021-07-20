@@ -18,8 +18,6 @@ const listRecipesService = async () => {
 const recipesIdService = async (id) => {
   const recipe = await recipesModel.recipesId(id);
 
-  console.log(recipe);
-
   if (!recipe) {
     return {
       err: {
@@ -31,8 +29,21 @@ const recipesIdService = async (id) => {
   return recipe;
 };
 
+const editRecipes = async ({ id, name, ingredients, preparation, userId }) => {
+  const recipesEdit = await recipesModel.editRecipes({
+    id,
+    name,
+    ingredients,
+    preparation,
+    userId,
+  });
+
+  return recipesEdit;
+};
+
 module.exports = {
   createRecipesService,
   listRecipesService,
   recipesIdService,
+  editRecipes,
 };

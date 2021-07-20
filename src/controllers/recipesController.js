@@ -1,5 +1,4 @@
 const recipesService = require('../services/recipesService');
-// const validateToken = require('../middlewares/validateToken');
 
 const recipesController = async (req, res, _next) => {
   const { id } = req.user;
@@ -11,8 +10,6 @@ const recipesController = async (req, res, _next) => {
 };
 
 const listRecipeController = async (_req, res) => {
-  // const token = req.header.authorization;
-  // console.log('token: ', token);
   const listRecipes = await recipesService.listRecipesService();
 
   return res.status(200).json(listRecipes);
@@ -20,17 +17,34 @@ const listRecipeController = async (_req, res) => {
 
 const recipeIdController = async (req, res, next) => {
   const { id } = req.params;
-  // console.log('id controller', id);
   const recipeId = await recipesService.recipesIdService(id);
   if (recipeId.err) {
     return next(recipeId.err);
   }
-  // console.log('recipeId controller:', recipeId);
+
   return res.status(200).json(recipeId);
+};
+
+const recipeEditController = async (req, res, _next) => {
+  const { id } = req.params;
+  const { user } = req;
+  const { id: userId } = user;
+  const { name, ingredients, preparation } = req.body;
+
+  const recipesEdit = await recipesService.editRecipes({
+    id,
+    name,
+    ingredients,
+    preparation,
+    userId,
+  });
+
+  return res.status(200).json(recipesEdit);
 };
 
 module.exports = {
   recipesController,
   listRecipeController,
   recipeIdController,
+  recipeEditController,
 };
