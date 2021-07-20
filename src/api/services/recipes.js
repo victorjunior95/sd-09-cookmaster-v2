@@ -1,5 +1,7 @@
+const fs = require('fs/promises');
 const Joi = require('joi');
 const { ObjectId } = require('mongodb');
+const path = require('path');
 const model = require('../models/recipes');
 
 const recipeSchema = Joi.object({
@@ -41,4 +43,14 @@ const updateOne = async (id, recipe) => {
 
 const deleteOne = async (id) => model.deleteOne(id);
 
-module.exports = { create, find, findOne, updateOne, deleteOne };
+const upload = async ({ buffer, mimetype }, id, host) => {
+  if (mimetype === 'image/jpeg') {
+    const FILE_PATH = path.join(__dirname, '..', '..', 'uploads', `${id}.jpeg`);
+    await fs.writeFile(FILE_PATH, buffer);
+    const imagePath = path.join(host, 'src', 'uploads', `${id}.jpeg`);
+    await model.upload(new ObjectId(id), imagePath);
+    return imagePath;
+  }
+};
+
+module.exports = { create, find, findOne, updateOne, deleteOne, upload };

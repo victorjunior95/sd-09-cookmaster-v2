@@ -32,13 +32,13 @@ const findOne = async (id) => (
     )
 );
 
-const updateOne = async (id, { name, ingredients, preparation }) => (
+const updateOne = async (_id, { name, ingredients, preparation }) => (
   connection()
     .then(
       (db) => db
         .collection('recipes')
           .updateOne(
-            { _id: id },
+            { _id },
             { $set: { name, ingredients, preparation } },
           ),
     )
@@ -53,4 +53,16 @@ const deleteOne = async (_id) => (
     )
 );
 
-module.exports = { create, find, findOne, updateOne, deleteOne };
+const upload = async (_id, image) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('recipes')
+          .updateOne(
+            { _id },
+            { $set: { image } },
+          ),
+    )
+);
+
+module.exports = { create, find, findOne, updateOne, deleteOne, upload };

@@ -61,17 +61,17 @@ const deleteOne = rescue(async (request, response, next) => {
 });
 
 const upload = rescue(async (request, response, next) => {
-  const { user: { _id, role }, params: { id }, file } = request;
+  const { headers: { host }, user: { _id, role }, params: { id }, file } = request;
   const { userId, name, ingredients, preparation } = await service.findOne(id);
   if (role === 'admin' || ObjectId(userId).toString() === ObjectId(_id).toString()) {
-    const { filename } = await service.upload(file, id);
+    const image = await service.upload(file, id, host);
     return response.status(OK).json({
       _id: id,
       name,
       ingredients,
       preparation,
       userId,
-      image: filename,
+      image,
     });
   }
   return next({ code: 'unauthorized', message: 'unable to upload recipe image' });
