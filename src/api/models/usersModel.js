@@ -21,4 +21,9 @@ const createUser = async ({ name, email, password }) => {
   return data.ops[0];
 };
 
-module.exports = { createUser, checkForUserEmail };
+const findUser = async ({ email }) => {
+  const data = await connection().then((db) => db.collection(usersCollection).findOne({ email }));
+  return data;
+};
+
+module.exports = { createUser, checkForUserEmail, findUser };
