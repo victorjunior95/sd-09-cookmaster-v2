@@ -44,4 +44,13 @@ const updateOne = async (id, { name, ingredients, preparation }) => (
     )
 );
 
-module.exports = { create, find, findOne, updateOne };
+const deleteOne = async (_id) => (
+  connection()
+    .then(
+      (db) => db
+        .collection('recipes')
+          .deleteOne({ _id }),
+    )
+);
+
+module.exports = { create, find, findOne, updateOne, deleteOne };
