@@ -1,14 +1,24 @@
+const express = require('express');
 const usersService = require('../services/UsersService');
 
-const registerUser = async (req, res) => {
+const UserRouter = express.Router();
+
+UserRouter.post('/', (req, res) => {
   const { name, email, password } = req.body;
-  console.log(name, email, password);
+  // console.log(name, email, password);
   const user = { name, email, password, role: 'user' };
-  const { status, message } = await usersService.register(user);
+  const { status, newUser } = usersService.register(user);
 
-  res.status(status).json(message);
-};
+  res.status(status).json(newUser);
+});
 
-module.exports = {
-  registerUser,
-};
+module.exports = UserRouter;
+
+// const registerUser = async (req, res) => {
+//   const { name, email, password } = req.body;
+//   // console.log(name, email, password);
+//   const user = { name, email, password, role: 'user' };
+//   const { status, newUser } = await usersService.register(user);
+
+//   res.status(status).json(newUser);
+// };

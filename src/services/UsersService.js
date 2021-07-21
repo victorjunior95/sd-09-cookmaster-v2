@@ -17,7 +17,7 @@ const register = async (user) => {
   if (emailAlreadyExist) return CONFLICT_REQUEST;
 
   const newUser = await Users.register(user);
-  return { status: 201, message: newUser };
+  return { status: 201, newUser };
 };
 
 module.exports = {
