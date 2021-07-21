@@ -13,7 +13,7 @@ const usersRouter = require('../../routes/users');
 
 app.use(rescue(router));
 router.use('/users', usersRouter);
-router.use(errorMiddleware);
+app.use(errorMiddleware);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (_request, response) => {
