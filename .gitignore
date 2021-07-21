@@ -295,3 +295,4 @@ $RECYCLE.BIN/
 !**/uploads/ratinho.jpg
 loginTest.json
 createUserTest.json
+postNewRecipeTest.json

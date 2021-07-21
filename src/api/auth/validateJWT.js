@@ -1,20 +1,22 @@
 const jwt = require('jsonwebtoken');
-const { findUser } = require('../models/usersModel');
 
 const segredo = 'meuSegredoMuitoDifícil';
 
-const validateJWT = async (req, res, next) => {
+const validateJWT = (req, res, next) => {
   const token = req.headers.authorization;
 
-  const decoded = jwt.verify(token, segredo);
-  const user = await findUser(decoded.data.name);
-  
-  if (!user) {
-    return res.status(401).send({
-    message: 'Incorrect username or password',
-    });
+  if (!token) return res.status(401).send({ error: 'Token não encontrado' });
+
+  try {
+    const userInfo = jwt.verify(token, segredo);
+    if (!userInfo) {
+      return res.status(401).send({ message: 'Erro ao procurar usuário do token.' });
+    }
+    req.user = userInfo;
+    return next();
+  } catch (error) {
+    return res.status(401).send({ message: 'jwt malformed' });
   }
-  return next();
 };
 
 module.exports = validateJWT;
