@@ -71,6 +71,17 @@ const deleteOneRecipe = async (id) => {
   await collection.deleteOne({ _id: ObjectId(id) });
 };
 
+const upload = async (id, path) => {
+  const db = await connection();
+  const collection = await db.collection('recipes');
+  const result = await collection.findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: { image: `localhost:3000/${path}` } },
+    { returnOriginal: false },
+  );
+  return result.value;
+};
+
 module.exports = {
   userRegisterModel,
   findEmail,
@@ -80,4 +91,5 @@ module.exports = {
   getOneRecipe,
   editOneRecipe,
   deleteOneRecipe,
+  upload,
 };

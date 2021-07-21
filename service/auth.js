@@ -8,9 +8,11 @@ const validadeLogin = async (req, _res, next) => {
   try {
     const secret = '1234';
     const { authorization } = req.headers;
+    console.log(req.headers);
     if (!authorization) { throw missingToken; }
     const extractToken = jwt.verify(authorization, secret);
     if (!extractToken) { 
+      console.log('passou aqui');
       throw jwtError; 
     }
     

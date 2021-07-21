@@ -1,4 +1,5 @@
 const service = require('../service/usersService');
+const upload = require('../service/upload');
 
 const userRegister = async (req, res, next) => {
   try {
@@ -58,6 +59,13 @@ const delOneRecipe = async (req, res) => {
   return res.status(204).json();
 };
 
+const imageUpload = [upload.single('image'), async (req, res) => {
+  const { path } = req.file;
+  const { id } = req.params;
+  const recipe = await service.uploadService(id, path);
+  return res.status(200).json(recipe);
+}];
+
 module.exports = {
   userRegister,
   userLogin,
@@ -66,4 +74,5 @@ module.exports = {
   getOneRecipe,
   editOneRecipe,
   delOneRecipe,
+  imageUpload,
 };

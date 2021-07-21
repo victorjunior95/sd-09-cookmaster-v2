@@ -105,6 +105,11 @@ const delOneRecipeService = async (id) => {
   return result;
 };
 
+const uploadService = async (id, path) => {
+  const result = await userModel.upload(id, path);
+  return result;
+};
+
 module.exports = {
   userRegisterService,
   loginService,
@@ -113,4 +118,5 @@ module.exports = {
   getOneRecipeService,
   editOneRecipeService,
   delOneRecipeService,
+  uploadService,
 };
