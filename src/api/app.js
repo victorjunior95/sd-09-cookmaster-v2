@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const usersRouter = require('./routers/usersRouter');
 const loginRouter = require('./routers/loginRouter');
+const recipesRouter = require('./routers/recipesRouter');
 
 const app = express();
 app.use(bodyParser.json());
@@ -9,6 +10,7 @@ app.use(bodyParser.json());
 
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/recipes', recipesRouter);
 
 app.use((error, _req, res, _next) => {
   console.log(error);

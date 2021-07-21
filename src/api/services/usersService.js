@@ -30,7 +30,6 @@ const registerUser = async (newUser) => {
   user.role = 'user';
   const registeredUser = await usersModel.registerUser(user);
   delete registeredUser.password;
-  console.log();
   return {
     status: CREATED_STATUS,
     registeredUser,
