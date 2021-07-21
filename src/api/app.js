@@ -17,5 +17,6 @@ app.post('/users', createUser);
 app.post('/login', login);
 app.post('/recipes', validateJWT, recipesController.createRecipe);
 app.get('/recipes', recipesController.getAllRecipes);
+app.get('/recipes/:id', recipesController.getRecipesById);
 
 module.exports = app;
