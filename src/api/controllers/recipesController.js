@@ -29,8 +29,9 @@ const editRecipe = async (req, res) => {
 
 const deleteRecipe = async (req, res) => {
   const { authorization } = req.headers;
-  const { status, deletedRecipe } = await recipesService.deleteRecipe(authorization);
-  res.status(status).json(deletedRecipe);
+  const { id } = req.params;
+  const { status } = await recipesService.deleteRecipe(authorization, id);
+  res.status(status).json();
 };
 
 module.exports = {

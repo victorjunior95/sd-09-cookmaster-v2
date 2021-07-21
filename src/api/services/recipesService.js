@@ -14,6 +14,7 @@ const recipeSchema = Joi.object().keys({
 
 const OK_STATUS = 200;
 const CREATED_STATUS = 201;
+const NO_CONTENT_STATUS = 204;
 
 const NOT_FOUND_RECIPE = {
   status: 404,
@@ -90,6 +91,16 @@ const editRecipe = async (authorization, id, edit) => {
     editedRecipe,
   };
 };
+
+const deleteRecipe = async (authorization, id) => {
+  await validateToken(authorization);
+  const deletedRecipe = await recipesModel.deleteRecipe(id);
+  if (!deletedRecipe) {
+    return {
+      status: NO_CONTENT_STATUS,
+    };
+  }
+};
 // todas as funções que dependerem de acesso ao bd precisam ser assíncronas
 
 module.exports = {
@@ -97,4 +108,5 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };
