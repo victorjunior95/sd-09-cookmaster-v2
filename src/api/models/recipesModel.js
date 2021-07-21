@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const recipesCollection = 'recipes';
@@ -21,7 +20,7 @@ const getAllRecipes = async () => {
 
 const getRecipeById = async (id) => {
   const data = await connection().then((db) =>
-    db.collection(recipesCollection).findOne(ObjectId(id)));
+    db.collection(recipesCollection).findOne({ id }));
   return data;
 };
 

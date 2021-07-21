@@ -23,7 +23,7 @@ const getAllRecipes = async (_req, res) => {
 
 const getRecipeById = async (req, res) => {
   const { id } = req.params;
-  const recipe = await recipesServeci.getRecipeById(id.trim());
+  const recipe = await recipesServeci.getRecipeById(id);
   if (!recipe) return res.status(404).send({ message: 'recipe not found' });
   return res.status(200).send({ recipe });
 };
