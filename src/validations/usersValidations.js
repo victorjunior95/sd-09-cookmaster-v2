@@ -5,14 +5,14 @@ const BAD_REQUEST = {
   error: {
     message: 'Invalid entries. Try again.',
   },
-}
+};
 
 const CONFLICT = {
   status: 409,
   error: {
     message: 'Email already registered',
   },
-}
+};
 
 async function emailExists(email) {
   const user = await usersModel.getUserByEmail(email);
@@ -24,7 +24,7 @@ function validateName(name) {
 }
 
 function validateEmail(email) {
-  const isEmailValid = new RegExp(/\w+@[a-zA-Z]+\.[a-zA-Z]{2,3}/).test(email)
+  const isEmailValid = new RegExp(/\w+@[a-zA-Z]+\.[a-zA-Z]{2,3}/).test(email);
   if (!isEmailValid) {
     throw BAD_REQUEST;
   }
@@ -39,4 +39,4 @@ module.exports = {
   validateName,
   validateEmail,
   validatePassword,
-}
+};
