@@ -40,10 +40,19 @@ const recipeDelete = async (req, res) => {
   return res.status(204).end();
 };
 
+const imageCreate = async (req, res) => {
+  const { id } = req.params;
+  const { path } = req.file;
+  const imageCreated = await Recipes.imageCreate(id, path);
+
+  return res.status(200).json(imageCreated);
+};
+
 module.exports = {
   recipeCreate,
   getAll,
   getOne,
   recipeUpdate,
   recipeDelete,
+  imageCreate,
 };

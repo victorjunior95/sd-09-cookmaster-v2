@@ -42,10 +42,17 @@ const recipeDelete = async (id) => {
   await Recipes.recipeDelete(id);
 };
 
+const imageCreate = async (id, path) => {
+  const recipe = await Recipes.imageCreate(id, path);
+  console.log(recipe);
+  return recipe;
+};
+
 module.exports = {
   recipeCreate,
   getAll,
   getOne,
   recipeUpdate,
   recipeDelete,
+  imageCreate,
 };
