@@ -11,6 +11,7 @@ const recipeSchema = Joi.object().keys({
   preparation: Joi.string().not().empty().required(),
 });
 
+const OK_STATUS = 200;
 const CREATED_STATUS = 201;
 
 const BAD_REQUEST_INVALID_ENTRIES = {
@@ -49,8 +50,17 @@ const registerRecipe = async (newRecipe, authorization) => {
     registeredRecipe,
   };
 };
+
+const getAllRecipes = async () => {
+  const recipes = await recipesModel.getAllRecipes();
+  return {
+    status: OK_STATUS,
+    recipes,
+  };
+};
 // todas as funções que dependerem de acesso ao bd precisam ser assíncronas
 
 module.exports = {
   registerRecipe,
+  getAllRecipes,
 };

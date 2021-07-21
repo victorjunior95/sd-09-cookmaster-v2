@@ -8,6 +8,12 @@ const registerRecipe = async (req, res) => {
   res.status(status).json({ recipe: registeredRecipe });
 };
 
+const getAllRecipes = async (_req, res) => {
+  const { status, recipes } = await recipesService.getAllRecipes();
+  res.status(status).json(recipes);
+};
+
 module.exports = {
   registerRecipe,
+  getAllRecipes,
 };
