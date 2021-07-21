@@ -14,7 +14,8 @@ const createUser = async (name, email, password) => {
   };
 }
 const user = await usersModel.createUser(name, email, password);
-return user.ops[0];
+const { _id, role } = user.ops[0];
+  return { name, email, role, _id };
 };
 
 const login = async (email, password) => {
