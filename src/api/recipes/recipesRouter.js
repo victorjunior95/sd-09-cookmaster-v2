@@ -3,7 +3,8 @@ const multer = require('multer');
 const path = require('path');
 
 const RecipesController = require('./recipesController');
-const { validateAuth, validateRecipe, validateRecipeId } = require('./recipesMiddleware');
+const validateAuth = require('../middlewares/validateAuth');
+const { validateRecipe, validateRecipeId } = require('./recipesMiddleware');
 
 const storage = multer.diskStorage({
   destination: (_req, _file, callback) => {

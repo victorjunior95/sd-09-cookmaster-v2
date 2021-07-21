@@ -6,6 +6,7 @@ const errors = {
   missingToken: { code: 401, message: 'missing auth token' },
   invalidToken: { code: 401, message: 'jwt malformed' },
   recipeNotFound: { code: 404, message: 'recipe not found' },
+  createAdminNotAllowed: { code: 403, message: 'Only admins can register new admins' },
 };
 
 module.exports = async (err, _req, res, _next) => {
