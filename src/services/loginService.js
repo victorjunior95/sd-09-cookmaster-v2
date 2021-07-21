@@ -6,7 +6,7 @@ const loginModel = require('../models/loginModel');
 const { validateError, schema } = require('./schemas/loginSchema');
 
 const jwtConfig = {
-  expiresIn: '15m',
+  expiresIn: '40m',
   algorithm: 'HS256',
 };
 

@@ -10,14 +10,3 @@ const createRecipe = async (recipe) => {
 module.exports = {
   createRecipe,
 };
-
-/*
- payload
-{
-  "_id": "60f503074ab04c58880f651b",
-  "name": "luke",
-  "email": "luke@starwars.com",
-  "role": "user",
-  "iat": 1626669860,
-  "exp": 1626670760
-} */

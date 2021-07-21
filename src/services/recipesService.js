@@ -2,7 +2,9 @@ const recipesModel = require('../models/recipesModel');
 const { validateError, schema } = require('./schemas/recipesSchema');
 
 const createRecipe = async (recipe) => {
-  const { error } = schema.validate(recipe);
+  const { userId: _, ...recipeData } = recipe;
+
+  const { error } = schema.validate(recipeData);
 
   if (error) throw validateError(400, error.message);
 

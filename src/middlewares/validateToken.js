@@ -1,24 +1,30 @@
 const jwt = require('jsonwebtoken');
 
-// const { findUser } = require('../models/loginModel');
+const { findEmail } = require('../models/usersModel');
 
 const secret = 'senhadanasa';
 
-const validateToken = (req, res, next) => {
-  const token = req.headers.authorization;
-
-  if (!token) {
-    return res.status(401).json({ message: 'jwt malformed' });
-  }
-
+const validateToken = async (req, res, next) => {
   try {
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ message: 'jwt malformed' });
+    }
+
     const payload = jwt.verify(token, secret);
-    console.log('[payload] > ', payload);
+
+    const user = await findEmail(payload.email);
+
+    if (!user) {
+      return res.status(401).json({ message: 'invalid user' });
+    }
 
     req.user = payload;
+
     next();
   } catch (err) {
-    console.log(err.message);
+    console.log('[token validate] > ', err.message);
     return res.status(401).json({ message: 'jwt malformed' });
   }
 };
