@@ -10,6 +10,12 @@ if (recipeIsValid !== true) return recipeIsValid;
   return recipe.ops[0];
 };
 
+const getAllRecipes = async () => {
+  const result = await recipesModel.getAllRecipes();
+  return result;
+};
+
 module.exports = {
   createRecipe,
+  getAllRecipes,
 };

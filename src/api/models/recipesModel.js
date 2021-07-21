@@ -5,7 +5,14 @@ const result = await connection()
   .then((db) => db.collection('recipes').insertOne({ name, ingredients, preparation }));
   return result;
 };
-    
+
+const getAllRecipes = async () => {
+  const result = await connection()
+    .then((db) => db.collection('recipes').find().toArray());
+  return result;
+};
+
 module.exports = {
   createRecipe,
+  getAllRecipes,
 };
