@@ -25,7 +25,7 @@ const getRecipeById = async (req, res) => {
   const { id } = req.params;
   const recipe = await recipesServeci.getRecipeById(id);
   if (!recipe) return res.status(404).send({ message: 'recipe not found' });
-  return res.status(200).send({ recipe });
+  return res.status(200).send(recipe);
 };
 
 module.exports = { postNewRecipe, getAllRecipes, getRecipeById };
