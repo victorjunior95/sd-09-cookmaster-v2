@@ -21,6 +21,7 @@ const recipeIdController = async (req, res, next) => {
   if (recipeId.err) {
     return next(recipeId.err);
   }
+  // console.log(recipeId, 'resposta sem image');
 
   return res.status(200).json(recipeId);
 };
@@ -52,10 +53,23 @@ const deleteRecipeController = async (req, res, next) => {
   return res.status(204).json(excludeRecipe);
 };
 
+const uploadImage = async (req, res, _next) => {
+  const { filename } = req.file;
+  const { id } = req.params;
+  const urlImage = `localhost:3000/src/uploads/${filename}`;
+  await recipesService.uploadImage(urlImage, id);
+  // enviar informações para o banco (atualizar o banco de dados)
+  const image = await recipesService.recipesIdService(id);
+  // pegar as informações atualizadas do banco de dados
+  // console.log(image, 'resposta com image');
+  return res.status(200).json(image);
+};
+
 module.exports = {
   recipesController,
   listRecipeController,
   recipeIdController,
   recipeEditController,
   deleteRecipeController,
+  uploadImage,
 };

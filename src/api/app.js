@@ -9,6 +9,7 @@ const userLoginController = require('../controllers/loginController');
 const validateToken = require('../middlewares/validateToken');
 const recipesController = require('../controllers/recipesController');
 const validateRecipe = require('../middlewares/validateRecipes');
+const uploadImage = require('../middlewares/upload');
 // const listRecipeController = require('../controllers/recipesController');
 
 const app = express();
@@ -25,7 +26,10 @@ app.get('/recipes/:id', recipesController.recipeIdController);
 app.put('/recipes/:id', validateToken, recipesController.recipeEditController);
 app.delete('/recipes/:id', validateToken, recipesController.deleteRecipeController);
 
-app.put('/recipes/:id/image/');
+app.put('/recipes/:id/image/',
+  validateToken,
+  uploadImage.single('image'),
+  recipesController.uploadImage);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use(errorMiddleware.errorMidd);

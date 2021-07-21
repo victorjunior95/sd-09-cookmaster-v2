@@ -55,10 +55,27 @@ const deleteRecipes = async (id) => {
   : null));
 };
 
+const uploadImage = async (urlImage, id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  return connection()
+  .then((db) =>
+  db.collection('recipes')
+  .updateOne({
+    _id: ObjectId(id),
+  },
+  {
+    $set:
+    {
+      image: urlImage,
+    } }));
+};
+
 module.exports = {
   registerRecipes,
   listRecipes,
   recipesId,
   editRecipes,
   deleteRecipes,
+  uploadImage,
 };

@@ -47,10 +47,16 @@ const deleteRecipes = async (id) => {
   return recipe;
 };
 
+const uploadImage = async (urlImage, id) => {
+  await recipesModel.uploadImage(urlImage, id);
+  // enviar informações para o banco para fazer atualização
+};
+
 module.exports = {
   createRecipesService,
   listRecipesService,
   recipesIdService,
   editRecipes,
   deleteRecipes,
+  uploadImage,
 };
