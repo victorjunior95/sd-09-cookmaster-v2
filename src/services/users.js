@@ -24,21 +24,21 @@ const UserShema = Joi.object({
 });
 
 const validationError = (status, message) => ({ status, message });
+
 const uniqueEmail = async (email) => {
   const result = await UserModel.listAllUsers();
-  return result.find((user) => user.email === email);
+
+  return result.some((user) => user.email === email);
 };
 
-const createUser = async (user, nivel) => {
+const createUser = async (user) => {
   const { error } = UserShema.validate(user);
-  console.log(UserShema.validate(user).error);
-
   if (error) throw validationError(400, error.message);
 
-  if (uniqueEmail(user.email)) throw validationError(409, 'Email already registered');
+  if (await uniqueEmail(user.email)) throw validationError(409, 'Email already registered');
 
-  const newUser = await UserModel.registerUser(user, nivel);
-  return newUser;
+  const result = await UserModel.registerUser(user);
+  return result;
 };
 
 module.exports = {
