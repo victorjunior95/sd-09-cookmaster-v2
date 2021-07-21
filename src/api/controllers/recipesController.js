@@ -16,4 +16,9 @@ const postNewRecipe = async (req, res) => {
   });
 };
 
-module.exports = { postNewRecipe };
+const getAllRecipes = async (_req, res) => {
+  const recipes = await recipesServeci.getAllRecipes();
+  return res.status(200).send(recipes);
+};
+
+module.exports = { postNewRecipe, getAllRecipes };
