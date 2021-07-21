@@ -34,21 +34,14 @@ const emailValidator = async (email) => {
 const userRegisterService = async (userData) => {
   validateDataRegister(userData);
   await emailValidator(userData.email);
-  const newUser = await userModel.userRegisterModel(userData);
-  const { name, email, role, _id } = newUser.ops[0];
-  const userWithouPass = {
-    user: {
-      name,
-      email,
-      role,
-      _id,
-    },
-  };
-  return userWithouPass;
+  const newUser = { ...userData, role: 'user' };
+  const result = await userModel.userRegisterModel(newUser);
+  return result;
 };
 
 const loginService = async (userData) => {
-  const { email, password, id, role } = userData;
+  const { email, password } = userData;
+  const { _id, role } = await userModel.findEmail(email);
   if (!email || !password) {
     const erro = {
       status: 401,
@@ -64,15 +57,16 @@ const loginService = async (userData) => {
     };
     throw erro;
   }
-  return tokenService.generateToken(email, id, role);
+  return tokenService.generateToken(email, _id, role);
 };
 
-const createRecipeService = async (bodyObject) => {
+const createRecipeService = async (bodyObject, userId) => {
   const { name, ingredients, preparation } = bodyObject;
   const result = await userModel.createRecipeModel(
     name,
     ingredients,
     preparation,
+    userId,
   );
   if (!name || !ingredients || !preparation) {
     const erro = {
@@ -101,10 +95,22 @@ const getOneRecipeService = async (id) => {
   return result;
 };
 
+const editOneRecipeService = async (id, recipeObject, userId) => {
+  const result = await userModel.editOneRecipe(id, recipeObject, userId);
+  return result;
+};
+
+const delOneRecipeService = async (id) => {
+  const result = await userModel.deleteOneRecipe(id);
+  return result;
+};
+
 module.exports = {
   userRegisterService,
   loginService,
   createRecipeService,
   allRecipesService,
   getOneRecipeService,
+  editOneRecipeService,
+  delOneRecipeService,
 };

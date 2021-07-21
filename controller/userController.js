@@ -21,9 +21,12 @@ const userLogin = async (req, res, next) => {
 
 const userCreateRecipes = async (req, res, next) => {
   try {
-    const result = await service.createRecipeService(req.body);
     const { _id } = req.user;
-    result.recipe.userId = _id;
+    const userId = _id;
+    const result = await service.createRecipeService(req.body, userId);
+    // const { _id } = req.user;
+    // result.recipe.userId = _id;
+    
     return res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -39,9 +42,20 @@ const getAllRecipes = async (_req, res) => {
 const getOneRecipe = async (req, res) => {
   const { id } = req.params;
   const result = await service.getOneRecipeService(id);
-  console.log(result);
   if (!result) return res.status(404).json({ message: 'recipe not found' });
   return res.status(200).json(result);
+};
+
+const editOneRecipe = async (req, res) => {
+  const { id } = req.params;
+  const result = await service.editOneRecipeService(id, req.body, req.user);
+  return res.status(200).json(result);
+};
+
+const delOneRecipe = async (req, res) => {
+  const { id } = req.params;
+  await service.delOneRecipeService(id);
+  return res.status(204).json();
 };
 
 module.exports = {
@@ -50,4 +64,6 @@ module.exports = {
   userCreateRecipes,
   getAllRecipes,
   getOneRecipe,
+  editOneRecipe,
+  delOneRecipe,
 };

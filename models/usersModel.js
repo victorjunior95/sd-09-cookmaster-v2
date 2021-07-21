@@ -4,8 +4,16 @@ const connection = require('./connection');
 const userRegisterModel = async (userData) => {
   const db = await connection();
   const collection = await db.collection('users');
-  const result = await collection.insertOne({ role: 'user', ...userData });
-  return result;
+  const result = await collection.insertOne(userData);
+  const { name, email, role, _id } = result.ops[0];
+  return {
+    user: {
+      name,
+      email,
+      role,
+      _id,
+    },
+  };
 };
 
 const findEmail = async (email) => {
@@ -22,17 +30,17 @@ const validadeLogin = async (email, password) => {
   return result;
 };
 
-const createRecipeModel = async (name, ingredients, preparation) => {
+const createRecipeModel = async (name, ingredients, preparation, userId) => {
   const db = await connection();
   const collection = await db.collection('recipes');
-  const result = await collection.insertOne({ name, ingredients, preparation });
+  const result = await collection.insertOne({ name, ingredients, preparation, userId });
   return { recipe: result.ops[0] };
 };
 
 const getAllRecipes = async () => {
   const db = await connection();
   const collection = await db.collection('recipes');
-  const result = await collection.find({ }).toArray();
+  const result = await collection.find({}).toArray();
   return result;
 };
 
@@ -44,6 +52,25 @@ const getOneRecipe = async (id) => {
   return result;
 };
 
+const editOneRecipe = async (id, recipeObject, userId) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const collection = await db.collection('recipes');
+  await collection.findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: recipeObject },
+    { returnOriginal: false },
+  );
+  return { ...recipeObject, _id: id, userId };
+};
+
+const deleteOneRecipe = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const collection = await db.collection('recipes');
+  await collection.deleteOne({ _id: ObjectId(id) });
+};
+
 module.exports = {
   userRegisterModel,
   findEmail,
@@ -51,4 +78,6 @@ module.exports = {
   createRecipeModel,
   getAllRecipes,
   getOneRecipe,
+  editOneRecipe,
+  deleteOneRecipe,
 };

@@ -12,7 +12,7 @@ const generateToken = (email, id, role) => {
   } catch (e) {
     const erro = {
       status: 400,
-      message: 'function sing is tired. try later',
+      message: 'Sign function  is tired. try later',
     };
     throw erro;
   }

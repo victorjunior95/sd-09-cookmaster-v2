@@ -14,13 +14,18 @@ app.post('/login', userController.userLogin);
 app.post('/recipes', auth.validadeLogin, userController.userCreateRecipes);
 app.get('/recipes/:id', userController.getOneRecipe);
 app.get('/recipes', userController.getAllRecipes);
+app.put('/recipes/:id', auth.validadeLogin, userController.editOneRecipe);
+app.delete('/recipes/:id', auth.validadeLogin, userController.delOneRecipe);
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use((err, req, res, _next) => {
-  if (!err.status) return res.status(500).json({ status: 500, message: err });
+  if (!err.status) {
+    console.log(err);
+    return res.status(401).json(err);
+  }
   res.status(err.status).json({ message: err.message });
 });
 
