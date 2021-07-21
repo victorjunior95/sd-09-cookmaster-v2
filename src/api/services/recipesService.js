@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
 const recipesModel = require('../models/recipesModel');
 const usersModel = require('../models/usersModel');
 
@@ -13,6 +14,11 @@ const recipeSchema = Joi.object().keys({
 
 const OK_STATUS = 200;
 const CREATED_STATUS = 201;
+
+const NOT_FOUND_RECIPE = {
+  status: 404,
+  err: { message: 'recipe not found' },
+};
 
 const BAD_REQUEST_INVALID_ENTRIES = {
   status: 400,
@@ -58,9 +64,22 @@ const getAllRecipes = async () => {
     recipes,
   };
 };
+
+const validateId = (id) => (ObjectId.isValid(id));
+
+const getRecipeById = async (id) => {
+  if (!validateId(id)) throw NOT_FOUND_RECIPE;
+  const recipe = await recipesModel.getRecipeById(id);
+  if (!recipe) throw NOT_FOUND_RECIPE;
+  return {
+    status: OK_STATUS,
+    recipe,
+  };
+};
 // todas as funções que dependerem de acesso ao bd precisam ser assíncronas
 
 module.exports = {
   registerRecipe,
   getAllRecipes,
+  getRecipeById,
 };
