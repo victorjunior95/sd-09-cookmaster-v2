@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.post('/', checkRecipeInput, validateToken, postNewRecipe);
 
-router.get('/:id', getRecipeById);
-
 router.get('/', getAllRecipes);
+
+router.get('/:id', getRecipeById);
 
 module.exports = router;
