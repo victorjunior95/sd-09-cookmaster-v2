@@ -1,6 +1,6 @@
 const express = require('express');
 const { createRecipe,
-  getRecipes,
+  getAllRecipes,
   getById,
   updateRecipes,
   updateImageRecipes,
@@ -10,7 +10,7 @@ const { createRecipe,
 const recipeRouter = express.Router();
 
 recipeRouter.post('/', createRecipe);
-recipeRouter.get('/', getRecipes);
+recipeRouter.get('/', getAllRecipes);
 recipeRouter.get('/:id', getById);
 recipeRouter.put('/:id', updateRecipes);
 recipeRouter.put('/:id/image', updateImageRecipes);
