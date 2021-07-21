@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser').json();
 
 const { usersRoutes, loginRoutes, recipesRoutes } = require('./routes');
-const { handleError } = require('../../middlewares');
+const { handleError } = require('../middlewares');
 
 const app = express();
 

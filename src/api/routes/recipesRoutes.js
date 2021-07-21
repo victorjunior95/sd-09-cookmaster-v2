@@ -15,11 +15,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const recipesController = require('../../../controllers/recipesController');
+const recipesController = require('../../controllers/recipesController');
 const {
   validateToken,
   validateRecipesFields,
-} = require('../../../middlewares');
+} = require('../../middlewares');
 
 const router = express.Router();
 
