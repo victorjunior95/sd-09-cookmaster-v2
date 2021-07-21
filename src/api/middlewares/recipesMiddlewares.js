@@ -16,4 +16,4 @@ const checkRecipeInput = (req, res, next) => {
   return next();
 };
 
-module.exports = { checkRecipeInput }
+module.exports = { checkRecipeInput };
