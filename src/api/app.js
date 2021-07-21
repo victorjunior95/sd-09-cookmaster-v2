@@ -34,7 +34,7 @@ app.get('/recipes', Recipes.getAll);
 app.get('/recipes/:id', Recipes.getOne);
 app.put('/recipes/:id', recipeValidate, Recipes.recipeUpdate);
 app.delete('/recipes/:id', recipeValidate, Recipes.recipeDelete);
-app.put('/recipes/:id/image/', recipeValidate, upload.single('image'), Recipes.imageCreate);
+app.put('/recipes/:id/image/', upload.single('image'), recipeValidate, Recipes.imageCreate);
 app.use(errorMiddleware);
 
 module.exports = app;
