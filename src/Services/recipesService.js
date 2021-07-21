@@ -33,8 +33,19 @@ const getOne = async (id) => {
   return recipe;
 };
 
+const recipeUpdate = async (id, name, ingredients, preparation) => {
+  const recipe = await Recipes.recipeUpdate(id, name, ingredients, preparation);
+  return recipe;
+};
+
+const recipeDelete = async (id) => {
+  await Recipes.recipeDelete(id);
+};
+
 module.exports = {
   recipeCreate,
   getAll,
   getOne,
+  recipeUpdate,
+  recipeDelete,
 };

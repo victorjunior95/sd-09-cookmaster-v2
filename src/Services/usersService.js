@@ -44,7 +44,7 @@ const userLogin = async (email, password) => {
 
   const secret = 'tokensupersecreto';
 
-  const token = jwt.sign({ data: user }, secret, jwtConfig);
+  const token = jwt.sign(user, secret, jwtConfig);
 
   return { token };
 };

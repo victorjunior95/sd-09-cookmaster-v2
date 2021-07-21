@@ -20,6 +20,8 @@ app.post('/login', Users.userLogin);
 app.post('/recipes', recipeValidate, Recipes.recipeCreate);
 app.get('/recipes', Recipes.getAll);
 app.get('/recipes/:id', Recipes.getOne);
-app.use(errorMiddleware); 
+app.put('/recipes/:id', recipeValidate, Recipes.recipeUpdate);
+app.delete('/recipes/:id', recipeValidate, Recipes.recipeDelete);
+app.use(errorMiddleware);
 
 module.exports = app;

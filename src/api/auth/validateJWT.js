@@ -1,34 +1,27 @@
 const jwt = require('jsonwebtoken');
-const User = require('../../Models/usersModel');
 
 const secret = 'tokensupersecreto';
 
 const validateRecipeData = (code, message) => ({ code, message });
 
-const recipeValidate = async (req, res, next) => {
+async function recipeValidate(req, res, next) {
   const token = req.headers.authorization;
-
   if (!token) {
-    throw validateRecipeData(401, 'jwt malformed');
+    next(validateRecipeData(401, 'missing auth token'));
   }
   try {
     const decoded = jwt.verify(token, secret);
-    const recipe = await User.getOne(decoded.data.email);
+    console.log(decoded);
+    const { _id: id } = decoded;
 
-    if (!recipe) {
-      return res
-        .status(401)
-        .json({ message: 'jwt malformed' });
-    }
+    console.log(id);
 
-    const { _id } = recipe;
-
-    req.userId = _id;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: err.message });
+    req.userId = id;
+  } catch (_err) {
+    next(validateRecipeData(401, 'jwt malformed'));
   }
-};
+  next();
+}
 
 module.exports = {
   recipeValidate,
