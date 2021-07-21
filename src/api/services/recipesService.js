@@ -25,21 +25,26 @@ const BAD_REQUEST_INVALID_ENTRIES = {
   err: { message: 'Invalid entries. Try again.' },
 };
 
-const UNAUTHORIZED_TOKEN = {
+const UNAUTHORIZED_JWT_MALFORMED = {
   status: 401,
   err: { message: 'jwt malformed' },
 };
 
+const UNAUTHORIZED_MISSING_TOKEN = {
+  status: 401,
+  err: { message: 'missing auth token' },
+};
+
 async function validateToken(token) {
-  if (!token) throw UNAUTHORIZED_TOKEN;
+  if (!token) throw UNAUTHORIZED_MISSING_TOKEN;
   try {
     const decoded = jwt.verify(token, secret);
     const { email } = decoded.data;
     const user = await usersModel.getUserByEmail(email);
-    if (!user) throw UNAUTHORIZED_TOKEN;
+    if (!user) throw UNAUTHORIZED_JWT_MALFORMED;
     return decoded.data;
   } catch (e) {
-    throw UNAUTHORIZED_TOKEN;
+    throw UNAUTHORIZED_JWT_MALFORMED;
   }
 }
 
@@ -76,10 +81,20 @@ const getRecipeById = async (id) => {
     recipe,
   };
 };
+
+const editRecipe = async (authorization, id, edit) => {
+  await validateToken(authorization);
+  const editedRecipe = await recipesModel.editRecipe(id, edit);
+  return {
+    status: OK_STATUS,
+    editedRecipe,
+  };
+};
 // todas as funções que dependerem de acesso ao bd precisam ser assíncronas
 
 module.exports = {
   registerRecipe,
   getAllRecipes,
   getRecipeById,
+  editRecipe,
 };
