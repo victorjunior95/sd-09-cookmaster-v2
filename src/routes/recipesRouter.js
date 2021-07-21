@@ -9,4 +9,7 @@ router.route('/')
   .post(validateToken, recipesController.createRecipe)
   .get(recipesController.findAll);
 
+router.route('/:id')
+  .get(recipesController.findById);
+
 module.exports = router;

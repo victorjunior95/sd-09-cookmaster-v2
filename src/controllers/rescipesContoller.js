@@ -26,4 +26,21 @@ const findAll = async (_req, res, next) => {
   }
 };
 
-module.exports = { createRecipe, findAll };
+const findById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const searchResult = await recipesService.findById(id);
+
+    if (searchResult.message) {
+      return res.status(searchResult.status).json({ message: searchResult.message });
+    }
+
+    return res.status(searchResult.status).json(searchResult.result);
+  } catch (err) {
+    console.log('[Error recipesController] > ', err.message);
+    return next(err);
+  }
+};
+
+module.exports = { createRecipe, findAll, findById };
