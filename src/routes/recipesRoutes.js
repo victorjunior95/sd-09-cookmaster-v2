@@ -10,4 +10,8 @@ userRouters.get('/', recipesControllers.listAllRecipes);
 
 userRouters.get('/:id', recipesControllers.listOneRecipe);
 
+userRouters.put('/:id', validate.validateToken, recipesControllers.updateRecipe);
+
+userRouters.delete('/:id', validate.validateToken, recipesControllers.deleteRecipe);
+
 module.exports = userRouters;

@@ -1,3 +1,4 @@
+const recipeServices = require('../services/recipeServices');
 const validateServices = require('../services/recipeServices');
 
 module.exports = {
@@ -30,5 +31,22 @@ module.exports = {
     }
 
     return res.status(200).json(listOneRecipe);
+  },
+
+  updateRecipe: async (req, res) => {
+    const { id } = req.params;
+    const recipe = req.body;
+
+    const updateRecipe = await recipeServices.updateRecipe(id, recipe);
+
+    return res.status(200).json(updateRecipe);
+  },
+
+  deleteRecipe: async (req, res) => {
+    const { id } = req.params;
+
+    await recipeServices.deleteRecipe(id);
+
+    return res.status(204).json();
   },
 };

@@ -32,4 +32,20 @@ module.exports = {
 
     return listOneRecipe;
   },
+
+  updateRecipe: async (id, recipe) => {
+    const query = { _id: ObjectId(id) };
+    const update = { $set: recipe };
+    const options = { returnNewDocument: true };
+
+    const updateRecipe = await connection().then((db) =>
+      db.collection('recipes').findOneAndUpdate(query, update, options));
+
+    return updateRecipe.value;
+  },
+
+  deleteRecipe: async (id) => {
+    await connection().then((db) =>
+      db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
+  },
 };

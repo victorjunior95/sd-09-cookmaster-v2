@@ -55,4 +55,14 @@ module.exports = {
 
     return listOneRecipe;
   },
+
+  updateRecipe: async (id, recipe) => {
+    const updateRecipe = await recipesModel.updateRecipe(id, recipe);
+
+    return updateRecipe;
+  },
+
+  deleteRecipe: async (id) => {
+    await recipesModel.deleteRecipe(id);
+  },
 };
