@@ -10,5 +10,7 @@ router.post('/login', UsersController.userLogin);
 router.post('/recipes', validateToken, RecipesController.addNewRecipe);
 router.get('/recipes', RecipesController.listRecipe);
 router.get('/recipes/:id', RecipesController.listRecipe);
+router.put('/recipes/:id', validateToken, RecipesController.updateRecipe);
+router.delete('/recipes/:id', validateToken, RecipesController.deleteRecipe);
 
 module.exports = router;

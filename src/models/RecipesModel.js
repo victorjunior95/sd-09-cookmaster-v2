@@ -26,6 +26,7 @@ const create = async (name, ingredients, preparation, userId) => {
 };
 
 const exlude = async (id) => {
+  console.log(id);
   const result = await connection().then((db) => db.collection('recipes').deleteOne({
     _id: ObjectId(id),
   }));
@@ -35,7 +36,7 @@ const exlude = async (id) => {
   return ({ message: 'Não foi possivel excluir' });
 };
 
-const update = async (id, itens) => {
+const update = async (id, name, ingredients, preparation) => {
   const result = await connection().then((db) => db.collection('recipes').updateOne(
     {
       _id: ObjectId(id),
@@ -43,14 +44,14 @@ const update = async (id, itens) => {
     {
       $set:
         {
-          itensSold: itens,
+          name,
+          ingredients,
+          preparation,
         },
     },
 ));
-
-  if (result.modifiedCount === 1) {
-    return ({ _id: id, itensSold: [...itens] });
-  }
+console.log(result);
+  if (result.modifiedCount === 1) return result;
   return ({ message: 'Não foi possivel editar' });
 };
 

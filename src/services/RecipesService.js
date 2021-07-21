@@ -42,7 +42,41 @@ const listRecipes = async (id) => {
   return { status: 200, result: recipes };
 };
 
+const updateRecipe = async (id, recipe, token) => {
+  const payload = jwt.verify(token, SECRET); 
+  const currentUser = await UsersModel.findByEmail(payload.email);
+  const currentRecipe = await RecipesModel.find(id);
+  const { _id } = currentRecipe;
+  const { role } = currentUser[0];
+  if (role === 'admin' || currentUser !== undefined) {
+    const { name, ingredients, preparation } = recipe;
+    await RecipesModel.update(id, name, ingredients, preparation);
+    return { status: 200,
+      result: {
+      _id: id,
+      name,
+      ingredients,
+      preparation,
+      userId: _id,
+    } };
+  }
+  throw createErrorMsg(400, 'usuario não é admin');
+};
+
+const deleteRecipe = async (id, token) => {
+  const payload = jwt.verify(token, SECRET); 
+  const currentUser = await UsersModel.findByEmail(payload.email);
+  const { role } = currentUser[0];
+  if (role === 'admin' || currentUser !== undefined) {
+    await RecipesModel.exlude(id);
+    return { status: 204 };
+  }
+  throw createErrorMsg(400, 'usuario não é admin');
+};
+
 module.exports = {
   addRecipe,
   listRecipes,
+  updateRecipe,
+  deleteRecipe,
 };
