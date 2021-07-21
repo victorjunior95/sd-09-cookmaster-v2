@@ -15,4 +15,15 @@ const createRecipe = async (req, res, next) => {
   }
 };
 
-module.exports = { createRecipe };
+const findAll = async (_req, res, next) => {
+  try {
+    const searchResult = await recipesService.findAll();
+
+    return res.status(searchResult.status).json(searchResult.result);
+  } catch (err) {
+    console.log('[Error recipesController] > ', err.message);
+    return next(err);
+  }
+};
+
+module.exports = { createRecipe, findAll };

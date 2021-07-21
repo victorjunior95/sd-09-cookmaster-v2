@@ -13,4 +13,10 @@ const createRecipe = async (recipe) => {
   return { result, status: 201 };
 };
 
-module.exports = { createRecipe };
+const findAll = async () => {
+  const result = await recipesModel.getAll();
+
+  return { result, status: 200 };
+};
+
+module.exports = { createRecipe, findAll };

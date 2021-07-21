@@ -7,6 +7,10 @@ const createRecipe = async (recipe) => {
   return { ...recipe, _id: insertedId };
 };
 
+const getAll = () => (connection()
+    .then((db) => db.collection('recipes').find().toArray()));
+
 module.exports = {
   createRecipe,
+  getAll,
 };
