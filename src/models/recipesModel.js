@@ -15,8 +15,9 @@ const getAllRecipes = async () => {
 
 const getRecipeById = async (id) => {
   if (!ObjectId.isValid(id)) return false;
-  return connection()
+  const recipe = await connection()
     .then((db) => db.collection('recipes').findOne({ _id: ObjectId(id) }));
+  return recipe;
 };
 
 module.exports = {

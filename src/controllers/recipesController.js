@@ -18,13 +18,13 @@ const getRecipes = async (req, res, next) => {
   const { id } = req.params;
   if (!id) {
     const recipes = await recipesModel.getAllRecipes();
-    res.status(DEFAULT_SUCCESS_STATUS).json(recipes);
+    return res.status(DEFAULT_SUCCESS_STATUS).json(recipes);
   }
   const recipe = await recipesModel.getRecipeById(id);
   if (!recipe) {
     const err = new Error('recipe not found');
     err.status = 404;
-    next(err);
+    return next(err);
   }
   return res.status(DEFAULT_SUCCESS_STATUS).json(recipe);
 };
