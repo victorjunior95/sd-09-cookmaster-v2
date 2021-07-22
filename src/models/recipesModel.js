@@ -12,6 +12,13 @@ async function addRecipe(tokenData, name, ingredients, preparation) {
   return { recipe: response.ops[0] };
 }
 
+async function getRecipe() {
+  const db = await connection();
+  const response = await db.collection('recipes').find({}).toArray();
+  return response;
+}
+
 module.exports = {
   addRecipe,
+  getRecipe,
 };

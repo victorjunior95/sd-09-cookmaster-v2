@@ -10,6 +10,12 @@ async function addRecipe(token, { name, ingredients, preparation }) {
   return { status: 201, response };
 }
 
+async function getRecipe() {
+  const response = await recipesModel.getRecipe();
+  return { status: 200, response };
+}
+
 module.exports = {
   addRecipe,
+  getRecipe,
 };
