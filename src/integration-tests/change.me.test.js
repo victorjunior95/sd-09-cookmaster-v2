@@ -920,6 +920,7 @@ describe('PUT /recipes/:id', () => {
   });
 });
 
+/*
 describe('DELETE /recipes/:id', () => {
   let response;
 
@@ -1100,3 +1101,4 @@ describe('DELETE /recipes/:id', () => {
     });
   });
 });
+*/
