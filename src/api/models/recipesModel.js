@@ -42,7 +42,7 @@ const deleteRecipeById = async (id) => {
   const validId = ObjectId.isValid(id);
   if (!validId) return;
   const data = await connection().then((db) => 
-    db.collection(recipesCollection).deleteOne(ObjectId(id)));
+    db.collection(recipesCollection).deleteOne({ _id: ObjectId(id) }));
   return data;
 };
 
