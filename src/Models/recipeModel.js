@@ -37,9 +37,8 @@ const delRecipe = async (id) => {
   return recipe;
 };
 
-const updateRecipeWithImage = async (recipeToUpdate, path) => {
+const updateRecipeWithImage = async (recipeToUpdate, image) => {
   const { id, name, ingredients, preparation, userId } = recipeToUpdate;
-  const image = path;
   if (!ObjectId.isValid(id)) return null;
   connection().then((db) => db.collection('recipes')
     .updateOne(
