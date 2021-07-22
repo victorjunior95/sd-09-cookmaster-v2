@@ -19,14 +19,14 @@ const RecipesShema = Joi.object({
 
 const validateError = (status, message) => ({ status, message });
 
-const createRecipe = async (recipe) => {
+const createRecipe = async (recipe, userId) => {
   const { error } = RecipesShema.validate(recipe);
 
   if (error) {
     throw validateError(400, error.message);
   }
 
-  const newRecipe = await recipeModel.createRecipe(recipe);
+  const newRecipe = await recipeModel.createRecipe(recipe, userId);
   return newRecipe;
 };
 
@@ -40,14 +40,25 @@ const findById = async (id) => {
   return recipe;
 };
 
-const updateRecipes = async (id, recipes) => {
+const updateRecipes = async (id, recipes, user) => {
   const { error } = RecipesShema.validate(recipes);
+
   if (error) {
     throw validateError(401, error.message);
   }
 
-  const recipe = await recipeModel.updateRecipe(id, recipes);
-  return recipe;
+  const { role, _id } = user;
+
+  if (role !== 'admin') {
+    const err = new Error('Incorrect username or password');
+      err.status = 401;
+  }
+
+  await recipeModel.updateRecipe(id, recipes);
+  const { name, ingredients, preparation } = recipes;
+  const recipeUpdate = { _id: id, name, ingredients, preparation, userId: _id };
+
+  return recipeUpdate;
 };
 
 const deleteRecipe = async (id) => {

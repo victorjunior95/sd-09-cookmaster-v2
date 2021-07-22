@@ -2,8 +2,11 @@ const rescue = require('express-rescue');
 const Recipe = require('../services/recipes');
 
 const createRecipe = rescue(async (req, res, _next) => {
-  const newRecipe = await Recipe.createRecipe(req.body);
-  return res.status(201).json({ recipe: newRecipe });
+  const { _id: userId } = req.user;
+  const { name, ingredients, preparation, _id: id } = await Recipe.createRecipe(req.body, userId);
+  const result = { _id: id, name, ingredients, preparation, userId };
+
+  return res.status(201).json({ recipe: result });
 });
 
 const getAllRecipes = rescue(async (_req, res, _next) => {
@@ -13,14 +16,18 @@ const getAllRecipes = rescue(async (_req, res, _next) => {
 
 const getById = rescue(async (req, res, _next) => {
   const { id } = req.params;
+
   const recipe = await Recipe.findById(id);
   if (!recipe) return res.status(404).json({ message: 'recipe not found' });
+
   return res.status(200).json(recipe);
 });
 
 const updateRecipes = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  const recipe = await Recipe.updateRecipes(id, req.body);
+  const { user } = req;
+
+  const recipe = await Recipe.updateRecipes(id, req.body, user);
   return res.status(200).json(recipe);
 });
 
