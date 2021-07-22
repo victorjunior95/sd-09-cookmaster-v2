@@ -3,7 +3,7 @@ const { verifyToken } = require('../auxiliarFunctions/jwtFunctions');
 const auth = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    const err = new Error('Token not found');
+    const err = new Error('missing auth token');
     err.status = 401;
     return next(err);
   }

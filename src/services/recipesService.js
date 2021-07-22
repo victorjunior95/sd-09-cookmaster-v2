@@ -17,6 +17,29 @@ const createRecipe = async (recipe, user) => {
   return newRecipe;
 };
 
+const updateRecipe = async (id, user, recipe) => {
+  const recipeToUpdate = await recipesModel.getRecipeById(id);
+  if (!recipeToUpdate) throw validationError(404, 'recipe not found');
+  const { error } = recipesValidationSchema.validate(recipe);
+  if (error) throw validationError(400, error.message);
+  if (recipeToUpdate.userId === user.id || user.role === 'admin') {
+    const updatedRecipe = await recipesModel.updateRecipe(id, recipe);
+    return updatedRecipe;
+  }
+  throw validationError(403, 'forbidden action');
+};
+
+const deleteRecipe = async (id, user) => {
+  const recipeToDelete = await recipesModel.getRecipeById(id);
+  if (!recipeToDelete) throw validationError(404, 'recipe not found');
+  if (recipeToDelete.userId === user.id || user.role === 'admin') {
+    return recipesModel.deleteRecipe(id);
+  }
+  throw validationError(403, 'forbidden action');
+};
+
 module.exports = {
   createRecipe,
+  updateRecipe,
+  deleteRecipe,
 };
