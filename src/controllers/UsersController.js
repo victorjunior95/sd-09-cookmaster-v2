@@ -3,7 +3,7 @@ const express = require('express');
 
 const UserRouter = express.Router();
 
-UserRouter.post('/', (req, _res) => {
+UserRouter.post('/users', (req, _res) => {
   console.log(req.body);
   // const { name, email, password } = req.body;
   // const user = { name, email, password, role: 'user' };
