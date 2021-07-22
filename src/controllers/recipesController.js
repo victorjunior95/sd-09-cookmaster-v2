@@ -62,7 +62,7 @@ const deleteById = async (req, res) => {
   }
 };
 
-// tive auxilior do aluno adrino e arnaelcio na construção do addImageRecipe
+// tive auxílio dos alunos Adrino e Arnaelcio na construção do addImageRecipe
 // https://github.com/tryber/sd-09-cookmaster-v2/tree/adriano-forcellini-sd09-project-cockmaster
 // https://github.com/tryber/sd-08-cookmaster/tree/arnaelcio1-sd-08-cookmaster 
 
