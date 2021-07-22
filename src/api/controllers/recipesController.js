@@ -26,9 +26,24 @@ const getRecipesById = async (req, res) => {
   if (!result) return res.status(NOT_FOUND).send({ message: 'recipe not found' });
   return res.status(OK).json(result);
   };
-
+  
+const updateRecipe = async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  await recipesService.updateRecipe(id, body);
+  res.status(200).json(
+      {
+         _id: id,
+         name: body.name,
+         ingredients: body.ingredients,
+         preparation: body.preparation,
+         userId: id,
+      },
+      );
+  };
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipesById,
+  updateRecipe,
 };
