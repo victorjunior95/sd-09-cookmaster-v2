@@ -49,4 +49,21 @@ const deleteRecipeById = async (req, res) => {
   return res.status(204).send(deletedRecipe);
 };
 
-module.exports = { postNewRecipe, getAllRecipes, getRecipeById, updateRecipe, deleteRecipeById };
+const insertRecipeImage = async (req, res) => {
+  const { id } = req.params;
+  const { _id } = req.user.data;
+  const recipeWithImage = await recipesServeci.insertRecipeImage(id);
+  if (!recipeWithImage) return res.status(304).send({ message: 'Image not inserted' });
+  const { name, ingredients, preparation, image } = recipeWithImage;
+  return res.status(200).send({
+    _id: id,
+    name,
+    ingredients,
+    preparation,
+    userId: _id,
+    image,
+  });
+};
+
+module.exports = { 
+  postNewRecipe, getAllRecipes, getRecipeById, updateRecipe, deleteRecipeById, insertRecipeImage };
