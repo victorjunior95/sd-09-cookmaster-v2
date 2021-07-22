@@ -4,7 +4,7 @@ const userModel = require('../models/usersModel');
 const SECRET = 'cookmaster';
 const HTTP_UNAUTHORIZED_STATUS = 401;
 
-const validateToken = async (req, _res, next) => {
+module.exports = async (req, _res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -18,10 +18,9 @@ const validateToken = async (req, _res, next) => {
     }
     const { password: _, ...userWithoutPassword } = user;
     req.user = userWithoutPassword;
+  
     next();
   } catch (error) {
     return next({ status: HTTP_UNAUTHORIZED_STATUS, err: error.message });
   }
 };
-
-module.exports = validateToken;

@@ -48,35 +48,13 @@ const getRecipeById = async (id) => {
   };
 };
 
-const updateRecipesByIdOrByUser = async (idUser, id, { name, ingredients, preparation }, role) => {
-  const recipe = await getRecipeById(id);
-  if (recipe.err) return recipe;
-  if (role !== 'admin'
-    && !recipe.recipeById.userId.toString() === idUser.toString()
-  ) {
-    return {
-      status: HTTP_NOTFOUND_STATUS, err: 'User without permission to change',
-    };
-  }
+const updateRecipesById = async (id, { name, ingredients, preparation }) => {
   const recipeUpdate = await recipesModel.update(id, name, ingredients, preparation);
   return { status: HTTP_OK_STATUS, recipeUpdate };
 };
 
-const deleteRecipeByIdAutentication = async (id, idUser, role) => {
-  const recipe = await getRecipeById(id);
-  if (recipe.err) {
-    return recipe;
-  }
-
-  if ((role !== 'admin')
-    && (recipe.recipeById.userId.toString() !== idUser.toString())) {
-    return {
-      status: HTTP_NOTFOUND_STATUS,
-      err: 'User without permission to change',
-    };
-  }
+const deleteRecipeById = async (id) => {
   const recipeDeleted = await recipesModel.exclude(id);
-  console.log(recipeDeleted);
   return { status: HTTP_NOCONTENT_STATUS, recipeDeleted };
 };
 
@@ -84,6 +62,6 @@ module.exports = {
   create,
   listAllRecipes,
   getRecipeById,
-  updateRecipesByIdOrByUser,
-  deleteRecipeByIdAutentication,
+  updateRecipesById,
+  deleteRecipeById,
 };

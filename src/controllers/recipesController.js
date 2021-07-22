@@ -1,6 +1,6 @@
 const express = require('express');
 const recipesService = require('../services/recipesService');
-const validateToken = require('../middlewares/validateToken');
+const { validateToken, validateRoleUser } = require('../middlewares');
 
 const routerRecipes = express.Router();
 
@@ -47,31 +47,30 @@ routerRecipes.get('/', async (_req, res, next) => {
   }
 });
 
-routerRecipes.put('/:id', validateToken, async (req, res, next) => {
-  const { _id, role } = req.user;
+routerRecipes.put('/:id', validateToken, validateRoleUser, async (req, res, next) => {
   const { id } = req.params;
   const recipeAlter = req.body;
   try {
     const recipe = await recipesService
-    .updateRecipesByIdOrByUser(_id, id, recipeAlter, role);
-    if (recipe.err) return next(recipe);
+      .updateRecipesById(id, recipeAlter);
     return res.status(recipe.status).json(recipe.recipeUpdate);
   } catch (error) {
     next(error);
   }
 });
 
-routerRecipes.delete('/:id', validateToken, async (req, res, next) => {
-  const { _id, role } = req.user;
+routerRecipes.delete('/:id', validateToken, validateRoleUser, async (req, res, next) => {
   const { id } = req.params;
   try {
-    const recipe = await recipesService
-      .deleteRecipeByIdAutentication(id, _id, role);
-    if (recipe.err) return next(recipe);
+    const recipe = await recipesService.deleteRecipeById(id);
     return res.status(recipe.status).json();
   } catch (error) {
     return next(error);
   }
+});
+
+routerRecipes.put(':id/image', validateToken, validateRoleUser, async (req, res, next) => {
+  
 });
 
 module.exports = routerRecipes;
