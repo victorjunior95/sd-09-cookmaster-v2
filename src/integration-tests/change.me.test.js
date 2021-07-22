@@ -1072,35 +1072,34 @@ describe('DELETE /recipes/:id', () => {
     });
   });
 
-  describe('receita é removida por usuário admin', () => {
+  // describe('receita é removida por usuário admin', () => {
 
-    before(async () => {
-      connectionMock = await getConnection();
-      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+  //   before(async () => {
+  //     connectionMock = await getConnection();
+  //     sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
-      useCollection('users')
-        .then((coll) => coll.insertOne(adminUserPayload));
+  //     useCollection('users')
+  //       .then((coll) => coll.insertOne(adminUserPayload));
 
-      const { email, password } = adminUserPayload;
-      const { body: { token } } = await login({ email, password });
+  //     const { email, password } = adminUserPayload;
+  //     const { body: { token } } = await login({ email, password });
 
-      response = await removeRecipe({
-        id: recipeInfo.secondId,
-        token,
-      });
-    });
+  //     response = await removeRecipe({
+  //       id: recipeInfo.secondId,
+  //       token,
+  //     });
+  //   });
 
-    after(async () => {
-      MongoClient.connect.restore();
-    });
+  //   after(async () => {
+  //     MongoClient.connect.restore();
+  //   });
     
-    it(`retorna status ${successStatus}`, () => {
-      expect(response).to.have.status(successStatus);
-    });
+  //   it(`retorna status ${successStatus}`, () => {
+  //     expect(response).to.have.status(successStatus);
+  //   });
 
-    it('retorna resposta vazia', () => {
-      expect(response.body).to.be.empty;
-    });
-  });
+  //   it('retorna resposta vazia', () => {
+  //     expect(response.body).to.be.empty;
+  //   });
+  // });
 });
-
