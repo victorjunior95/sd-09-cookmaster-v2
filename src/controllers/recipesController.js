@@ -61,6 +61,11 @@ const deleteById = async (req, res) => {
     res.status(status.INTERNAL_SERVER_ERROR).json({ message: err.messagem });
   }
 };
+
+// tive auxilior do aluno adrino e arnaelcio na construção do addImageRecipe
+// https://github.com/tryber/sd-09-cookmaster-v2/tree/adriano-forcellini-sd09-project-cockmaster
+// https://github.com/tryber/sd-08-cookmaster/tree/arnaelcio1-sd-08-cookmaster 
+
 const AddImageRecipe = async (req, res) => {
   const { id } = req.params;
   const { path } = req.file;
