@@ -5,8 +5,8 @@ const {
   postNewRecipe,
   getAllRecipes,
   getRecipeById,
-  deleteRecipeById, 
-  updateRecipe} = require('../controllers/recipesController');
+  // deleteRecipeById, 
+  updateRecipe } = require('../controllers/recipesController');
 
 const validateToken = require('../auth/validateJWT');
 
@@ -19,7 +19,7 @@ router.get('/', getAllRecipes);
 router.get('/:id', getRecipeById);
 
 router.put('/:id', validateToken, updateRecipe);
-// updateRecipe
+
 // router.delete('/:id', validateToken, deleteRecipeById);
 
 module.exports = router;

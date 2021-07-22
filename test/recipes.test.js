@@ -909,7 +909,7 @@ describe.skip('8 - Crie um endpoint para a exclusão de uma receita', () => {
       .expect('status', 204);
   });
 
-  it.skip('Será validado que é possível excluir receita com usuário admin', async () => {
+  it('Será validado que é possível excluir receita com usuário admin', async () => {
     let resultRecipes;
     let resultAdmin;
 
