@@ -18,7 +18,7 @@ const create = async (name, ingredients, preparation, token) => {
   }
 };
 
-const getAll = async () => RECIPES.getAll();
+const getAll = async () => RECIPES.getAllRecipes();
 
 module.exports = {
   create,
