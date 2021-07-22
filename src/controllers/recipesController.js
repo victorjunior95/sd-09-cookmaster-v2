@@ -55,7 +55,7 @@ module.exports = {
     const { path } = req.file;
 
     const addImage = await recipeServices.addImage(id, path);
-    console.log(addImage);
+
     return res.status(200).json(addImage);
   },
 };

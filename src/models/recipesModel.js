@@ -52,7 +52,7 @@ module.exports = {
   addImage: async (id, path) => {
     const query = { _id: ObjectId(id) };
     const update = { $set: { image: `localhost:3000/${path}` } };
-    const options = { returnNewDocument: true };
+    const options = { returnOriginal: false };
 
     const addImage = await connection().then((db) =>
       db.collection('recipes').findOneAndUpdate(query, update, options));
