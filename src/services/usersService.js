@@ -1,6 +1,6 @@
 const Joi = require('joi');
-const jwt = require('jsonwebtoken');
 const usersModel = require('../models/usersModel');
+const { newToken } = require('../auxiliarFunctions/jwtFunctions');
 
 const userValidationSchema = Joi.object({
   name: Joi.string().required()
@@ -40,15 +40,6 @@ const createUser = async (user) => {
   if (emailCheck) throw validationError(409, 'Email already registered');
   const newUser = await usersModel.createUser(user);
   return newUser;
-};
-
-const newToken = (payload) => {
-  const config = {
-    expiresIn: '7d',
-    algorithm: 'HS256',
-  };
-  const secret = 'segredoQualquerSoProProjetoFuncionar';
-  return jwt.sign(payload, secret, config);
 };
 
 const loginUser = async (user) => {

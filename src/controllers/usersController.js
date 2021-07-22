@@ -1,4 +1,3 @@
-// const usersModel = require('../models/usersModel');
 const usersService = require('../services/usersService');
 
 const DEFAULT_SUCCESS_STATUS = 200;
@@ -17,7 +16,7 @@ const loginUser = async (req, res, next) => {
   try {
     const user = req.body;
     const token = await usersService.loginUser(user);
-    return res.status(DEFAULT_SUCCESS_STATUS).json(token);
+    return res.status(DEFAULT_SUCCESS_STATUS).json({ token });
   } catch (err) { return next(err); }
 };
 
