@@ -28,6 +28,25 @@ const emailAlreadyExists = async (req, res, next) => {
 
   if (emailUser) return res.status(409).json({ message: 'Email already registered' });
   next();
+  };
+
+const isValidLogin = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const userEmail = await usersModels.findByEmail(email);
+  const userPassword = await usersModels.findByPassword(password);
+
+  if (!email || !password) {
+    return res.status(401).json({ message: 'All fields must be filled' });
+  }
+
+  if (!userEmail || !userPassword) {
+    return res.status(401).json({ message: 'Incorrect username or password' });
+  }
+  next();
 };
-module.exports = { validateNamePass,
-emailAlreadyExists };
+
+module.exports = { 
+  validateNamePass,
+emailAlreadyExists, 
+isValidLogin };

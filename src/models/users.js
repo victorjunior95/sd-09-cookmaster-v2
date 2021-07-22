@@ -14,7 +14,14 @@ const findByEmail = async (email) => {
   return user;
 };
 
+const findByPassword = async (password) => {
+  const db = await connection();
+  const user = db.collection('users').findOne({ password });
+  return user;
+};
+
 module.exports = {
  createUser,
   findByEmail,
+  findByPassword,
 };
