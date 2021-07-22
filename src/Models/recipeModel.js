@@ -24,8 +24,8 @@ const updateRecipe = async (id, data) => {
         $set: {
           name: data.name,
           ingredients: data.ingredients,
-          preparation: data.preparation
-        }
+          preparation: data.preparation,
+        },
       }));
   return recipe;
 };
