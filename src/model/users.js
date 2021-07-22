@@ -7,14 +7,14 @@ const registerUser = async ({ name, email, password, role = 'user' }) => {
   return users.ops[0];
 };
 
-const listAllUsers = async () => {
+const findUser = async (email) => {
   const connect = await connection();
-  const listUsers = await connect.collection('users')
-    .find().toArray();
-  return listUsers;
+  const user = await connect.collection('users')
+    .findOne({ email });
+  return user;
 };
 
 module.exports = {
   registerUser,
-  listAllUsers,
+  findUser,
 };

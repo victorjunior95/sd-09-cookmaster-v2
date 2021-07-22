@@ -40,44 +40,20 @@ const findById = async (id) => {
   return recipe;
 };
 
-const updateRecipes = (id, recipes) => {
+const updateRecipes = async (id, recipes) => {
   const { error } = RecipesShema.validate(recipes);
   if (error) {
     throw validateError(401, error.message);
   }
+
+  const recipe = await recipeModel.updateRecipe(id, recipes);
+  return recipe;
 };
 
-/*
-const updateProduct = async (id, name, quantity) => {
-  if (!ObjectId.isValid(id)) {
-    return null;
-  }
-
-  return connection()
-    .then((db) => db.collection('products').updateOne(
-      {
-        _id: new ObjectId(id),
-      },
-      {
-        $set: {
-          name: name,
-          quantity: quantity
-        },
-      },
-    ));
+const deleteRecipe = async (id) => {
+  const recipe = await recipeModel.deleteRecipe(id);
+  return recipe;
 };
-// 4 - Crie um endpoint para deletar um produto
-const deleteProduct = async (id) => {
-  return connection()
-    .then((db) => db.collection('products').deleteOne({ _id: new ObjectId(id) }))
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-};
-*/
-
-const deleteRecipe = (id) => id;
 
 module.exports = {
   createRecipe,

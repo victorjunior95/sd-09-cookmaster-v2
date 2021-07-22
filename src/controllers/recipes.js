@@ -20,17 +20,16 @@ const getById = rescue(async (req, res, _next) => {
 
 const updateRecipes = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  return res.status(200).json(id);
+  const recipe = await Recipe.updateRecipes(id, req.body);
+  return res.status(200).json(recipe);
 });
 
-const updateImageRecipes = rescue(async (req, res, _next) => {
-  const image = req.params;
-  return res.status(200).json(image);
-});
+const updateImageRecipes = rescue(async (req, res, _next) => res.status(200).json());
 
 const deleteRecipes = rescue(async (req, res, _next) => {
   const { id } = req.params;
-  return res.status(200).json(id);
+  await Recipe.deleteRecipe(id);
+  return res.status(204).json();
 });
 
 module.exports = {
