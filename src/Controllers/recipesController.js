@@ -45,7 +45,25 @@ const delRecipe = async (req, res) => {
     );
 };
 
+const updateRecipeWithImage = async (req, res) => {
+    const { id } = req.params;
+    const { path } = req.file;
+    const recipe = await recipeService.getRecipe(id);
+    const sendPath = `localhost:3000/${path}`;
+
+    if (recipe !== null) {
+        const { name, ingredients, preparation } = recipe;
+        const recipeToUpdate = { id, name, ingredients, preparation, userId: id };
+        const recipeWihtImage = await recipeService.updateRecipeWithImage(recipeToUpdate, sendPath);
+        return res.status(200).send(recipeWihtImage);
+    }
+    res.status(401).json({
+        message: 'recipe not found',
+    });
+};
+
 module.exports = {
+    updateRecipeWithImage,
     delRecipe,
     addRecipe,
     getAllRecipes,

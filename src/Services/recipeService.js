@@ -25,9 +25,14 @@ const delRecipe = async (id) => {
     return recipe;
 };
 
+const updateRecipeWithImage = async (recipeToUpdate, path) => {
+    const recipe = await reciperModels.updateRecipeWithImage(recipeToUpdate, path);
+    return recipe;
+};
 module.exports = {
     delRecipe,
     addRecipe,
+    updateRecipeWithImage,
     getAllRecipes,
     getRecipe,
     updateRecipe,
