@@ -4,10 +4,10 @@ const createRecipe = async (req, res) => {
     const { name, ingredients, preparation } = req.body;
     const token = req.headers.authorization;
     const recipe = await recipesService.create(name, ingredients, preparation, token);
-    if (!recipe.message) {
-      res.status(201).json({ recipe });
+    if (recipe.message) {
+      res.status(400).json({ message: recipe.message });
     }
-    res.status(400).json({ message: recipe.message });
+    res.status(201).json({ recipe });
 };
 
 const getRecipes = async (_req, res) => {
