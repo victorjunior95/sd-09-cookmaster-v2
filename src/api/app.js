@@ -10,6 +10,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use('/images', express.static(`${__dirname}/../uploads`));
+
 app.use('/users', usersRouter);
 
 app.use('/login', loginRouter);

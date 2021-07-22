@@ -14,8 +14,6 @@ const validateToken = require('../auth/validateJWT');
 
 const router = express.Router();
 
-router.use(express.static(`${__dirname}/uploads`));
-
 const storage = multer.diskStorage({
   destination: (_req, _file, callback) => {
     callback(null, 'src/uploads');
