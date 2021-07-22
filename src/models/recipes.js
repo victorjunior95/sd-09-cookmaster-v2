@@ -14,7 +14,6 @@ const getAllRecipes = async () => {
   .then((db) => 
     db.collection('recipes')
       .find().toArray());
-  console.log(getRecipes);
   return getRecipes;
 };
 
