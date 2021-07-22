@@ -8,7 +8,7 @@ const jwtSecret = require('../api/jwtSecret');
 const { useCollection } = require('../api/db');
 
 const { ObjectId, MongoClient } = require('mongodb');
-const { getConnection } = require('./mongoMock');
+const { getConnection } = require('../api/mongoMock');
 
 chai.use(chaiHttp);
 
@@ -920,7 +920,7 @@ describe('PUT /recipes/:id', () => {
   });
 });
 
-/*
+// /*
 describe('DELETE /recipes/:id', () => {
   let response;
 
@@ -1101,4 +1101,4 @@ describe('DELETE /recipes/:id', () => {
     });
   });
 });
-*/
+// */
