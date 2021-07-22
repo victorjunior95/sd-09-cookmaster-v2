@@ -41,9 +41,17 @@ const updateRecipe = async (req, res) => {
       },
       );
   };
+
+const deleteRecipe = async (req, res) => {
+  const { id } = req.params;
+  const result = await recipesService.deleteRecipe(id);
+  return res.status(204).json(result);
+  };
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipesById,
   updateRecipe,
+  deleteRecipe,
 };
