@@ -13,7 +13,7 @@ const createRecipe = async (req, res) => {
 const getRecipes = async (_req, res) => {
   const recipes = await recipesService.getAll();
   if (!recipes.message) {
-    return res.status(200).json({ recipes });
+    return res.status(200).json(recipes);
   } 
   if (recipes.message) {
     return res.status(400).json({ message: recipes.message });
