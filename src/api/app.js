@@ -5,6 +5,7 @@ const rescue = require('express-rescue');
 const bodyParser = require('body-parser').json();
 
 const usersRouter = require('../../routes/users');
+const recipesRouter = require('../../routes/recipes');
 const errorMiddleware = require('../../controller/error');
 const loginController = require('../../controller/login');
 
@@ -14,7 +15,7 @@ const router = express.Router();
 
 app.use(rescue(router));
 router.use('/users', usersRouter);
-
+router.use('/recipes', recipesRouter);
 router.post('/login', loginController.userLogin);
 
 app.use(errorMiddleware);

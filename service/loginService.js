@@ -14,9 +14,7 @@ const validateLogin = async (user) => {
   if (!user.email || !user.password) throw validateError(401, 'All fields must be filled');
   
   const { error } = LoginSchema.validate(user);
-  console.log(`ERROR: ${error}`);
   const foundEmail = await usersModel.findEmail(user.email);
-  console.log(`FOUND EMAIL: ${foundEmail}`);
   if (error || foundEmail === null) throw validateError(401, 'Incorrect username or password');
 
   const jwtConfig = {
@@ -25,7 +23,6 @@ const validateLogin = async (user) => {
   };
 
   const token = jwt.sign({ data: user }, secret, jwtConfig);
-  console.log(`SERVICE: ${token}`);
   return token;
 };
 
