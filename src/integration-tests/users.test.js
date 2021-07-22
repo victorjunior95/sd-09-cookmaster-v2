@@ -175,16 +175,18 @@ describe('USERS', () => {
 
       describe('Quando o campo "email" já existe', () => {
         let response;
+
         before(async () => {
           await connectionMock.db('Cookmaster').collection('users').insertOne({
             name: 'name-test-fail',
-            email: 'testfail@email',
+            email: 'testfail@email.com',
             password: 'password-test-fail',
+            role: 'user'
           });
 
           response = await chai.request(app).post('/users').send({
             name: 'name-test-fail',
-            email: 'testfail@email',
+            email: 'testfail@email.com',
             password: 'password-test-fail',
           });
         });
@@ -196,8 +198,8 @@ describe('USERS', () => {
             .deleteMany({ name: 'name-test-fail' });
         });
 
-        it('retorna o código 400', () => {
-          expect(response).to.have.status(400);
+        it('retorna o código 409', () => {
+          expect(response).to.have.status(409);
         });
 
         it('retorna um objeto', () => {
@@ -209,7 +211,7 @@ describe('USERS', () => {
         });
 
         it('a chave "message" deve ter o valor esperado', () => {
-          expect(response.body.message).to.be.equal(MISSING_ENTRY_MESSAGE);
+          expect(response.body.message).to.be.equal('Email already registered');
         });
       });
 
@@ -237,6 +239,161 @@ describe('USERS', () => {
         it('a chave "message" deve ter o valor esperado', () => {
           expect(response.body.message).to.be.equal(MISSING_ENTRY_MESSAGE);
         });
+      });
+    });
+  });
+
+  describe('POST /users/admin', () => {
+    describe('SUCESSO', () => {
+      let response;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock.db('Cookmaster').collection('users').deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').insertOne({
+          name: 'admin',
+          email: 'root@email.com',
+          password: 'admin',
+          role: 'admin',
+        });
+
+        const JWT_TOKEN = await chai
+          .request(app)
+          .post('/login')
+          .send({
+            email: 'root@email.com',
+            password: 'admin',
+          })
+          .then(({ body }) => body.token);
+
+        response = await chai
+          .request(app)
+          .post('/users/admin')
+          .set({
+            authorization: JWT_TOKEN,
+          })
+          .send({
+            name: 'name-test-success',
+            email: 'testsuccess@email.com',
+            password: 'password-test-success',
+          });
+
+      });
+
+      after(async () => {
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      it('retorna o código 201', () => {
+        expect(response).to.have.status(201);
+      });
+
+      it('retorna um objeto', () => {
+        expect(response.body).to.be.an('object');
+      });
+
+      it('o objeto retornado tem a chave "user', () => {
+        expect(response.body).to.include.a.key('user');
+      });
+
+      it('a chave "user" deve ser um objeto', () => {
+        expect(response.body.user).to.be.an('object');
+      });
+
+      it('objeto retornado tem todas as chaves esperadas', () => {
+        expect(response.body.user).to.include.all.keys(
+          'name',
+          'email',
+          'role',
+          '_id'
+        );
+      });
+
+      it('a chave "role" de "user" deve ter o valor "admin"', () => {
+        expect(response.body.user.role).to.be.equal('admin');
+      });
+    });
+
+    describe('FALHA', () => {
+      let response;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock.db('Cookmaster').collection('users').deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').insertOne({
+          name: 'user-test-fail',
+          email: 'adminfail@email.com',
+          password: 'password-test-fail',
+          role: 'user',
+        });
+
+        const JWT_TOKEN = await chai
+          .request(app)
+          .post('/login')
+          .send({
+            email: 'adminfail@email.com',
+            password: 'password-test-fail',
+          })
+          .then(({ body: { token } }) => token);
+
+        response = await chai
+          .request(app)
+          .post('/users/admin')
+          .set({
+            authorization: JWT_TOKEN,
+          })
+          .send({
+            name: 'name-test-fail',
+            email: 'testsuccess@email.com',
+            password: 'password-test-success',
+          });
+      });
+
+      after(async () => {
+        connectionMock
+          .db('Cookmaster')
+          .collection('users')
+          .deleteOne({ name: 'name-test-success' });
+
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      it('retorna o código 403', () => {
+        expect(response).to.have.status(403);
+      });
+
+      it('retorna um objeto', () => {
+        expect(response.body).to.be.an('object');
+      });
+
+      it('o objeto retornado tem a chave "message', () => {
+        expect(response.body).to.include.a.key('message');
+      });
+
+      it('a chave "message" deve ter o valor esperado', () => {
+        expect(response.body.message).to.be.equal('Only admins can register new admins');
       });
     });
   });

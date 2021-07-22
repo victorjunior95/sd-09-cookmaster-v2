@@ -49,7 +49,7 @@ const update = rescue(async (req, res, next) => {
 
   if (!recipe) {
     return next({
-      status: 200,
+      status: 401,
       message: 'denied.',
     });
   }

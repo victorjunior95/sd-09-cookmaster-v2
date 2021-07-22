@@ -16,6 +16,15 @@ const add = rescue(async (req, res, next) => {
   return res.status(201).json(user);
 });
 
+const addAdmin = rescue(async (req, res, _next) => {
+  const { name, email, password } = req.body;
+
+  const admin = await usersService.addAdmin(name, email, password);
+
+  return res.status(201).json(admin);
+});
+
 module.exports = {
   add,
+  addAdmin,
 };

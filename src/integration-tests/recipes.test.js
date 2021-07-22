@@ -618,7 +618,6 @@ describe('RECIPES', () => {
 
     describe('FALHA', () => {
       let response;
-      let JWT_TOKEN;
       let id;
       let connectionMock;
       const DBServer = new MongoMemoryServer();
@@ -737,8 +736,229 @@ describe('RECIPES', () => {
           expect(response.body.message).to.be.equal('jwt malformed');
         });
       });
+
+      describe('Quando o token é invalido', () => {
+        before(async () => {
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'user-fail',
+            email: 'emailfail@email.com',
+            password: 'password-fail',
+            role: 'user',
+          });
+
+          const JWT_TOKEN = await chai
+          .request(app)
+          .post('/login')
+          .send({
+            email: 'emailfail@email.com',
+            password: 'password-fail',
+          })
+          .then(({ body: { token } }) => token);
+
+          response = await chai
+            .request(app)
+            .put(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN,
+            })
+            .send({
+              name: 'fail-update',
+              ingredients: 'fail-update',
+              preparation: 'fail-update',
+            });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('denied.');
+        });
+      });
     });
   });
+
+  describe('PUT /recipes/:id/image', () => {
+    describe('FALHA', () => {
+      let response;
+      let id;
+      let connectionMock;
+      const DBServer = new MongoMemoryServer();
+
+      before(async () => {
+        const URLMock = await DBServer.getUri();
+        connectionMock = await MongoClient.connect(URLMock, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
+        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').insertOne({
+          name: 'admin',
+          email: 'root@email.com',
+          password: 'admin',
+          role: 'admin',
+        });
+
+        await connectionMock.db('Cookmaster').collection('recipes').insertOne({
+          name: 'name-test-success',
+          ingredients: 'ingredients-test-success',
+          preparation: 'preparation-test-success',
+          userId: 'mock-id',
+        });
+
+        JWT_TOKEN = await chai
+          .request(app)
+          .post('/login')
+          .send({
+            email: 'root@email.com',
+            password: 'admin',
+          })
+          .then(({ body }) => body.token);
+
+        id = await chai
+          .request(app)
+          .get('/recipes')
+          .then((response) => response.body[0]['_id']);
+      });
+
+      after(async () => {
+        await connectionMock
+          .db('Cookmaster')
+          .collection('recipes')
+          .deleteMany({});
+
+        await connectionMock.db('Cookmaster').collection('users').deleteOne({
+          name: 'admin',
+        });
+
+        MongoClient.connect.restore();
+        await DBServer.stop();
+      });
+
+      describe('Quando o usuário não está autenticado', () => {
+        before(async () => {
+          response = await chai.request(app).put(`/recipes/${id}/image`).send({
+            name: 'fail-update',
+            ingredients: 'fail-update',
+            preparation: 'fail-update',
+          });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('missing auth token');
+        });
+      });
+
+      describe('Quando o token é invalido', () => {
+        before(async () => {
+          response = await chai
+            .request(app)
+            .put(`/recipes/${id}`)
+            .set({
+              authorization: 1234567890,
+            })
+            .send({
+              name: 'fail-update',
+              ingredients: 'fail-update',
+              preparation: 'fail-update',
+            });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('jwt malformed');
+        });
+      });
+
+      describe('Quando o token é invalido', () => {
+        before(async () => {
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'user-fail',
+            email: 'emailfail@email.com',
+            password: 'password-fail',
+            role: 'user',
+          });
+
+          const JWT_TOKEN = await chai
+          .request(app)
+          .post('/login')
+          .send({
+            email: 'emailfail@email.com',
+            password: 'password-fail',
+          })
+          .then(({ body: { token } }) => token);
+
+          response = await chai
+            .request(app)
+            .put(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN,
+            })
+            .send({
+              name: 'fail-update',
+              ingredients: 'fail-update',
+              preparation: 'fail-update',
+            });
+        });
+
+        it('retorna o código 401', () => {
+          expect(response).to.have.status(401);
+        });
+
+        it('retorna um objeto', () => {
+          expect(response.body).to.be.an('object');
+        });
+
+        it('o objeto retornado possui a chave message', () => {
+          expect(response.body).to.include.a.key('message');
+        });
+
+        it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
+          expect(response.body.message).to.be.equal('denied.');
+        });
+      });
+    });
+  });
+
 
   describe('DELETE /recipes/:id', () => {
     describe('SUCESSO', () => {
@@ -957,11 +1177,7 @@ describe('RECIPES', () => {
 
       describe('Quando o usuário não está autenticado', () => {
         before(async () => {
-          response = await chai.request(app).delete(`/recipes/${id}`).send({
-            name: 'fail-update',
-            ingredients: 'fail-update',
-            preparation: 'fail-update',
-          });
+          response = await chai.request(app).delete(`/recipes/${id}`)
         });
 
         it('retorna o código 401', () => {
@@ -989,11 +1205,6 @@ describe('RECIPES', () => {
             .set({
               authorization: 1234567890,
             })
-            .send({
-              name: 'fail-update',
-              ingredients: 'fail-update',
-              preparation: 'fail-update',
-            });
         });
 
         it('retorna o código 401', () => {
@@ -1011,6 +1222,47 @@ describe('RECIPES', () => {
         it('a chame "message" do objeto retornado deve possuir o valor esperado', () => {
           expect(response.body.message).to.be.equal('jwt malformed');
         });
+      });
+
+      describe('Quando o id passado é invalido', () => {
+        before(async () => {
+          await connectionMock.db('Cookmaster').collection('users').insertOne({
+            name: 'name-test-success',
+            email: 'email@email.com',
+            password: 'password-test-success',
+            _id: 'user-id',
+          });
+
+          const JWT_TOKEN = await chai
+            .request(app)
+            .post('/login')
+            .send({
+              email: 'email@email.com',
+              password: 'password-test-success',
+            })
+            .then(({ body }) => body.token);
+
+          const id = 'id_inexistente'
+
+          response = await chai
+            .request(app)
+            .delete(`/recipes/${id}`)
+            .set({
+              authorization: JWT_TOKEN
+            })
+        });
+
+        it('retorna o código 500', () => {
+          expect(response).to.have.status(500);
+        });
+
+        it('deve retornar um objeto', () => {
+          expect(response.body).to.be.an('object')
+        });
+
+        it('o objeto retornado deve ter a chave "message"', () => {
+          expect(response.body).to.include.a.key('message')
+        });        
       });
     });
   });
@@ -1142,6 +1394,4 @@ describe('RECIPES', () => {
       });
     });
   });
-
-  
 });

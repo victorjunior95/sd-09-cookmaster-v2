@@ -11,6 +11,13 @@ const add = async (name, email, password, role) => {
   return { user: userData };
 };
 
+const addAdmin = async (name, email, password) => {
+  const admin = await usersModel.addAdmin(name, email, password);
+
+  return { user: admin };
+};
+
 module.exports = {
   add,
+  addAdmin,
 };
