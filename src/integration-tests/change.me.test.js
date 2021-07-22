@@ -1,41 +1,28 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const chaiHttp = require('chai-http');
+const jwt = require('jsonwebtoken');
 
 const server = require('../api/app');
+const jwtSecret = require('../api/jwtSecret');
 
-const { MongoClient, ObjectId } = require('mongodb');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+const { ObjectId, MongoClient } = require('mongodb');
+const { getConnection } = require('./mongoMock');
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-let mongoServer;
+const createNewUser = async (payload) => chai.request(server)
+  .post('/users')
+  .send(payload);
 
-const dbConnect = async ()  => {
-  mongoServer = await MongoMemoryServer.create();
-  const uriMock = await mongoServer.getUri();
-  const dbConfig = { useNewUrlParser: true, useUnifiedTopology: true };
-  const connectionMock = await MongoClient.connect(uriMock, dbConfig);
-
-  sinon.stub(MongoClient, 'connect')
-    .resolves(connectionMock);
-};
-
-const dbDisconnect = async () => {
-  MongoClient.connect.restore();
-  await mongoServer.stop();
-};
+const login = async (payload) => chai.request(server)
+  .post('/login')
+  .send(payload);
 
 describe('POST /users', () => {
   let response;
-  
-  const createNewUser = async (payload) => {
-    response = await chai.request(server)
-      .post('/users')
-      .send(payload);
-  };
   
   const invalidEntryStatus = 400;
   const successEntryStatus = 201;
@@ -47,7 +34,9 @@ describe('POST /users', () => {
       password: 'testPassw0rd',
     };
     
-    before(async () => await createNewUser(userPayload));
+    before(async () => {
+      response = await createNewUser(userPayload);
+    });
 
     it(`retorna status ${invalidEntryStatus}`, () => {
       expect(response).to.have.status(invalidEntryStatus);
@@ -72,7 +61,9 @@ describe('POST /users', () => {
       password: 'testPassw0rd',
     };
     
-    before(async () => await createNewUser(userPayload));
+    before(async () => {
+      response = await createNewUser(userPayload);
+    });
 
     it(`retorna status ${invalidEntryStatus}`, () => {
       expect(response).to.have.status(invalidEntryStatus);
@@ -97,7 +88,9 @@ describe('POST /users', () => {
       email: 'testing@domain.com',
     };
     
-    before(async () => await createNewUser(userPayload));
+    before(async () => {
+      response = await createNewUser(userPayload);
+    });
 
     it(`retorna status ${invalidEntryStatus}`, () => {
       expect(response).to.have.status(invalidEntryStatus);
@@ -117,6 +110,7 @@ describe('POST /users', () => {
   });
 
   describe('usuário normal é criado', () => {
+    let connectionMock;
     const userPayload = {
       name: "Teste da Silva",
       email: 'testing@domain.com',
@@ -124,12 +118,14 @@ describe('POST /users', () => {
     };
     
     before(async () => {
-      await dbConnect();
-      await createNewUser(userPayload);
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      response = await createNewUser(userPayload);
     });
 
     after(async () => {
-      await dbDisconnect();
+      MongoClient.connect.restore();
     });
 
     it(`retorna status ${successEntryStatus}`, () => {
@@ -176,4 +172,225 @@ describe('POST /users', () => {
     });
   });
 
+});
+
+describe('POST /login', () => {
+  let response;
+  
+  const invalidLoginStatus = 401;
+  const missingFiedlsMsg = 'All fields must be filled';
+  const invalidLoginMsg = 'Incorrect username or password';
+  const successLoginStatus = 200;
+
+  describe('sem "password" na requisição, login não é realizado', () => {
+    const userPayload = {
+      email: 'testing@domain.com',
+      // password: 'testPassw0rd',
+    };
+    
+    before(async () => {
+      response = await login(userPayload);
+    });
+
+    it(`retorna status ${invalidLoginStatus}`, () => {
+      expect(response).to.have.status(invalidLoginStatus);
+    });
+
+    it('retorna um objeto', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('retorna um objeto com propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it(`"message" possui texto "${missingFiedlsMsg}"`, () => {
+      expect(response.body.message).to.be.equal(missingFiedlsMsg);
+    });
+  });
+
+  describe('sem "email" na requisição, login não é realizado', () => {
+    const userPayload = {
+      // email: 'testing@domain.com',
+      password: 'testPassw0rd',
+    };
+    
+    before(async () => {
+      response = await login(userPayload);
+    });
+
+    it(`retorna status ${invalidLoginStatus}`, () => {
+      expect(response).to.have.status(invalidLoginStatus);
+    });
+
+    it('retorna um objeto', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('retorna um objeto com propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it(`"message" possui texto "${missingFiedlsMsg}"`, () => {
+      expect(response.body.message).to.be.equal(missingFiedlsMsg);
+    });
+  });
+
+  describe('com email inválido, login não é realizado', () => {
+    let connectionMock;
+    const userPayload = {
+      email: 'testing@domain.com',
+      password: 'testPassw0rd',
+    };
+    
+    before(async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await createNewUser({ ...userPayload, name: 'Nome de Teste' });
+      response = await login({ ...userPayload, email: 'test@' });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+    });
+
+    it(`retorna status ${invalidLoginStatus}`, () => {
+      expect(response).to.have.status(invalidLoginStatus);
+    });
+
+    it('retorna um objeto', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('retorna um objeto com propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it(`"message" possui texto "${invalidLoginMsg}"`, () => {
+      expect(response.body.message).to.be.equal(invalidLoginMsg);
+    });
+  });
+
+  describe('com email não cadastrado, login não é realizado', () => {
+    let connectionMock;
+    const userPayload = {
+      email: 'testing@domain.com',
+      password: 'testPassw0rd',
+    };
+    
+    before(async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await createNewUser({ ...userPayload, name: 'Nome de Teste' });
+      response = await login({ ...userPayload, email: 'test@domain.com' });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+    });
+
+    it(`retorna status ${invalidLoginStatus}`, () => {
+      expect(response).to.have.status(invalidLoginStatus);
+    });
+
+    it('retorna um objeto', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('retorna um objeto com propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it(`"message" possui texto "${invalidLoginMsg}"`, () => {
+      expect(response.body.message).to.be.equal(invalidLoginMsg);
+    });
+  });
+
+  describe('com senha inválida, login não é realizado', () => {
+    let connectionMock;
+    const userPayload = {
+      email: 'testing@domain.com',
+      password: 'testPassw0rd',
+    };
+    
+    before(async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await createNewUser({ ...userPayload, name: 'Nome de Teste' });
+      response = await login({ ...userPayload, password: 'wrong password' });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+    });
+    
+    it(`retorna status ${invalidLoginStatus}`, () => {
+      expect(response).to.have.status(invalidLoginStatus);
+    });
+
+    it('retorna um objeto', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('retorna um objeto com propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it(`"message" possui texto "${invalidLoginMsg}"`, () => {
+      expect(response.body.message).to.be.equal(invalidLoginMsg);
+    });
+  });
+
+  describe('quando login é realizado, um token válido é retornado', () => {
+    let connectionMock;
+    let decryptedToken;
+    const userPayload = {
+      email: 'testing@domain.com',
+      password: 'testPassw0rd',
+    };
+    
+    before(async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await createNewUser({ ...userPayload, name: 'Nome de Teste' });
+      response = await login(userPayload);
+      decryptedToken = jwt.verify(response.body.token, jwtSecret);
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+    });
+    
+    it(`retorna status ${successLoginStatus}`, () => {
+      expect(response).to.have.status(successLoginStatus);
+    });
+
+    it('retorna um objeto', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('retorna um objeto com propriedade "token"', () => {
+      expect(response.body).to.have.property('token');
+    });
+
+    it('"token" é uma string', () => {
+      expect(response.body.token).to.be.a('string');
+    });
+
+    it('"token" decriptografado tem as propriedades "_id", "email" e "role"', () => {
+      expect(decryptedToken).to.have.property('email');
+      expect(decryptedToken).to.have.property('_id');
+      expect(decryptedToken).to.have.property('role');
+    });
+
+    it('"_id", "email" e "role" do token tem os valores corretos', () => {
+      expect(decryptedToken.email).to.be.equal(userPayload.email);
+      expect(decryptedToken.role).to.be.equal('user');
+      expect(ObjectId.isValid(decryptedToken._id)).to.be.equal(true);
+    });
+  });
 });
