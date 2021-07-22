@@ -65,4 +65,10 @@ module.exports = {
   deleteRecipe: async (id) => {
     await recipesModel.deleteRecipe(id);
   },
+
+  addImage: async (id, path) => {
+    const addImage = await recipesModel.addImage(id, path);
+
+    return addImage;
+  },
 };

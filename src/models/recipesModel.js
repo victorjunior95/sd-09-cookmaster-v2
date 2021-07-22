@@ -36,7 +36,7 @@ module.exports = {
   updateRecipe: async (id, recipe) => {
     const query = { _id: ObjectId(id) };
     const update = { $set: recipe };
-    const options = { returnNewDocument: true };
+    const options = { returnOriginal: false };
 
     const updateRecipe = await connection().then((db) =>
       db.collection('recipes').findOneAndUpdate(query, update, options));
@@ -47,5 +47,16 @@ module.exports = {
   deleteRecipe: async (id) => {
     await connection().then((db) =>
       db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
+  },
+
+  addImage: async (id, path) => {
+    const query = { _id: ObjectId(id) };
+    const update = { $set: { image: `localhost:3000/${path}` } };
+    const options = { returnNewDocument: true };
+
+    const addImage = await connection().then((db) =>
+      db.collection('recipes').findOneAndUpdate(query, update, options));
+
+    return addImage.value;
   },
 };

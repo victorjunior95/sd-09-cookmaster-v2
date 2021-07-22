@@ -15,7 +15,7 @@ module.exports = {
     return res.status(201).json(newRecipe);
   },
 
-  listAllRecipes: async (_req, res) => {
+  listAllRecipes: async (req, res) => {
     const listAllRecipes = await validateServices.listAllRecipes();
 
     return res.status(200).json(listAllRecipes);
@@ -48,5 +48,14 @@ module.exports = {
     await recipeServices.deleteRecipe(id);
 
     return res.status(204).json();
+  },
+
+  addImage: async (req, res) => {
+    const { id } = req.params;
+    const { path } = req.file;
+
+    const addImage = await recipeServices.addImage(id, path);
+    console.log(addImage);
+    return res.status(200).json(addImage);
   },
 };
