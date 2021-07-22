@@ -11,7 +11,6 @@ const authorizeLogin = async (req, res, next) => {
   const loginData = req.body;
   const error = await userSchema.validateLoginData(loginData);
   if (error) {
-    console.log(error);
     return res.status(error.response).json({ message: error.message });
   }
   next();
