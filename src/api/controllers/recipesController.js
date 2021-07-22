@@ -2,9 +2,8 @@ const recipesServeci = require('../service/recipesService');
 
 const postNewRecipe = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
-  const { _id } = req.user;
+  const { _id } = req.user.data;
   const recipe = await recipesServeci.postNewRecipe({ name, ingredients, preparation });
-
   return res.status(201).send({
     recipe: {
       name,
@@ -28,4 +27,27 @@ const getRecipeById = async (req, res) => {
   return res.status(200).send(recipe);
 };
 
-module.exports = { postNewRecipe, getAllRecipes, getRecipeById };
+const updateRecipe = async (req, res) => {
+  const { name, ingredients, preparation } = req.body;
+  const { _id } = req.user.data;
+  const { id } = req.params;
+  const recipe = await recipesServeci.updateRecipe({ name, ingredients, preparation, id });
+  if (recipe) {
+    console.log(req.user);
+    return res.status(200).send({
+      _id: id,
+      name,
+      ingredients,
+      preparation,
+      userId: _id,
+    });
+  }
+};
+
+const deleteRecipeById = async (req, res) => {
+  const { id } = req.params;
+  const deletedRecipe = await recipesServeci.deleteRecipeById(id);
+  return res.status(204).send(deletedRecipe);
+};
+
+module.exports = { postNewRecipe, getAllRecipes, getRecipeById, updateRecipe, deleteRecipeById };
