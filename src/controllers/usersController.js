@@ -27,6 +27,6 @@ router.get('/:id', async (req, res) => {
 router.post('/', validateUser, async (req, res) => {
   const { name, email, password } = req.body;
   const user = await usersService.addUser({ name, email, password });
-  res.status(responseCodes.created).json(user);
+  res.status(responseCodes.created).json({ user });
 });
 module.exports = router;

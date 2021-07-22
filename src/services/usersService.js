@@ -4,6 +4,7 @@ const addUser = async (user) => {
   const newUser = { ...user, role: 'user' };
   const { insertedId } = await userModel.create(user);
   newUser.id = insertedId;
+  delete newUser.password;
   return newUser;
 };
 
