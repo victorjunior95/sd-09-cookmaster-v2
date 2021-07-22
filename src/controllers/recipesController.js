@@ -61,10 +61,28 @@ const deleteById = async (req, res) => {
     res.status(status.INTERNAL_SERVER_ERROR).json({ message: err.messagem });
   }
 };
+const AddImageRecipe = async (req, res) => {
+  const { id } = req.params;
+  const { path } = req.file;
+  const recipe = await recipesServices.getByRecipes(id);
+  const sendPath = `localhost:3000/${path}`;
+
+  if (recipe !== null) {
+    const { name, ingredients, preparation, userId } = recipe;
+    const recipeToUpdate = { id, name, ingredients, preparation, userId };
+    const recipeWithImage = await recipesServices.updateWithImage(recipeToUpdate, sendPath);
+    return res.status(status.OK).send(recipeWithImage);
+  }
+  res.status(status.NOT_FOUND).json({
+    message: 'recipe not found',
+  });
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getByRecipes,
   updateRecipes,
   deleteById,
+  AddImageRecipe,
 };

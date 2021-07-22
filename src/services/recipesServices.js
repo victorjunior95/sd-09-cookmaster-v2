@@ -32,7 +32,7 @@ const updateRecipes = async (id, upRecipe, userId) => {
 
   const result = await recipesModels.updateRecipes(
     id, upRecipe, idOb,
-    );
+  );
   return result;
 };
 
@@ -41,10 +41,16 @@ const deleteById = async (id) => {
   return result;
 };
 
+const updateWithImage = async (recipeToUpdate, path) => {
+  const recipe = await recipesModels.updateWithImage(recipeToUpdate, path);
+  return recipe; 
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getByRecipes,
   updateRecipes,
   deleteById,
+  updateWithImage,
 };

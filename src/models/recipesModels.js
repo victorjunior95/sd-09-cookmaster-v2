@@ -39,10 +39,25 @@ const deleteById = async (id) => {
     .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 };
 
+const updateWithImage = async (recipeToUpdate, path) => {
+  const { id, name, ingredients, preparation, userId } = recipeToUpdate;
+  const image = path;
+  if (!ObjectId.isValid(id)) return null;
+  connect().then((db) =>
+    db
+      .collection('recipes')
+      .updateOne(
+        { _id: ObjectId(id) },
+        { $set: { name, ingredients, preparation, userId, image } },
+      ));
+  return { _id: id, name, ingredients, preparation, userId, image };
+};
+
 module.exports = {
   createRecipes,
   getAllRecipes,
   getByRecipes,
   updateRecipes,
   deleteById,
+  updateWithImage,
 };
