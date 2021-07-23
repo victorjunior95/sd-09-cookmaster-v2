@@ -9,5 +9,6 @@ const router = express.Router();
 router.use('/users', userController);
 router.use('/login', loginController);
 router.use('/recipes', recipesController);
+router.use('/images', express.static('src/uploads/'));
 
 module.exports = router;
