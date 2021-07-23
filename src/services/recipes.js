@@ -7,12 +7,12 @@ const secret = 'secret';
 const create = async (name, ingredients, preparation, token) => {
   try {   
     if (!name || !ingredients || !preparation) {
-      return ({ message: 'Invalid entries. Try again.' });
+      return false;
     }
     const decoded = jwt.verify(token, secret);
     const { _id } = await USER.getUser(decoded.data);
-    const createRecipe = await RECIPES.create(name, ingredients, preparation, _id);
-    return createRecipe;
+    const recipe = await RECIPES.create(name, ingredients, preparation, _id);
+    return recipe;
   } catch (err) {
     return err;
   }

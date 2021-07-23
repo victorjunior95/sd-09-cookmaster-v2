@@ -1,14 +1,13 @@
 const recipesService = require('../services/recipes');
 
 const createRecipe = async (req, res) => { 
-  try {  
     const { name, ingredients, preparation } = req.body;
     const token = req.headers.authorization;
     const recipe = await recipesService.create(name, ingredients, preparation, token);
+    if (!recipe) {
+      return res.status(400).json({ message: 'Invalid entries. Try again.' });
+    }  
     return res.status(201).json({ recipe });
-  } catch (message) {
-    return res.status(400).json({ message });
-  } 
 };
 
 const getRecipes = async (_req, res) => {
