@@ -34,10 +34,18 @@ const deleteRecipe = async (req, res) => {
   res.status(status).json();
 };
 
+const addRecipeImage = async (req, res) => {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const { status, recipe } = await recipesService.addRecipeImage(authorization, id);
+    res.status(status).json(recipe);
+};
+
 module.exports = {
   registerRecipe,
   getAllRecipes,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  addRecipeImage,
 };

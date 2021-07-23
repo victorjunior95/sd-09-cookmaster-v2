@@ -20,14 +20,14 @@ const EMAIL_CONFLICT = {
   err: { message: 'Email already registered' },
 };
 
-const registerUser = async (newUser) => {
+const registerUser = async (newUser, role = 'user') => {
   const { email } = newUser;
   const { error } = userSchema.validate(newUser);
   if (error) throw BAD_REQUEST_INVALID_ENTRIES;
   const emailAlreadyExists = await usersModel.getUserByEmail(email);
   if (emailAlreadyExists) throw EMAIL_CONFLICT;
   const user = newUser;
-  user.role = 'user';
+  user.role = role;
   const registeredUser = await usersModel.registerUser(user);
   delete registeredUser.password;
   return {
@@ -35,6 +35,7 @@ const registerUser = async (newUser) => {
     registeredUser,
   };
 };
+// role = 'user' como padrão caso não seja passado
 // todas as funções que dependerem de acesso ao bd precisam ser assíncronas
 
 module.exports = {

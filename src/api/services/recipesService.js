@@ -48,6 +48,7 @@ async function validateToken(token) {
     throw UNAUTHORIZED_JWT_MALFORMED;
   }
 }
+// tbm dá pra pegar o role = 'admin' pelo decoded
 
 const registerRecipe = async (newRecipe, authorization) => {
   const userData = await validateToken(authorization);
@@ -101,6 +102,16 @@ const deleteRecipe = async (authorization, id) => {
     };
   }
 };
+
+const addRecipeImage = async (authorization, id) => {
+  await validateToken(authorization);
+  const image = `localhost:3000/src/uploads/${id}.jpeg`;
+  const recipe = await recipesModel.addRecipeImage(id, image);
+  return {
+    status: OK_STATUS,
+    recipe,
+  };
+};
 // todas as funções que dependerem de acesso ao bd precisam ser assíncronas
 
 module.exports = {
@@ -109,4 +120,5 @@ module.exports = {
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  addRecipeImage,
 };
