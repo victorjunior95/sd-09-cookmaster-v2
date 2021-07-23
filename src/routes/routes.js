@@ -11,6 +11,7 @@ router.post('/login', users.login);
 router.post('/recipes', validateToken, recipes.createRecipe);
 router.get('/recipes', recipes.getRecipes);
 router.get('/recipes/:id', recipes.getOneRecipe);
-router.put('/recipes/:id', validateToken, recipes.updateRecipe); // criando editor de recipes
+router.put('/recipes/:id', validateToken, recipes.updateRecipe);
+router.delete('/recipes/:id', validateToken, recipes.deleteRecipe);
 
 module.exports = router;

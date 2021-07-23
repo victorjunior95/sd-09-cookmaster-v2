@@ -37,9 +37,16 @@ const update = async (id, updRecipe, token) => {
   }
 };
 
+const deleteRecipe = async (id, token) => {
+    const decoded = jwt.verify(token, secret);
+    const { role, _id } = await USER.getUser(decoded.data);
+    return RECIPES.deleteRecipe(id, _id, role);
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
   update,
+  deleteRecipe,
 };

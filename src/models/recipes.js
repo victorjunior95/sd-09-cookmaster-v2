@@ -44,9 +44,23 @@ return { _id: id, name, ingredients, preparation, userId };
   return undefined;
 };
 
+const deleteRecipe = async (id, userId, role) => {
+  if (!ObjectId.isValid(id)) {
+    return 'Not Valid';
+  }
+  let recipeUser = getOneRecipe(id);
+  recipeUser = await recipeUser.userId;
+  if (JSON.stringify(userId) === JSON.stringify(recipeUser) || role === 'admin') { 
+    return connection()
+    .then((db) => db.collection('recipes')
+      .deleteOne({ _id: ObjectId(id) }));
+  }
+};
+
 module.exports = { 
   create,
   getAllRecipes,
   getOneRecipe,
   update,
+  deleteRecipe,
  };
