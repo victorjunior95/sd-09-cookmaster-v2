@@ -1,5 +1,5 @@
 const service = require('../service/usersService');
-const upload = require('../service/upload');
+const upload = require('../service/uploadFile');
 
 const userRegister = async (req, res, next) => {
   try {
