@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router } = require('express');
 const UserService = require('../services/UserService');
 
 const UserRouter = Router();
@@ -11,7 +11,7 @@ UserRouter.post('/', async (req, res, next) => {
     const userData = req.body;
     const resp = await UserService.create(userData);
     res.status(HTTP_CREATED).json({ user: resp });
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });
