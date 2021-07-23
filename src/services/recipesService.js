@@ -11,8 +11,8 @@ const getAllRecipes = async () => {
 };
 
 const findRecipeById = async (id) => {
-  const user = await recipesModel.findById(id);
-  return user;
+  const recipe = await recipesModel.findById(id);
+  return recipe;
 };
 
 const updateRecipe = async (id, user) => {

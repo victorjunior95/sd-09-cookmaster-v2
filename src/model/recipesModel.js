@@ -9,7 +9,7 @@ const getAll = async () => (
 
 const findById = async (id) => (
   connection()
-    .then((db) => db.collection(collection).findOne({ id }))
+    .then((db) => db.collection(collection).findOne({ _id: ObjectID(id) }))
 );
 
 const create = async (recipe) => (

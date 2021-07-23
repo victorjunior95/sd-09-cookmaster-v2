@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { ObjectId } = require('mongodb');
 
 const responseCodes = {
   success: 200,
@@ -11,7 +12,7 @@ const responseCodes = {
 };
 
 const errorsMessages = {
-  productExists: 'Product already exists',
+  recipeNotFound: 'recipe not found',
   incorrectData: 'Incorrect username or password',
   quantityNotNumber: '"quantity" must be a number',
   fillAllFields: 'All fields must be filled',
@@ -24,6 +25,12 @@ const recipeSchema = Joi.object({
   preparation: Joi.string().required(),
 });
 
+const validateId = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return { response: responseCodes.notFound, message: errorsMessages.recipeNotFound };
+  }
+};
+
 const validateRecipeData = (recipeData) => {
   const { error } = recipeSchema.validate(recipeData);
   if (error) {
@@ -32,4 +39,5 @@ const validateRecipeData = (recipeData) => {
 };
 module.exports = {
   validateRecipeData,
+  validateId,
 };

@@ -1,7 +1,7 @@
 const express = require('express');
 const { validateToken, verifyToken } = require('../middlewares/auth');
 const recipesService = require('../services/recipesService');
-const { validateRecipe } = require('../middlewares/validateRecipe');
+const { validateRecipe, validateRecipeId } = require('../middlewares/validateRecipe');
 
 const router = express.Router();
 const responseCodes = {
@@ -25,10 +25,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  const recipe = await recipesService.findRecipeById(id);
-  res.status(responseCodes.success).json(recipe);
+router.get('/:id', validateRecipeId, async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    if (token) {
+      verifyToken(token);
+    }
+    const { id } = req.params;
+    const recipe = await recipesService.findRecipeById(id);
+    res.status(responseCodes.success).json(recipe);
+  } catch (error) {
+    res.status(401).json({ message: 'recipe not found' });
+  }
 });
 
 router.post('/', validateToken, validateRecipe, async (req, res) => {
