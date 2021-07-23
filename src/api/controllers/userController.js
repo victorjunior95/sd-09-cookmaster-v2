@@ -1,6 +1,7 @@
 const userService = require('../services/userService');
 
 const stateBadRequest = 400;
+const stateUnauthorized = 401;
 const stateOk = 200;
 
 const createNewUser = async (req, res, _next) => {
@@ -13,7 +14,10 @@ const createNewUser = async (req, res, _next) => {
     return res.status(stateConflict).json(newUser);
   }
 
-  if (newUser.message) return res.status(stateBadRequest).json(newUser);
+  if (newUser.message) {
+    newUser.message = 'Invalid entries. Try again.';
+    return res.status(stateBadRequest).json(newUser);
+  }
 
   return res.status(stateCreated).json(newUser);
 };
@@ -22,6 +26,8 @@ const enterUseLogin = async (req, res, _next) => {
   const { email, password } = req.body;
   const logon = await userService.useLoguin(email, password);
 
+  if (logon.message) return res.status(stateUnauthorized).json(logon);
+  
 
   return res.status(stateOk).json(logon);
 };

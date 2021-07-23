@@ -1,7 +1,7 @@
 const userModel = require('../models/userModel');
 
 const err = {
-  message: 'Invalid entries. Try again.',
+  message: ' ',
 };
 
 const checkEmail = (email) => {
@@ -35,10 +35,20 @@ const createUser = async (name, email, password) => {
   return { user };
 };
 
-const useLoguin = async (email, password) => {
 
+const useLoguin = async (email, password) => {
+  const validEmail = checkEmail(email);
+  if (validEmail || !password) {
+    err.message = 'All fields must be filled';
+    return err;
+  }
 
   const logon = await userModel.login(email, password);
+  if (!logon) {
+    err.message = 'Incorrect username or password';
+    return err;
+  }
+
   return logon;
 };
 
