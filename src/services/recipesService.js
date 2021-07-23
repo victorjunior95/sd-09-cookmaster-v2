@@ -38,8 +38,15 @@ const deleteRecipe = async (id, user) => {
   throw validationError(403, 'forbidden action');
 };
 
+const addRecipeImage = async (id) => {
+  const image = `localhost:3000/src/uploads/${id}.jpeg`;
+  const recipeWithImage = await recipesModel.addRecipeImage(id, image);
+  return recipeWithImage;
+};
+
 module.exports = {
   createRecipe,
   updateRecipe,
   deleteRecipe,
+  addRecipeImage,
 };

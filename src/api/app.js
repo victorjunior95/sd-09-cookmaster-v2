@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const errorMiddleware = require('../middlewares/errorMiddleware');
 const auth = require('../middlewares/authMiddleware');
+const { upload, imgUploadUserCheck } = require('../middlewares/imageUploadMiddleware');
 const usersController = require('../controllers/usersController');
 const recipesController = require('../controllers/recipesController');
 
@@ -17,6 +18,10 @@ app.get('/recipes', recipesController.getRecipes);
 app.get('/recipes/:id', recipesController.getRecipes);
 app.put('/recipes/:id', auth, recipesController.updateRecipe);
 app.delete('/recipes/:id', auth, recipesController.deleteRecipe);
+app.put('/recipes/:id/image', auth, imgUploadUserCheck,
+  upload.single('image'), recipesController.addRecipeImage);
+
+app.use('/images', express.static('src/uploads/'));
 
 app.use(errorMiddleware);
 
