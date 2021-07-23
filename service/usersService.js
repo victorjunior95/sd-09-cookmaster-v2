@@ -13,7 +13,7 @@ const validateDataRegister = (userData) => {
 };
 
 const emailValidator = async (email) => {
-  const regex = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email);
+  const regex = await RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email);
   if (!regex) {
     const erro = {
       status: 400,
@@ -32,6 +32,7 @@ const emailValidator = async (email) => {
 };
 
 const userRegisterService = async (userData) => {
+  console.log(userData);
   validateDataRegister(userData);
   await emailValidator(userData.email);
   const newUser = { ...userData, role: 'user' };
@@ -41,7 +42,7 @@ const userRegisterService = async (userData) => {
 
 const loginService = async (userData) => {
   const { email, password } = userData;
-  const { _id, role } = await userModel.findEmail(email);
+  const user = await userModel.findEmail(email);
   if (!email || !password) {
     const erro = {
       status: 401,
@@ -51,12 +52,10 @@ const loginService = async (userData) => {
   }
   const result = await userModel.validadeLogin(email, password);
   if (!result) {
-    const erro = {
-      status: 401,
-      message: 'Incorrect username or password',
-    };
+    const erro = { status: 401, message: 'Incorrect username or password' };
     throw erro;
   }
+  const { _id, role } = user;
   return tokenService.generateToken(email, _id, role);
 };
 

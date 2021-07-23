@@ -8,20 +8,20 @@ const validadeLogin = async (req, _res, next) => {
   try {
     const secret = '1234';
     const { authorization } = req.headers;
-    console.log(req.headers);
     if (!authorization) { throw missingToken; }
-    const extractToken = jwt.verify(authorization, secret);
-    if (!extractToken) { 
-      console.log('passou aqui');
-      throw jwtError; 
-    }
-    
+    const extractToken = jwt.verify(authorization, secret);    
     const userDb = await userModel.findEmail(extractToken.email);
     if (!userDb) { throw notFound; }
     req.user = userDb;
     next();
-  } catch ({ status, message }) {
-    next({ status, message });
+  } catch (e) {
+    console.log(e);
+    if (!e.status) {
+      e.status = jwtError.status;
+      e.message = jwtError.message;
+      console.log(e);
+    }
+    next(e);
   }
 };
 

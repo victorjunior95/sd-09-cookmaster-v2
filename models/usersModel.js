@@ -5,7 +5,7 @@ const userRegisterModel = async (userData) => {
   const db = await connection();
   const collection = await db.collection('users');
   const result = await collection.insertOne(userData);
-  const { name, email, role, _id } = result.ops[0];
+  const { name, email, role, _id } = await result.ops[0];
   return {
     user: {
       name,

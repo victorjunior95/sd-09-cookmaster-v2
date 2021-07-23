@@ -23,8 +23,8 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 app.use((err, req, res, _next) => {
-  if (!err.status) {
-    return res.status(401).json(err);
+  if (!err.status) {  
+    return res.status(401).json(err.message);
   }
   res.status(err.status).json({ message: err.message });
 });
