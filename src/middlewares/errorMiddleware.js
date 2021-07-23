@@ -4,7 +4,6 @@ const validateError = (status, message) => ({
 });
 
 const errorMidd = (error, _req, res, _next) => {
-  // console.log(error);
   if (error.status) {
     const { status, message } = error;
     return res.status(status).json({ message });
