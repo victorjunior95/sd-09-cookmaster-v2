@@ -10,7 +10,7 @@ const create = async (name, ingredients, preparation, userId) => {
 const showAll = async () => {
   const list = await connection()
     .then((db) => db.collection('recipes').find({}).toArray());
-
+    
   return list;
 };
 
