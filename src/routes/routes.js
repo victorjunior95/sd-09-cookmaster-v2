@@ -1,6 +1,7 @@
 const express = require('express');
 const UsersController = require('../controllers/UsersController');
 const RecipesController = require('../controllers/RecipesController');
+const PicturesController = require('../controllers/PicturesController');
 const validateToken = require('../middlewares/validateToken');
 
 const router = express.Router();
@@ -12,5 +13,6 @@ router.get('/recipes', RecipesController.listRecipe);
 router.get('/recipes/:id', RecipesController.listRecipe);
 router.put('/recipes/:id', validateToken, RecipesController.updateRecipe);
 router.delete('/recipes/:id', validateToken, RecipesController.deleteRecipe);
+router.put('/recipes/:id/image/', validateToken, PicturesController.uploadPicture);
 
 module.exports = router;

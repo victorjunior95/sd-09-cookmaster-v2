@@ -55,9 +55,27 @@ console.log(result);
   return ({ message: 'Não foi possivel editar' });
 };
 
+const updateImage = async (id, image) => {
+  console.log('update');
+  const result = await connection().then((db) => db.collection('recipes').updateOne(
+    {
+      _id: ObjectId(id),
+    },
+    {
+      $set:
+        {
+          image,
+        },
+    },
+));
+  if (result.modifiedCount === 1) return result;
+  return ({ message: 'Não foi possivel editar' });
+};
+
 module.exports = {
   find,
   create,
   update,
   exlude,
+  updateImage,
 };
