@@ -1,6 +1,7 @@
 const {
   createRecipeService,
   getAllRecipesService,
+  getRecipeByIdService,
 } = require('../services/recipeService');
 
 const createRecipesControl = async (req, res) => {
@@ -13,12 +14,20 @@ const createRecipesControl = async (req, res) => {
 };
 
 const getAllRecipesControl = async (_req, res) => {
-  const response = await getAllRecipesService();
+  const result = await getAllRecipesService();
 
-  return res.status(200).json(response);
+  return res.status(200).json(result);
+};
+
+const getRecipeByIdControl = async (req, res) => {
+  const { id } = req.params;
+  const result = await getRecipeByIdService(id);
+
+  return res.status(200).json(result);
 };
 
 module.exports = {
   createRecipesControl,
   getAllRecipesControl,
+  getRecipeByIdControl,
 };

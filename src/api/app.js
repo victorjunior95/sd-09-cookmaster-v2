@@ -10,6 +10,7 @@ const {
 const {
   createRecipesControl,
   getAllRecipesControl,
+  getRecipeByIdControl,
 } = require('./controllers/recipeControl');
 
 const {
@@ -31,6 +32,7 @@ app.post('/login', loginControl);
 
 app.post('/recipes', validateJWT, rescue(createRecipesControl));
 app.get('/recipes', rescue(getAllRecipesControl));
+app.get('/recipes/:id', rescue(getRecipeByIdControl));
 
 app.use(errorHandling);
 

@@ -1,7 +1,10 @@
 const Joi = require('joi');
+const { ObjectId } = require('mongodb');
+
 const {
   createRecipe,
   getAllRecipes,
+  getRecipeById,
 } = require('../models/recipeModel');
 
 const recipesSchema = Joi.object({
@@ -30,7 +33,22 @@ const getAllRecipesService = async () => {
   return recipes;
 };
 
+const getRecipeByIdService = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw validateError(404, 'recipe not found');
+  }
+
+  const product = await getRecipeById(id);
+
+  if (!product) {
+    throw validateError(404, 'recipe not found');
+  }
+
+  return product;
+};
+
 module.exports = {
   createRecipeService,
   getAllRecipesService,
+  getRecipeByIdService,
 };
