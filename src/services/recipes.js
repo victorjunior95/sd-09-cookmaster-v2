@@ -20,7 +20,10 @@ const create = async (name, ingredients, preparation, token) => {
 
 const getAll = async () => RECIPES.getAllRecipes();
 
+const getOne = async (id) => RECIPES.getOneRecipe(id);
+
 module.exports = {
   create,
   getAll,
+  getOne,
 };

@@ -10,5 +10,6 @@ router.post('/login', users.login);
 
 router.post('/recipes', validateToken, recipes.createRecipe);
 router.get('/recipes', recipes.getRecipes);
+router.get('/recipes/:id', recipes.getOneRecipe);
 
 module.exports = router;
