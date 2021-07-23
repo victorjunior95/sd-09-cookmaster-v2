@@ -37,7 +37,7 @@ const updateImageRecipes = rescue(async (req, res, _next) => {
   const { user } = req;
   const url = `localhost:3000/${path}`;
   const response = await Recipe.updateImage(url, id, user);
-  console.log(response);
+
   res.status(200).json(response);
 });
 
