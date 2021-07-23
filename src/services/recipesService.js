@@ -15,9 +15,25 @@ const findRecipeById = async (id) => {
   return recipe;
 };
 
-const updateRecipe = async (id, user) => {
-  const { matchedCount } = await recipesModel.update(id, user);
-  return matchedCount;
+const isUserAuthorized = (recipeUserId, reqUserId, role) => (
+  (String(recipeUserId) === String(reqUserId) || (role === 'admin'))
+);
+
+const updateRecipe = async (reqRecipe, reqRecipeId, reqUser) => {
+  const { _id, role } = reqUser;
+  try {
+    const currentRecipe = await findRecipeById(reqRecipeId);
+    if (!isUserAuthorized(currentRecipe.userId, _id, role)) {
+      return { response: 401, message: 'missing auth token' };
+    }
+    const recipeUpToDate = { userId: _id, _id: reqRecipeId, ...reqRecipe };
+    const { matchedCount } = await recipesModel.update(reqRecipeId, recipeUpToDate);
+    if (matchedCount) {
+      return recipeUpToDate;
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const removeRecipes = async (id) => {

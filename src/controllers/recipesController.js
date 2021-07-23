@@ -8,6 +8,7 @@ const responseCodes = {
   success: 200,
   created: 201,
   notFound: 404,
+  notAuthorized: 401,
   unprocessableEntity: 422,
   internalServerError: 500,
 };
@@ -46,4 +47,17 @@ router.post('/', validateToken, validateRecipe, async (req, res) => {
   const recipe = await recipesService.addRecipe(reqRecipe);
   res.status(responseCodes.created).json(recipe);
 });
+
+router.put('/:id', validateToken, async (req, res) => {
+  const reqRecipe = req.body;
+  const { id } = req.params;
+  const reqUser = req.user;
+  try {
+    const changedRecipe = await recipesService.updateRecipe(reqRecipe, id, reqUser);
+    res.status(responseCodes.success).json(changedRecipe);
+  } catch (error) {
+    res.status(responseCodes.notAuthorized).json({ message: error.message });
+  }
+});
+
 module.exports = router;

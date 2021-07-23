@@ -19,7 +19,7 @@ const create = async (recipe) => (
 
 const update = async (id, recipe) => (
   connection()
-    .then((db) => db.collection(collection).updateOne({ _id: ObjectID(id) }, { recipe }))
+    .then((db) => db.collection(collection).updateOne({ _id: ObjectID(id) }, { $set: { recipe } }))
 );
 
 const remove = async (id) => (
