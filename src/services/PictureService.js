@@ -12,13 +12,13 @@ const getUser = async (token) => {
   return currentUser;
 };
 
-const createObjToReturn = ({ _id, name, ingredients, preparation, image, userId }) => ({
-  _id,
+const createObjToReturn = ({ id, name, ingredients, preparation, image, currentUserId }) => ({
+  _id: id,
   name,
   ingredients,
   preparation,
   image,
-  userId,
+  userId: currentUserId,
 });
 
 const uploadPicture = async (id, buffer, token) => {

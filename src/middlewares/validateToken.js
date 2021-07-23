@@ -15,7 +15,7 @@ const validateToken = (req, _res, next) => {
     jwt.verify(token, SECRET);
     next();
   } catch (e) {
-    next({ status: 401, msg: 'missing auth token' });
+    next(e);
   }
 };
 
