@@ -44,9 +44,10 @@ const update = async (recipeId, recipe, user) => {
 
 const deleteRecipe = async (recipeId, user) => {
   const { role, _id: id } = user;
-  const { userId } = await recipesModel.getById(recipeId);
 
-  if (role === 'user' && id !== userId) throw validateError(401, 'unauthorized');
+  const result = await recipesModel.getById(recipeId);
+
+   if (role === 'user' && id !== result.userId) throw validateError(401, 'unauthorized');
 
   await recipesModel.deleteRecipe(recipeId);
 

@@ -63,9 +63,9 @@ const deleteRecipe = async (req, res, next) => {
     const userData = req.user;
     const { id } = req.params;
 
-    const { status } = await recipesService.deleteRecipe(id, userData);
+    const result = await recipesService.deleteRecipe(id, userData);
 
-    return res.status(status);
+    return res.status(result.status).json();
   } catch (err) {
     console.log('[Error recipesController] > ', err.message);
     return next(err);

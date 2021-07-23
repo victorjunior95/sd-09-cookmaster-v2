@@ -11,6 +11,7 @@ router.route('/')
 
 router.route('/:id')
   .get(recipesController.findById)
-  .put(validateToken, recipesController.update);
+  .put(validateToken, recipesController.update)
+  .delete(validateToken, recipesController.deleteRecipe);
 
 module.exports = router;
