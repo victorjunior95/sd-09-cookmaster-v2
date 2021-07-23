@@ -1,7 +1,15 @@
 const multer = require('multer');
+const path = require('path');
 
-const memoryStorage = multer.memoryStorage();
+const UPLOADS_FOLDER = path.join(__dirname, '..', 'uploads');
 
-const uploadToMemory = multer({ storage: memoryStorage });
+const diskStorage = multer.diskStorage({
+  destination: UPLOADS_FOLDER,
+  filename: (req, _file, callback) => {
+    callback(null, `${req.params.id}.jpeg`);
+  },
+});
+
+const uploadToMemory = multer({ storage: diskStorage });
 
 module.exports = uploadToMemory;

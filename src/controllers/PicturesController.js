@@ -6,9 +6,7 @@ const uploadPicture = [
   async (req, res) => {
     try {
       const { id } = req.params;
-      const token = req.headers.authorization;
-      const { buffer } = req.file;    
-      const response = await PictureService.uploadPicture(id, buffer, token);
+      const response = await PictureService.uploadPicture(id);
       res.status(response.status).json(response.result);
     } catch (e) {
       console.log(e.message);
