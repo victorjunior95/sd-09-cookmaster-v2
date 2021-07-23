@@ -26,9 +26,17 @@ const update = (id, updatedRecipe) => {
       .updateOne({ _id: ObjectID(id) }, { $set: updatedRecipe }));
 };
 
+const deleteRecipe = (id) => {
+  if (!ObjectID.isValid(id)) return null;
+
+  return connection()
+    .then((db) => db.collection('recipes').deleteOne({ _id: ObjectID(id) }));
+};
+
 module.exports = {
   createRecipe,
   getAll,
   getById,
   update,
+  deleteRecipe,
 };
