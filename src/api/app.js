@@ -9,6 +9,7 @@ const {
 
 const {
   createRecipesControl,
+  getAllRecipesControl,
 } = require('./controllers/recipeControl');
 
 const {
@@ -29,6 +30,8 @@ app.post('/users', createUserControl);
 app.post('/login', loginControl);
 
 app.post('/recipes', validateJWT, rescue(createRecipesControl));
+app.get('/recipes', rescue(getAllRecipesControl));
+
 app.use(errorHandling);
 
 module.exports = app;
