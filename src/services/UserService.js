@@ -1,5 +1,12 @@
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel');
+
+const JWT_SECRET = 'cookmaster';
+const JWT_CONFIG = {
+  expiresIn: '1h',
+  algorithm: 'HS256',
+};
 
 const validateUserData = (data) => {
   const { error } = Joi.object({
@@ -23,12 +30,38 @@ const validateEmail = async (email) => {
   }
 };
 
+const validateLoginData = (data) => {
+  const { error } = Joi.object({
+    email: Joi.required(),
+    password: Joi.required(),
+  }).validate(data);
+  if (error) {
+    throw new Error('invalid_login_input');
+  }
+};
+
 const create = async (data) => {
   validateUserData(data);
   await validateEmail(data.email);
   return UserModel.create(data);
 };
 
+const auth = async (data) => {
+  validateLoginData(data);
+  const user = await UserModel.auth(data);
+  if (!user) {
+    throw new Error('invalid_login');
+  }
+  const payload = {
+    email: user.email,
+    id: user.id,
+    role: user.role,
+  };
+  const token = jwt.sign(payload, JWT_SECRET, JWT_CONFIG);
+  return token;
+};
+
 module.exports = {
   create,
+  auth,
 };

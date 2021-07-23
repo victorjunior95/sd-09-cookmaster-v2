@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const create = async (data) => connection()
+const create = (data) => connection()
   .then((db) => db.collection('users').insertOne({ ...data, role: 'user' }))
   .then(({ insertedId }) => ({
     _id: insertedId,
@@ -9,11 +9,16 @@ const create = async (data) => connection()
     role: 'user',
   }));
 
-  const getByEmail = async (email) => connection()
+  const getByEmail = (email) => connection()
     .then((db) => db.collection('users').findOne({ email }))
-    .then((data) => data);
+    .then((result) => result);
+
+  const auth = (data) => connection()
+    .then((db) => db.collection('users').findOne(data))
+    .then((result) => result);
 
   module.exports = {
     create,
     getByEmail,
+    auth,
   };
