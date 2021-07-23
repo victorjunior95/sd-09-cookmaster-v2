@@ -29,8 +29,17 @@ const findRecipe = async (id) => {
   return recipe;
 };
 
+const updateRecipe = async (name, ingredients, preparation, id) => {
+  const changeRecipe = await recipeModel.update(name, ingredients, preparation, id);
+
+  if (!changeRecipe) return { message: 'falhow' };
+
+  return changeRecipe;
+};
+
 module.exports = {
   createRecipe,
   allRecipes,
   findRecipe,
+  updateRecipe,
 };

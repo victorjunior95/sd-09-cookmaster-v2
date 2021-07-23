@@ -26,8 +26,21 @@ const findId = async (id) => {
   return recipe;
 };
 
+const update = async (name, ingredients, preparation, id) => {
+  if (id.length !== maxValue) return null;
+
+  const recipe = await connection()
+    .then((db) => db.collection('recipes')
+      .updateOne({ _id: new ObjectId(id) }, { $set: { name, ingredients, preparation } }));
+  
+  const recipeReview = await findId(id);
+
+  return recipe && recipeReview;
+};
+
 module.exports = {
   create,
   showAll,
   findId,
+  update,
 };

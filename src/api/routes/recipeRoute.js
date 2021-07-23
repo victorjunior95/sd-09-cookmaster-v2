@@ -13,4 +13,7 @@ recipeRoute.get('/', recipeController.showAllRecipes);
 // busca receita por id
 recipeRoute.get('/:id', recipeController.findRecipeById);
 
+// atualiza recieta
+recipeRoute.put('/:id', validateJwt, recipeController.updateRecipeData);
+
 module.exports = recipeRoute;

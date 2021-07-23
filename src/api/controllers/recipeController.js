@@ -1,6 +1,7 @@
 const recipeService = require('../services/recipeService');
 
 const stateBadRequest = 400;
+const stateUnauthorized = 401;
 const stateNotFound = 404;
 const stateOk = 200;
 const stateCreated = 201;
@@ -30,8 +31,19 @@ const findRecipeById = async (req, res, _next) => {
   return res.status(stateOk).json(recipe);
 };
 
+const updateRecipeData = async (req, res, _next) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const updatedRecipe = await recipeService.updateRecipe(name, ingredients, preparation, id);
+
+  if (updatedRecipe.message) return res.status(stateUnauthorized).json(updatedRecipe);
+
+  return res.status(stateOk).json(updatedRecipe);
+};
+
 module.exports = {
   createNewRecipe,
   showAllRecipes,
   findRecipeById,
+  updateRecipeData,
 };

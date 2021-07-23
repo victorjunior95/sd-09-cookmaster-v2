@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(stateUnauthorized).json({ message: 'jwt malformed' });
+    return res.status(stateUnauthorized).json({ message: 'missing auth token' });
   }
 
   try {
