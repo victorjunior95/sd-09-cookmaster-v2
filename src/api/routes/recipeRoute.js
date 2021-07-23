@@ -10,4 +10,7 @@ recipeRoute.post('/', validateJwt, recipeController.createNewRecipe);
 // lista todos os repipes
 recipeRoute.get('/', recipeController.showAllRecipes);
 
+// busca receita por id
+recipeRoute.get('/:id', recipeController.findRecipeById);
+
 module.exports = recipeRoute;

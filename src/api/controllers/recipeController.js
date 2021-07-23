@@ -1,6 +1,7 @@
 const recipeService = require('../services/recipeService');
 
 const stateBadRequest = 400;
+const stateNotFound = 404;
 const stateOk = 200;
 const stateCreated = 201;
 
@@ -20,7 +21,17 @@ const showAllRecipes = async (req, res, _next) => {
   return res.status(stateOk).json(list);
 };
 
+const findRecipeById = async (req, res, _next) => {
+  const { id } = req.params;
+  const recipe = await recipeService.findRecipe(id);
+
+  if (recipe.message) return res.status(stateNotFound).json(recipe);
+
+  return res.status(stateOk).json(recipe);
+};
+
 module.exports = {
   createNewRecipe,
   showAllRecipes,
+  findRecipeById,
 };
