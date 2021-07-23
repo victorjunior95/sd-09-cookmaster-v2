@@ -12,7 +12,7 @@ const getUser = async (token) => {
   return currentUser;
 };
 
-const createObjToReturn = (_id, name, ingredients, preparation, image, userId) => ({
+const createObjToReturn = ({ _id, name, ingredients, preparation, image, userId }) => ({
   _id,
   name,
   ingredients,
@@ -33,7 +33,7 @@ const uploadPicture = async (id, buffer, token) => {
     await fs.writeFile(filePath, buffer.data);
     const image = `localhost:3000/src/uploads/${_id}.jpeg`;
     await RecipesModel.updateImage(id, image);
-    const obj = createObjToReturn(id, name, ingredients, preparation, image, currentUserId);
+    const obj = createObjToReturn({ id, name, ingredients, preparation, image, currentUserId });
     return { status: 200, result: obj };
   }
   return { status: 401 };
