@@ -5,6 +5,7 @@ const stateUnauthorized = 401;
 const stateNotFound = 404;
 const stateOk = 200;
 const stateCreated = 201;
+const stateNoContent = 204;
 
 const createNewRecipe = async (req, res, _next) => {
   const { name, ingredients, preparation } = req.body;
@@ -41,9 +42,17 @@ const updateRecipeData = async (req, res, _next) => {
   return res.status(stateOk).json(updatedRecipe);
 };
 
+const deleteRecipeData = async (req, res, _next) => {
+  const { id } = req.params;
+  const deletedRecipe = await recipeService.deleteRecipe(id);
+
+  return res.status(stateNoContent).json(deletedRecipe);
+};
+
 module.exports = {
   createNewRecipe,
   showAllRecipes,
   findRecipeById,
   updateRecipeData,
+  deleteRecipeData,
 };

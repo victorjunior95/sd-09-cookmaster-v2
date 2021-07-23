@@ -38,9 +38,18 @@ const update = async (name, ingredients, preparation, id) => {
   return recipe && recipeReview;
 };
 
+// apaga produto
+const drop = async (id) => {
+  const recipe = await connection()
+    .then((db) => db.collection('recipes').deleteOne({ _id: new ObjectId(id) }));
+  
+  return recipe;
+};
+
 module.exports = {
   create,
   showAll,
   findId,
   update,
+  drop,
 };

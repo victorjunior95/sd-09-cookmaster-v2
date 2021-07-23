@@ -16,4 +16,7 @@ recipeRoute.get('/:id', recipeController.findRecipeById);
 // atualiza recieta
 recipeRoute.put('/:id', validateJwt, recipeController.updateRecipeData);
 
+// deleta inicial
+recipeRoute.delete('/:id', validateJwt, recipeController.deleteRecipeData);
+
 module.exports = recipeRoute;
