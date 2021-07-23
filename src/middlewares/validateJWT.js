@@ -4,7 +4,7 @@ const modelUsers = require('../models/users');
 const SECRET = 'mysupersecret';
 
 const validateJWT = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const token = req.headers.authorization;
 
   if (!token) return res.status(401).send({ message: 'missing auth token' });
