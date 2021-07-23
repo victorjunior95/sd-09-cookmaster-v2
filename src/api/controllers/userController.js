@@ -3,10 +3,10 @@ const userService = require('../services/userService');
 const stateBadRequest = 400;
 const stateUnauthorized = 401;
 const stateOk = 200;
+const stateCreated = 201;
 
 const createNewUser = async (req, res, _next) => {
   const { name, email, password } = req.body;
-  const stateCreated = 201;
   const stateConflict = 409;
   const newUser = await userService.createUser(name, email, password);
 
@@ -31,7 +31,26 @@ const enterUseLogin = async (req, res, _next) => {
   return res.status(stateOk).json(logon);
 };
 
+const createNewAdmin = async (req, res, _next) => {
+  const { name, email, password } = req.body;
+  const stateForbidden = 403;
+  const newAdmin = await userService.createUserAdmin(name, email, password);
+  const { role } = req.user;
+
+  if (role !== 'admin') { 
+    return res.status(stateForbidden).json({ message: 'Only admins can register new admins' });
+  }
+
+  if (newAdmin.message) {
+    newAdmin.message = 'Invalid entries. Try again.';
+    return res.status(stateForbidden).json(newAdmin);
+  }
+
+  return res.status(stateCreated).json(newAdmin);
+};
+
 module.exports = {
   createNewUser,
   enterUseLogin,
+  createNewAdmin,
 };

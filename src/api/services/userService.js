@@ -36,6 +36,24 @@ const createUser = async (name, email, password) => {
   return { user };
 };
 
+const createUserAdmin = async (name, email, password) => {
+  if (!name) return err;
+
+  const validEmail = checkEmail(email);
+  if (validEmail) return validEmail;
+
+  const consultEmail = await checkEmailExist(email);
+  if (consultEmail) return consultEmail;
+
+  const role = 'admin';
+  const newUser = await userModel.create(name, email, password, role);
+  
+  const user = newUser;
+  delete user.password;
+
+  return { user };
+};
+
 const createToken = (logon) => {
   const loged = logon;
   delete loged.password;
@@ -72,4 +90,5 @@ const useLoguin = async (email, password) => {
 module.exports = {
   createUser,
   useLoguin,
+  createUserAdmin,
 };
