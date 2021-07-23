@@ -43,9 +43,7 @@ const update = async (id, name, ingredients, preparation) => {
     throw recipeNotFound;
   }
 
-  const result = await connection().then((db) =>
-  db
-  .collection('recipes')
+  const result = await connection().then((db) => db.collection('recipes')
   .updateOne(
     { _id: ObjectId(id) },
     { $set: { name, ingredients, preparation } },
@@ -55,6 +53,26 @@ const update = async (id, name, ingredients, preparation) => {
     
   if (result.modifiedCount) {
     return updatedRecipe;
+  }
+};
+
+const addImage = async (id, path) => {
+  if (!ObjectId.isValid(id)) {
+    throw recipeNotFound;
+  }
+
+  const imageUrl = path.replace(/\\/g, '/');
+
+  const result = await connection().then((db) => db.collection('recipes')
+  .updateOne(
+    { _id: ObjectId(id) },
+    { $set: { image: `localhost:3000/${imageUrl}` } },
+    ));
+
+  const updatedRecipeWithImage = await getById(id);
+    
+  if (result.modifiedCount) {
+    return updatedRecipeWithImage;
   }
 };
 
@@ -72,5 +90,6 @@ module.exports = {
   getAll,
   create,
   update,
+  addImage,
   exclude,
 };

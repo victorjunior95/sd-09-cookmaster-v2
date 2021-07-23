@@ -2,6 +2,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const recipesServices = require('../services/recipesServices');
+const upload = require('../middlewares/uploadHandler');
 const validateJWT = require('../middlewares/validateJWT');
 const { ok, created, notContent } = require('../utils/httpStatusCodes');
 
@@ -28,6 +29,19 @@ recipesController.post('/', validateJWT, rescue(async (req, res) => {
   const newRecipe = await recipesServices.create(name, ingredients, preparation, userId);
 
   return res.status(created).json({ recipe: newRecipe });
+}));
+
+recipesController.put('/:id/image', 
+  validateJWT, 
+  upload.single('image'), 
+  rescue(async (req, res) => {
+  const { id: recipeId } = req.params;
+  const { path } = req.file;
+  const { _id: userId, role } = req.user;
+
+  const recipeWithImage = await recipesServices.addImage(recipeId, path, userId, role);
+
+  return res.status(ok).json(recipeWithImage);
 }));
 
 recipesController.put('/:id', validateJWT, rescue(async (req, res) => {

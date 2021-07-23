@@ -54,6 +54,16 @@ const update = async (recipeId, recipeNewData, userId, role) => {
   }
 };
 
+const addImage = async (recipeId, path, userId, role) => {
+  const recipe = await recipesModel.getById(recipeId);
+
+  if (recipe.userId.toString() === userId.toString() || role === 'admin') {
+    const recipeWithImage = await recipesModel.addImage(recipeId, path);
+
+    return recipeWithImage;
+  }
+};
+
 const exclude = async (recipeId, userId, role) => {
   const recipe = await recipesModel.getById(recipeId);
 
@@ -67,5 +77,6 @@ module.exports = {
   findById,
   create,
   update,
+  addImage,
   exclude,
 };
