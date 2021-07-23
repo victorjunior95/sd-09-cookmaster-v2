@@ -22,8 +22,24 @@ const getAll = async () => RECIPES.getAllRecipes();
 
 const getOne = async (id) => RECIPES.getOneRecipe(id);
 
+const update = async (id, updRecipe, token) => {
+  try {
+    const { name, ingredients, preparation } = updRecipe;
+    if (!name || !ingredients || !preparation) {
+      return null;
+    }
+    const decoded = jwt.verify(token, secret);
+    const { role, _id } = await USER.getUser(decoded.data);
+    const upd = await RECIPES.update(id, updRecipe, _id, role);
+    return upd;
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
+  update,
 };
