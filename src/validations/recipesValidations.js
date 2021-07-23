@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const recipesModel = require('../models/recipesModel');
 
 const privateKey = 'myprecious';
 
@@ -20,6 +21,13 @@ const RECIPE_NOT_FOUND = {
   status: 404,
   error: {
     message: 'recipe not found',
+  },
+};
+
+const MISSING_AUTH = {
+  status: 401,
+  error: {
+    message: 'missing auth token',
   },
 };
 
@@ -48,10 +56,16 @@ function validateRecipe(recipe) {
   if (!recipe) throw RECIPE_NOT_FOUND;
 }
 
+function validateAuthentication(token) {
+  console.log('token', token);
+  if (!token) throw MISSING_AUTH;
+}
+
 module.exports = {
   validateName,
   validateIngredients,
   validatePreparation,
   validateToken,
   validateRecipe,
+  validateAuthentication,
 };

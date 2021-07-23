@@ -17,8 +17,16 @@ async function getRecipeById(req, res) {
   return res.status(status).json(response);
 }
 
+async function editRecipe(req, res) {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  const { status, response } = await recipesServices.editRecipe(id, authorization, req.body);
+  return res.status(status).json(response);
+}
+
 module.exports = {
   addRecipe,
   getRecipe,
   getRecipeById,
+  editRecipe,
 };
