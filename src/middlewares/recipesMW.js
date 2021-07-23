@@ -1,4 +1,5 @@
-// const { ObjectId } = require('mongodb');
+const path = require('path');
+const multer = require('multer');
 const RecipesServices = require('../services/recipesServices');
 const RecipesModel = require('../models/recipesModel');
 const response = require('./responseCodes');
@@ -40,17 +41,27 @@ const getRecipeById = async (req, res, next) => {
   }
 };
 
+const checkRecipeId = async (req, res, next) => {
+  const recipeId = req.params.id;
+  const recipeFound = await RecipesModel.getRecipeById(recipeId);
+  if (!recipeFound) return next({ errorCode: response.NOT_FOUND, message: 'recipe not found' });
+  return next();
+};
+
 const allowEditing = async (req, res, next) => {
-    const { _id: loggedId, role } = req.user;
-    const { userId } = await RecipesServices.getRecipeById(req.params.id);
-    const idtest = loggedId.toString();
-    const idtest2 = userId.toString();
-    if (role === 'admin') return next();
-    if (idtest !== idtest2) {
-      console.log(idtest, idtest2);
-      return res.status(response.UNAUTHORIZED).json({ message: 'jwt malformed' });
-    }
-    return next();
+  const { _id: loggedId, role } = req.user;
+  const { userId } = await RecipesServices.getRecipeById(req.params.id);
+  if (!userId || !loggedId) {
+    return next({ errorCode: response.UNAUTHORIZED, message: 'jwt malformed' });
+  }
+  const idtest = loggedId.toString();
+  const idtest2 = userId.toString();
+  if (role === 'admin') return next();
+  if (idtest !== idtest2) {
+    console.log(idtest, idtest2);
+    return next({ errorCode: response.UNAUTHORIZED, message: 'jwt malformed' });
+  }
+  return next();
 };
 
 const updateRecipe = async (req, res, _next) => {
@@ -76,12 +87,43 @@ const deleteRecipe = async (req, res, next) => {
   }
 };
 
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, path.join(__dirname, '..', 'uploads'));
+  },
+  filename: (req, file, callback) => {
+    const recipeId = req.params.id;
+    callback(null, `${recipeId}.jpeg`);
+  },
+});
+
+const upload = multer({ storage });
+
+const insertImage = async (req, res, _next) => {
+  try {
+    console.log('entrou no try de MW.insertImage');
+    console.log('req.body', req.file);
+    const { id } = req.params;
+    const imageUrl = `localhost:3000/src/uploads/${id}.jpeg`;
+    const recipeToUpdate = await RecipesModel.insertImage(imageUrl, id);
+    if (!recipeToUpdate) {
+      return res.status(response.NOT_FOUND).json({ message: 'recipe not found' });
+    }
+    return res.status(response.STATUS_OK).json(recipeToUpdate);
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   postRecipe,
   validateRecipe,
+  checkRecipeId,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   allowEditing,
   deleteRecipe,
+  upload,
+  insertImage,
 };

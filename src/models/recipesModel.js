@@ -48,10 +48,25 @@ const deleteRecipe = async (recipeId) => {
   return deletedRecipe;
 };
 
+const insertImage = async (imageUrl, recipeId) => {
+  console.log('entrou no model');
+  const updatedRecipe = await connection()
+    .then((db) => db.collection('recipes').findOneAndUpdate(
+    { _id: ObjectId(recipeId) },
+    { $set: { image: imageUrl } },
+    { returnOriginal: false },
+    ));
+  if (!updatedRecipe) return null;
+
+  console.log(updatedRecipe.value);
+  return updatedRecipe.value;
+};
+
 module.exports = {
   postRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  insertImage,
 };

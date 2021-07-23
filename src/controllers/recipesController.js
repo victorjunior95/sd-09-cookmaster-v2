@@ -24,4 +24,11 @@ RecipesRouter.put('/:id',
   recipesMW.allowEditing,
   recipesMW.deleteRecipe);
 
+  RecipesRouter.put('/:id/image',
+  authToken,
+  recipesMW.checkRecipeId,
+  recipesMW.allowEditing,
+  recipesMW.upload.single('image'),
+  recipesMW.insertImage);
+
 module.exports = RecipesRouter;
