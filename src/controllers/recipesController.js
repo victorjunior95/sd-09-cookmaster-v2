@@ -7,6 +7,7 @@ const router = express.Router();
 const responseCodes = {
   success: 200,
   created: 201,
+  noContent: 204,
   notFound: 404,
   notAuthorized: 401,
   unprocessableEntity: 422,
@@ -55,6 +56,17 @@ router.put('/:id', validateToken, async (req, res) => {
   try {
     const changedRecipe = await recipesService.updateRecipe(reqRecipe, id, reqUser);
     res.status(responseCodes.success).json(changedRecipe);
+  } catch (error) {
+    res.status(responseCodes.notAuthorized).json({ message: error.message });
+  }
+});
+
+router.delete('/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user } = req;
+    await recipesService.removeRecipe(id, user);
+    res.status(responseCodes.noContent).send();
   } catch (error) {
     res.status(responseCodes.notAuthorized).json({ message: error.message });
   }

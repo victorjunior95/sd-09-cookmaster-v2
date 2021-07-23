@@ -36,8 +36,12 @@ const updateRecipe = async (reqRecipe, reqRecipeId, reqUser) => {
   }
 };
 
-const removeRecipes = async (id) => {
+const removeRecipe = async (id, user) => {
+  const { _id, role } = user;
   const recipe = recipesModel.findById(id);
+  if (!isUserAuthorized(recipe.userId, _id, role)) {
+    return { response: 401, message: 'missing auth token' };
+  }
   await recipesModel.remove(id);
   return recipe;
 };
@@ -47,5 +51,5 @@ module.exports = {
   getAllRecipes,
   findRecipeById,
   updateRecipe,
-  removeRecipes,
+  removeRecipe,
 };
