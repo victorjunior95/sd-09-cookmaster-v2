@@ -5,9 +5,7 @@ const createRecipe = async ({ name, ingredients, preparation }, userId) => {
   const conn = await connection();
   const item = await conn.collection('recipes')
     .insertOne({ name, ingredients, preparation, userId });
-    const { ops } = item;
-    console.log(ops);
-    return item.ops[0];
+  return item.ops[0];
 };
 
 const listAllRecipes = async () => {
@@ -23,17 +21,17 @@ const findById = async (id) => {
 
   const result = await conn.collection('recipes')
     .findOne({ _id: new ObjectId(id) });
-
   return result;
 };
 
-const updateRecipe = async (id, name, ingredients, preparation) => {
+const updateRecipe = async (id, { name, ingredients, preparation }, userId, image) => {
   const conn = await connection();
 
   if (!ObjectId.isValid(id)) return null;
 
   await conn.collection('recipes')
-    .updateOne({ _id: ObjectId(id) }, { $set: { name, ingredients, preparation } });
+    .updateOne({ _id: ObjectId(id) },
+      { $set: { name, ingredients, preparation, userId, image } });
 };
 
 const deleteRecipe = async (id) => {

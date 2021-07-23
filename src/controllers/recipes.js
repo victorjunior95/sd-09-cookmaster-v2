@@ -26,12 +26,20 @@ const getById = rescue(async (req, res, _next) => {
 const updateRecipes = rescue(async (req, res, _next) => {
   const { id } = req.params;
   const { user } = req;
-
   const recipe = await Recipe.updateRecipes(id, req.body, user);
+
   return res.status(200).json(recipe);
 });
 
-const updateImageRecipes = rescue(async (req, res, _next) => res.status(200).json());
+const updateImageRecipes = rescue(async (req, res, _next) => {
+  const { path } = req.file;
+  const { id } = req.params;
+  const { user } = req;
+  const url = `localhost:3000/${path}`;
+  const response = await Recipe.updateImage(url, id, user);
+  console.log(response);
+  res.status(200).json(response);
+});
 
 const deleteRecipes = rescue(async (req, res, _next) => {
   const { id } = req.params;

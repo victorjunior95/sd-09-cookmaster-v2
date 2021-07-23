@@ -46,17 +46,36 @@ const updateRecipes = async (id, recipes, user) => {
   if (error) {
     throw validateError(401, error.message);
   }
+  const infoRecipe = await recipeModel.findById(id);
 
-  const { role, _id } = user;
+  const { role, _id: userId } = user;
 
-  if (role !== 'admin') {
+  if (role !== 'admin' && infoRecipe.userId !== userId) {
     const err = new Error('Incorrect username or password');
       err.status = 401;
   }
 
   await recipeModel.updateRecipe(id, recipes);
   const { name, ingredients, preparation } = recipes;
-  const recipeUpdate = { _id: id, name, ingredients, preparation, userId: _id };
+  const recipeUpdate = { _id: id, name, ingredients, preparation, userId };
+
+  return recipeUpdate;
+};
+
+const updateImage = async (url, id, user) => {
+  const infoRecipe = await recipeModel.findById(id);
+
+  const { role, _id: userId } = user;
+
+  if (role !== 'admin' && infoRecipe.userId !== userId) {
+    const err = new Error('Incorrect username or password');
+      err.status = 401;
+  }
+
+  await recipeModel.updateRecipe(id, infoRecipe, userId, url);
+  const { name, ingredients, preparation } = infoRecipe;
+
+  const recipeUpdate = { _id: id, name, ingredients, preparation, userId, image: url };
 
   return recipeUpdate;
 };
@@ -72,4 +91,5 @@ module.exports = {
   findById,
   updateRecipes,
   deleteRecipe,
+  updateImage,
 };

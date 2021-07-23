@@ -12,7 +12,7 @@ const LoginShema = Joi.object({
       'any.required': commonError,
     }),
   password:
-    Joi.string().min(8).required().messages({
+    Joi.string().min(4).required().messages({
       'string.base': commonError,
       'string.min': 'Incorrect username or password',
       'any.required': commonError,
