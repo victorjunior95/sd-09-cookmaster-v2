@@ -1,5 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const rescue = require('express-rescue');
+const { errorHandling } = require('./services/services');
+
+const {
+  validateJWT,
+} = require('./services/recipeValid');
+
+const {
+  createRecipesControl,
+} = require('./controllers/recipeControl');
 
 const {
   createUserControl,
@@ -17,5 +27,8 @@ app.get('/', (request, response) => {
 
 app.post('/users', createUserControl);
 app.post('/login', loginControl);
+
+app.post('/recipes', validateJWT, rescue(createRecipesControl));
+app.use(errorHandling);
 
 module.exports = app;
