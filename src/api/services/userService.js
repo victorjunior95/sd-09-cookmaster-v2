@@ -35,7 +35,6 @@ const createUser = async (name, email, password) => {
   return { user };
 };
 
-
 const useLoguin = async (email, password) => {
   const validEmail = checkEmail(email);
   if (validEmail || !password) {

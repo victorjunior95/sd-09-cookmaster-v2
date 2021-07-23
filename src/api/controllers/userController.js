@@ -28,7 +28,6 @@ const enterUseLogin = async (req, res, _next) => {
 
   if (logon.message) return res.status(stateUnauthorized).json(logon);
   
-
   return res.status(stateOk).json(logon);
 };
 
