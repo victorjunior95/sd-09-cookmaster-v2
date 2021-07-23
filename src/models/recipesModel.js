@@ -18,8 +18,17 @@ const getById = (id) => {
     .then((db) => db.collection('recipes').findOne({ _id: ObjectID(id) }));
 };
 
+const update = (id, updatedRecipe) => {
+  if (!ObjectID.isValid(id)) return null;
+
+  return connection()
+    .then((db) => db.collection('recipes')
+      .updateOne({ _id: ObjectID(id) }, { $set: updatedRecipe }));
+};
+
 module.exports = {
   createRecipe,
   getAll,
   getById,
+  update,
 };

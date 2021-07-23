@@ -10,6 +10,7 @@ router.route('/')
   .get(recipesController.findAll);
 
 router.route('/:id')
-  .get(recipesController.findById);
+  .get(recipesController.findById)
+  .put(validateToken, recipesController.update);
 
 module.exports = router;

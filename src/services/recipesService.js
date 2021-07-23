@@ -29,4 +29,22 @@ const findById = async (id) => {
   return { status: 200, result };
 };
 
-module.exports = { createRecipe, findAll, findById };
+const update = async (recipeId, recipe, user) => {
+  const { role, _id: id } = user;
+  const { userId } = await recipesModel.getById(recipeId);
+
+  if (role === 'user' && id !== userId) throw validateError(401, 'unauthorized');
+
+  await recipesModel.update(recipeId, recipe);
+
+  const result = { _id: recipeId, ...recipe, userId };
+
+  return { status: 200, result };
+};
+
+module.exports = {
+  createRecipe,
+  findAll,
+  findById,
+  update,
+};

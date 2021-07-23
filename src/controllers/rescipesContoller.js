@@ -43,4 +43,19 @@ const findById = async (req, res, next) => {
   }
 };
 
-module.exports = { createRecipe, findAll, findById };
+const update = async (req, res, next) => {
+  try {
+    const recipe = req.body;
+    const userData = req.user;
+    const { id } = req.params;
+
+    const { status, result } = await recipesService.update(id, recipe, userData);
+
+    return res.status(status).json(result);
+  } catch (err) {
+    console.log('[Error recipesController] > ', err.message);
+    return next(err);
+  }
+};
+
+module.exports = { createRecipe, findAll, findById, update };
