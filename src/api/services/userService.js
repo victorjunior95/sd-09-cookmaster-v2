@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
 const err = {
@@ -35,6 +36,21 @@ const createUser = async (name, email, password) => {
   return { user };
 };
 
+const createToken = (logon) => {
+  const loged = logon;
+  delete loged.password;
+
+  const SECRET = 'paraguamicotirimiruaruvrawoffoline';
+  const jwtConfig = {
+  expiresIn: '7d',
+  algorithm: 'HS256',
+};
+
+ const token = jwt.sign(loged, SECRET, jwtConfig);
+
+ return token;
+};
+
 const useLoguin = async (email, password) => {
   const validEmail = checkEmail(email);
   if (validEmail || !password) {
@@ -48,7 +64,9 @@ const useLoguin = async (email, password) => {
     return err;
   }
 
-  return logon;
+  const token = createToken(logon);
+
+  return { token };
 };
 
 module.exports = {

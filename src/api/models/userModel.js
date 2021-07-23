@@ -17,7 +17,7 @@ const findEmail = async (email) => {
 const login = async (email, password) => {
   const logon = await connection()
     .then((db) => db.collection('users').findOne({ email, password }));
-    
+
   return logon;
 };
 
