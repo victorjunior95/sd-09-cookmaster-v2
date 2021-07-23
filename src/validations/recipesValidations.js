@@ -16,6 +16,13 @@ const INVALID_TOKEN = {
   },
 };
 
+const RECIPE_NOT_FOUND = {
+  status: 404,
+  error: {
+    message: 'recipe not found',
+  },
+};
+
 function validateName(name) {
   if (!name) throw INVALID_ENTRIES;
 }
@@ -37,9 +44,14 @@ function validateToken(token) {
   }
 }
 
+function validateRecipe(recipe) {
+  if (!recipe) throw RECIPE_NOT_FOUND;
+}
+
 module.exports = {
   validateName,
   validateIngredients,
   validatePreparation,
   validateToken,
+  validateRecipe,
 };

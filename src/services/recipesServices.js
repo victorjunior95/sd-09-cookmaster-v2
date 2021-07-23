@@ -15,7 +15,15 @@ async function getRecipe() {
   return { status: 200, response };
 }
 
+async function getRecipeById(id) {
+  const response = await recipesModel.getRecipeById(id);
+  console.log(response);
+  recipesValidations.validateRecipe(response);
+  return { status: 200, response };
+}
+
 module.exports = {
   addRecipe,
   getRecipe,
+  getRecipeById,
 };
