@@ -31,9 +31,14 @@ const deleteRecipe = async (id) => {
   return result;
 };
 
-const updateRecipeWithImage = async (id, image) => {
-  const recipe = await recipesModel.updateRecipeWithImage(id, image);
-  return recipe;
+// const updateRecipeWithImage = async (id, image) => {
+//   const recipe = await recipesModel.updateRecipeWithImage(id, image);
+//   return recipe;
+// };
+
+const updateRecipeWithImage = async (id, path) => {
+  const data = await recipesModel.updateRecipeWithImage(id, path);
+  return data;
 };
 
 module.exports = {

@@ -1,4 +1,5 @@
 const recipesService = require('../services/recipesService');
+const { imageUpload } = require('../multer');
 
 const CREATED = 201;
 const OK = 200;
@@ -48,14 +49,21 @@ const deleteRecipe = async (req, res) => {
   return res.status(204).json(result);
   };
 
-const updateRecipeWithImage = async (req, res) => {
-    const { id } = req.params;
-    const { filename } = req.file;
-    const image = `localhost:3000/src/uploads/${filename}`;
-    const response = await recipesService.updateRecipeWithImage(id, image);
-    res.status(200).json(response);
-  };
+// const updateRecipeWithImage = async (req, res) => {
+//     const { id } = req.params;
+//     const { filename } = req.file;
+//     const image = `localhost:3000/src/uploads/${filename}`;
+//     const response = await recipesService.updateRecipeWithImage(id, image);
+//     res.status(200).json(response);
+//   };
   
+  const updateRecipeWithImage = [imageUpload.single('image'), async (req, res) => {
+    const { id } = req.params;
+    const { path } = req.file;
+    const recipeWithImage = await recipesService.updateRecipeWithImage(id, path);
+    return res.status(200).json(recipeWithImage);
+  }];
+
 module.exports = {
   createRecipe,
   getAllRecipes,
