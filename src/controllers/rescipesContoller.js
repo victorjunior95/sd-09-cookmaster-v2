@@ -10,7 +10,7 @@ const createRecipe = async (req, res, next) => {
 
     return res.status(createResult.status).json({ recipe: createResult.result });
   } catch (err) {
-    console.log('[Error recipesController] > ', err.message);
+    console.log({ error: err.message });
     return next(err);
   }
 };
@@ -21,7 +21,7 @@ const findAll = async (_req, res, next) => {
 
     return res.status(searchResult.status).json(searchResult.result);
   } catch (err) {
-    console.log('[Error recipesController] > ', err.message);
+    console.log({ error: err.message });
     return next(err);
   }
 };
@@ -38,7 +38,7 @@ const findById = async (req, res, next) => {
 
     return res.status(searchResult.status).json(searchResult.result);
   } catch (err) {
-    console.log('[Error recipesController] > ', err.message);
+    console.log({ error: err.message });
     return next(err);
   }
 };
@@ -53,7 +53,7 @@ const update = async (req, res, next) => {
 
     return res.status(status).json(result);
   } catch (err) {
-    console.log('[Error recipesController] > ', err.message);
+    console.log({ error: err.message });
     return next(err);
   }
 };
