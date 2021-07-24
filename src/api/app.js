@@ -1,24 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const rescue = require('express-rescue');
-const { errorHandling } = require('./services/services');
+const path = require('path');
 
 const {
-  validateJWT,
-} = require('./services/recipeValid');
+  errorHandling,
+} = require('./services/services');
 
 const {
-  createRecipesControl,
-  getAllRecipesControl,
-  getRecipeByIdControl,
-  updateRecipeByIdControl,
-  deleteRecipeByIdControl,
-} = require('./controllers/recipeControl');
-
-const {
-  createUserControl,
   loginControl,
 } = require('./controllers/userControl');
+
+const routerUser = require('./routers/user');
+const routerRecipes = require('./routers/recipe');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,14 +23,12 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.post('/users', rescue(createUserControl));
+
+app.use('/users', routerUser);
 app.post('/login', rescue(loginControl));
 
-app.post('/recipes', validateJWT, rescue(createRecipesControl));
-app.get('/recipes', rescue(getAllRecipesControl));
-app.get('/recipes/:id', rescue(getRecipeByIdControl));
-app.put('/recipes/:id', validateJWT, rescue(updateRecipeByIdControl));
-app.delete('/recipes/:id', validateJWT, rescue(deleteRecipeByIdControl));
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+app.use('/recipes', routerRecipes);
 
 app.use(errorHandling);
 

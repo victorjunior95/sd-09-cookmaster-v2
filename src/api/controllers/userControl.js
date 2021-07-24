@@ -28,7 +28,16 @@ const loginControl = async (req, res) => {
     .status(200).json({ token });
 };
 
+const createAdmin = async (req, res) => {
+  const { name, email, password } = req.body;
+  const { id } = await createUserService({ name, email, password, role: 'admin' });
+  return res
+    .status(201)
+    .json({ user: { _id: id, name, email, role: 'admin' } });
+};
+
 module.exports = {
   createUserControl,
   loginControl,
+  createAdmin,
 };

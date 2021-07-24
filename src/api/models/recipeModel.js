@@ -1,11 +1,11 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const createRecipe = async ({ name, preparation, ingredients }) => {
+const createRecipe = async ({ name, preparation, ingredients, userId }) => {
   const recipe = await connection()
     .then((db) => db.collection('recipes'));
   const { insertedId } = await recipe
-  .insertOne({ name, preparation, ingredients, url: 'url' });
+  .insertOne({ name, preparation, ingredients, userId });
 
   return {
     id: insertedId,
@@ -40,6 +40,17 @@ const updateRecipeById = async (id, name, ingredients, preparation) => {
   return { _id: id, name, ingredients, preparation };
 };
 
+const uploadImage = async (id, image) => {
+  const recipes = await connection()
+  .then((db) => db.collection('recipes'));
+
+  await recipes.updateOne({ _id: ObjectId(id) },
+  { $set: { image: `localhost:3000/src/uploads/${image}` } });
+
+  const recipe = await recipes.findOne(new ObjectId(id));
+  return recipe;
+};
+
 const deleteRecipeById = async (id) => {
   const recipesCollection = await connection()
     .then((db) => db.collection('recipes'));
@@ -55,4 +66,5 @@ module.exports = {
   getRecipeById,
   updateRecipeById,
   deleteRecipeById,
+  uploadImage,
 };

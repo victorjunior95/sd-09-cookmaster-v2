@@ -3,6 +3,7 @@ const {
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
+  uploadImageService,
   deleteRecipeByIdService,
 } = require('../services/recipeService');
 
@@ -55,10 +56,30 @@ const deleteRecipeByIdControl = async (req, res) => {
   return res.status(204).json('');
 };
 
+const uploadImageControl = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req;
+  const image = req.file.filename;
+  console.log(id);
+  const result = await uploadImageService(id, userId, image);
+
+  return res.status(200).json(result);
+};
+
+const getImageControl = async (req, res) => {
+  const { id } = req.params;
+  const recipeId = id.split('.')[0];
+  const { image } = await recipesService.getById(recipeId);
+
+  return res.status(200).json(image);
+};
+
 module.exports = {
   createRecipesControl,
   getAllRecipesControl,
   getRecipeByIdControl,
   updateRecipeByIdControl,
   deleteRecipeByIdControl,
+  uploadImageControl,
+  getImageControl,
 };

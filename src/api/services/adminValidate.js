@@ -3,33 +3,24 @@ const { getByEmail } = require('../models/userModel');
 
 const secret = 'karla';
 
-const validateJWT = async (req, res, next) => {
+module.exports = async (req, res, next) => {
+  console.log("Validando admin")
   const token = req.headers.authorization;
-
   if (!token) {
     return res.status(401).json({ message: 'missing auth token' });
   }
 
   try {
     const decoded = jwt.verify(token, secret);
-    if (decoded.data.role === 'admin') {
-      req.userId = decoded.data.role;
-      next();
-      return null;
-    }
-    const user = await getByEmail(decoded.data.email);
+    const exists = await getByEmail(decoded.data.email);
 
-    if (!user) {
-      res.status(401).json({ message: 'jwt malformed' });
+    if (decoded.data.role === 'admin' && exists) {
+      console.log('deu bom');
+      return next();
     }
 
-    req.userId = decoded.data.id;
-    next();
+    return res.status(403).json({ message: 'Only admins can register new admins' });
   } catch (err) {
     return res.status(401).json({ message: err.message });
   }
-};
-
-module.exports = {
-  validateJWT,
 };

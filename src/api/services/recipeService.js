@@ -6,6 +6,7 @@ const {
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
+  uploadImage,
   deleteRecipeById,
 } = require('../models/recipeModel');
 
@@ -55,6 +56,24 @@ const updateRecipeByIdService = async (id, name, ingredients, preparation) => {
   return result;
 };
 
+const uploadImageService = async (id, userId, image) => {
+  const recipeNotFound = 'recipe not found';
+  console.log(id);
+  if (!ObjectId.isValid(id)) {
+    throw validateError(404, recipeNotFound);
+  }
+
+  const recipe = await getRecipeById(id);
+  if (!recipe) {
+    throw validateError(404, recipeNotFound);
+  }
+
+  if (recipe.userId === userId || userId === 'admin') {
+    const updatedRecipe = await uploadImage(id, image);
+    return updatedRecipe;
+  }
+};
+
 const deleteRecipeByIdService = async (id, userId) => {
   if (!ObjectId.isValid(id)) {
     throw validateError(404, 'recipe not found');
@@ -76,5 +95,6 @@ module.exports = {
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
+  uploadImageService,
   deleteRecipeByIdService,
 };
