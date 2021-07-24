@@ -34,7 +34,15 @@ const insertUser = async (name, email, password) => {
 const getUserByEmail = async (email) => connection()
     .then((db) => db.collection('users').findOne({ email }));
 
+const getUserByPassword = async (password) => connection()
+    .then((db) => db.collection('users').findOne({ password }));
+
+const userLogin = async (email, password) => connection()
+    .then((db) => db.collection('users').findOne({ email, password }));
+
 module.exports = {
   insertUser,
   getUserByEmail,
+  getUserByPassword,
+  userLogin,
 };

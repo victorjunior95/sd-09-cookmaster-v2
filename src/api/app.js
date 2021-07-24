@@ -9,6 +9,8 @@ app.use(bodyParser.json());
 
 app.post('/users', usersControllers.insertUser);
 
+app.post('/login', usersControllers.userLogin);
+
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
