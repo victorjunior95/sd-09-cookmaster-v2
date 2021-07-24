@@ -5,6 +5,7 @@ const {
   createRecipe,
   getAllRecipes,
   getRecipeById,
+  updateRecipeById,
 } = require('../models/recipeModel');
 
 const recipesSchema = Joi.object({
@@ -47,8 +48,15 @@ const getRecipeByIdService = async (id) => {
   return product;
 };
 
+const updateRecipeByIdService = async (id, name, ingredients, preparation) => {
+  const result = await updateRecipeById(id, name, ingredients, preparation);
+
+  return result;
+};
+
 module.exports = {
   createRecipeService,
   getAllRecipesService,
   getRecipeByIdService,
+  updateRecipeByIdService,
 };

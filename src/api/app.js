@@ -11,6 +11,7 @@ const {
   createRecipesControl,
   getAllRecipesControl,
   getRecipeByIdControl,
+  updateRecipeByIdControl,
 } = require('./controllers/recipeControl');
 
 const {
@@ -27,12 +28,13 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.post('/users', createUserControl);
-app.post('/login', loginControl);
+app.post('/users', rescue(createUserControl));
+app.post('/login', rescue(loginControl));
 
 app.post('/recipes', validateJWT, rescue(createRecipesControl));
 app.get('/recipes', rescue(getAllRecipesControl));
 app.get('/recipes/:id', rescue(getRecipeByIdControl));
+app.put('/recipes/:id', validateJWT, rescue(updateRecipeByIdControl));
 
 app.use(errorHandling);
 

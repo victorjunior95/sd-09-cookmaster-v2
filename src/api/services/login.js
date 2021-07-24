@@ -1,22 +1,32 @@
+const Joi = require('joi');
+
 const {
-  getUser,
+  getByEmail,
 } = require('../models/userModel');
 
-const loginUser = async (email, password) => {
-  const user = await getUser(email);
+const validateError = (status, message) => ({ status, message });
 
-  if (!user) {
-    return ({ err: { message: 'Incorrect username or password' } });
-  }
+const loginSchema = Joi.object({
+  email: Joi.string().required(),
+  password: Joi.string().required(),
+});
 
-  const match = await password === user.password;
-  if (!match) {
-    return ({ err: { message: 'Incorrect username or password' } });
-  }
+const login = async ({ email, password }) => {
+  const { error } = loginSchema.validate({ email, password });
+  if (error) throw validateError(401, 'All fields must be filled');
 
-  if (user) {
-    return (user);
-  }
+  const userByEmail = await getByEmail(email);
+  if (!userByEmail.length) throw validateError(401, 'Incorrect username or password');
+
+  const passwordValid = password === userByEmail[0].password;
+  if (!passwordValid) throw validateError(401, 'Incorrect username or password');
+
+  const { _id } = userByEmail[0];
+  return {
+    _id,
+    role: userByEmail[0].role,
+  };
 };
 
-module.exports = loginUser;
+
+module.exports = login;
