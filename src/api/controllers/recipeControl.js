@@ -3,6 +3,7 @@ const {
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
+  deleteRecipeByIdService,
 } = require('../services/recipeService');
 
 const createRecipesControl = async (req, res) => {
@@ -45,9 +46,19 @@ const updateRecipeByIdControl = async (req, res) => {
   return res.status(200).json(response);
 };
 
+const deleteRecipeByIdControl = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req;
+
+  await deleteRecipeByIdService(id, userId);
+
+  return res.status(204).json('');
+};
+
 module.exports = {
   createRecipesControl,
   getAllRecipesControl,
   getRecipeByIdControl,
   updateRecipeByIdControl,
+  deleteRecipeByIdControl,
 };

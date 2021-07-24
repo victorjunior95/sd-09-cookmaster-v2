@@ -6,6 +6,7 @@ const {
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
+  deleteRecipeById,
 } = require('../models/recipeModel');
 
 const recipesSchema = Joi.object({
@@ -54,9 +55,26 @@ const updateRecipeByIdService = async (id, name, ingredients, preparation) => {
   return result;
 };
 
+const deleteRecipeByIdService = async (id, userId) => {
+  if (!ObjectId.isValid(id)) {
+    throw validateError(404, 'recipe not found');
+  }
+
+  const recipe = await getRecipeById(id);
+  if (!recipe) {
+    throw validateError(404, 'recipe not found');
+  }
+
+  if (recipe.userId === userId) {
+    await deleteRecipeById(id);
+  }
+  return true;
+};
+
 module.exports = {
   createRecipeService,
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
+  deleteRecipeByIdService,
 };

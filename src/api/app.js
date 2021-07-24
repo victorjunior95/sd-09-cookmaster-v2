@@ -12,6 +12,7 @@ const {
   getAllRecipesControl,
   getRecipeByIdControl,
   updateRecipeByIdControl,
+  deleteRecipeByIdControl,
 } = require('./controllers/recipeControl');
 
 const {
@@ -35,6 +36,7 @@ app.post('/recipes', validateJWT, rescue(createRecipesControl));
 app.get('/recipes', rescue(getAllRecipesControl));
 app.get('/recipes/:id', rescue(getRecipeByIdControl));
 app.put('/recipes/:id', validateJWT, rescue(updateRecipeByIdControl));
+app.delete('/recipes/:id', validateJWT, rescue(deleteRecipeByIdControl));
 
 app.use(errorHandling);
 
