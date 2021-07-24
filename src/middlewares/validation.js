@@ -44,7 +44,6 @@ const token = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    console.log('Entrei');
     next(new Errors.InvalidTokenError());
   }
 };
