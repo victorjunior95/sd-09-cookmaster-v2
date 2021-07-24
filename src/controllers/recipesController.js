@@ -1,9 +1,12 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const { validateToken, verifyToken } = require('../middlewares/auth');
 const recipesService = require('../services/recipesService');
 const { validateRecipe, validateRecipeId } = require('../middlewares/validateRecipe');
 
 const router = express.Router();
+
 const responseCodes = {
   success: 200,
   created: 201,
@@ -13,6 +16,15 @@ const responseCodes = {
   unprocessableEntity: 422,
   internalServerError: 500,
 };
+
+const uploadDir = path.join(__dirname, '..', 'uploads');
+const storage = multer.diskStorage({
+  destination: uploadDir,
+  filename: (req, res, callback) => {
+    const fileName = `${req.params.id}.jpeg`;
+    callback(null, fileName);
+  },
+});
 
 router.get('/', async (req, res) => {
   try {
@@ -49,12 +61,28 @@ router.post('/', validateToken, validateRecipe, async (req, res) => {
   res.status(responseCodes.created).json(recipe);
 });
 
+const upload = multer({ storage });
+
 router.put('/:id', validateToken, async (req, res) => {
   const reqRecipe = req.body;
   const { id } = req.params;
   const reqUser = req.user;
   try {
     const changedRecipe = await recipesService.updateRecipe(reqRecipe, id, reqUser);
+    res.status(responseCodes.success).json(changedRecipe);
+  } catch (error) {
+    res.status(responseCodes.notAuthorized).json({ message: error.message });
+  }
+});
+
+router.put('/:id/image', validateToken, upload.single('image'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const reqUser = req.user;
+    const imgUrl = `localhost:3000/src/uploads/${req.file.filename}`;
+    const recipe = await recipesService.findRecipeById(id);
+    recipe.image = imgUrl;
+    const changedRecipe = await recipesService.updateRecipe(recipe, id, reqUser);
     res.status(responseCodes.success).json(changedRecipe);
   } catch (error) {
     res.status(responseCodes.notAuthorized).json({ message: error.message });
