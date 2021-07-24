@@ -5,7 +5,6 @@ const {
   createUserService,
 } = require('../services/userService');
 
-
 const secret = 'karla';
 const CREATED = '201';
 
