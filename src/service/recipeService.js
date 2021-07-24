@@ -35,10 +35,19 @@ const remove = async (id) => {
   await RecipeModel.remove(id);
 };
 
+const uploadImage = async (id) => {
+  const image = { image: `localhost:3000/src/uploads/${id}.jpeg` };
+
+  const updated = await RecipeModel.uploadImage(id, image);
+
+  return updated;
+};
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
   remove,
+  uploadImage,
 };

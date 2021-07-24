@@ -1,4 +1,5 @@
 const express = require('express');
+const upload = require('../middlewares/upload');
 const Validation = require('../middlewares/validation');
 const RecipeService = require('../service/recipeService');
 const ErrorHandler = require('../middlewares/errorHandler');
@@ -49,6 +50,17 @@ router.delete('/:id', Validation.token, async (req, res, next) => {
     await RecipeService.remove(id);
     return res.status(StatusCode.notContent).json();
   } catch (err) {
+    next(err);
+  }
+});
+
+router.put('/:id/image', Validation.token, upload, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updated = await RecipeService.uploadImage(id);
+    return res.status(StatusCode.ok).json(updated);
+  } catch (err) {
+    console.log('entrei');
     next(err);
   }
 });

@@ -52,10 +52,21 @@ const remove = async (id) => {
   await recipesCollection.deleteOne({ _id: id });
 };
 
+const uploadImage = async (id, image) => {
+  const recipesCollection = await connection()
+  .then((db) => db.collection('recipes'));
+
+  const { value } = await recipesCollection
+  .findOneAndUpdate({ _id: ObjectId(id) }, { $set: image }, { returnOriginal: false });
+
+  return value;
+};
+
 module.exports = {
   create,
   findAll,
   findById,
   update,
   remove,
+  uploadImage,
 };
