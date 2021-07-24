@@ -1,5 +1,6 @@
 const Joi = require('@hapi/joi');
 const User = require('../model/userModel');
+const jwt = require('jsonwebtoken');
 
 const createUserSchm = Joi.object({
   email: Joi.string().email().required(),
@@ -27,6 +28,8 @@ const createUserService = async (email, name, password) => {
   return { user };
 };
 
+const validateUserData = (code, message) => ({ code, message });
+
 const userLoginService = async (email, password) => {
   const { error } = loginUserSchm.validate({ email, password });
   if (error) {
@@ -42,15 +45,14 @@ const userLoginService = async (email, password) => {
   };
 
   const secretToken = 'tokensupersecreto';
-  //const secretToken = 'dale na narguinas';
+  /*const secretToken = 'dale na narguinas';*/
 
   const token = jwt.sign({ data: user }, secretToken, jwtConfig);
 
   return { token };
 };
 
-
 module.exports = {
   createUserService,
-  userLoginService
+  userLoginService,
 };
