@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-const errorMiddleware = require('../midd/err');
+const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
 
 const app = express();
@@ -15,6 +15,6 @@ app.get('/', (request, response) => {
 
 app.post('/users', Users.createNewUser);
 
-app.use(errorMiddleware); 
+app.use(Err); 
 
 module.exports = app;
