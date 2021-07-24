@@ -36,7 +36,7 @@ const validateLoginData = (data) => {
     password: Joi.required(),
   }).validate(data);
   if (error) {
-    throw new Error('invalid_login_input');
+    throw new Error('invalid_data');
   }
 };
 
@@ -52,10 +52,11 @@ const auth = async (data) => {
   if (!user) {
     throw new Error('invalid_login');
   }
+  const { email, _id, role } = user;
   const payload = {
-    email: user.email,
-    id: user.id,
-    role: user.role,
+    email,
+    id: _id,
+    role,
   };
   const token = jwt.sign(payload, JWT_SECRET, JWT_CONFIG);
   return token;

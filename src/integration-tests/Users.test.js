@@ -11,6 +11,7 @@ const { expect } = chai;
 
 describe('POST /users', () => {
   describe('1 - When a user is created successfully', () => {
+    
     let resp;
 
     before(async () => {
