@@ -63,10 +63,10 @@ describe('POST /recipes', () => {
     });
 
     it('Returns an object with specific values', () => {
-      expect(resp.body.recipe.name).to.be.equals('chicken');
-      expect(resp.body.recipe.ingredients).to.be.equals('rice, beans, chicken');
-      expect(resp.body.recipe.preparation).to.be.equals('10 minutes on oven');
-      expect(resp.body.recipe.userId).to.be.equals(id);
+      expect(resp.body.recipe.name).to.be.equal('chicken');
+      expect(resp.body.recipe.ingredients).to.be.equal('rice, beans, chicken');
+      expect(resp.body.recipe.preparation).to.be.equal('10 minutes on oven');
+      expect(resp.body.recipe.userId).to.be.equal(id);
     });
 
   });
@@ -114,7 +114,7 @@ describe('POST /recipes', () => {
     });
 
     it('Returns an object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -162,7 +162,7 @@ describe('POST /recipes', () => {
     });
 
     it('Returns an object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -210,7 +210,7 @@ describe('POST /recipes', () => {
     });
 
     it('Returns an object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -259,7 +259,7 @@ describe('POST /recipes', () => {
     });
 
     it('Returns an object with value "jwt malformed"', () => {
-      expect(resp.body.message).to.be.equals('jwt malformed');
+      expect(resp.body.message).to.be.equal('jwt malformed');
     });
 
   });
@@ -318,10 +318,10 @@ describe('GET /recipes', () => {
       expect(resp.body[0]).to.have.property('preparation');
       expect(resp.body[0]).to.have.property('userId');
 
-      expect(resp.body[0].name).to.be.equals('chicken');
-      expect(resp.body[0].ingredients).to.be.equals('rice, beans, chicken');
-      expect(resp.body[0].preparation).to.be.equals('10 minutes on oven');
-      expect(resp.body[0].userId).to.be.equals(id);
+      expect(resp.body[0].name).to.be.equal('chicken');
+      expect(resp.body[0].ingredients).to.be.equal('rice, beans, chicken');
+      expect(resp.body[0].preparation).to.be.equal('10 minutes on oven');
+      expect(resp.body[0].userId).to.be.equal(id);
     });
 
   });
@@ -350,7 +350,142 @@ describe('GET /recipes', () => {
     it('Returns an empty array', () => {
       expect(resp.body).to.be.an('array');
 
-      expect(resp.body.length).to.be.equals(0);
+      expect(resp.body.length).to.be.equal(0);
     });
+  });
+});
+
+describe('GET /recipes/:id', () => {
+  describe('When the recipe is returned successfully', () => {
+
+    let resp;
+    let id;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      const { body: { user: { _id: userId } } } = await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+      
+      id = userId;
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'rice, beans, chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .get(`/recipes/${recipeId}`);
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 200', () => {
+      expect(resp).to.have.status(200);
+    });
+
+    it('Returns an object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+
+    it('Return an object with specific properties', () => {
+      expect(resp.body).to.have.property('_id');
+      expect(resp.body).to.have.property('name');
+      expect(resp.body).to.have.property('ingredients');
+      expect(resp.body).to.have.property('preparation');
+      expect(resp.body).to.have.property('userId');
+    });
+
+    it('Returns an object with specific values', () => {
+      expect(resp.body.name).to.be.equal('chicken');
+      expect(resp.body.ingredients).to.be.equal('rice, beans, chicken');
+      expect(resp.body.preparation).to.be.equal('10 minutes on oven');
+      expect(resp.body.userId).to.be.equal(id);
+    });
+
+  });
+  describe('When the recipe is not found', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+      
+      resp = await chai.request(server)
+        .get('/recipes/60fca24642ca2f602e0a4ffa');
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 404', () => {
+      expect(resp).to.have.status(404);
+    });
+
+    it('Returns an object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+
+    it('Returns an object with message property', () => {
+      expect(resp.body).to.have.property('message');
+    });
+
+    it('Returns an object with "recipe not found" value', () => {
+      expect(resp.body.message).to.be.equal('recipe not found');
+    });
+
+  });
+  describe('When the entered id is invalid', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+      
+      resp = await chai.request(server)
+        .get('/recipes/test');
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 404', () => {
+      expect(resp).to.have.status(404);
+    });
+
+    it('Returns an object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+
+    it('Returns an object with message property', () => {
+      expect(resp.body).to.have.property('message');
+    });
+
+    it('Returns an object with "recipe not found" value', () => {
+      expect(resp.body.message).to.be.equal('recipe not found');
+    });
+
   });
 });

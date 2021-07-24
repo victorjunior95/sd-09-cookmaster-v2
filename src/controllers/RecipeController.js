@@ -7,6 +7,7 @@ const HTTP_OK = 200;
 const HTTP_CREATED = 201;
 const HTTP_BAD_REQ = 400;
 const HTTP_UNAUTHORIZED = 401;
+const HTTP_NOT_FOUND = 404;
 
 RecipeRouter.post('/', async (req, res, next) => {
   try {
@@ -30,6 +31,19 @@ RecipeRouter.get('/', async (_req, res, next) => {
     const resp = await RecipeService.getAll();
     res.status(HTTP_OK).json(resp);
   } catch (err) {
+    next(err);
+  }
+});
+
+RecipeRouter.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const resp = await RecipeService.getById(id);
+    res.status(HTTP_OK).json(resp);
+  } catch (err) {
+    if (err.message === 'not_found') {
+      return next({ httpCode: HTTP_NOT_FOUND, message: 'recipe not found' });
+    }
     next(err);
   }
 });

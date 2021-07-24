@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
 const RecipeModel = require('../models/RecipeModel');
 
 const JWT_SECRET = 'cookmaster';
@@ -20,6 +21,12 @@ const validateToken = (token) => {
   return id;
 };
 
+const validateId = (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw new Error('not_found');
+  }
+};
+
 const create = (data, token) => {
   validateRecipeData(data);
   const userId = validateToken(token);
@@ -28,7 +35,17 @@ const create = (data, token) => {
 
 const getAll = () => RecipeModel.getAll();
 
+const getById = async (id) => {
+  validateId(id);
+  const resp = await RecipeModel.getById(new ObjectId(id));
+  if (!resp) {
+    throw new Error('not_found');
+  }
+  return resp;
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

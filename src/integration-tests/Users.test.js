@@ -98,7 +98,7 @@ describe('POST /users', () => {
     });
 
     it('Returns a object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -137,7 +137,7 @@ describe('POST /users', () => {
     });
 
     it('Returns a object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -176,7 +176,7 @@ describe('POST /users', () => {
     });
 
     it('Returns a object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -216,7 +216,7 @@ describe('POST /users', () => {
     });
 
     it('Returns a object with value "Invalid entries. Try again."', () => {
-      expect(resp.body.message).to.be.equals('Invalid entries. Try again.');
+      expect(resp.body.message).to.be.equal('Invalid entries. Try again.');
     });
 
   });
@@ -264,7 +264,7 @@ describe('POST /users', () => {
     });
 
     it('Returns a object with value "Email already registered."', () => {
-      expect(resp.body.message).to.be.equals('Email already registered');
+      expect(resp.body.message).to.be.equal('Email already registered');
     });
 
   });
@@ -360,7 +360,7 @@ describe('POST /login', () => {
     });
 
     it('Returns an object with value "All fields must be filled"', () => {
-      expect(resp.body.message).to.be.equals('All fields must be filled');
+      expect(resp.body.message).to.be.equal('All fields must be filled');
     });
 
   });
@@ -406,7 +406,7 @@ describe('POST /login', () => {
     });
 
     it('Returns an object with value "All fields must be filled"', () => {
-      expect(resp.body.message).to.be.equals('All fields must be filled');
+      expect(resp.body.message).to.be.equal('All fields must be filled');
     });
 
   });
@@ -453,7 +453,7 @@ describe('POST /login', () => {
     });
 
     it('Returns an object with value "Incorrect password or password"', () => {
-      expect(resp.body.message).to.be.equals('Incorrect username or password');
+      expect(resp.body.message).to.be.equal('Incorrect username or password');
     });
 
   });
@@ -500,7 +500,7 @@ describe('POST /login', () => {
     });
 
     it('Returns an object with value "Incorrect username or password"', () => {
-      expect(resp.body.message).to.be.equals('Incorrect username or password');
+      expect(resp.body.message).to.be.equal('Incorrect username or password');
     });
 
   });
