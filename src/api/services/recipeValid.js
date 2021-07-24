@@ -5,11 +5,7 @@ const secret = 'karla';
 
 const validateJWT = async (req, res, next) => {
   const token = req.headers.authorization;
-
-  if (!token) {
-    return res.status(401).json({ message: 'missing auth token' });
-  }
-
+  if (!token) return res.status(401).json({ message: 'missing auth token' });
   try {
     const decoded = jwt.verify(token, secret);
     if (decoded.data.role === 'admin') {
@@ -18,11 +14,7 @@ const validateJWT = async (req, res, next) => {
       return null;
     }
     const user = await getByEmail(decoded.data.email);
-
-    if (!user) {
-      res.status(401).json({ message: 'jwt malformed' });
-    }
-
+    if (!user) res.status(401).json({ message: 'jwt malformed' });
     req.userId = decoded.data.id;
     next();
   } catch (err) {

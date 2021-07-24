@@ -36,15 +36,16 @@ const getAllRecipesService = async () => {
   return recipes;
 };
 
+const notFound = 'recipe not found';
 const getRecipeByIdService = async (id) => {
   if (!ObjectId.isValid(id)) {
-    throw validateError(404, 'recipe not found');
+    throw validateError(404, notFound);
   }
 
   const product = await getRecipeById(id);
 
   if (!product) {
-    throw validateError(404, 'recipe not found');
+    throw validateError(404, notFound);
   }
 
   return product;
@@ -76,12 +77,12 @@ const uploadImageService = async (id, userId, image) => {
 
 const deleteRecipeByIdService = async (id, userId) => {
   if (!ObjectId.isValid(id)) {
-    throw validateError(404, 'recipe not found');
+    throw validateError(404, notFound);
   }
 
   const recipe = await getRecipeById(id);
   if (!recipe) {
-    throw validateError(404, 'recipe not found');
+    throw validateError(404, notFound);
   }
 
   if (recipe.userId === userId) {

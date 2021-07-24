@@ -69,7 +69,7 @@ const uploadImageControl = async (req, res) => {
 const getImageControl = async (req, res) => {
   const { id } = req.params;
   const recipeId = id.split('.')[0];
-  const { image } = await recipesService.getById(recipeId);
+  const { image } = await getRecipeByIdService(recipeId);
 
   return res.status(200).json(image);
 };

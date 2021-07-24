@@ -4,7 +4,6 @@ const { getByEmail } = require('../models/userModel');
 const secret = 'karla';
 
 module.exports = async (req, res, next) => {
-  console.log("Validando admin")
   const token = req.headers.authorization;
   if (!token) {
     return res.status(401).json({ message: 'missing auth token' });
