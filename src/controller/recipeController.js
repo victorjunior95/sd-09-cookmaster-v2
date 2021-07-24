@@ -60,7 +60,6 @@ router.put('/:id/image', Validation.token, upload, async (req, res, next) => {
     const updated = await RecipeService.uploadImage(id);
     return res.status(StatusCode.ok).json(updated);
   } catch (err) {
-    console.log('entrei');
     next(err);
   }
 });
