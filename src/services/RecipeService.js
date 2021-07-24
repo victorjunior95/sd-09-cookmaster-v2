@@ -26,6 +26,9 @@ const create = (data, token) => {
   return RecipeModel.create(data, userId);
 };
 
+const getAll = () => RecipeModel.getAll();
+
 module.exports = {
   create,
+  getAll,
 };

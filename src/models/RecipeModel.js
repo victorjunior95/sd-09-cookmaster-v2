@@ -8,6 +8,11 @@ const create = (data, userId) => connection()
     userId,
   }));
 
+const getAll = () => connection()
+  .then((db) => db.collection('recipes').find().toArray())
+  .then((result) => result);
+
 module.exports = {
   create,
+  getAll,
 };

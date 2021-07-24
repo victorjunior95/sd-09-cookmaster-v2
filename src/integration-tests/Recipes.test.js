@@ -264,3 +264,93 @@ describe('POST /recipes', () => {
 
   });
 });
+
+describe('GET /recipes', () => {
+  describe('1 - When there are registered recipes', () => {
+
+    let resp;
+    let id;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      const { body: { user: { _id } } } = await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+      
+      id = _id;
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'rice, beans, chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .get('/recipes');
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 200', () => {
+      expect(resp).to.have.status(200);
+    });
+
+    it('Returns an array of objects', () => {
+      expect(resp.body).to.be.an('array');
+      expect(resp.body[0]).to.be.an('object');
+
+      expect(resp.body[0]).to.have.property('_id');
+      expect(resp.body[0]).to.have.property('name');
+      expect(resp.body[0]).to.have.property('ingredients');
+      expect(resp.body[0]).to.have.property('preparation');
+      expect(resp.body[0]).to.have.property('userId');
+
+      expect(resp.body[0].name).to.be.equals('chicken');
+      expect(resp.body[0].ingredients).to.be.equals('rice, beans, chicken');
+      expect(resp.body[0].preparation).to.be.equals('10 minutes on oven');
+      expect(resp.body[0].userId).to.be.equals(id);
+    });
+
+  });
+  describe('2 - When there are no registred recipes', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+      
+      resp = await chai.request(server)
+        .get('/recipes');
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 200', () => {
+      expect(resp).to.have.status(200);
+    });
+
+    it('Returns an empty array', () => {
+      expect(resp.body).to.be.an('array');
+
+      expect(resp.body.length).to.be.equals(0);
+    });
+  });
+});
