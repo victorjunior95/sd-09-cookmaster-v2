@@ -13,7 +13,7 @@ const createUserSchm = Joi.object({
   email: Joi.string().email().required(),
   name: Joi.string().min(1).required(),
   password: Joi.required(),
-});
+}); 
 
 const createUserService = async (email, name, password) => {
   const { error } = createUserSchm.validate({ email, name, password });
@@ -27,7 +27,7 @@ const createUserService = async (email, name, password) => {
   const user = await User.createNewUser(email, name, password);
   return { user };
 };
-
+  
 const userLoginService = async (email, password) => {
   const { error } = loginUserSchm.validate({ email, password });
   if (error) {

@@ -3,7 +3,7 @@ const bodyParser = require('body-parser').json();
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
 const Recipes = require('../controllers/recipesController');
-const validationRecipes = require('./validation/validation');
+const { validationRecipes } = require('./validation/validation');
 
 const app = express();
 
