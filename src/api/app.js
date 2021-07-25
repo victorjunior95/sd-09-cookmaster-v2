@@ -19,6 +19,7 @@ app.post('/users', Users.createNewUser);
 app.post('/login', Users.loginController);
 app.post('/recipes', RecipVal, Recipes.createNewRecipe);
 app.get('/recipes', Recipes.getAllRecipes);
+app.get('/recipes/:id', Recipes.oneRecp);
 
 app.use(Err);
 
