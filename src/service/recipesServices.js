@@ -1,6 +1,7 @@
 const Joi = require('@hapi/joi');
 const Recipes = require('../model/modelRecipes');
-const { dataErr } = require('../helpers/index');
+
+const dataErr = (code, message) => ({ code, message });
 
 const schemaRecipeCreate = Joi.object({
   name: Joi.string().required(),

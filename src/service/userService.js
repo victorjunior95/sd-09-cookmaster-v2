@@ -13,7 +13,7 @@ const loginSchm = Joi.object({
   password: Joi.required(),
 });
 
-const dataErr = require('../helpers/index');
+const dataErr = (code, message) => ({ code, message });
 
 const createUserService = async (email, name, password) => {
   const { error } = userSchm.validate({ email, name, password });

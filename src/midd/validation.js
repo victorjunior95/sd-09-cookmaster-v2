@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const secret = 'tokensupersecreto';
 /* const token = 'token nargas' */
-const dataErr = require('../helpers/index');
+const dataErr = (code, message) => ({ code, message });
 
 const RecipVal = async (req, res, next) => {
   const reqToken = req.headers.authorization;
