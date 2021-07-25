@@ -20,12 +20,12 @@ const getOneUser = async (email) => {
 
 const userLogin = async (email, password) => {
   const users = await connection().then((db) => db.collection('users')
-    .findOne({ email, password }).then((user) => user));
-    if (users) {
-      const { password: passBD, ...userWithoutPassword } = users;
-      return userWithoutPassword;
-    } 
-  
+  .findOne({ email, password }).then((user) => user));
+  if (users) {
+    const { password: passBD, ...userWithoutPassword } = users;
+    return userWithoutPassword;
+  } 
+
   return users;
 };
 

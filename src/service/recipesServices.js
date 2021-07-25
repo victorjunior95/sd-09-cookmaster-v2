@@ -14,7 +14,7 @@ const createRecipe = async (name, ingredients, preparation, userId) => {
   if (error) {
     throw dataErr(400, 'Invalid entries. Try again.');
   }
-  const newRecipe = await Recipes.createRecipe(name, ingredients, preparation, userId);
+  const newRecipe = await Recipes.createRecipeModel(name, ingredients, preparation, userId);
   return { newRecipe };
 };
 
