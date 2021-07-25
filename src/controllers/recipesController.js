@@ -31,10 +31,19 @@ async function deleteRecipe(req, res) {
   return res.status(status).json();
 }
 
+async function addRecipeImage(req, res) {
+  const { id } = req.params;
+  const { authorization: token } = req.headers;
+  const { filename } = req.file;
+  const { status, response } = await recipesServices.addRecipeImage(id, token, filename);
+  return res.status(status).json(response);
+}
+
 module.exports = {
   addRecipe,
   getRecipe,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  addRecipeImage,
 };

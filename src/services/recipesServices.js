@@ -34,10 +34,18 @@ async function deleteRecipe(id, token) {
   return { status: 204 };
 }
 
+async function addRecipeImage(id, token, filename) {
+  recipesValidations.validateAuthentication(token);
+  const path = `localhost:3000/src/uploads/${filename}`;
+  const response = await recipesModel.addRecipeImage(id, path);
+  return { status: 200, response };
+}
+
 module.exports = {
   addRecipe,
   getRecipe,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  addRecipeImage,
 };
