@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser').json();
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
+const Recipes = require('../controllers/recipesController');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get('/', (request, response) => {
 
 app.post('/users', Users.createNewUser);
 app.post('/login', Users.loginController);
+app.post('/recipes', validationRcp, Recipes.createRecipes);
 
 app.use(Err); 
 

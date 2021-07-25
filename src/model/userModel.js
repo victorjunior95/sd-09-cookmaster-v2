@@ -10,8 +10,11 @@ const createNewUser = async (email, name, password) => {
 
 const getOneUser = async (email) => {
   const users = await connection().then((db) => db.collection('users')
-    .findOne({ email }).then((user) => user));
-
+  .findOne({ email }));
+  if (users) {
+    const { password: passBD, ...userWithoutPassword } = users;
+    return userWithoutPassword;
+  } 
   return users;
 };
 
