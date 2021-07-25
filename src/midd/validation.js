@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../../model/userModel');
-const dataErr = require('../../helpers/index');
+const User = require('../model/userModel');
+const dataErr = require('../helpers/index');
 
 const secret = 'tokensupersecreto';
 
