@@ -13,9 +13,6 @@ const loginUserSchm = Joi.object({
   password: Joi.required(),
 });
 
-const token = jwt.sign({ data: user }, secretToken, jwtConfig);
-
-
 const userValidation = (code, message) => ({ code, message });
 
 const createUserService = async (email, name, password) => {
@@ -48,9 +45,9 @@ const userLoginService = async (email, password) => {
   };
 
   const secretToken = 'tokensupersecreto';
+  const token = jwt.sign({ data: user }, secretToken, jwtConfig);
 
   /* const secretToken = 'dale na narguinas'; */
-
 
   return { token };
 };
