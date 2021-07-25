@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-const  Err  = require('../midd/err');
+const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
 const Recipes = require('../controllers/recipesController');
 const { RecipVal } = require('../midd/validation');
