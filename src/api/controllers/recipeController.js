@@ -51,11 +51,10 @@ const deleteRecipeData = async (req, res, _next) => {
 };
 
 const uploadToFolder = (id) => {
-  const storage = multer.diskStorage({
+  multer.diskStorage({
     destination: (req, file, callback) => callback(null, 'src/uploads'),
     filename: (req, file, callback) => callback(null, `${id}.jpeg`),
   });
-  console.log(storage);
 };
 
 const addNewRecipeImage = async (req, res, _next) => {
