@@ -18,6 +18,7 @@ app.get('/', (request, response) => {
 app.post('/users', Users.createNewUser);
 app.post('/login', Users.loginController);
 app.post('/recipes', RecipVal, Recipes.createNewRecipe);
+app.get('/recipes', Recipes.getAllRecipes);
 
 app.use(Err);
 
