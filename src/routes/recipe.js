@@ -20,4 +20,9 @@ router.get(
   rescue(recipeController.recipeByIdController),
 );
 
+router.put(
+  '/:id',
+  rescue(recipeController.editedRecipeController),
+);
+
 module.exports = router;

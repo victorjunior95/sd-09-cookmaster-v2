@@ -24,10 +24,25 @@ const recipeByIdModel = async (id) => {
   return recipe;
 };
 
+const editedRecipeModel = async (id, recipe) => {
+  if (!ObjectId.isValid(id)) return null;
+  
+  const { name, ingredients, preparation } = recipe;
+  const db = await connection();
+  await db.collection(RECIPES).updateOne(
+    { _id: ObjectId(id) },
+    { $set: { name, ingredients, preparation } },
+    );
+
+  const editedRecipe = await db.collection(RECIPES).findOne({ _id: ObjectId(id) });
+  return editedRecipe;
+};
+
 module.exports = {
   newRecipeModel,
   listRecipesModel,
   recipeByIdModel,
+  editedRecipeModel,
 };
 
   // console.log(`created recipe de model ${createdRecipe}`);

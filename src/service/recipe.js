@@ -58,10 +58,20 @@ const recipeByIdService = async (id) => {
   };
 };
 
+const editedRecipeService = async (authorization, id, recipe) => {
+  await validateToken(authorization); /* Edição estando autorizado */
+  const editedRecipe = await recipeModel.editedRecipeModel(id, recipe);
+  return {
+    status: status.OK,
+    editedRecipe,
+  };
+};
+
 module.exports = {
   newRecipeService,
   listRecipesService,
   recipeByIdService,
+  editedRecipeService,
 };
 
     // console.log(decodeToken);

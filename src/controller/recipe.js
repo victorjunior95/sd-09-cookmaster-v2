@@ -23,10 +23,20 @@ const recipeByIdController = async (request, response) => {
   response.status(status).json(recipe);
 };
 
+const editedRecipeController = async (request, response) => {
+  const { authorization } = request.headers;
+  const { id } = request.params;
+  const recipe = request.body;
+  const { status,
+    editedRecipe } = await recipeService.editedRecipeService(authorization, id, recipe);
+  response.status(status).json(editedRecipe);
+};
+
 module.exports = {
   newRecipeController,
   listRecipesController,
   recipeByIdController,
+  editedRecipeController,
 };
 
   // console.log(newRecipe);
