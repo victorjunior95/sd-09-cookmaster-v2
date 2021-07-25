@@ -8,29 +8,32 @@ const createNewUser = async (email, name, password) => {
   return userWithoutPassword;
 };
 
-const getOneUser = async (email) => {
+const userLoginModel = async (email, password) => {
   const users = await connection().then((db) => db.collection('users')
-  .findOne({ email }));
+    .findOne({ email, password }).then((user) => user));
+
   if (users) {
     const { password: passBD, ...userWithoutPassword } = users;
     return userWithoutPassword;
   } 
+  
   return users;
 };
 
-const userLogin = async (email, password) => {
+const getUserByEmail = async (email) => {
   const users = await connection().then((db) => db.collection('users')
-  .findOne({ email, password }).then((user) => user));
+    .findOne({ email }));
+  
   if (users) {
     const { password: passBD, ...userWithoutPassword } = users;
     return userWithoutPassword;
   } 
-
+  
   return users;
 };
 
 module.exports = {
   createNewUser,
-  userLogin,
-  getOneUser,
+  getUserByEmail,
+  userLoginModel,
 };

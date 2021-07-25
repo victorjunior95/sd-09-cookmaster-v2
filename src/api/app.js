@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-const Err = require('../midd/err');
+const { Err } = require('../midd/err');
 const Users = require('../controllers/userControler');
 const Recipes = require('../controllers/recipesController');
-const { validationRecipes } = require('../midd/validation');
+const { RecipVal } = require('../midd/validation');
 
 const app = express();
 
@@ -15,10 +15,11 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
+
 app.post('/users', Users.createNewUser);
 app.post('/login', Users.loginController);
-app.post('/recipes', validationRecipes, Recipes.createRecipes);
+app.post('/recipes', RecipVal, Recipes.createNewRecipe);
 
-app.use(Err); 
+app.use(Err);
 
 module.exports = app;

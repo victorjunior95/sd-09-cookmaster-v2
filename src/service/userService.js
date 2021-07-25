@@ -2,38 +2,38 @@ const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 
-const dataErr = require('../helpers/index');
+const userSchm = Joi.object({
+  email: Joi.string().email().required(),
+  name: Joi.string().min(1).required(),
+  password: Joi.required(),
+});
 
-const loginUserSchm = Joi.object({
+const loginSchm = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.required(),
 });
 
-const createUserSchm = Joi.object({
-  email: Joi.string().email().required(),
-  name: Joi.string().min(1).required(),
-  password: Joi.required(),
-}); 
+const dataErr = require('../helpers/index')
 
 const createUserService = async (email, name, password) => {
-  const { error } = createUserSchm.validate({ email, name, password });
+  const { error } = userSchm.validate({ email, name, password });
   if (error) {
     throw dataErr(400, 'Invalid entries. Try again.');
   }
-  const getByEmail = await User.getOneUser(email);
-  if (getByEmail) {
+  const getUser = await User.getUserByEmail(email);
+  if (getUser) {
     throw dataErr(409, 'Email already registered');
   }
   const user = await User.createNewUser(email, name, password);
   return { user };
 };
-  
+
 const userLoginService = async (email, password) => {
-  const { error } = loginUserSchm.validate({ email, password });
+  const { error } = loginSchm.validate({ email, password });
   if (error) {
     throw dataErr(401, 'All fields must be filled');
   }
-  const user = await User.userLogin(email, password);
+  const user = await User.userLoginModel(email, password);
   if (!user) {
     throw dataErr(401, 'Incorrect username or password');
   }
@@ -41,9 +41,11 @@ const userLoginService = async (email, password) => {
     expiresIn: '7d',
     algorithm: 'HS256',
   };
-  const secretToken = 'tokensupersecreto';
-  const token = jwt.sign({ data: user }, secretToken, jwtConfig);
-  /* const secretToken = 'dale na narguinas'; */
+
+  const secret = 'tokensupersecreto';
+  /* const test = 'narguinas' */
+  const token = jwt.sign(user, secret, jwtConfig);
+
   return { token };
 };
 
