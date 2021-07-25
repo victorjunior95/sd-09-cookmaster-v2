@@ -2,6 +2,8 @@ const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 
+dataErr = require('../helpers/index')
+
 const createUserSchm = Joi.object({
   email: Joi.string().email().required(),
   name: Joi.string().min(1).required(),
@@ -28,16 +30,16 @@ const createUserService = async (email, name, password) => {
   return { user };
 };
 
-const validateUserData = (code, message) => ({ code, message });
+
 
 const userLoginService = async (email, password) => {
   const { error } = loginUserSchm.validate({ email, password });
   if (error) {
-    throw validateUserData(401, 'All fields must be filled');
+    throw dataErr(401, 'All fields must be filled');
   }
   const user = await User.userLogin(email, password);
   if (!user) {
-    throw validateUserData(401, 'Incorrect username or password');
+    throw dataErr(401, 'Incorrect username or password');
   }
   const jwtConfig = {
     expiresIn: '7d',
