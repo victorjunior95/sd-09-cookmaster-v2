@@ -6,4 +6,6 @@ const registerRecipe = async (newRecipe) => {
   return recipe;
 };
 
-module.exports = { registerRecipe };
+const findRecipes = async () => connection().then((db) => db.collection('recipes').find({}));
+
+module.exports = { registerRecipe, findRecipes };
