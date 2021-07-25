@@ -14,7 +14,7 @@ const postRecipe = async (req, res, next) => {
 const getRecipes = async (_req, res, next) => {
   try {
     const recipes = await recipesService.getAllRecipes();
-    if (recipes) res.status(200).json({ recipes });
+    if (recipes) return res.status(200).json(recipes);
   } catch (err) {
     return next(err);
   }

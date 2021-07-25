@@ -1,10 +1,10 @@
 const express = require('express');
-const { postRecipe, getRecipes } = require('../controller/recipesController');
+const recipesController = require('../controller/recipesController');
 const validateJWT = require('../controller/validateJWT');
 
 const router = express.Router();
 
-router.get('/', getRecipes);
-router.post('/', validateJWT, postRecipe);
+router.get('/', recipesController.getRecipes);
+router.post('/', validateJWT, recipesController.postRecipe);
 
 module.exports = router;
