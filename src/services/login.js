@@ -1,10 +1,11 @@
 const Joi = require('joi');
 
 const Login = require('../models/login');
+const { findByEmail } = require('../models/users');
 
 const JoiSchema = Joi.object({
-  email: Joi.string().required(),
-  password: Joi.string().required(),
+  email: Joi.string().not().empty().required(),
+  password: Joi.string().not().empty().required(),
 });
 
 const validateError = (statusCode, message) => ({
@@ -12,7 +13,20 @@ const validateError = (statusCode, message) => ({
   message,
 });
 
-const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+const validateEmail = async (userEmail) => {
+  const email = await findByEmail(userEmail);
+  const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+
+  if (!email || !regex.test(userEmail)) {
+    throw validateError(401, 'Incorrect username or password');
+  }
+};
+
+const validateUserPassword = (user, validate) => {
+  if (!validate || user.password !== validate.password) {
+    throw validateError(401, 'Incorrect username or password');
+  }
+};
 
 module.exports = async (user) => {
   const { error } = JoiSchema.validate(user);
@@ -21,17 +35,11 @@ module.exports = async (user) => {
     throw validateError(401, 'All fields must be filled');
   }
 
-  const passwordLength = 6;
+  await validateEmail(user.email);
 
-  const validate = await Login.validateLogin(user);
+  const validate = await Login(user);
 
-  if (
-    user.password.length <= passwordLength
-    || !validate
-    || !regex.test(user.email)
-  ) {
-    throw validateError(401, 'Incorrect username or password');
-  }
+  validateUserPassword(user, validate);
 
   const { name, password, ...loginWithoutFields } = validate;
 
