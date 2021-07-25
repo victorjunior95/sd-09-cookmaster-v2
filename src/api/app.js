@@ -20,7 +20,8 @@ app.post('/login', Users.loginController);
 app.post('/recipes', RecipVal, Recipes.createNewRecipe);
 app.get('/recipes', Recipes.getAllRecipes);
 app.get('/recipes/:id', Recipes.oneRecp);
+app.put('/recipes/:id', RecipVal, Recipes.updateRcp);
 
 app.use(Err);
 
-module.exports = app;
+module.exports = app; 
