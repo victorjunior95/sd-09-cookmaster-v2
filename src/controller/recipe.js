@@ -1,10 +1,15 @@
 const recipeService = require('../service/recipe');
 
-const newRecipeController = async (request, response) => {
-  const newRecipe = request.body;
-  const { authorization } = request.headers;
-  const { status, createdRecipe } = await recipeService.newRecipeService(newRecipe, authorization);
-  response.status(status).json({ recipe: createdRecipe });
+const newRecipeController = async (request, response, next) => {
+  try {
+    const newRecipe = request.body;
+    const { authorization } = request.headers;
+    const { status,
+      createdRecipe } = await recipeService.newRecipeService(newRecipe, authorization);
+    response.status(status).json({ recipe: createdRecipe });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {

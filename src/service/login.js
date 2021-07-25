@@ -28,10 +28,10 @@ const validateLogin = async (email, password) => { /* Valida email e senha login
   delete createdUser.name;
   delete createdUser.password;
 
-  const generateToken = jwt.sign({ data: createdUser }, secret, jwtConfig); /* Assinatura */
+  const token = jwt.sign({ data: createdUser }, secret, jwtConfig); /* Assinatura */
   return {
     status: status.OK,
-    generateToken,
+    token,
   };
 };
 

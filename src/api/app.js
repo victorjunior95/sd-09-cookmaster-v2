@@ -12,6 +12,10 @@ app.use('/login', loginRoute);
 app.use('/recipes', recipeRoute);
 
 app.use((err, _req, res, _next) => {
+  /* LEMBRAR DE ARRUMAR ESSE ERRO - RAFA REIS ME AJUDOU A TRATAR PROVISORIAMENTE */
+  if (!err.status) {
+    return res.status(401).json(err);
+  }
   console.log(err);
   res.status(err.status).json(err.err);
 });

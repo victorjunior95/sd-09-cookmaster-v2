@@ -2,8 +2,8 @@ const loginService = require('../service/login');
 
 const validateLogin = async (request, response) => {
   const { email, password } = request.body;
-  const { status, generateToken } = await loginService.validateLogin(email, password);
-  response.status(status).json({ generateToken });
+  const { status, token } = await loginService.validateLogin(email, password);
+  response.status(status).json({ token });
 };
 
 module.exports = {
