@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 const Recipes = require('../model/modelRecipes');
-const { dataErr } = require('../helpers/index')
+const { dataErr } = require('../helpers/index');
 
 const schemaRecipeCreate = Joi.object({
   name: Joi.string().required(),
@@ -36,7 +36,6 @@ const recipeUpdate = async (id, name, ingredients, preparation) => {
   const recipe = await Recipes.recipeUpdate(id, name, ingredients, preparation);
   return recipe;
 };
-
 
 module.exports = {
   createNewRecipesService,
