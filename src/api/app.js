@@ -2,7 +2,6 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 // const path = require('path');
-require('dotenv').config();
 const users = require('./routes/routerUser');
 const error = require('./middleware/error');
 
