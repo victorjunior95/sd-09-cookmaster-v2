@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connection = require('../other/connection');
 
 const RECIPES = 'recipes';
@@ -14,9 +15,19 @@ const listRecipesModel = async () => {
   return recipes;
 };
 
+const recipeByIdModel = async (id) => {
+  /* Pego do meu projeto do Store Manager */
+  if (!ObjectId.isValid(id)) return null;
+
+  const db = await connection();
+  const recipe = await db.collection(RECIPES).findOne(ObjectId(id));
+  return recipe;
+};
+
 module.exports = {
   newRecipeModel,
   listRecipesModel,
+  recipeByIdModel,
 };
 
   // console.log(`created recipe de model ${createdRecipe}`);

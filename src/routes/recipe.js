@@ -15,4 +15,9 @@ router.get(
   rescue(recipeController.listRecipesController),
 );
 
+router.get(
+  '/:id',
+  rescue(recipeController.recipeByIdController),
+);
+
 module.exports = router;

@@ -48,9 +48,20 @@ const listRecipesService = async () => {
   };
 };
 
+const recipeByIdService = async (id) => {
+  const recipe = await recipeModel.recipeByIdModel(id);
+  if (!recipe) throw messages.NOT_FOUND_RECIPE_NOT_FOUND;
+
+  return {
+    status: status.OK,
+    recipe,
+  };
+};
+
 module.exports = {
   newRecipeService,
   listRecipesService,
+  recipeByIdService,
 };
 
     // console.log(decodeToken);

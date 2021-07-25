@@ -38,6 +38,11 @@ const UNAUTHORIZED_MISSING_AUTH_TOKEN = {
   err: { message: 'missing auth token' },
 };
 
+const NOT_FOUND_RECIPE_NOT_FOUND = {
+  status: 404,
+  err: { message: 'recipe not found' },
+};
+
 module.exports = {
   BAD_REQUEST_INVALID_ENTRIES,
   CONFLICT_EMAIL_ALREADY_REGISTERED,
@@ -45,4 +50,5 @@ module.exports = {
   UNAUTHORIZED_INCORRECT_USERNAME_OR_PASSWORD,
   UNAUTHORIZED_JWT_MALFORMED,
   UNAUTHORIZED_MISSING_AUTH_TOKEN,
+  NOT_FOUND_RECIPE_NOT_FOUND,
 };

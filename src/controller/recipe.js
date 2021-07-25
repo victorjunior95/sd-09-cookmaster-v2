@@ -17,9 +17,16 @@ const listRecipesController = async (_request, response) => {
   response.status(status).json(recipes);
 };
 
+const recipeByIdController = async (request, response) => {
+  const { id } = request.params;
+  const { status, recipe } = await recipeService.recipeByIdService(id);
+  response.status(status).json(recipe);
+};
+
 module.exports = {
   newRecipeController,
   listRecipesController,
+  recipeByIdController,
 };
 
   // console.log(newRecipe);
