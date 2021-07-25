@@ -25,4 +25,9 @@ router.put(
   rescue(recipeController.editedRecipeController),
 );
 
+router.delete(
+  '/:id',
+  rescue(recipeController.excludeRecipeController),
+);
+
 module.exports = router;

@@ -67,11 +67,25 @@ const editedRecipeService = async (authorization, id, recipe) => {
   };
 };
 
+const excludeRecipeService = async (authorization, id) => {
+  await validateToken(authorization); /* Edição estando autorizado */
+  const excludeRecipe = await recipeModel.excludeRecipeModel(id);
+  
+  if (!excludeRecipe) {
+    return {
+      status: status.NO_CONTENT,
+    };
+  }
+
+  throw messages.UNAUTHORIZED_MISSING_AUTH_TOKEN;
+};
+
 module.exports = {
   newRecipeService,
   listRecipesService,
   recipeByIdService,
   editedRecipeService,
+  excludeRecipeService,
 };
 
     // console.log(decodeToken);

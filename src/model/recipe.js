@@ -38,11 +38,20 @@ const editedRecipeModel = async (id, recipe) => {
   return editedRecipe;
 };
 
+const excludeRecipeModel = async (id) => {
+  const db = await connection();
+  await db.collection(RECIPES).deleteOne({ _id: ObjectId(id) });
+
+  const recipeDeleted = await db.collection(RECIPES).findOne({ _id: ObjectId(id) });
+  return recipeDeleted;
+};
+
 module.exports = {
   newRecipeModel,
   listRecipesModel,
   recipeByIdModel,
   editedRecipeModel,
+  excludeRecipeModel,
 };
 
   // console.log(`created recipe de model ${createdRecipe}`);

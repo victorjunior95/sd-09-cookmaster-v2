@@ -32,11 +32,19 @@ const editedRecipeController = async (request, response) => {
   response.status(status).json(editedRecipe);
 };
 
+const excludeRecipeController = async (request, response) => {
+  const { authorization } = request.headers;
+  const { id } = request.params;
+  const { status } = await recipeService.excludeRecipeService(authorization, id);
+  response.status(status).json();
+};
+
 module.exports = {
   newRecipeController,
   listRecipesController,
   recipeByIdController,
   editedRecipeController,
+  excludeRecipeController,
 };
 
   // console.log(newRecipe);
