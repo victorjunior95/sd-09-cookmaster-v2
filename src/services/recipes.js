@@ -34,7 +34,18 @@ const list = async () => {
   return listRecipe;
 };
 
+const listById = async (id) => {
+  const listRecipe = await Recipes.listById(id);
+
+  if (!listRecipe) {
+    throw validateError(404, 'recipe not found');
+  }
+
+  return listRecipe;
+};
+
 module.exports = {
   create,
   list,
+  listById,
 };

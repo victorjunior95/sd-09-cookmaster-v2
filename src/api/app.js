@@ -30,6 +30,10 @@ app
   .post(validateJWT, Recipes.create)
   .get(Recipes.list);
 
+app
+  .route('/recipes/:id')
+  .get(Recipes.listById);
+
 // Error
 const errorMiddleware = require('../middlewares/error');
 
