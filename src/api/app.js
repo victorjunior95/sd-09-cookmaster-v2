@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const {
   createUser,
   getAllRecipes,
+  login,
 } = require('../middleware');
 
 const app = express();
@@ -16,7 +17,7 @@ app.get('/', (request, response) => {
 
 app.post('/users', createUser);
 
-app.get('/login', () => {});
+app.post('/login', login);
 
 app.post('/recipes', () => {});
 app.get('/recipes', getAllRecipes);
