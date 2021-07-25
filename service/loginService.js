@@ -7,7 +7,7 @@ const secret = 'tokensecreto';
 
 const LoginSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(8).required(),
+  password: Joi.string().required(),
 });
 
 const validateLogin = async (user) => {
@@ -18,11 +18,11 @@ const validateLogin = async (user) => {
   if (error || foundEmail === null) throw validateError(401, 'Incorrect username or password');
 
   const jwtConfig = {
-    expiresIn: '5d',
+    expiresIn: '7d',
     algorithm: 'HS256',
   };
 
-  const token = jwt.sign({ data: user }, secret, jwtConfig);
+  const token = jwt.sign({ data: foundEmail }, secret, jwtConfig);
   return token;
 };
 

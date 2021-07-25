@@ -8,14 +8,14 @@ const UserSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-const newUser = async (user) => {
+const newUser = async (user, role) => {
   const { error } = UserSchema.validate(user);
   if (error) throw validateError(400, 'Invalid entries. Try again.');
 
   const foundEmail = await usersModel.findEmail(user.email);
   if (foundEmail) throw validateError(409, 'Email already registered');
 
-  const registeredUser = await usersModel.registerUser(user);
+  const registeredUser = await usersModel.registerUser(user, role);
   return registeredUser;
 };
 
