@@ -14,7 +14,12 @@ app.use(bodyParser.json());
 // Users
 const User = require('../controllers/user');
 
-app.route('/users').post(User.create);
+app.route('/users').post(User);
+
+// Login
+const Login = require('../controllers/login');
+
+app.route('/login').post(Login);
 
 // Recipes
 
