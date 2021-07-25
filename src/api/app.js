@@ -4,10 +4,12 @@ const app = express();
 
 const userRoute = require('../routes/user');
 const loginRoute = require('../routes/login');
+const recipeRoute = require('../routes/recipe');
 
 app.use(express.json());
 app.use('/users', userRoute);
 app.use('/login', loginRoute);
+app.use('/recipes', recipeRoute);
 
 app.use((err, _req, res, _next) => {
   console.log(err);

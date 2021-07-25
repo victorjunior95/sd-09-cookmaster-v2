@@ -6,7 +6,7 @@ const messages = require('../other/messages');
 const secret = 'cookmaster'; /* segredo */
 
 const jwtConfig = { /* Configuração */
-  expiresIn: '15m',
+  expiresIn: '1d',
   algorithm: 'HS256',
 };
 
@@ -29,8 +29,6 @@ const validateLogin = async (email, password) => { /* Valida email e senha login
   delete createdUser.password;
 
   const generateToken = jwt.sign({ data: createdUser }, secret, jwtConfig); /* Assinatura */
-  // console.log(`Token Login Service ${generateToken}`);
-  /* eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZmM0YzBiNDFlY2NmMmUwYzAyOWRjOCIsImVtYWlsIjoiZXJpY2tqYWNxdWluQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIn0sImlhdCI6MTYyNzE0NzI3NSwiZXhwIjoxNjI3MTQ4MTc1fQ.6Uuj04_iqtXWKyblUbiv4zqsfVJnJNKYL42MyEyQXhw */
   return {
     status: status.OK,
     generateToken,
@@ -40,3 +38,6 @@ const validateLogin = async (email, password) => { /* Valida email e senha login
 module.exports = {
   validateLogin,
 };
+
+  // console.log(`Token Login Service ${generateToken}`);
+  /* eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYwZmM0YzBiNDFlY2NmMmUwYzAyOWRjOCIsImVtYWlsIjoiZXJpY2tqYWNxdWluQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIn0sImlhdCI6MTYyNzE0NzI3NSwiZXhwIjoxNjI3MTQ4MTc1fQ.6Uuj04_iqtXWKyblUbiv4zqsfVJnJNKYL42MyEyQXhw */
