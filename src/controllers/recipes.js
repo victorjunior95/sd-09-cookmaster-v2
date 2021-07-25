@@ -1,4 +1,4 @@
-const { create, getAll } = require('../services/recipes');
+const { create, getAll, getById } = require('../services/recipes');
 
 const createRecipes = async (req, res) => {
   const { _id: userId } = req.user;
@@ -17,5 +17,15 @@ const createRecipes = async (req, res) => {
    }
 };
 
+const searchById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await getById(id);
+    res.status(200).json(result);
+  } catch ({ message }) {
+   next({ status: 404, message });
+  }
+};
+
 // getAllRecipes().then((r) => console.log(r));
-module.exports = { createRecipes, getAllRecipes };
+module.exports = { createRecipes, getAllRecipes, searchById };

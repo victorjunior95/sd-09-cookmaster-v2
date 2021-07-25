@@ -10,8 +10,18 @@ const getAll = async () => {
   return recipe;
 };
 
+const getById = async (id) => {
+  const result = await modelRecipes.getById(id);
+  if (!result) {
+  const error = { message: 'recipe not found' };
+  throw error;
+  } 
+  return result;
+};
+
 // getAll().then((r) => console.log(r));
 module.exports = {
   create,
   getAll,
+  getById,
 };
