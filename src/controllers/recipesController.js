@@ -35,7 +35,7 @@ const updateRcp = rescue(async (req, res) => {
 
 const deletRcp = async (req, res) => {
   const { id } = req.params;
-  await Recipes.deletRcp(id);
+  await Recipes.recipeDelete(id);
 
   return res.status(204).end();
 };

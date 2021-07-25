@@ -34,12 +34,12 @@ const getOneRecipe = async (id) => {
 };
 
 const recipeUpdate = async (id, name, ingredients, preparation) => {
-  const recipe = await Recipes.recipeUpdate(id, name, ingredients, preparation);
-  return recipe;
+  const rcp = await Recipes.recipeUpdateModel(id, name, ingredients, preparation);
+  return rcp;
 };
 
 const deletRcp = async (id) => {
-  await Recipes.deletRcp(id);
+  await Recipes.recipeDelete(id);
 };
 
 module.exports = {

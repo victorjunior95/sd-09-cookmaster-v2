@@ -23,6 +23,13 @@ const allRecipesModel = async () => {
   return rcp;
 };
 
+const rcpDelet = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  await connection().then((db) => 
+    db.collection('recipes')
+      .deleteOne({ _id: ObjectId(id) }));
+};
+
 const recipeUpdateModel = async (id, name, ingredients, preparation) => {
   if (!ObjectId.isValid(id)) return null;
   const rcp = await connection().then((db) => 
@@ -35,17 +42,10 @@ const recipeUpdateModel = async (id, name, ingredients, preparation) => {
   return rcp.value;
 };
 
-const deletRcp = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-  await connection().then((db) => 
-    db.collection('recipes')
-      .deleteOne({ _id: ObjectId(id) }));
-};
-
 module.exports = {
   recipeCreate,
   allRecipesModel,
   oneRecipe,
   recipeUpdateModel,
-  deletRcp,
+  rcpDelet,
 };
