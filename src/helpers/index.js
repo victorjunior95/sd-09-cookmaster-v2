@@ -1,5 +1,5 @@
-const validateUserData = (code, message) => ({ code, message });
+const dataErr = (code, message) => ({ code, message });
 
 module.exports = {
-  validateUserData,
+  dataErr,
 }
