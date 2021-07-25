@@ -12,6 +12,17 @@ const create = async (req, res, next) => {
   }
 };
 
+const list = async (req, res, next) => {
+  try {
+    const listRecipe = await Recipes.list();
+
+    return res.status(200).json(listRecipe);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   create,
+  list,
 };

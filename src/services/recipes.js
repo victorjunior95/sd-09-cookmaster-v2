@@ -28,6 +28,13 @@ const create = async (recipesData, userId) => {
   return createUser;
 };
 
+const list = async () => {
+  const listRecipe = await Recipes.list();
+
+  return listRecipe;
+};
+
 module.exports = {
   create,
+  list,
 };

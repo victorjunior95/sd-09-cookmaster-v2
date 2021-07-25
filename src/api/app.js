@@ -25,7 +25,10 @@ app.route('/login').post(Login);
 const Recipes = require('../controllers/recipes');
 const validateJWT = require('../middlewares/validateJWT');
 
-app.route('/recipes').post(validateJWT, Recipes.create);
+app
+  .route('/recipes')
+  .post(validateJWT, Recipes.create)
+  .get(Recipes.list);
 
 // Error
 const errorMiddleware = require('../middlewares/error');
