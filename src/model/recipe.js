@@ -8,8 +8,15 @@ const newRecipeModel = async (newRecipe) => {
   return createdRecipe.ops[0];
 };
 
+const listRecipesModel = async () => {
+  const db = await connection();
+  const recipes = await db.collection(RECIPES).find().toArray();
+  return recipes;
+};
+
 module.exports = {
   newRecipeModel,
+  listRecipesModel,
 };
 
   // console.log(`created recipe de model ${createdRecipe}`);

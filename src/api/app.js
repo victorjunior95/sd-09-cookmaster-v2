@@ -11,17 +11,17 @@ app.use('/users', userRoute);
 app.use('/login', loginRoute);
 app.use('/recipes', recipeRoute);
 
-app.use((err, _req, res, _next) => {
+app.use((error, _request, response, _next) => {
   /* LEMBRAR DE ARRUMAR ESSE ERRO - RAFA REIS ME AJUDOU A TRATAR PROVISORIAMENTE */
-  if (!err.status) {
-    return res.status(401).json(err);
+  if (!error.status) {
+    return response.status(401).json(error);
   }
-  console.log(err);
-  res.status(err.status).json(err.err);
+  console.log(error);
+  response.status(error.status).json(error.err);
 });
 
 // Não remover esse end-point, ele é necessário para o avaliador
-app.get('/', (request, response) => {
+app.get('/', (_request, response) => {
   response.send();
 });
 // Não remover esse end-point, ele é necessário para o avaliador

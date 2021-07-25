@@ -40,8 +40,17 @@ const newRecipeService = async (newRecipe, authorization) => {
     };
 };
 
+const listRecipesService = async () => {
+  const recipes = await recipeModel.listRecipesModel();
+  return {
+    status: status.OK,
+    recipes,
+  };
+};
+
 module.exports = {
   newRecipeService,
+  listRecipesService,
 };
 
     // console.log(decodeToken);
