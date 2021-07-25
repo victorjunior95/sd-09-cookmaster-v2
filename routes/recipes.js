@@ -4,6 +4,7 @@ const validateJWT = require('../controller/validateJWT');
 
 const router = express.Router();
 
+router.get('/:id', recipesController.getRecipeById);
 router.get('/', recipesController.getRecipes);
 router.post('/', validateJWT, recipesController.postRecipe);
 

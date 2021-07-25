@@ -20,4 +20,17 @@ const getRecipes = async (_req, res, next) => {
   }
 };
 
-module.exports = { postRecipe, getRecipes };
+const getRecipeById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const recipe = await recipesService.getById(id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'recipe not found' });
+    }
+    return res.status(200).json(recipe);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports = { postRecipe, getRecipes, getRecipeById };
