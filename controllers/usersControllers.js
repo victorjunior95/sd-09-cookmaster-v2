@@ -26,7 +26,7 @@ const insertUser = async (req, res) => {
 
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
-  const createdToken = await usersServices.createToken();
+  const createdToken = await usersServices.createToken(email, password);
   const validLoginData = validateLoginData(email, password);
   if (validLoginData) {
     return res.status(unauthorized).json(validLoginData);
