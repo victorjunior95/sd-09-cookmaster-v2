@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mult = require('../uploads/multer');
+const multer = require('../multer');
 
 const app = express();
 
@@ -15,8 +15,8 @@ const { createRecipes,
 
 app.post('/users', middlewaresUser.validateNamePass, middlewaresUser.emailAlreadyExists, create);
 app.get('/recipes/:id', searchById);
+app.put('/recipes/:id/image', middlewareJWT, multer().single('image'), updateNewImage);
 app.put('/recipes/:id', middlewareJWT, recipeUpdate);
-app.put('/recipes/:id/image', middlewareJWT, mult().single('image'), updateNewImage);
 app.delete('/recipes/:id', middlewareJWT, recipeDelete);
 app.get('/recipes', getAllRecipes);
 app.post('/recipes', middlewareJWT, isValidRecipe, createRecipes);
