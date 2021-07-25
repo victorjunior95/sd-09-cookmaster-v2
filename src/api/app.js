@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParse = require('body-parser');
 const userRoute = require('./routes/userRoute');
 const loginRoute = require('./routes/loginRoute');
+const imageRoute = require('./routes/imageRoute');
 const recipeRoute = require('./routes/recipeRoute');
 
 const app = express();
@@ -22,5 +23,8 @@ app.use('/login', loginRoute);
 
 // rota inicial de recipes 
 app.use('/recipes', recipeRoute);
+
+// rota inicial de imagens
+app.use('/images', imageRoute);
 
 module.exports = app;

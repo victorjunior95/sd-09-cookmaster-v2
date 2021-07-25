@@ -19,4 +19,7 @@ recipeRoute.put('/:id', validateJwt, recipeController.updateRecipeData);
 // deleta inicial
 recipeRoute.delete('/:id', validateJwt, recipeController.deleteRecipeData);
 
+// adciona imagem a receita
+recipeRoute.put('/:id/image', validateJwt, recipeController.addNewRecipeImage);
+
 module.exports = recipeRoute;

@@ -43,10 +43,19 @@ const deleteRecipe = async (id) => {
   return selectRecipe;
 };
 
+const addRecipeImage = async (image, id) => {
+  const changeRecipe = await recipeModel.addImage(image, id);
+
+  if (!changeRecipe) return { message: 'falhow image' };
+
+  return changeRecipe;
+};
+
 module.exports = {
   createRecipe,
   allRecipes,
   findRecipe,
   updateRecipe,
   deleteRecipe,
+  addRecipeImage,
 };
