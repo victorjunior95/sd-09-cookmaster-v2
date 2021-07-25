@@ -24,13 +24,11 @@ const getUserByEmail = async (email) => {
 };
 
 const createToken = async (email, password) => {
-  console.log(email, 'EMAILTOKENNN');
   const token = jwt.sign({ email, password }, secret, jwtConfig);
   return token;
 };
 
 const userLogin = async (email, password) => {
-  console.log(email, 'EMAILLLOGINNN');
   const validateLoginDataErr = validateLoginData(email, password);
   if (validateLoginDataErr) {
     return validateLoginDataErr;

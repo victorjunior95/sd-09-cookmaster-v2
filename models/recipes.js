@@ -13,9 +13,7 @@ const getInsertedRecipe = (recipeInfos) => {
   };
 };
 
-const insertRecipe = async (newRecipe) => {
-  console.log(newRecipe, 'NEWWWWWWW');
-  return connection()
+const insertRecipe = async (newRecipe) => connection()
     .then((db) => db.collection('recipes').insertOne(newRecipe))
     .then((result) => getInsertedRecipe(
       {
@@ -23,8 +21,11 @@ const insertRecipe = async (newRecipe) => {
         ...newRecipe,
       },
     ));
-};
+
+const getAllRecipes = async () => connection()
+    .then((db) => db.collection('recipes').find().toArray());
 
 module.exports = {
   insertRecipe,
+  getAllRecipes,
 };

@@ -3,6 +3,7 @@ const validateToken = require('../services/usersServices/validateToken');
 const validateEntries = require('../services/recipesServices/validateEntries');
 
 const created = 201;
+const okay = 200;
 
 const insertRecipe = [
   validateToken,
@@ -21,6 +22,12 @@ const insertRecipe = [
   },
 ];
 
+const getAllRecipes = async (_req, res) => {
+  const allRecipes = await recipesServices.getAllRecipes();
+  return res.status(okay).json(allRecipes);
+};
+
 module.exports = {
   insertRecipe,
+  getAllRecipes,
 };
