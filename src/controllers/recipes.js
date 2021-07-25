@@ -1,4 +1,4 @@
-const { create, getAll, getById } = require('../services/recipes');
+const { create, getAll, getById, updateRecipe } = require('../services/recipes');
 
 const createRecipes = async (req, res) => {
   const { _id: userId } = req.user;
@@ -27,5 +27,13 @@ const searchById = async (req, res, next) => {
   }
 };
 
+const recipeUpdate = async (req, res) => {
+  const { _id: userId } = req.user;
+
+  const { id } = req.params;
+  const recipe = await updateRecipe({ id, ...req.body, userId });
+  return res.status(200).json(recipe);
+};
+
 // getAllRecipes().then((r) => console.log(r));
-module.exports = { createRecipes, getAllRecipes, searchById };
+module.exports = { createRecipes, getAllRecipes, searchById, recipeUpdate };
