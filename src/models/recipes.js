@@ -40,6 +40,14 @@ const updateRecipe = async ({ id, name, ingredients, preparation, userId }) => {
     return recipe;
   };
 
+  const updateImage = async (id, image) => {
+    const db = await connection();
+    await db.collection('recipes')
+      .updateOne({ _id: ObjectId(id) }, { $set: { image } });
+    const recipeImage = await getById(id);
+    return recipeImage;
+  };
+
 // getAll().then((r) => console.log(r));
 
 module.exports = {
@@ -48,4 +56,5 @@ module.exports = {
   getById,
   updateRecipe,
   deleteRecipe,
+  updateImage,
 };

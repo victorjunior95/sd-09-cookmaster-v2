@@ -1,23 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mult = require('../uploads/multer');
 
 const app = express();
 
 app.use(bodyParser.json());
 const middlewaresUser = require('../middlewares/validateUsers');
-const middewareJWT = require('../middlewares/validateJWT');
+const middlewareJWT = require('../middlewares/validateJWT');
 const isValidRecipe = require('../middlewares/recipesValidation');
 const { create, login } = require('../controllers/users');
 const { createRecipes, 
   getAllRecipes, 
-  searchById, recipeUpdate, recipeDelete } = require('../controllers/recipes');
+  searchById, recipeUpdate, recipeDelete, updateNewImage } = require('../controllers/recipes');
 
 app.post('/users', middlewaresUser.validateNamePass, middlewaresUser.emailAlreadyExists, create);
 app.get('/recipes/:id', searchById);
-app.put('/recipes/:id', middewareJWT, recipeUpdate);
-app.delete('/recipes/:id', middewareJWT, recipeDelete);
+app.put('/recipes/:id', middlewareJWT, recipeUpdate);
+app.put('/recipes/:id/image', middlewareJWT, mult().single('image'), updateNewImage);
+app.delete('/recipes/:id', middlewareJWT, recipeDelete);
 app.get('/recipes', getAllRecipes);
-app.post('/recipes', middewareJWT, isValidRecipe, createRecipes);
+app.post('/recipes', middlewareJWT, isValidRecipe, createRecipes);
 app.post('/login', middlewaresUser.isValidLogin, login);
 
 app.use((error, req, res, _next) => {

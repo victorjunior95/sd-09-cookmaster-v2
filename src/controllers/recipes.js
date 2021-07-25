@@ -1,4 +1,5 @@
-const { create, getAll, getById, updateRecipe, deleteRecipe } = require('../services/recipes');
+const { create, getAll, getById, updateRecipe, deleteRecipe, 
+  updateImage } = require('../services/recipes');
 
 const createRecipes = async (req, res) => {
   const { _id: userId } = req.user;
@@ -40,5 +41,20 @@ const recipeDelete = async (req, res) => {
   const recipe = await deleteRecipe(id);
   return res.status(204).json(recipe);
 };
+
+const updateNewImage = async (req, res) => {
+    const { id } = req.params;
+    const { path } = req.file;
+    const fullPath = `localhost:3000/${path}`;
+  
+    const result = await updateImage(id, fullPath);
+  
+    return res.status(200).json(result);
+};
 // getAllRecipes().then((r) => console.log(r));
-module.exports = { createRecipes, getAllRecipes, searchById, recipeUpdate, recipeDelete };
+module.exports = { createRecipes,
+   getAllRecipes,
+searchById,
+recipeUpdate,
+recipeDelete,
+updateNewImage };

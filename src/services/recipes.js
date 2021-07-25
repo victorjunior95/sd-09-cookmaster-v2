@@ -30,6 +30,10 @@ const deleteRecipe = async (id) => {
   return result;
 };
 
+const updateImage = async (id, path) => {
+  const updatedRecipeImage = await modelRecipes.updateImage(id, path);
+  return updatedRecipeImage;
+};
 // getAll().then((r) => console.log(r));
 module.exports = {
   create,
@@ -37,4 +41,5 @@ module.exports = {
   getById,
   updateRecipe,
   deleteRecipe,
+  updateImage,
 };
