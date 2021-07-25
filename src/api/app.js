@@ -10,11 +10,12 @@ const isValidRecipe = require('../middlewares/recipesValidation');
 const { create, login } = require('../controllers/users');
 const { createRecipes, 
   getAllRecipes, 
-  searchById, recipeUpdate } = require('../controllers/recipes');
+  searchById, recipeUpdate, recipeDelete } = require('../controllers/recipes');
 
 app.post('/users', middlewaresUser.validateNamePass, middlewaresUser.emailAlreadyExists, create);
 app.get('/recipes/:id', searchById);
 app.put('/recipes/:id', middewareJWT, recipeUpdate);
+app.delete('/recipes/:id', middewareJWT, recipeDelete);
 app.get('/recipes', getAllRecipes);
 app.post('/recipes', middewareJWT, isValidRecipe, createRecipes);
 app.post('/login', middlewaresUser.isValidLogin, login);
