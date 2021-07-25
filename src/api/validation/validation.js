@@ -1,13 +1,10 @@
 const jwt = require('jsonwebtoken');
 const User = require('../../model/userModel');
+dataErr = require('../helpers/index')
 
 const secret = 'tokensupersecreto';
 
 /* const test = 'token da nargas' */
-
-const validateRecipeData = (code, message) => ({ code, message });
-
-dataErr = require('../helpers/index')
 
 const validationRecipes = async (req, res, next) => {
 
@@ -23,8 +20,8 @@ const validationRecipes = async (req, res, next) => {
 
     const decoded = jwt.verify(token, secret);
 
-    const recipe = await User.getOne(decoded.data.email);
-    if (!recipe) {
+    const recipes = await User.getOneUser(decoded.data.email);
+    if (!recipes) {
 
       return res
 
@@ -33,7 +30,7 @@ const validationRecipes = async (req, res, next) => {
         .json({ message: 'jwt malformed' });
 
     }
-    const { _id } = recipe;
+    const { _id } = recipes;
     req.userId = _id;
 
     next();
