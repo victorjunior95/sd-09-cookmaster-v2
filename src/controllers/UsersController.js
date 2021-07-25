@@ -1,24 +1,27 @@
-const express = require('express');
-// const usersService = require('../services/UsersService');
+const usersService = require('../services/UsersService');
 
-const UserRouter = express.Router();
+const checkBody = async (req, res, next) => {
+  const { name, email, password } = req.body;
+  const answer = await usersService.checkBody(name, email, password);
+  if (typeof answer === 'object') {
+    const { status, message } = answer;
+    return res.status(status).json({ message });
+  }
+  return next();
+};
 
-UserRouter.post('/users', (req, _res) => {
-  console.log(req.body);
-  // const { name, email, password } = req.body;
-  // const user = { name, email, password, role: 'user' };
-  // const { status, newUser } = usersService.register(user);
+const registerUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  const user = { name, email, password, role: 'user' };
+  console.log(`controller ${user.name}, ${user.email}, ${user.password}, ${user.role}`);
+  const { status, message } = await usersService.register(user);
 
-  // res.status(status).json(newUser);
-});
+  delete user.password;
 
-module.exports = UserRouter;
+  res.status(status).json(message);
+};
 
-// const registerUser = async (req, res) => {
-//   const { name, email, password } = req.body;
-//   // console.log(name, email, password);
-//   const user = { name, email, password, role: 'user' };
-//   const { status, newUser } = await usersService.register(user);
-
-//   res.status(status).json(newUser);
-// };
+module.exports = {
+  checkBody,
+  registerUser,
+};

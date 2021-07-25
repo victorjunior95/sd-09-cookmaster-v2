@@ -6,20 +6,24 @@ const CONFLICT_REQUEST = {
   message: 'Email already registered',
 };
 
-const register = async (user) => {
-  const { name, email, password } = user;
+const checkBody = async (name, email, password) => {
   // validar validateBody
-  const bodyValidated = utils.validateBody(name, email, password);
+  const bodyValidated = utils.validateBody.validateBody(name, email, password);
   if (bodyValidated) return bodyValidated;
 
   // conferir se email já existe
   const emailAlreadyExist = await Users.findByEmail(email);
   if (emailAlreadyExist) return CONFLICT_REQUEST;
+};
 
+const register = async (user) => {
+  console.log(`service ${user.name}, ${user.email}, ${user.password}, ${user.role}`);
   const newUser = await Users.register(user);
-  return { status: 201, newUser };
+  console.log(`service ${newUser.name}, ${newUser.email}, ${newUser.role}`);
+  return { status: 201, message: newUser };
 };
 
 module.exports = {
+  checkBody,
   register,
 };
