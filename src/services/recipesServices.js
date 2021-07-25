@@ -17,7 +17,6 @@ async function getRecipe() {
 
 async function getRecipeById(id) {
   const response = await recipesModel.getRecipeById(id);
-  console.log(response);
   recipesValidations.validateRecipe(response);
   return { status: 200, response };
 }
@@ -29,9 +28,16 @@ async function editRecipe(id, token, { name, ingredients, preparation }) {
   return { status: 200, response };
 }
 
+async function deleteRecipe(id, token) {
+  recipesValidations.validateAuthentication(token);
+  await recipesModel.deleteRecipe(id);
+  return { status: 204 };
+}
+
 module.exports = {
   addRecipe,
   getRecipe,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };

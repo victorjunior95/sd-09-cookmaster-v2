@@ -19,9 +19,16 @@ async function getRecipeById(req, res) {
 
 async function editRecipe(req, res) {
   const { id } = req.params;
-  const { authorization } = req.headers;
-  const { status, response } = await recipesServices.editRecipe(id, authorization, req.body);
+  const { authorization: token } = req.headers;
+  const { status, response } = await recipesServices.editRecipe(id, token, req.body);
   return res.status(status).json(response);
+}
+
+async function deleteRecipe(req, res) {
+  const { id } = req.params;
+  const { authorization: token } = req.headers;
+  const { status } = await recipesServices.deleteRecipe(id, token);
+  return res.status(status).json();
 }
 
 module.exports = {
@@ -29,4 +36,5 @@ module.exports = {
   getRecipe,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };

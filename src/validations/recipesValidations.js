@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const recipesModel = require('../models/recipesModel');
 
 const privateKey = 'myprecious';
 
@@ -57,7 +56,6 @@ function validateRecipe(recipe) {
 }
 
 function validateAuthentication(token) {
-  console.log('token', token);
   if (!token) throw MISSING_AUTH;
 }
 
