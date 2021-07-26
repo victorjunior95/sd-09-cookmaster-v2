@@ -11,7 +11,7 @@ const app = express();
 
 app.use(bodyParser);
 
-const Storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'src/uploads/');
   },
@@ -20,7 +20,7 @@ const Storage = multer.diskStorage({
   },
 });
 
-const upload = Multer({ Storage });
+const upload = Multer({ storage });
 
 /* Baseado no COURSE */
 

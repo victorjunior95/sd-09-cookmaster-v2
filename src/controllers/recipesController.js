@@ -1,5 +1,6 @@
 const rescue = require('express-rescue');
 const Recipes = require('../service/recipesServices');
+const OK = 200
 
 const createNewRecipe = rescue(async (req, res) => {
   const { userId } = req;
@@ -12,25 +13,25 @@ const createNewRecipe = rescue(async (req, res) => {
 });
 
 const getAllRecipes = async (_req, res) => {
-  const recipes = await Recipes.allRecipes();
+  const rcp = await Recipes.allRecipes();
 
-  return res.status(200).json(recipes);
+  return res.status(OK).json(rcp);
 };
 
 const oneRecp = rescue(async (req, res) => {
   const { id } = req.params;
   const recipe = await Recipes.getOneRecipe(id);
   
-  return res.status(200).json(recipe);
+  return res.status(OK).json(recipe);
 });
 
 const rcpUpdate = rescue(async (req, res) => {
   const { id } = req.params;
   const { name, ingredients, preparation } = req.body;
 
-  const recipe = await Recipes.updtRcp(id, name, ingredients, preparation);
+  const rcp = await Recipes.updtRcp(id, name, ingredients, preparation);
   
-  return res.status(200).json(recipe);
+  return res.status(OK).json(rcp);
 });
 
 const rcpDelet = async (req, res) => {
@@ -43,10 +44,11 @@ const rcpDelet = async (req, res) => {
 const createImg = async (req, res) => {
   const { id } = req.params;
   const { path } = req.file;
-  const createImg = await Recipes.createdIMG(id, path);
+  const imgCreated = await Recipes.createdIMG(id, path);
 
-  return res.status(200).json(createImg);
+  return res.status(OK).json(imgCreated);
 };
+
 
 module.exports = {
   createNewRecipe,
