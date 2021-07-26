@@ -4,7 +4,7 @@ const findByEmail = async (email) => {
   let isThereEmail = false;
   await connection()
     .then((db) => db.collection('users').findOne({ email }))
-    .then((data) => (isThereEmail = data));
+    .then((data) => isThereEmail = data);
 
   if (isThereEmail) return isThereEmail;
 
