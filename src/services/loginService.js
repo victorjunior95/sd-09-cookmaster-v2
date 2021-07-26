@@ -7,7 +7,7 @@ const LoginService = async (email) => {
     const userDataDB = await findByEmail(email);
 
     const payLoad = {
-        id: userDataDB._id,
+        id: insertedId,
         role: userDataDB.role,
         email: userDataDB.email,
     };
