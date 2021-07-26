@@ -489,3 +489,189 @@ describe('GET /recipes/:id', () => {
 
   });
 });
+
+describe('PUT /recipes/:id', () => {
+  describe('1 - When the recipe is successfully edited', () => {
+
+    let resp;
+    let id;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      const { body: { user: { _id: userId } } } = await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+      
+      id = userId;
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .put(`/recipes/${recipeId}`)
+        .set('authorization', token)
+        .send({
+          name: 'breaded chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 200', () => {
+      expect(resp).to.have.status(200);
+    });
+
+    it('Returns a object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+    
+    it('Returns a object with specifc properties', () => {
+      expect(resp.body).to.have.property('_id');
+      expect(resp.body).to.have.property('name');
+      expect(resp.body).to.have.property('ingredients');
+      expect(resp.body).to.have.property('preparation');
+      expect(resp.body).to.have.property('userId');
+    });
+
+    it('Returns a object with specific values', () => {
+      expect(resp.body.name).to.be.equal('breaded chicken');
+      expect(resp.body.ingredients).to.be.equal('chicken');
+      expect(resp.body.preparation).to.be.equal('10 minutes on oven');
+      expect(resp.body.userId).to.be.equal(id);
+    });
+
+  });
+  describe('2 - When a token is not entered', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .put(`/recipes/${recipeId}`)
+        .send({
+          name: 'breaded chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 401', () => {
+      expect(resp).to.have.status(401);
+    });
+
+    it('Returns a object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+    
+    it('Returns a object with message property', () => {
+      expect(resp.body).to.have.property('message');
+    });
+
+    it('Returns a object with specific values', () => {
+      expect(resp.body.message).to.have.equal('missing auth token');
+    });
+
+  });
+  describe('3 - When a valid token is not entered', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+    
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .put(`/recipes/${recipeId}`)
+        .set('authorization', 'invalidToken')
+        .send({
+          name: 'breaded chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 401', () => {
+      expect(resp).to.have.status(401);
+    });
+
+    it('Returns a object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+    
+    it('Returns a object with message property', () => {
+      expect(resp.body).to.have.property('message');
+    });
+
+    it('Returns a object with specific values', () => {
+      expect(resp.body.message).to.have.equal('jwt malformed');
+    });
+
+  });
+});

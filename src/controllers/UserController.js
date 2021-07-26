@@ -6,7 +6,6 @@ const AuthRouter = Router();
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
-const HTTP_BAD_REQ = 400;
 const HTTP_UNAUTHORIZED = 401;
 const HTTP_CONFLICT = 409;
 
@@ -16,9 +15,6 @@ UserRouter.post('/', async (req, res, next) => {
     const resp = await UserService.create(userData);
     res.status(HTTP_CREATED).json({ user: resp });
   } catch (err) {
-    if (err.message === 'invalid_data') {
-      return next({ httpCode: HTTP_BAD_REQ, message: 'Invalid entries. Try again.' });
-    }
     if (err.message === 'invalid_email') {
       return next({ httpCode: HTTP_CONFLICT, message: 'Email already registered' });
     }

@@ -5,9 +5,7 @@ const RecipeRouter = Router();
 
 const HTTP_OK = 200;
 const HTTP_CREATED = 201;
-const HTTP_BAD_REQ = 400;
 const HTTP_UNAUTHORIZED = 401;
-const HTTP_NOT_FOUND = 404;
 
 RecipeRouter.post('/', async (req, res, next) => {
   try {
@@ -16,12 +14,6 @@ RecipeRouter.post('/', async (req, res, next) => {
     const resp = await RecipeService.create(recipeData, token);
     res.status(HTTP_CREATED).json({ recipe: resp });
   } catch (err) {
-    if (err.message === 'invalid_data') {
-      return next({ httpCode: HTTP_BAD_REQ, message: 'Invalid entries. Try again.' });
-    }
-    if (err.name === 'JsonWebTokenError') {
-      return next({ httpCode: HTTP_UNAUTHORIZED, message: err.message });
-    }
     next(err);
   }
 });
@@ -41,8 +33,20 @@ RecipeRouter.get('/:id', async (req, res, next) => {
     const resp = await RecipeService.getById(id);
     res.status(HTTP_OK).json(resp);
   } catch (err) {
-    if (err.message === 'not_found') {
-      return next({ httpCode: HTTP_NOT_FOUND, message: 'recipe not found' });
+    next(err);
+  }
+});
+
+RecipeRouter.put('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const token = req.headers.authorization;
+    const recipeData = req.body;
+    const resp = await RecipeService.edit(id, recipeData, token);
+    res.status(HTTP_OK).json(resp);
+  } catch (err) {
+    if (err.message === 'missing_token') {
+      return next({ httpCode: HTTP_UNAUTHORIZED, message: 'missing auth token' });
     }
     next(err);
   }

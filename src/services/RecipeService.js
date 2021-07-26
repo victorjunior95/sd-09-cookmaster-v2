@@ -44,8 +44,23 @@ const getById = async (id) => {
   return resp;
 };
 
+const edit = async (id, data, token) => {
+  validateRecipeData(data);
+  validateId(id);
+  if (!token) {
+    throw new Error('missing_token');
+  }
+  const userId = validateToken(token);
+  const resp = await RecipeModel.edit(new ObjectId(id), data, userId);
+  if (!resp) {
+    throw new Error('not_found');
+  }
+  return resp;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  edit,
 };
