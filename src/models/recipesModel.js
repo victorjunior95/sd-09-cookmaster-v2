@@ -1,4 +1,4 @@
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const insertRecipe = async (recipe) => {
@@ -18,7 +18,25 @@ const allRecipes = async () => {
   return result;
 };
 
+const findRecipeByID = async (id) => {
+  const result = await connection()
+    .then((db) => db.collection('recipes')
+      .findOne({ _id: ObjectId(id) }));
+
+  return result;
+};
+
+const deleteById = async (id) => {
+  const result = await connection()
+    .then((db) => db.collection('recipes')
+      .deleteOne({ _id: ObjectId(id) }));
+
+  return result;
+};
+
 module.exports = {
   allRecipes,
   insertRecipe,
+  findRecipeByID,
+  deleteById,
 };

@@ -1,9 +1,11 @@
 const { findEmail, insertUser } = require('./usersModel');
-const { allRecipes, insertRecipe } = require('./recipesModel');
+const { allRecipes, insertRecipe, findRecipeByID, deleteById } = require('./recipesModel');
 
 module.exports = {
   findEmail,
   insertUser,
   allRecipes,
   insertRecipe,
+  findRecipeByID,
+  deleteById,
 };

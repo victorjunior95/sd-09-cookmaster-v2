@@ -20,10 +20,15 @@ const INVALID_LOGIN_DATA = {
   message: 'Incorrect username or password',
 };
 
-// Add Recipe
+// Recipes
 const INVALID_RECIPE_DATA = {
   code: 400,
   message: 'Invalid entries. Try again.',
+};
+
+const RECIPE_NOT_FOUND = {
+  code: 404,
+  message: 'recipe not found',
 };
 
 // Invalid Token
@@ -38,5 +43,6 @@ module.exports = {
   INVALID_LOGIN_FORMAT,
   INVALID_LOGIN_DATA,
   INVALID_RECIPE_DATA,
+  RECIPE_NOT_FOUND,
   INVALID_TOKEN,
 };

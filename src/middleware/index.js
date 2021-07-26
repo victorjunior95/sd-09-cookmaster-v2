@@ -3,6 +3,8 @@ const getAllRecipes = require('./getAllRecipes_Middleware');
 const login = require('./login_Middleware');
 const authentication = require('./authentication_Middleware');
 const insertRecipe = require('./insertRecipe_Middleware');
+const getRecipeById = require('./getRecipeById._Middleware');
+const deleteRecipeById = require('./deleteRecipeById_Middleware');
 
 module.exports = {
   createUser,
@@ -10,4 +12,6 @@ module.exports = {
   login,
   authentication,
   insertRecipe,
+  getRecipeById,
+  deleteRecipeById,
 };
