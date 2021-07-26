@@ -43,10 +43,15 @@ const deleteRecipe = async (id, token) => {
     return RECIPES.deleteRecipe(id, _id, role);
 };
 
+const uploadImage = async (urlImage, id) => {
+  await RECIPES.uploadImage(urlImage, id);
+};
+
 module.exports = {
   create,
   getAll,
   getOne,
   update,
   deleteRecipe,
+  uploadImage,
 };
