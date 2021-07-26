@@ -5,6 +5,7 @@ const validateEntries = require('../services/recipesServices/validateEntries');
 const created = 201;
 const okay = 200;
 const notFound = 404;
+const noContent = 204;
 
 const insertRecipe = [
   validateToken,
@@ -43,10 +44,18 @@ const updateRecipeById = [
   async (req, res) => {
     const { id } = req.params;
     const { name, ingredients, preparation } = req.body;
-    console.log('CONTROLLER UPDATE', id, name, ingredients, preparation);
     const updatedRecipe = await recipesServices
       .updateRecipeById(id, name, ingredients, preparation);
     return res.status(okay).json(updatedRecipe);
+  },
+];
+
+const deleteRecipeById = [
+  validateToken,
+  async (req, res) => {
+    const { id } = req.params;
+    const deletedRecipe = await recipesServices.deleteRecipeById(id);
+    return res.status(noContent).json(deletedRecipe);
   },
 ];
 
@@ -55,4 +64,5 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
+  deleteRecipeById,
 };

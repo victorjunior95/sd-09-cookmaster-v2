@@ -19,10 +19,13 @@ const getRecipeById = async (id) => {
 };
 
 const updateRecipeById = async (id, name, ingredients, preparation) => {
-  // console.log('SERVICE UPDATE', id);
   const updatedRecipe = await recipesModels.updateRecipeById(id, name, ingredients, preparation);
-  console.log(updatedRecipe, 'UPDATED');
   return updatedRecipe;
+};
+
+const deleteRecipeById = async (id) => {
+  const deletedRecipe = await recipesModels.deleteRecipeById(id);
+  return deletedRecipe;
 };
 
 module.exports = {
@@ -30,4 +33,5 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
+  deleteRecipeById,
 };
