@@ -69,7 +69,6 @@ const uploadRecipeImage = [
   validateJWT,
   uploadImage.single('image'),
   async (req, res, next) => {
-    console.log(uploadImage.single('image'));
     try {
       const { id } = req.params;
       const updated = await recipesService.addImage(id, id);
