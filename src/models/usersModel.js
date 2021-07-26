@@ -1,5 +1,4 @@
 const connection = require('./connection');
-const { ObjectId } = require('mongodb');
 
 const findByEmail = async (email) => {
   let isThereEmail = false;
@@ -21,11 +20,11 @@ const createUserModel = async (name, email, password) => {
     name: newUser.ops[0].name,
     email: newUser.ops[0].email,
     role: newUser.ops[0].role,
-  }
+  };
   return newUserObj;
 };
 
 module.exports = {
   createUserModel,
-  findByEmail
-}
+  findByEmail,
+};
