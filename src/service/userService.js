@@ -1,7 +1,6 @@
 const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
-const dataErr = require('../midd/dataErr');
 
 const userSchm = Joi.object({
   email: Joi.string().email().required(),
@@ -13,6 +12,8 @@ const loginSchm = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.required(),
 });
+
+const dataErr = (code, message) => ({ code, message });
 
 const createUserService = async (email, name, password) => {
   const { error } = userSchm.validate({ email, name, password });
@@ -41,7 +42,7 @@ const userLoginService = async (email, password) => {
     algorithm: 'HS256',
   };
 
-  const secret = 'secrettoken';
+  const secret ='gokudeus';
   /* const test = 'narguinas' */
   const token = jwt.sign(user, secret, jwtConfig);
 
