@@ -46,12 +46,24 @@ const excludeRecipeModel = async (id) => {
   return recipeDeleted;
 };
 
+const addImageRecipeModel = async (id, image) => {
+  const db = await connection();
+  await db.collection(RECIPES).updateOne(
+    { _id: ObjectId(id) },
+    { $set: { image } },
+  );
+
+  const recipe = await db.collection(RECIPES).findOne({ _id: ObjectId(id) });
+  return recipe;
+};
+
 module.exports = {
   newRecipeModel,
   listRecipesModel,
   recipeByIdModel,
   editedRecipeModel,
   excludeRecipeModel,
+  addImageRecipeModel,
 };
 
   // console.log(`created recipe de model ${createdRecipe}`);

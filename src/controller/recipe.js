@@ -39,12 +39,20 @@ const excludeRecipeController = async (request, response) => {
   response.status(status).json();
 };
 
+const addImageRecipeController = async (request, response, _next) => {
+  const { authorization } = request.headers; // Token
+  const { id } = request.params;
+  const { status, recipe } = await recipeService.addImageRecipeService(authorization, id);
+  response.status(status).json(recipe);
+};
+
 module.exports = {
   newRecipeController,
   listRecipesController,
   recipeByIdController,
   editedRecipeController,
   excludeRecipeController,
+  addImageRecipeController,
 };
 
   // console.log(newRecipe);

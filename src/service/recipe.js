@@ -80,12 +80,23 @@ const excludeRecipeService = async (authorization, id) => {
   throw messages.UNAUTHORIZED_MISSING_AUTH_TOKEN;
 };
 
+const addImageRecipeService = async (authorization, id) => {
+  await validateToken(authorization); // Validação Token
+  const image = `localhost:3000/src/uploads/${id}.jpeg`;
+  const recipe = await recipeModel.addImageRecipeModel(id, image);
+  return {
+    status: status.OK,
+    recipe,
+  };
+};
+
 module.exports = {
   newRecipeService,
   listRecipesService,
   recipeByIdService,
   editedRecipeService,
   excludeRecipeService,
+  addImageRecipeService,
 };
 
     // console.log(decodeToken);
