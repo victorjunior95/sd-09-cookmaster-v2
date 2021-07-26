@@ -3,7 +3,13 @@ const connection = require('./connection');
 const findByEmail = async (email) => {
   const isThereEmail = await connection()
     .then((db) => db.collection('users').findOne({ email }))
-    .then((data) => data);
+    .then((data) => {
+      return ({
+        id: data.insertedId,
+        role: data.role,
+        email: data.email,
+      })
+    });
 
   if (isThereEmail) return isThereEmail;
 

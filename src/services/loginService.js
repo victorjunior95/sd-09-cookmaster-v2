@@ -6,17 +6,11 @@ const SECRET = 'essaédificil';
 const LoginService = async (email) => {
     const userDataDB = await findByEmail(email);
 
-    const payLoad = {
-        id: insertedId,
-        role: userDataDB.role,
-        email: userDataDB.email,
-    };
-
     const jwtConfig = {
         expiresIn: '1h',
         algorithm: 'HS256',
     };
-    const token = jwt.sign(payLoad, SECRET, jwtConfig);
+    const token = jwt.sign(userDataDB, SECRET, jwtConfig);
     return token;
 };
 
