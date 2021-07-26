@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-const Multer = require('multer');
+/* const Multer = require('multer'); */
 
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
