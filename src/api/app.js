@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = Multer({ storage });
+const upload = multer({ storage });
 
 /* Baseado no COURSE */
 

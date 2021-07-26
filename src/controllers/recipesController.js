@@ -1,6 +1,7 @@
 const rescue = require('express-rescue');
 const Recipes = require('../service/recipesServices');
-const OK = 200
+
+const OK = 200;
 
 const createNewRecipe = rescue(async (req, res) => {
   const { userId } = req;
@@ -48,7 +49,6 @@ const createImg = async (req, res) => {
 
   return res.status(OK).json(imgCreated);
 };
-
 
 module.exports = {
   createNewRecipe,
