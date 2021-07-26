@@ -3,30 +3,21 @@ const connection = require('./connection');
 const findByEmail = async (email) => {
   const isThereEmail = await connection()
     .then((db) => db.collection('users').findOne({ email }))
-    .then((data) => {
-      return ({
-        id: data.insertedId,
-        role: data.role,
-        email: data.email,
-      })
-    });
+    .then((data) => data);
 
   if (isThereEmail) return isThereEmail;
 
   return false;
 };
 
-const createUserModel = async (name, email, password) => {
-  const newUser = await connection().then((db) =>
-    db.collection('users').insertOne({ name, email, password, role: 'user' }));
-  const newUserObj = {
-    _id: insertedId,
-    name: newUser.ops[0].name,
-    email: newUser.ops[0].email,
-    role: newUser.ops[0].role,
-  };
-  return newUserObj;
-};
+const createUserModel = async (name, email, password) => await connection().then((db) =>
+    db.collection('users').insertOne({ name, email, password, role: 'user' }))
+    .then(({ insertedId }) => ({
+      _id: insertedId,
+      name,
+      email,
+      role: 'user',
+    }));
 
 module.exports = {
   createUserModel,
