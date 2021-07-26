@@ -42,8 +42,6 @@ RecipesRouter.get('/:id', async (req, res) => {
 });
 
 RecipesRouter.put('/:id', validateToken, async (req, res) => {
-    const token = req.headers.authorization;
-
     const { id } = req.params;
     const { name, ingredients, preparation } = req.body;
 

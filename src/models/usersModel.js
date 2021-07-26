@@ -13,8 +13,7 @@ const findByEmail = async (email) => {
 
 const createUserModel = async (name, email, password) => {
   const newUser = await connection().then((db) =>
-    db.collection('users').insertOne({ name, email, password, role: 'user' }),
-  );
+    db.collection('users').insertOne({ name, email, password, role: 'user' }));
   const newUserObj = {
     _id: newUser.ops[0]._id,
     name: newUser.ops[0].name,
