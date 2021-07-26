@@ -22,4 +22,8 @@ const getById = async (id) => {
   return recipesModel.findRecipeById(id);
 };
 
-module.exports = { createRecipe, getAllRecipes, getById };
+const recipeUpdate = async (id, recipe, role) => {
+  if (id === recipe.userId || role === 'admin') return recipesModel.updateRecipe(id, recipe);
+};
+
+module.exports = { createRecipe, getAllRecipes, getById, recipeUpdate };

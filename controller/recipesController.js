@@ -33,4 +33,15 @@ const getRecipeById = async (req, res, next) => {
   }
 };
 
-module.exports = { postRecipe, getRecipes, getRecipeById };
+const putRecipe = async (req, res, next) => {
+  const { _id: userId, role } = req.user;
+  const recipe = req.body;
+  try {
+    const recipeUpdated = await recipesService.recipeUpdate(userId, recipe, role);
+    if (recipeUpdated) return res.status(200).json(recipeUpdated);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports = { postRecipe, getRecipes, getRecipeById, putRecipe };
