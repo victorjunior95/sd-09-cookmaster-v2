@@ -23,16 +23,16 @@ app.route('/login').post(Login);
 
 // Recipes
 const Recipes = require('../controllers/recipes');
-const validateJWT = require('../middlewares/validateJWT');
 
 app
   .route('/recipes')
-  .post(validateJWT, Recipes.create)
+  .post(Recipes.create)
   .get(Recipes.list);
 
 app
   .route('/recipes/:id')
-  .get(Recipes.listById);
+  .get(Recipes.listById)
+  .put(Recipes.edit);
 
 // Error
 const errorMiddleware = require('../middlewares/error');

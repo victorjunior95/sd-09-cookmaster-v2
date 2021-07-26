@@ -2,9 +2,9 @@ const Recipes = require('../services/recipes');
 
 const create = async (req, res, next) => {
   try {
-    const { _id: userId } = req.user;
+    const { authorization } = req.headers;
 
-    const createRecipe = await Recipes.create(req.body, userId);
+    const createRecipe = await Recipes.create(req.body, authorization);
 
     return res.status(201).json({ recipe: { ...createRecipe } });
   } catch (error) {
@@ -32,8 +32,22 @@ const listById = async (req, res, next) => {
   }
 };
 
+const edit = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+
+    const editRecipe = await Recipes.edit(req.body, id, authorization);
+
+    return res.status(200).json(editRecipe);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   create,
   list,
   listById,
+  edit,
 };

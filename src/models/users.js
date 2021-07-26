@@ -14,7 +14,15 @@ const create = async (user) => {
   return newUser.ops[0];
 };
 
+const getByEmail = async (email) => {
+  const user = await connection().then((db) =>
+    db.collection('users').findOne({ email }));
+
+  return user;
+};
+
 module.exports = {
   findByEmail,
   create,
+  getByEmail,
 };
