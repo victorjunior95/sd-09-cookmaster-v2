@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-const multer = require('multer');
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
 const Recipes = require('../controllers/recipesController');
@@ -16,25 +15,17 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, 'src/uploads/');
-  },
-  filename: (req, file, callback) => {
-    callback(null, `${req.params.id}.jpeg`);
-  },
-});
-
-const upload = multer({ storage });
-
+/* user */
 app.post('/users', Users.createNewUser);
 app.post('/login', Users.loginController);
+/* crud */
 app.post('/recipes', RecipVal, Recipes.createNewRecipe);
 app.get('/recipes', Recipes.getAllRecipes);
-app.get('/recipes/:id', Recipes.oneRecp);
 app.put('/recipes/:id', RecipVal, Recipes.rcpUpdate);
 app.delete('/recipes/:id', RecipVal, Recipes.rcpDelet);
-app.put('/recipes/:id/image/', upload.single('image'), RecipVal, Recipes.createImg);
+/* especifico e upload */
+app.get('/recipes/:id', Recipes.oneRecp);
+
 app.use(Err);
 
 module.exports = app;
