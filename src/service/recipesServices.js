@@ -31,9 +31,9 @@ const getOneRecipe = async (id) => {
   return recipe;
 };
 
-const recipeUpdate = async (id, name, ingredients, preparation) => {
-  const rcp = await Recipes.recipeUpdateModel(id, name, ingredients, preparation);
-  return rcp;
+const updtRcp = async (id, name, ingredients, preparation) => {
+  const recipe = await Recipes.recipeUpdateModel(id, name, ingredients, preparation);
+  return recipe;
 };
 
 const deletRcp = async (id) => {
