@@ -42,7 +42,7 @@ const userLoginService = async (email, password) => {
     algorithm: 'HS256',
   };
 
-  const secret = 'gokudeus';
+  const secret = 'tokensupersecreto';
   /* const test = 'narguinas' */
   const token = jwt.sign(user, secret, jwtConfig);
 
