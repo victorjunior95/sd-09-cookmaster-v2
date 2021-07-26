@@ -2,12 +2,6 @@ const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
 
-const TOKEN = 'antonioarieiro';
-const JWT = {
-  expiresIn: '15m',
-  algorithm: 'HS256',
-};
-
 const userSchm = Joi.object({
   email: Joi.string().email().required(),
   name: Joi.string().min(1).required(),
@@ -36,19 +30,23 @@ const createUserService = async (email, name, password) => {
 
 const userLoginService = async (email, password) => {
   const { error } = loginSchm.validate({ email, password });
-  const user = await User.userLoginModel(email, password);
-  if (!user || (error && user.role !== 'admin')) {
-    return { err: { code: 'unauthorized', message: 'Incorrect username or password' } };
+  if (error) {
+    throw dataErr(401, 'All fields must be filled');
   }
-  const { _id, role } = user;
-  const token = jwt.sign(
-    {
-      data: { id: _id, email, role },
-    },
-  TOKEN,
-  JWT,
-  );
-  return token;
+  const user = await User.userLoginModel(email, password);
+  if (!user) {
+    throw dataErr(401, 'Incorrect username or password');
+  }
+  const jwtConfig = {
+    expiresIn: '7d',
+    algorithm: 'HS256',
+  };
+
+  const secret = 'tokensupersecreto';
+  /* const test = 'narguinas' */
+  const token = jwt.sign(user, secret, jwtConfig);
+
+  return { token };
 };
 
 module.exports = {

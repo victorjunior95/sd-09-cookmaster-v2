@@ -8,17 +8,14 @@ const createNewUser = rescue(async (req, res) => {
   return res.status(201).json(user);
 });
 
-const loginController = rescue(async (req, res, next) => {
+const loginController = rescue(async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return next({ code: 'unauthorized', message: 'All fields must be filled' });
-  }
-  const token = await User.userLoginService(email, password);
-  if (token.err) return next(token.err);
-  res.status(200).json({ token });
+  const user = await Users.userLogin(email, password);
+
+  return res.status(200).json(user);
 });
 
 module.exports = {
   createNewUser,
-  loginController,
+  loginController
 };

@@ -10,7 +10,12 @@ const createNewUser = async (email, name, password) => {
 
 const userLoginModel = async (email, password) => {
   const users = await connection().then((db) => db.collection('users')
-    .findOne({ email, password }));
+    .findOne({ email, password }).then((user) => user));
+  if (users) {
+    const { password: passBD, ...userWithoutPassword } = users;
+    return userWithoutPassword;
+  } 
+  
   return users;
 };
 
