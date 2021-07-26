@@ -43,12 +43,25 @@ const putRecipe = [
     const { id } = req.params;
     const recipe = req.body;
     try {
-      const recipeUpdated = await recipesService.recipeUpdate(id, recipe);
-      if (recipeUpdated) return res.status(200).json(recipeUpdated);
+      const updatedRecipe = await recipesService.recipeUpdate(id, recipe);
+      if (updatedRecipe) return res.status(200).json(updatedRecipe);
     } catch (err) {
       return next(err);
     }
   },
 ];
 
-module.exports = { postRecipe, getRecipes, getRecipeById, putRecipe };
+const deleteRecipe = [
+  validateJWT,
+  async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const deletedRecipe = await recipesService.deleteById(id);
+      return res.status(204).json(deletedRecipe);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
+module.exports = { postRecipe, getRecipes, getRecipeById, putRecipe, deleteRecipe };

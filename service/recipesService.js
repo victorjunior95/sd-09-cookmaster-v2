@@ -27,4 +27,9 @@ const recipeUpdate = async (id, recipe) => {
   return recipesModel.updateRecipe(id, recipe);
 };
 
-module.exports = { createRecipe, getAllRecipes, getById, recipeUpdate };
+const deleteById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return recipesModel.deleteOne(id);
+};
+
+module.exports = { createRecipe, getAllRecipes, getById, recipeUpdate, deleteById };
