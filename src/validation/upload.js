@@ -1,19 +1,17 @@
 const multer = require('multer');
+const path = require('path');
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, callback) => {
-    callback(null, 'src/uploads');
-  },
-  filename: (req, file, callback) => {
-    const fileType = file.mimetype.split('/')[1];
-    const { id } = req.params;
-    const fileName = `${id}.${fileType}`;
-    req.fileName = fileName;
-    callback(null, fileName);
-  } });
-
-const upload = multer({ storage });
-
-module.exports = {
-  upload,
+const upload = {
+  dest: path.resolve(__dirname, '..', 'uploads'),
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      cb(null, path.resolve(__dirname, '..', 'uploads'));
+    },
+    filename: (req, _file, cb) => {
+      const fileName = `${req.params.id}.jpeg`;
+      cb(null, fileName);
+    },
+  }),
 };
+
+module.exports = upload;
