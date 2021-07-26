@@ -12,18 +12,21 @@ const recipeValidate = Joi.object({
 
 const createRecipe = async ({ name, ingredients, preparation, userId }) => {
   const { error } = recipeValidate.validate({ name, ingredients, preparation });
-  
   if (error) {
     return { error: {
       status: INVALID_DATA, message: 'Invalid entries. Try again.',
     } };
   }
-  // console.log('ola');
-
   const recipe = await Model.createRecipe({ name, ingredients, preparation, userId });
   return recipe;
 };
 
+const findAll = async () => {
+  const recipes = await Model.findAll();
+  return recipes;
+};
+
 module.exports = {
   createRecipe,
+  findAll,
 };
