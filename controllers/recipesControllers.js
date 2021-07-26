@@ -1,6 +1,7 @@
 const recipesServices = require('../services/recipesServices');
 const validateToken = require('../services/usersServices/validateToken');
 const validateEntries = require('../services/recipesServices/validateEntries');
+const upload = require('./multer');
 
 const created = 201;
 const okay = 200;
@@ -60,7 +61,7 @@ const deleteRecipeById = [
 ];
 
 const uploadRecipeImage = [
-  validateToken,
+  upload.single('image'),
   async (req, res) => {
     const { id } = req.params;
     const { filename } = req.file;
