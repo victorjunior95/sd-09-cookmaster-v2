@@ -35,9 +35,21 @@ const edit = async (data, id) => {
   return editRecipe;
 };
 
+const drop = async (data, id) => {
+  await connection().then((db) =>
+    db
+      .collection('recipes')
+      .deleteOne({ _id: ObjectId(id) }));
+
+  const dropRecipe = await listById(id);
+
+  return dropRecipe;
+};
+
 module.exports = {
   create,
   list,
   listById,
   edit,
+  drop,
 };

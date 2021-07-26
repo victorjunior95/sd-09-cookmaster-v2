@@ -45,9 +45,23 @@ const edit = async (req, res, next) => {
   }
 };
 
+const drop = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+
+    const dropRecipe = await Recipes.drop(id, authorization);
+
+    return res.status(204).json(dropRecipe);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   create,
   list,
   listById,
   edit,
+  drop,
 };

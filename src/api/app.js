@@ -32,7 +32,8 @@ app
 app
   .route('/recipes/:id')
   .get(Recipes.listById)
-  .put(Recipes.edit);
+  .put(Recipes.edit)
+  .delete(Recipes.drop);
 
 // Error
 const errorMiddleware = require('../middlewares/error');

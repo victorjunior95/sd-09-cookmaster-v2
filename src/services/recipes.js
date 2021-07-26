@@ -57,9 +57,18 @@ const edit = async (data, id, authorization) => {
   return editRecipe;
 };
 
+const drop = async (id, authorization) => {
+  await validateAuth(authorization);
+
+  const dropRecipe = await Recipes.drop(id);
+
+  return dropRecipe;
+};
+
 module.exports = {
   create,
   list,
   listById,
   edit,
+  drop,
 };
