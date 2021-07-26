@@ -8,6 +8,18 @@ const addUser = async (user) => {
   return newUser;
 };
 
+const addAdminUser = async (user) => {
+  try {
+    const newUser = { ...user, role: 'admin' };
+    const { insertedId } = await userModel.create(newUser);
+    newUser.id = insertedId;
+    delete newUser.password;
+    return newUser;
+  } catch (error) {
+    return (error);
+  }
+};
+
 const getAllUsers = async () => {
   const usersList = await userModel.getAll();
   return usersList;
@@ -31,6 +43,7 @@ const removeUser = async (id) => {
 
 module.exports = {
   addUser,
+  addAdminUser,
   getAllUsers,
   findUserById,
   updateUser,

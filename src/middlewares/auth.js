@@ -28,7 +28,7 @@ const verifyToken = async (token) => {
       throw new Error({ message: 'Token Not Found' });
     }
     const tokenDecoded = jwt.verify(token, secret);
-    const user = await userModel.findById(tokenDecoded.data.id);
+    const user = await userModel.findByEmail(tokenDecoded.data.email);
     if (!user) {
       throw new Error({ message: 'Invalid Token' });
     }
