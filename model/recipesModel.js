@@ -20,4 +20,18 @@ const updateRecipe = async (id, { name, ingredients, preparation }) => connectio
 const deleteOne = async (id) => connection()
   .then((db) => db.collection('recipes').findOneAndDelete({ _id: ObjectId(id) }));
 
-module.exports = { registerRecipe, findRecipes, findRecipeById, updateRecipe, deleteOne };
+const updateImage = async (id, image) => connection()
+.then((db) => db.collection('recipes').findOneAndUpdate(
+  { _id: ObjectId(id) },
+  { $set: { image } },
+  { returnOriginal: false },
+  )).then((result) => result.value);
+
+module.exports = { 
+  registerRecipe,
+  findRecipes,
+  findRecipeById,
+  updateRecipe,
+  deleteOne,
+  updateImage,
+};

@@ -32,4 +32,16 @@ const deleteById = async (id) => {
   return recipesModel.deleteOne(id);
 };
 
-module.exports = { createRecipe, getAllRecipes, getById, recipeUpdate, deleteById };
+const addImage = async (id, image) => {
+  const imagePath = `localhost:3000/src/uploads/${image}.jpeg`;
+  return recipesModel.updateImage(id, imagePath);
+};
+
+module.exports = {
+  createRecipe,
+  getAllRecipes,
+  getById,
+  recipeUpdate,
+  deleteById,
+  addImage,
+};

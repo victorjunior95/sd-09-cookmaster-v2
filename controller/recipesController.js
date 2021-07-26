@@ -1,5 +1,6 @@
 const recipesService = require('../service/recipesService');
 const validateJWT = require('./validateJWT');
+const uploadImage = require('./multer');
 
 const postRecipe = [ 
   validateJWT,
@@ -64,4 +65,26 @@ const deleteRecipe = [
   },
 ];
 
-module.exports = { postRecipe, getRecipes, getRecipeById, putRecipe, deleteRecipe };
+const uploadRecipeImage = [
+  validateJWT,
+  uploadImage.single('image'),
+  async (req, res, next) => {
+    console.log(uploadImage.single('image'));
+    try {
+      const { id } = req.params;
+      const updated = await recipesService.addImage(id, id);
+      return res.status(200).json(updated);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
+module.exports = {
+  postRecipe,
+  getRecipes,
+  getRecipeById,
+  putRecipe,
+  deleteRecipe,
+  uploadRecipeImage,
+};
