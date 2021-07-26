@@ -1,6 +1,6 @@
 module.exports = {
   OK: 200,
-  CREATED: 201,
+  CREATE: 201,
   NO_CONTENT: 204,
   INVALID_DATA: 400,
   UNAUTHORIZED: 401,

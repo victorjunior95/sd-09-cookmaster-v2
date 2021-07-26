@@ -7,7 +7,7 @@ const { INVALID_DATA, EMAIL_ALREADY_EXIST, UNAUTHORIZED } = require('../middlewa
 const SECRET = 'meusegredosupersecreto';
 
 const JWT_CONF = {
-  expiresIn: '20m',
+  expiresIn: '50m',
   algorithm: 'HS256',
 };
 
@@ -25,7 +25,7 @@ const loginValidate = Joi.object({
 
 const createUser = async ({ name, email, password, role }) => {
   const { error } = userValidate.validate({ name, email, password });
-  console.log(error);
+  // console.log(error);
   if (error) {
     return { error: { 
       status: INVALID_DATA, message: 'Invalid entries. Try again.', 
