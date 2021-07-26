@@ -39,7 +39,7 @@ const recipeUpdate = async (id, name, ingredients, preparation) => {
 };
 
 const deletRcp = async (id) => {
-  await Recipes.recipeDelete(id);
+  await Recipes.rcpDelet(id);
 };
 
 module.exports = {
