@@ -10,7 +10,7 @@ const { RecipVal } = require('../midd/validation');
 const app = express();
 
 app.use(bodyParser);
-
+/*
 const Storage = Multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'src/uploads/');
@@ -20,6 +20,7 @@ const Storage = Multer.diskStorage({
   },
 });
 const upload = Multer({ Storage });
+*/
 
 /* Baseado no COURSE */
 
