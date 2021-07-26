@@ -11,7 +11,6 @@ const deleteRecipeById = async (req, res) => {
   if (userId.code === 401) {
     res.status(code).json({ message });
   }
-  console.log(userId);
   const { _id, role } = userId;
   const result = await deleteById(id, _id, role);
   if (!result) {

@@ -42,6 +42,11 @@ const MISSING_TOKEN = {
   message: 'missing auth token',
 };
 
+const INVALID_FORMAT_IMAGE = {
+  code: 403,
+  message: 'Invalid extension.',
+};
+
 module.exports = {
   INVALID_NEW_USER,
   EMAIL_ALREADY_EXISTS,
@@ -51,4 +56,5 @@ module.exports = {
   RECIPE_NOT_FOUND,
   INVALID_TOKEN,
   MISSING_TOKEN,
+  INVALID_FORMAT_IMAGE,
 };

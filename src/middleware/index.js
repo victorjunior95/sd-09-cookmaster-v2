@@ -5,6 +5,7 @@ const authentication = require('./authentication_Middleware');
 const insertRecipe = require('./insertRecipe_Middleware');
 const getRecipeById = require('./getRecipeById._Middleware');
 const deleteRecipeById = require('./deleteRecipeById_Middleware');
+const updateRecipeById = require('./updateRecipeById_Middleware');
 
 module.exports = {
   createUser,
@@ -14,4 +15,5 @@ module.exports = {
   insertRecipe,
   getRecipeById,
   deleteRecipeById,
+  updateRecipeById,
 };

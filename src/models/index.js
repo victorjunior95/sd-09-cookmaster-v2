@@ -1,5 +1,8 @@
 const { findEmail, insertUser } = require('./usersModel');
-const { allRecipes, insertRecipe, findRecipeByID, deleteById } = require('./recipesModel');
+const {
+  allRecipes, insertRecipe, findRecipeByID,
+  deleteById, updateRecipeById,
+} = require('./recipesModel');
 
 module.exports = {
   findEmail,
@@ -8,4 +11,5 @@ module.exports = {
   insertRecipe,
   findRecipeByID,
   deleteById,
+  updateRecipeById,
 };

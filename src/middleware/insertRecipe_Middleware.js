@@ -13,7 +13,7 @@ const insertRecipe = async (req, res) => {
   const { _id } = userId;
 
   const newRecipe = {
-    name, ingredients, preparation, _id,
+    name, ingredients, preparation, userId: _id,
   };
 
   const { code, message } = await insertNewRecipe(newRecipe);
