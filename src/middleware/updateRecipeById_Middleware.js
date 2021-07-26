@@ -19,7 +19,6 @@ const updateRecipeById = async (req, res) => {
     const { code, message } = MISSING_TOKEN;
     return res.status(code).json({ message });
   }
-  console.log(result);
   return res.status(200).json(result);
 };
 

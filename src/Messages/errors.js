@@ -44,7 +44,7 @@ const MISSING_TOKEN = {
 
 const INVALID_FORMAT_IMAGE = {
   code: 403,
-  message: 'Invalid extension.',
+  message: 'Invalid file extension.',
 };
 
 module.exports = {

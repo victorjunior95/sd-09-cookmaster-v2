@@ -8,7 +8,7 @@ const insertRecipe = async (req, res) => {
   const userId = await authentication(token);
   if (userId.code === 401) {
     const { code, message } = userId;
-    res.status(code).json({ message });
+    return res.status(code).json({ message });
   }
   const { _id } = userId;
 
