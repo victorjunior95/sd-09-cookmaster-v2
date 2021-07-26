@@ -3,6 +3,7 @@ const { getAllRecipesModel } = require('../models/recipesModel');
 const { getRecipeByIdModel } = require('../models/recipesModel');
 const { editRecipeModel } = require('../models/recipesModel');
 const { deleteRecipeModel } = require('../models/recipesModel');
+const { updateWithImageModel } = require('../models/recipesModel');
 
 const createRecipesService = async (name, email, password, id) => {
     const newRecipe = await createRecipesModel(name, email, password, id);
@@ -28,6 +29,11 @@ const editRecipeService = async (name, ingredients, preparation, id) => {
     return updatedRecipe;
 };
 
+const updateWithImageService = async (id, file) => {
+    const recipe = await updateWithImageModel(id, file);
+    return recipe;
+}
+
 const deleteRecipeService = async (id) => {
     const deletedRecipe = await deleteRecipeModel(id);
     return deletedRecipe;
@@ -38,4 +44,5 @@ module.exports = {
     getRecipeByIdService,
     editRecipeService,
     deleteRecipeService,
+    updateWithImageService,
 };
