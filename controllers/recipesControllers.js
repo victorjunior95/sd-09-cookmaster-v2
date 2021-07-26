@@ -59,10 +59,22 @@ const deleteRecipeById = [
   },
 ];
 
+const uploadRecipeImage = [
+  validateToken,
+  async (req, res) => {
+    const { id } = req.params;
+    const { filename } = req.file;
+    await recipesServices.uploadRecipeImage(id, filename);
+    const recipeById = await recipesServices.getRecipeById(id);
+    return res.status(okay).json(recipeById);
+  },
+];
+
 module.exports = {
   insertRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
   deleteRecipeById,
+  uploadRecipeImage,
 };

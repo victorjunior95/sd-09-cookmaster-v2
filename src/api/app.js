@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const usersControllers = require('../../controllers/usersControllers');
 const recipesControllers = require('../../controllers/recipesControllers');
+const upload = require('../../controllers/multer');
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.post('/users', usersControllers.insertUser);
 app.post('/login', usersControllers.userLogin);
 
 app.post('/recipes', recipesControllers.insertRecipe);
+
+app.put('/recipes/:id/image', upload.single('image'), recipesControllers.uploadRecipeImage);
 
 app.get('/recipes', recipesControllers.getAllRecipes);
 

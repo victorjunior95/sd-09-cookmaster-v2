@@ -55,10 +55,28 @@ const deleteRecipeById = async (id) => {
     .then((db) => db.collection('recipes').findOneAndDelete({ _id: ObjectId(id) }));
 };
 
+const uploadRecipeImage = async (id, imgPath) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection()
+    .then((db) => db.collection('recipes').findOneAndUpdate(
+      {
+        _id: ObjectId(id),
+      },
+      {
+        $set: { image: imgPath },
+      },
+      {
+        returnOriginal: false,
+      },
+    ))
+    .then((result) => result.value);
+};
+
 module.exports = {
   insertRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
   deleteRecipeById,
+  uploadRecipeImage,
 };
