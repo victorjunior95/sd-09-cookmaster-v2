@@ -3,8 +3,7 @@ const connection = require('./connection');
 
 const createRecipesModel = async (name, ingredients, preparation, id) => {
   const newRecipe = await connection().then((db) =>
-    db.collection('recipes').insertOne({ name, ingredients, preparation, userId: id }),
-  );
+    db.collection('recipes').insertOne({ name, ingredients, preparation, userId: id }),);
   return newRecipe.ops[0];
 };
 
@@ -40,7 +39,7 @@ const deleteRecipeModel = async (id) => {
     .then((db) => db.collection('recipes')
       .findOneAndDelete({ _id: ObjectId(id) }));
   return deletedRecipe;
-}
+};
 
 module.exports = {
   createRecipesModel,
