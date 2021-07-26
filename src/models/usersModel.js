@@ -10,7 +10,7 @@ const findByEmail = async (email) => {
   return false;
 };
 
-const createUserModel = async (name, email, password) => await connection().then((db) =>
+const createUserModel = async (name, email, password) => connection().then((db) =>
     db.collection('users').insertOne({ name, email, password, role: 'user' }))
     .then(({ insertedId }) => ({
       _id: insertedId,
