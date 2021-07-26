@@ -40,9 +40,9 @@ const deletRcp = async (id) => {
   await Recipes.rcpDelet(id);
 };
 
-const imgCreateService = async (id, path) => {
-  const recipes = await Recipes.createImgBD(id, path);
-  return recipes;
+const createdIMG = async (id, path) => {
+  const recipe = await Recipes.imageCreated(id, path);
+  return recipe;
 };
 
 module.exports = {
@@ -51,5 +51,5 @@ module.exports = {
   getOneRecipe,
   updtRcp,
   deletRcp,
-  imgCreateService,
+  createdIMG,
 };

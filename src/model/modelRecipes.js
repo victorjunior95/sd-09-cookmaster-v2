@@ -42,7 +42,7 @@ const rcpDelet = async (id) => {
       .deleteOne({ _id: ObjectId(id) }));
 };
 
-const createImgBD = async (id, path) => {
+const imageCreated = async (id, path) => {
   if (!ObjectId.isValid(id)) return null;
   const recipe = await connection().then((db) => 
     db.collection('recipes')
@@ -60,5 +60,5 @@ module.exports = {
   oneRecipe,
   recipeUpdateModel,
   rcpDelet,
-  createImgBD,
+  imageCreated,
 };

@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-/* const Multer = require('multer'); */
+const multer = require('multer');
 
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
@@ -10,8 +10,8 @@ const { RecipVal } = require('../midd/validation');
 const app = express();
 
 app.use(bodyParser);
-/*
-const Storage = Multer.diskStorage({
+
+const Storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'src/uploads/');
   },
@@ -19,8 +19,8 @@ const Storage = Multer.diskStorage({
     callback(null, `${req.params.id}.jpeg`);
   },
 });
+
 const upload = Multer({ Storage });
-*/
 
 /* Baseado no COURSE */
 
@@ -40,7 +40,7 @@ app.get('/recipes/:id', Recipes.oneRecp);
 app.put('/recipes/:id', RecipVal, Recipes.rcpUpdate);
 app.delete('/recipes/:id', RecipVal, Recipes.rcpDelet);
 /* recipes id */
-
+app.put('/recipes/:id/image/', upload.single('image'), RecipVal, Recipes.createImg);
 /* upload com multer deu uma pegada */
 app.use(Err);
 
