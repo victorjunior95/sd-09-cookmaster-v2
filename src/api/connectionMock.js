@@ -9,8 +9,8 @@ const OPTIONS = {
 
 const getConnection = async () => {
   const URL_MOCK = await DBServer.getUri();
-  return await MongoClient
+  return MongoClient
     .connect(URL_MOCK, OPTIONS);
-}
+};
 
 module.exports = { getConnection, MongoClient, DBServer };
