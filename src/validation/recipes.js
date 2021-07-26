@@ -1,11 +1,20 @@
-const joi = require('joi');
+const fields = (recipe) => {
+  if (!recipe.name || !recipe.ingredients || !recipe.preparation) {
+    const err = { status: 400, message: 'Invalid entries. Try again.' };
+    throw err;
+  }
+  return null;
+};
 
-const create = joi.object({
-  name: joi.string().required(),
-  ingredients: joi.string().required(),
-  preparation: joi.string().required(),
-});
+const invalidRecipe = (result) => {
+  if (!result) {
+    const err = { status: 404, message: 'recipe not found' };
+    throw err;
+  }
+  return null;
+};
 
 module.exports = {
-  create,
+  fields,
+  invalidRecipe,
 };

@@ -1,12 +1,13 @@
-const rescue = require('express-rescue');
-const { find } = require('../services/users');
+const login = require('../services/login');
 
 const ok = 200;
 
-const login = rescue(async (req, res) => {
-  const { email = '', password = '' } = req.body;
-  const user = await find(email, password);
-  res.status(ok).json(user);
-});
+const create = async (req, res) => {
+  const { email, password } = req.body;
+  const result = await login.create({ email, password });
+  return res.status(ok).json(result);
+};
 
-module.exports = { login };
+module.exports = {
+  create,
+};

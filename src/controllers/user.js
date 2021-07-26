@@ -6,7 +6,7 @@ const ok = 201;
 
 const create = rescue(async (req, res) => {
   const { name, email, password } = req.body;
-  const user = await serviceUser.create(name, email, password, 'user');
+  const user = await serviceUser.create({ name, email, password, role: 'user' });
   res.status(ok).json(user);
 });
 
