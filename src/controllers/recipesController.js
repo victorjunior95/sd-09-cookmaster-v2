@@ -24,21 +24,6 @@ const oneRecp = rescue(async (req, res) => {
   return res.status(200).json(recipe);
 });
 
-const updateRcp = rescue(async (req, res) => {
-  const { id } = req.params;
-  const { name, ingredients, preparation } = req.body;
-
-  const rcp = await Recipes.recipeUpdate(id, name, ingredients, preparation);
-  
-  return res.status(200).json(rcp);
-});
-
-const deletRcp = async (req, res) => {
-  const { id } = req.params;
-  await Recipes.recipeDelete(id);
-
-  return res.status(204).end();
-};
 
 module.exports = {
   createNewRecipe,
