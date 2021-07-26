@@ -33,10 +33,15 @@ const deleteRecipe = (id) => {
     .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 };
 
+/* const addImageToRecipe = () => {
+
+}; */
+
 module.exports = {
   createRecipe,
   getAll,
   getById,
   update,
   deleteRecipe,
+  // addImageToRecipe,
 };

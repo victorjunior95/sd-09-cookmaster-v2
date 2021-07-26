@@ -14,4 +14,7 @@ router.route('/:id')
   .put(validateToken, recipesController.update)
   .delete(validateToken, recipesController.deleteRecipe);
 
+router.route('/:id/image')
+  .put(validateToken, recipesController.uploadImage);
+
 module.exports = router;

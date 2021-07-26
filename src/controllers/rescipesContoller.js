@@ -1,3 +1,8 @@
+// const upload = require('../middlewares/upload');
+// const path = require('path');
+const multer = require('multer');
+// const fs = require('fs').promises;
+
 const recipesService = require('../services/recipesService');
 
 const createRecipe = async (req, res, next) => {
@@ -72,10 +77,30 @@ const deleteRecipe = async (req, res, next) => {
   }
 };
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+const uploadImage = [
+  upload.single('file'),
+  async (req, res, next) => {
+    try {
+      const { file, user } = req;
+      const { id } = req.params;
+
+      const { status, result } = await recipesService.addImageToRecipe(id, user, file);
+      return res.status(status).json(result);
+    } catch (err) {
+      console.log({ error: err.message });
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   createRecipe,
   findAll,
   findById,
   update,
   deleteRecipe,
+  uploadImage,
 };
