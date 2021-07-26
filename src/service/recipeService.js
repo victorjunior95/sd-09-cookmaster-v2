@@ -1,5 +1,6 @@
-const { StatusCodes } = require('http-status-codes');
 const fs = require('fs/promises');
+const { StatusCodes } = require('http-status-codes');
+
 const recipeModel = require('../model/recipeModel');
 
 const createRecipes = async (recipes) => {
@@ -54,9 +55,8 @@ const getImage = async (recipeId) => {
   const { image } = await recipeModel.findRecipes(recipeId);
   const array = image.split('3000/');
   const filename = array[array.length - 1];
-  console.log(filename);
   const localImage = await fs.readFile(filename, 'utf8');
-  return { message: localImage };
+  return localImage;
 };
 
 module.exports = {
