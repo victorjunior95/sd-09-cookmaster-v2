@@ -42,7 +42,6 @@ const deletRcp = async (id) => {
 
 const createdIMG = async (id, path) => {
   const recipe = await Recipes.imageCreated(id, path);
-  console.log(recipe);
   return recipe;
 };
 
