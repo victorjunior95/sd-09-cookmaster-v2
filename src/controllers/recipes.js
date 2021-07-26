@@ -33,10 +33,19 @@ const exclude = async (req, res) => {
   return res.status(204).json(result);
 };
 
+const addImage = async (req, res) => {
+  const filePath = req.file.path;
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const result = await serviceRecipe.addImage(token, id, filePath);
+  return res.status(200).json(result);
+};
+
 module.exports = {
   create,
   find,
   findById,
   update,
   exclude,
+  addImage,
 };

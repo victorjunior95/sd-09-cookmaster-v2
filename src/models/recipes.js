@@ -42,10 +42,22 @@ const exclude = async (id) => {
   return null;
 };
 
+const addImage = async (id, urlImage) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const result = await db.collection('recipes').findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: { image: urlImage } },
+    { returnOriginal: false },
+  );
+  return result.value;
+};
+
 module.exports = {
   create,
   find,
   findById,
   update,
   exclude,
+  addImage,
 };

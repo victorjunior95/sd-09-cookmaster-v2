@@ -33,10 +33,18 @@ const exclude = async (token, id) => {
   return result;
 };
 
+const addImage = async (token, id, filePath) => {
+  verifyToken(token);
+  const urlImage = (`localhost:3000/src/uploads/${filePath.split('uploads/')[1]}`);
+  const result = await recipes.addImage(id, urlImage);
+  return result;
+};
+
 module.exports = {
   create,
   find,
   findById,
   update,
   exclude,
+  addImage,
 };
