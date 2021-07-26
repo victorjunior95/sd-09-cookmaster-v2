@@ -1,4 +1,4 @@
-const { getConnection, MongoClient, DBServer } = require('./connectionMock');
+const { getConnection, MongoClient, DBServer } = require('../api/connectionMock');
 const sinon = require('sinon');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
