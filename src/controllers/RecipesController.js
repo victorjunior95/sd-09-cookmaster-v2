@@ -55,28 +55,24 @@ RecipesRouter.put('/:id', validateToken, async (req, res) => {
     }
 });
 
-
-
 const storage = multer.diskStorage({
-    destination: (req, file, callback) =>{
-        callback(null, "uploads/")
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/');
     },
     filename: (req, file, callback) => {
-        const {id} = req.params
-        callback(null, `${id}.jpeg`)
-    }
-})
+        const { id } = req.params;
+        callback(null, `${id}.jpeg`);
+    },
+});
 
-const upload = multer({storage}) 
+const upload = multer({ storage });
 
 RecipesRouter.put('/:id/image/', validateToken, upload.single('image'), async (req, res) => {
-    const id = req.params.id;
-   const file = req.file;
-   const resultRecipes =  await updateWithImageService(id, file);
-   res.status(200).json(resultRecipes)
-
-})
-
+    const { id } = req.params;
+   const { file } = req.file;
+   const resultRecipes = await updateWithImageService(id, file);
+   res.status(200).json(resultRecipes);
+});
 
 RecipesRouter.delete('/:id', validateToken, async (req, res) => {
     const { id } = req.params;

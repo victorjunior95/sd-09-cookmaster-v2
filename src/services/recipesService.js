@@ -32,7 +32,7 @@ const editRecipeService = async (name, ingredients, preparation, id) => {
 const updateWithImageService = async (id, file) => {
     const recipe = await updateWithImageModel(id, file);
     return recipe;
-}
+};
 
 const deleteRecipeService = async (id) => {
     const deletedRecipe = await deleteRecipeModel(id);

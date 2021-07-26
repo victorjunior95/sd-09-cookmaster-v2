@@ -37,7 +37,7 @@ const editRecipeModel = async (name, ingredients, preparation, id) => {
 const updateWithImageModel = async (id, file) => {
   if (!ObjectId.isValid(id)) return null;
 
-  const urlImage = `localhost:3000/src/uploads/${file.filename}`
+  const urlImage = `localhost:3000/src/uploads/${file.filename}`;
 
   await connection()
     .then((db) => db.collection('recipes')
@@ -45,12 +45,8 @@ const updateWithImageModel = async (id, file) => {
 
   const updatedRecipe = await connection().then((db) =>
     db.collection('recipes').findOne({ _id: new ObjectId(id) }));
-
-    console.log(updatedRecipe)
-
   return updatedRecipe;
 };
-
 
 const deleteRecipeModel = async (id) => {
   const deletedRecipe = await connection()
