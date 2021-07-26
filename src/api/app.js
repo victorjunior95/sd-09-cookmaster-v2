@@ -22,5 +22,6 @@ app.post('/login', login);
 
 app.post('/recipes', insertRecipe);
 app.get('/recipes', getAllRecipes);
+app.get('/recipes/:id', () => {});
 
 module.exports = app;
