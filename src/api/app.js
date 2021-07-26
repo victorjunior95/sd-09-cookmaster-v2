@@ -20,6 +20,8 @@ const Storage = Multer.diskStorage({
   },
 });
 
+const upload = multer({ Storage });
+
 /* Baseado no COURSE */
 
 // Não remover esse end-point, ele é necessário para o avaliador
