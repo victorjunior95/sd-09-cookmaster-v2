@@ -3,5 +3,5 @@ module.exports = (err, _req, res, _next) => {
   if (code) {
     res.status(code).json({ message });
   }
-  /* console.log(err) */
+  console.log(err);
 }; 
