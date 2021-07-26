@@ -45,6 +45,19 @@ const exclude = async (id) => {
         db.collection(collectionRecipes).findOneAndDelete({ _id: recipeId }),
     );
   return updateRecipe;
-}; 
+};
 
-module.exports = { create, listAll, getRecipeById, update, exclude };
+const updateImage = async (id, image) => {
+  const recipeId = new ObjectId(id);
+  const updateRecipe = await connection()
+    .then(
+      (db) =>
+        db.collection(collectionRecipes).findOneAndUpdate({ _id: recipeId },
+      { $set: { image } },
+      { returnOriginal: false }),
+    )
+    .then((result) => result.value);
+  return updateRecipe;
+};
+
+module.exports = { create, listAll, getRecipeById, update, exclude, updateImage };

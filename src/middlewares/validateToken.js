@@ -6,7 +6,7 @@ const HTTP_UNAUTHORIZED_STATUS = 401;
 
 module.exports = async (req, _res, next) => {
   const token = req.headers.authorization;
-
+console.log('comparacao token', token);
   if (!token) {
     return next({ status: HTTP_UNAUTHORIZED_STATUS, err: 'missing auth token' });
   }

@@ -1,10 +1,10 @@
 const express = require('express');
 const recipesService = require('../services/recipesService');
-const { validateToken, validateRoleUser } = require('../middlewares');
+const middlewares = require('../middlewares');
 
 const routerRecipes = express.Router();
 
-routerRecipes.post('/', validateToken, async (req, res, next) => {
+routerRecipes.post('/', middlewares.validateToken, async (req, res, next) => {
   const { _id } = req.user;
   const { name, ingredients, preparation } = req.body;
   try {
@@ -47,30 +47,34 @@ routerRecipes.get('/', async (_req, res, next) => {
   }
 });
 
-routerRecipes.put('/:id', validateToken, validateRoleUser, async (req, res, next) => {
-  const { id } = req.params;
-  const recipeAlter = req.body;
-  try {
-    const recipe = await recipesService
-      .updateRecipesById(id, recipeAlter);
-    return res.status(recipe.status).json(recipe.recipeUpdate);
-  } catch (error) {
-    next(error);
-  }
-});
+routerRecipes.put('/:id',
+  middlewares.validateToken,
+  middlewares.validateRoleUser,
+  async (req, res, next) => {
+    const { id } = req.params;
+    const recipeAlter = req.body;
+    try {
+      const recipe = await recipesService.updateRecipesById(id, recipeAlter);
+      return res.status(recipe.status).json(recipe.recipeUpdate);
+    } catch (error) {
+      next(error);
+    }
+  });
 
-routerRecipes.delete('/:id', validateToken, validateRoleUser, async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const recipe = await recipesService.deleteRecipeById(id);
-    return res.status(recipe.status).json();
-  } catch (error) {
-    return next(error);
-  }
-});
+routerRecipes.delete('/:id',
+  middlewares.validateToken,
+  middlewares.validateRoleUser,
+  async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const recipe = await recipesService.deleteRecipeById(id);
+      return res.status(recipe.status).json();
+    } catch (error) {
+      return next(error);
+    }
+  });
 
-routerRecipes.put(':id/image', validateToken, validateRoleUser, async (req, res, next) => {
-  
-});
+routerRecipes.put('/:id/image', middlewares.validateToken,
+middlewares.uploadPicture);
 
 module.exports = routerRecipes;

@@ -58,10 +58,16 @@ const deleteRecipeById = async (id) => {
   return { status: HTTP_NOCONTENT_STATUS, recipeDeleted };
 };
 
+const updateImage = async (id, image) => {
+  const recipeImage = await recipesModel.updateImage(id, image);
+  return { status: HTTP_OK_STATUS, recipeImage };
+};
+
 module.exports = {
   create,
   listAllRecipes,
   getRecipeById,
   updateRecipesById,
   deleteRecipeById,
+  updateImage,
 };
