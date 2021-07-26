@@ -1,10 +1,9 @@
 const connection = require('./connection');
 
 const findByEmail = async (email) => {
-  let isThereEmail = false;
-  await connection()
+  let isThereEmail = await connection()
     .then((db) => db.collection('users').findOne({ email }))
-    .then((data) => isThereEmail = data);
+    .then((data) => data);
 
   if (isThereEmail) return isThereEmail;
 
