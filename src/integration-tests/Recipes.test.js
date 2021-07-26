@@ -675,3 +675,156 @@ describe('PUT /recipes/:id', () => {
 
   });
 });
+
+describe('DELETE /recipes/:id', () => {
+  describe('1 - When the recipe is successfully edited', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .delete(`/recipes/${recipeId}`)
+        .set('authorization', token)
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 204', () => {
+      expect(resp).to.have.status(204);
+    });
+
+    it('Returns a empty object', () => {
+      expect(resp.body).to.be.an('object').and.be.empty;
+
+    });
+  });
+  describe('2 - When the token is not informed', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .delete(`/recipes/${recipeId}`);
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 401', () => {
+      expect(resp).to.have.status(401);
+    });
+
+    it('Returns a object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+    
+    it('Returns a object with message property', () => {
+      expect(resp.body).to.have.property('message');
+    });
+
+    it('Returns a object with specific values', () => {
+      expect(resp.body.message).to.have.equal('missing auth token');
+    });
+
+  });
+  describe('3 - When the token is invalid', () => {
+
+    let resp;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await chai.request(server)
+        .post('/users')
+        .send({ name: 'test', email: 'test@email.com', password: 'test@123' });
+
+      const { body: { token } } = await chai.request(server)
+        .post('/login')
+        .send({ email: 'test@email.com', password: 'test@123' });
+
+      const { body: { recipe: { _id: recipeId } } } = await chai.request(server)
+        .post('/recipes')
+        .set('authorization', token)
+        .send({
+          name: 'chicken',
+          ingredients: 'chicken',
+          preparation: '10 minutes on oven',
+        });
+      
+      resp = await chai.request(server)
+        .delete(`/recipes/${recipeId}`)
+        .set('authorization', 'invalidToken');
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+      await DBServer.stop();
+    });
+
+    it('Returns status 401', () => {
+      expect(resp).to.have.status(401);
+    });
+
+    it('Returns a object', () => {
+      expect(resp.body).to.be.an('object');
+    });
+    
+    it('Returns a object with message property', () => {
+      expect(resp.body).to.have.property('message');
+    });
+
+    it('Returns a object with specific values', () => {
+      expect(resp.body.message).to.have.equal('jwt malformed');
+    });
+
+  });
+});

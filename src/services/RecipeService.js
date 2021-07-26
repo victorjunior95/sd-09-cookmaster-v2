@@ -58,9 +58,22 @@ const edit = async (id, data, token) => {
   return resp;
 };
 
+const deleteRecipe = async (id, token) => {
+  validateId(id);
+  if (!token) {
+    throw new Error('missing_token');
+  }
+  validateToken(token);
+  const resp = await RecipeModel.deleteRecipe(new ObjectId(id));
+  if (!resp) {
+    throw new Error('not_found');
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   edit,
+  deleteRecipe,
 };

@@ -4,6 +4,7 @@ const RecipeService = require('../services/RecipeService');
 const RecipeRouter = Router();
 
 const HTTP_OK = 200;
+const HTTP_NO_CONTENT = 204;
 const HTTP_CREATED = 201;
 const HTTP_UNAUTHORIZED = 401;
 
@@ -44,6 +45,20 @@ RecipeRouter.put('/:id', async (req, res, next) => {
     const recipeData = req.body;
     const resp = await RecipeService.edit(id, recipeData, token);
     res.status(HTTP_OK).json(resp);
+  } catch (err) {
+    if (err.message === 'missing_token') {
+      return next({ httpCode: HTTP_UNAUTHORIZED, message: 'missing auth token' });
+    }
+    next(err);
+  }
+});
+
+RecipeRouter.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const token = req.headers.authorization;
+    await RecipeService.deleteRecipe(id, token);
+    res.status(HTTP_NO_CONTENT).json();
   } catch (err) {
     if (err.message === 'missing_token') {
       return next({ httpCode: HTTP_UNAUTHORIZED, message: 'missing auth token' });

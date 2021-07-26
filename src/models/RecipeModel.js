@@ -20,9 +20,14 @@ const edit = (_id, data, userId) => connection()
   .then((db) => db.collection('recipes').updateOne({ _id }, { $set: { ...data } }))
   .then(() => ({ _id, ...data, userId }));
 
+const deleteRecipe = (_id) => connection()
+  .then((db) => db.collection('recipes').deleteOne({ _id }))
+  .then(({ deletedCount }) => deletedCount);
+
 module.exports = {
   create,
   getAll,
   getById,
   edit,
+  deleteRecipe,
 };
