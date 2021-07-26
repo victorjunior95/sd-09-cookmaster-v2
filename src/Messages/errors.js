@@ -23,7 +23,7 @@ const INVALID_LOGIN_DATA = {
 // Add Recipe
 const INVALID_RECIPE_DATA = {
   code: 400,
-  message: 'Invalid entries. Try again',
+  message: 'Invalid entries. Try again.',
 };
 
 // Invalid Token

@@ -8,7 +8,7 @@ const insertRecipe = async (req, res) => {
   const userId = await authentication(token);
   if (userId.code === 401) {
     const { code, message } = userId;
-    res.status(code).json(message);
+    res.status(code).json({ message });
   }
 
   const newRecipe = {
@@ -16,7 +16,8 @@ const insertRecipe = async (req, res) => {
   };
 
   const { code, message } = await insertNewRecipe(newRecipe);
-  return res.status(code).json(message);
+  if (code === 201) return res.status(code).json({ recipe: message });
+  return res.status(code).json({ message });
 };
 
 module.exports = insertRecipe;

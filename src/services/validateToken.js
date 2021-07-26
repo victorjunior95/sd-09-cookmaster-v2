@@ -4,11 +4,15 @@ const secret = require('../secret');
 const { INVALID_TOKEN } = require('../Messages/errors');
 
 const validateToken = async (token) => {
-  const decoded = await jwt.verify(token, secret);
-  const user = await findEmail(decoded.data.email);
-  if (!user) return INVALID_TOKEN;
+  try {
+    const decoded = jwt.verify(token, secret);
 
-  return user;
+    const user = await findEmail(decoded.data.email);
+    if (!user) return INVALID_TOKEN;
+    return user;
+  } catch (e) {
+    return INVALID_TOKEN;
+  }
 };
 
 module.exports = validateToken;
