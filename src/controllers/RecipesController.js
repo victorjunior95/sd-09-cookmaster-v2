@@ -69,7 +69,7 @@ const upload = multer({ storage });
 
 RecipesRouter.put('/:id/image/', validateToken, upload.single('image'), async (req, res) => {
     const { id } = req.params;
-   const { file } = req.file;
+   const { file } = req;
    const resultRecipes = await updateWithImageService(id, file);
    res.status(200).json(resultRecipes);
 });
