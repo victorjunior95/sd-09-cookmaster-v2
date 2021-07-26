@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -20,6 +21,8 @@ app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 
 app.use('/recipes', recipesRouter);
+
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use(errorMiddleware);
 
