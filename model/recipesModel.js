@@ -1,11 +1,8 @@
 const { ObjectId } = require('mongodb');
 const connection = require('../connection/connection');
 
-const registerRecipe = async (newRecipe) => {
-  const recipe = await connection()
+const registerRecipe = async (newRecipe) => connection()
     .then((db) => db.collection('recipes').insertOne(newRecipe)).then(({ ops }) => ops[0]);
-  return recipe;
-};
 
 const findRecipes = async () => connection()
   .then((db) => db.collection('recipes').find().toArray());

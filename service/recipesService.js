@@ -12,7 +12,7 @@ const RecipeSchema = Joi.object({
 const createRecipe = async (recipe, id) => {
   const { error } = RecipeSchema.validate(recipe);
   if (error) throw validateError(400, 'Invalid entries. Try again.');
-  const newRecipe = await recipesModel.registerRecipe({ ...recipe, id });
+  const newRecipe = await recipesModel.registerRecipe({ ...recipe, userId: id });
   return newRecipe;
 };
 

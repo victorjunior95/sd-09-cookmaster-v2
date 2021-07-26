@@ -3,8 +3,8 @@ const recipesService = require('../service/recipesService');
 const postRecipe = async (req, res, next) => {
   try {
     const newRecipe = req.body;
-    const { _id } = req.user;
-    const recipe = await recipesService.createRecipe(newRecipe, _id);
+    const { _id: userId } = req.user;
+    const recipe = await recipesService.createRecipe(newRecipe, userId);
     return res.status(201).json({ recipe });
   } catch (err) {
     return next(err);
