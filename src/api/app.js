@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
-const Multer = require('multer');
 
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
@@ -11,6 +10,7 @@ const app = express();
 
 app.use(bodyParser);
 
+const Multer = require('multer');
 const Storage = Multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'src/uploads/');
@@ -19,7 +19,6 @@ const Storage = Multer.diskStorage({
     callback(null, `${req.params.id}.jpeg`);
   },
 });
-
 const upload = Multer({ Storage });
 
 /* Baseado no COURSE */
