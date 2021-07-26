@@ -4,6 +4,7 @@ const searchEmail = require('./searchEmail');
 const validateNewUser = require('./validateNewUser');
 const validateToken = require('./validateToken');
 const validateUser = require('./validateUser');
+const delById = require('./delById');
 
 module.exports = {
   insertNewRecipe,
@@ -12,4 +13,5 @@ module.exports = {
   validateNewUser,
   validateToken,
   validateUser,
+  delById,
 };

@@ -10,9 +10,10 @@ const insertRecipe = async (req, res) => {
     const { code, message } = userId;
     res.status(code).json({ message });
   }
+  const { _id } = userId;
 
   const newRecipe = {
-    name, ingredients, preparation, userId,
+    name, ingredients, preparation, _id,
   };
 
   const { code, message } = await insertNewRecipe(newRecipe);

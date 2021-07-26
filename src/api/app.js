@@ -6,7 +6,7 @@ const {
   login,
   insertRecipe,
   getRecipeById,
-  // deleteRecipeById,
+  deleteRecipeById,
 } = require('../middleware');
 
 const app = express();
@@ -25,6 +25,6 @@ app.post('/login', login);
 app.post('/recipes', insertRecipe);
 app.get('/recipes', getAllRecipes);
 app.get('/recipes/:id', getRecipeById);
-// app.delete('/recipes/:id', deleteRecipeById);
+app.delete('/recipes/:id', deleteRecipeById);
 
 module.exports = app;
