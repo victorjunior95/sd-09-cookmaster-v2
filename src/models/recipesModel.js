@@ -33,9 +33,13 @@ const deleteRecipe = (id) => {
     .then((db) => db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 };
 
-/* const addImageToRecipe = () => {
+const addImageToRecipe = (id, imgPath) => {
+  if (!ObjectId.isValid(id)) return null;
 
-}; */
+  return connection()
+    .then((db) => db.collection('recipes')
+      .updateOne({ _id: ObjectId(id) }, { $set: { image: imgPath } }));
+};
 
 module.exports = {
   createRecipe,
@@ -43,5 +47,5 @@ module.exports = {
   getById,
   update,
   deleteRecipe,
-  // addImageToRecipe,
+  addImageToRecipe,
 };

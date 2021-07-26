@@ -81,7 +81,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const uploadImage = [
-  upload.single('file'),
+  upload.single('image'),
   async (req, res, next) => {
     try {
       const { file, user } = req;
@@ -90,7 +90,7 @@ const uploadImage = [
       const { status, result } = await recipesService.addImageToRecipe(id, user, file);
       return res.status(status).json(result);
     } catch (err) {
-      console.log({ error: err.message });
+      // console.log({ error: err.message });
       return next(err);
     }
   },

@@ -24,7 +24,7 @@ const validateToken = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log('[token validate] > ', err.message);
+    // console.log('[token validate] > ', err.message);
     return res.status(401).json({ message: 'jwt malformed' });
   }
 };

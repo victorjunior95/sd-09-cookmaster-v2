@@ -59,11 +59,10 @@ const deleteRecipe = async (recipeId, user) => {
 
 const addImageToRecipe = async (recipeId, user, fileData) => {
   const { role, _id: id } = user;
-  const { buffer, ...file } = fileData;
+  const { buffer } = fileData;
   const img = `${recipeId}.jpeg`;
   const uploadsFolder = path.join(__dirname, '..', 'uploads', img);
   const imgPath = `localhost:3000/src/uploads/${recipeId}.jpeg`;
-  // const imgUrl = `${file.destination}/${img}`;
 
   const recipe = await recipesModel.getById(recipeId);
   const { userId } = recipe;
@@ -72,7 +71,7 @@ const addImageToRecipe = async (recipeId, user, fileData) => {
 
   await fs.writeFile(uploadsFolder, buffer);
 
-  // await recipesModel.update(recipeId, imgUrl);
+  await recipesModel.addImageToRecipe(recipeId, imgPath);
 
   return {
     status: 200,
