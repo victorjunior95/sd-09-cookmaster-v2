@@ -44,6 +44,6 @@ module.exports = {
   createNewRecipesService,
   allRecipes,
   getOneRecipe,
-  recipeUpdate,
+  updtRcp,
   deletRcp,
 };
