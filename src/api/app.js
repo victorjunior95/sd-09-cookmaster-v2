@@ -1,20 +1,20 @@
 const express = require('express');
-const userRoutes = require('./Routes/user');
-const loginRoutes = require('./Routes/login');
-const recipeRoutes = require('./Routes/recipe');
+const bodyParser = require('body-parser');
+const auth = require('../middlewares/auth');
+const userRoutes = require('../routes/userRoutes');
+const recipeRoutes = require('../routes/recipeRoutes');
 
 const app = express();
-const port = 3000;
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
-  response.send();
+  response.send('hello world');
 });
 // Não remover esse end-point, ele é necessário para o avaliador
-app.use('/user', userRoutes);
-app.use('/login', loginRoutes);
-app.use('/recipe', recipeRoutes);
-
-app.listen(port, () => console.log(`CookMaster Server listening on port ${port}!`));
+app.use('/users', userRoutes);
+app.use('/recipes', recipeRoutes);
+app.post('/login', auth);
 
 module.exports = app;
