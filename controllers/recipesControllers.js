@@ -37,6 +37,14 @@ const getRecipeById = async (req, res) => {
   return res.status(okay).json(recipeById);
 };
 
+// const updateRecipeById = async (req, res) => {
+//   const { id } = req.params;
+//   const { name, ingredients, preparation } = req.body;
+//   console.log('CONTROLLER UPDATE', id, name, ingredients, preparation);
+//   const updatedRecipe = await recipesServices.updateRecipeById(id, name, ingredients, preparation);
+//   return res.status(okay).json(updatedRecipe);
+// };
+
 module.exports = {
   insertRecipe,
   getAllRecipes,
