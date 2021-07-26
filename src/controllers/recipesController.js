@@ -43,9 +43,9 @@ const rcpDelet = async (req, res) => {
 const createImg = async (req, res) => {
   const { id } = req.params;
   const { path } = req.file;
-  const imageCreated = await Recipes.imgCreateService(id, path);
+  const sucefullImgCreate = await Recipes.imgCreateService(id, path);
 
-  return res.status(200).json(imageCreated);
+  return res.status(200).json(sucefullImgCreate);
 };
 
 module.exports = {
