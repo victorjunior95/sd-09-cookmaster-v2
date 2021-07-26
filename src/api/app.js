@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
+const Multer = require('multer');
+
 const Err = require('../midd/err');
 const Users = require('../controllers/userControler');
 const Recipes = require('../controllers/recipesController');
@@ -8,6 +10,17 @@ const { RecipVal } = require('../midd/validation');
 const app = express();
 
 app.use(bodyParser);
+
+const Storage = Multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'src/uploads/');
+  },
+  filename: (req, file, callback) => {
+    callback(null, `${req.params.id}.jpeg`);
+  },
+});
+
+/* Baseado no COURSE */
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
