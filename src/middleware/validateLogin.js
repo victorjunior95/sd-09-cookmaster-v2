@@ -13,10 +13,10 @@ module.exports = async (req, res, next) => {
 
         err.statusCode = 401;
 
-        return next(err)
+        return next(err);
     }
 
-    const userDataDB = await findByEmail(req.body.email)
+    const userDataDB = await findByEmail(req.body.email);
 
     if (userDataDB.password !== req.body.password) {
 
@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
 
         err.statusCode = 401;
 
-        return next(err)
+        return next(err);
     }
     next();
 }
