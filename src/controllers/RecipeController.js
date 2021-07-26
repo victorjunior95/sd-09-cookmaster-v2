@@ -11,7 +11,7 @@ const HTTP_CREATED = 201;
 
 RecipeRouter.post('/', TokenMiddleware, async (req, res, next) => {
   try {
-    const { userId } = req;
+    const { userId } = req.user;
     const recipeData = req.body;
     const resp = await RecipeService.create(recipeData, userId);
     res.status(HTTP_CREATED).json({ recipe: resp });

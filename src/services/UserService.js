@@ -62,7 +62,14 @@ const auth = async (data) => {
   return token;
 };
 
+const createAdmin = async (data) => {
+  validateUserData(data);
+  await validateEmail(data.email);
+  return UserModel.createAdmin(data);
+};
+
 module.exports = {
   create,
   auth,
+  createAdmin,
 };

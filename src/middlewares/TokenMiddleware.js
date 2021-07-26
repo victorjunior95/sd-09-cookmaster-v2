@@ -9,8 +9,8 @@ module.exports = (req, res, next) => {
     if (!token) {
       throw new Error('missing_token');
     }
-    const { id } = jwt.verify(token, JWT_SECRET);
-    req.userId = id;
+    const userData = jwt.verify(token, JWT_SECRET);
+    req.user = userData;
     next();
   } catch (err) {
     if (err.message === 'missing_token') {
