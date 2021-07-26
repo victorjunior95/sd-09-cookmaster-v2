@@ -4,6 +4,7 @@ const {
   createUser,
   getAllRecipes,
   login,
+  insertRecipe,
 } = require('../middleware');
 
 const app = express();
@@ -19,7 +20,7 @@ app.post('/users', createUser);
 
 app.post('/login', login);
 
-app.post('/recipes', () => {});
+app.post('/recipes', insertRecipe);
 app.get('/recipes', getAllRecipes);
 
 module.exports = app;

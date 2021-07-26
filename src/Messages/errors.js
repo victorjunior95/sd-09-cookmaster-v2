@@ -20,9 +20,23 @@ const INVALID_LOGIN_DATA = {
   message: 'Incorrect username or password',
 };
 
+// Add Recipe
+const INVALID_RECIPE_DATA = {
+  code: 400,
+  message: 'Invalid entries. Try again',
+};
+
+// Invalid Token
+const INVALID_TOKEN = {
+  code: 401,
+  message: 'jwt malformed',
+};
+
 module.exports = {
   INVALID_NEW_USER,
   EMAIL_ALREADY_EXISTS,
   INVALID_LOGIN_FORMAT,
   INVALID_LOGIN_DATA,
+  INVALID_RECIPE_DATA,
+  INVALID_TOKEN,
 };
