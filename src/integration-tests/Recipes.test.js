@@ -828,3 +828,15 @@ describe('DELETE /recipes/:id', () => {
 
   });
 });
+
+describe('PUT /recipes/:id/image', () => {
+  describe('1 - When the image is successfully inserted into the recipe', () => {
+
+  });
+  describe('2 - When the token is not informed', () => {
+    
+  });
+  describe('3 - When the token is invalid', () => {
+    
+  });
+});

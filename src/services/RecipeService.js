@@ -1,9 +1,6 @@
 const Joi = require('joi');
-const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const RecipeModel = require('../models/RecipeModel');
-
-const JWT_SECRET = 'cookmaster';
 
 const validateRecipeData = (data) => {
   const { error } = Joi.object({
@@ -16,20 +13,14 @@ const validateRecipeData = (data) => {
   }
 };
 
-const validateToken = (token) => {
-  const { id } = jwt.verify(token, JWT_SECRET);
-  return id;
-};
-
 const validateId = (id) => {
   if (!ObjectId.isValid(id)) {
     throw new Error('not_found');
   }
 };
 
-const create = (data, token) => {
+const create = (data, userId) => {
   validateRecipeData(data);
-  const userId = validateToken(token);
   return RecipeModel.create(data, userId);
 };
 
@@ -44,30 +35,34 @@ const getById = async (id) => {
   return resp;
 };
 
-const edit = async (id, data, token) => {
+const edit = async (id, data) => {
   validateRecipeData(data);
   validateId(id);
-  if (!token) {
-    throw new Error('missing_token');
-  }
-  const userId = validateToken(token);
-  const resp = await RecipeModel.edit(new ObjectId(id), data, userId);
+  let resp = await RecipeModel.edit(new ObjectId(id), data);
   if (!resp) {
     throw new Error('not_found');
   }
+  resp = await RecipeModel.getById(new ObjectId(id));
   return resp;
 };
 
-const deleteRecipe = async (id, token) => {
+const deleteRecipe = async (id) => {
   validateId(id);
-  if (!token) {
-    throw new Error('missing_token');
-  }
-  validateToken(token);
   const resp = await RecipeModel.deleteRecipe(new ObjectId(id));
   if (!resp) {
     throw new Error('not_found');
   }
+};
+
+const insertImg = async (id) => {
+  validateId(id);
+  const imageUrl = { image: `localhost:3000/src/uploads/${id}.jpeg` };
+  let resp = await RecipeModel.edit(new ObjectId(id), imageUrl);
+  if (!resp) {
+    throw new Error('not_found');
+  }
+  resp = await RecipeModel.getById(new ObjectId(id));
+  return resp;
 };
 
 module.exports = {
@@ -76,4 +71,5 @@ module.exports = {
   getById,
   edit,
   deleteRecipe,
+  insertImg,
 };

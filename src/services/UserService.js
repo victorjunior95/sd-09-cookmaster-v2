@@ -36,7 +36,7 @@ const validateLoginData = (data) => {
     password: Joi.required(),
   }).validate(data);
   if (error) {
-    throw new Error('invalid_data');
+    throw new Error('invalid_input');
   }
 };
 

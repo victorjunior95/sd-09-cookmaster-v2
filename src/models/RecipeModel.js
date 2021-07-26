@@ -16,13 +16,17 @@ const getById = (id) => connection()
   .then((db) => db.collection('recipes').findOne({ _id: id }))
   .then((result) => result);
 
-const edit = (_id, data, userId) => connection()
+const edit = (_id, data) => connection()
   .then((db) => db.collection('recipes').updateOne({ _id }, { $set: { ...data } }))
-  .then(() => ({ _id, ...data, userId }));
+  .then(({ modifiedCount }) => modifiedCount);
 
 const deleteRecipe = (_id) => connection()
   .then((db) => db.collection('recipes').deleteOne({ _id }))
   .then(({ deletedCount }) => deletedCount);
+
+const insertImg = (_id, data) => connection()
+  .then((db) => db.collection('recipes').updateOne({ _id }, { $set: { ...data } }))
+  .then((result) => result);
 
 module.exports = {
   create,
@@ -30,4 +34,5 @@ module.exports = {
   getById,
   edit,
   deleteRecipe,
+  insertImg,
 };
