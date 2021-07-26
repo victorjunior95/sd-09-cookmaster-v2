@@ -40,10 +40,20 @@ const rcpDelet = async (req, res) => {
   return res.status(204).end();
 };
 
+const createImg = async (req, res) => {
+  const { id } = req.params;
+  const { path } = req.file;
+  const imageCreated = await Recipes.imgCreateService(id, path);
+
+  return res.status(200).json(imageCreated);
+};
+
+
 module.exports = {
   createNewRecipe,
   getAllRecipes,
   oneRecp,
   rcpUpdate,
   rcpDelet,
+  createImg,
 };

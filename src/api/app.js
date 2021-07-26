@@ -30,12 +30,16 @@ app.get('/', (request, response) => {
 
 app.post('/users', Users.createNewUser);
 app.post('/login', Users.loginController);
+/* user */
 app.post('/recipes', RecipVal, Recipes.createNewRecipe);
 app.get('/recipes', Recipes.getAllRecipes);
+/* recipes */
 app.get('/recipes/:id', Recipes.oneRecp);
 app.put('/recipes/:id', RecipVal, Recipes.rcpUpdate);
 app.delete('/recipes/:id', RecipVal, Recipes.rcpDelet);
-
+/* recipes id */
+app.put('/recipes/:id/image/', upload.single('image'), RecipVal, Recipes.createImg);
+/* upload com multer deu uma pegada */
 app.use(Err);
 
 module.exports = app;
