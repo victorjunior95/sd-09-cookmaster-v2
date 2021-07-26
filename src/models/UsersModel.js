@@ -2,6 +2,7 @@ const connect = require('./connection');
 
 const findByEmail = async (email) => {
   const connection = await connect();
+  console.log(`model ${email}`);
   const user = await connection.collection('users').findOne({ email });
 
   return Boolean(user);
@@ -9,11 +10,12 @@ const findByEmail = async (email) => {
 
 const register = async (user) => {
   const connection = await connect();
-  console.log(`model ${user.name}, ${user.email}, ${user.password}, ${user.role}`);
+  // console.log(`model ${user.user.name}, ${user.user.email},
+  // ${user.user.password}, ${user.user.role}`);
   const answer = await connection.collection('users')
   .insertOne(user);
 
-  console.log(`model ${answer}`);
+  // console.log(`model ${answer}`);
   // {
   //   "result": {"n": 1,"ok":1},
   //   "connection":{"_events":{},"_eventsCount":4,"id":1,"address":"127.0.0.1:27017","bson":{},"socketTimeout":360000,"monitorCommands":false,"closed":false,"destroyed":false,"lastIsMasterMS":1},
@@ -23,8 +25,8 @@ const register = async (user) => {
   //   "n":1,
   //   "ok":1
   // }
-  const { ops } = answer;
-  console.log(`model ${ops.map((arr) => arr)}`);
+  // const { ops } = answer;
+  // console.log(`model ${ops.map((arr) => arr)}`);
   return answer.ops[0];
 };
 

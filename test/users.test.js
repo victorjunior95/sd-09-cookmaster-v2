@@ -89,7 +89,7 @@ describe.only('1 - Crie um endpoint para o cadastro de usuários', () => {
       });
   });
 
-  it('Será validado que o campo "email" é único', async () => {
+  it.only('Será validado que o campo "email" é único', async () => {
     await frisby
       .post(`${url}/users/`,
         {
@@ -114,7 +114,7 @@ describe.only('1 - Crie um endpoint para o cadastro de usuários', () => {
       });
   });
 
-  it.only('Será validado que é possível cadastrar usuário com sucesso', async () => {
+  it('Será validado que é possível cadastrar usuário com sucesso', async () => {
     await frisby
       .post(`${url}/users/`,
         {
