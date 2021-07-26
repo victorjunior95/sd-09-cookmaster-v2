@@ -1,4 +1,4 @@
-require('fs').promises;
+const fs = require('fs').promises;
 const { StatusCodes } = require('http-status-codes');
 
 const recipeModel = require('../model/recipeModel');
