@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel');
-const dataErr = require('../midd/dataErr')
+const dataErr = require('../midd/dataErr');
 
 const userSchm = Joi.object({
   email: Joi.string().email().required(),
