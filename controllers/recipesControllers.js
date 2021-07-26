@@ -4,6 +4,7 @@ const validateEntries = require('../services/recipesServices/validateEntries');
 
 const created = 201;
 const okay = 200;
+const notFound = 404;
 
 const insertRecipe = [
   validateToken,
@@ -27,7 +28,17 @@ const getAllRecipes = async (_req, res) => {
   return res.status(okay).json(allRecipes);
 };
 
+const getRecipeById = async (req, res) => {
+  const { id } = req.params;
+  const recipeById = await recipesServices.getRecipeById(id);
+  if (recipeById.message) {
+    return res.status(notFound).json(recipeById);
+  }
+  return res.status(okay).json(recipeById);
+};
+
 module.exports = {
   insertRecipe,
   getAllRecipes,
+  getRecipeById,
 };
