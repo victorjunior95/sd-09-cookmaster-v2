@@ -1,0 +1,1 @@
+module.exports = dataErr = (code, message) => ({ code, message });
