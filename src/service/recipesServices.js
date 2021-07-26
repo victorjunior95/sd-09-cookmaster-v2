@@ -25,11 +25,9 @@ const allRecipes = async () => {
 
 const getOneRecipe = async (id) => {
   const recipe = await Recipes.oneRecipe(id);
-
   if (!recipe) {
     throw dataErr(404, 'recipe not found');
   }
-
   return recipe;
 };
 

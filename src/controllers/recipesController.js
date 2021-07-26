@@ -24,11 +24,8 @@ const oneRecp = rescue(async (req, res) => {
   return res.status(200).json(recipe);
 });
 
-
 module.exports = {
   createNewRecipe,
   getAllRecipes,
   oneRecp,
-  updateRcp,
-  deletRcp,
 };
