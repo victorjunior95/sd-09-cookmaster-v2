@@ -48,7 +48,6 @@ const createImg = async (req, res) => {
   return res.status(200).json(imageCreated);
 };
 
-
 module.exports = {
   createNewRecipe,
   getAllRecipes,
