@@ -20,37 +20,25 @@ const responseCodes = {
 const uploadDir = path.join(__dirname, '..', 'uploads');
 const storage = multer.diskStorage({
   destination: uploadDir,
-  filename: (req, res, callback) => {
+  filename: (req, _res, callback) => {
     const fileName = `${req.params.id}.jpeg`;
     callback(null, fileName);
   },
 });
 
 router.get('/', async (req, res) => {
-  try {
     const token = req.headers.authorization;
-    if (token) {
-      verifyToken(token);
-    }
+    if (token) verifyToken(token);
     const recipes = await recipesService.getAllRecipes();
-    res.status(responseCodes.success).json(recipes);  
-  } catch (error) {
-    res.status(401).json({ message: 'jwt malformed' });
-  }
-});
+    res.status(responseCodes.success).json(recipes);
+  });
 
 router.get('/:id', validateRecipeId, async (req, res) => {
-  try {
-    const token = req.headers.authorization;
-    if (token) {
-      verifyToken(token);
-    }
-    const { id } = req.params;
-    const recipe = await recipesService.findRecipeById(id);
-    res.status(responseCodes.success).json(recipe);
-  } catch (error) {
-    res.status(401).json({ message: 'recipe not found' });
-  }
+  const token = req.headers.authorization;
+  if (token) verifyToken(token);
+  const { id } = req.params;
+  const recipe = await recipesService.findRecipeById(id);
+  res.status(responseCodes.success).json(recipe);
 });
 
 router.post('/', validateToken, validateRecipe, async (req, res) => {
@@ -67,12 +55,8 @@ router.put('/:id', validateToken, async (req, res) => {
   const reqRecipe = req.body;
   const { id } = req.params;
   const reqUser = req.user;
-  try {
-    const changedRecipe = await recipesService.updateRecipe(reqRecipe, id, reqUser);
-    res.status(responseCodes.success).json(changedRecipe);
-  } catch (error) {
-    res.status(responseCodes.notAuthorized).json({ message: error.message });
-  }
+  const changedRecipe = await recipesService.updateRecipe(reqRecipe, id, reqUser);
+  res.status(responseCodes.success).json(changedRecipe);
 });
 
 router.put('/:id/image', validateToken, upload.single('image'), async (req, res) => {
@@ -90,14 +74,10 @@ router.put('/:id/image', validateToken, upload.single('image'), async (req, res)
 });
 
 router.delete('/:id', validateToken, async (req, res) => {
-  try {
     const { id } = req.params;
     const { user } = req;
     await recipesService.removeRecipe(id, user);
     res.status(responseCodes.noContent).send();
-  } catch (error) {
-    res.status(responseCodes.notAuthorized).json({ message: error.message });
-  }
 });
 
 module.exports = router;

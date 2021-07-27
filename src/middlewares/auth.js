@@ -28,7 +28,8 @@ const verifyToken = async (token) => {
       throw new Error({ message: 'Token Not Found' });
     }
     const tokenDecoded = jwt.verify(token, secret);
-    const user = await userModel.findByEmail(tokenDecoded.data.email);
+    const { email } = tokenDecoded.data;
+    const user = await userModel.findByEmail(email);
     if (!user) {
       throw new Error({ message: 'Invalid Token' });
     }
@@ -48,6 +49,9 @@ const validateToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    if (req.url === '/admin') {
+      return res.status(403).json({ message: 'Only admins can register new admins' });
+    }
     return res.status(401).json({ message: 'jwt malformed' });
   }
 };

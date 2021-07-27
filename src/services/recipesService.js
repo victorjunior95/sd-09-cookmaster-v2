@@ -21,19 +21,12 @@ const isUserAuthorized = (recipeUserId, reqUserId, role) => (
 
 const updateRecipe = async (reqRecipe, reqRecipeId, reqUser) => {
   const { _id, role } = reqUser;
-  try {
-    const currentRecipe = await findRecipeById(reqRecipeId);
-    if (!isUserAuthorized(currentRecipe.userId, _id, role)) {
-      return { response: 401, message: 'missing auth token' };
-    }
-    const recipeUpToDate = { userId: _id, _id: reqRecipeId, ...reqRecipe };
-    const { matchedCount } = await recipesModel.update(reqRecipeId, recipeUpToDate);
-    if (matchedCount) {
-      return recipeUpToDate;
-    }
-  } catch (error) {
-    throw new Error(error);
-  }
+  const messageObject = { response: 401, message: 'missing auth token' };
+  const currentRecipe = await findRecipeById(reqRecipeId);
+  if (!isUserAuthorized(currentRecipe.userId, _id, role)) return { messageObject };
+  const recipeUpToDate = { userId: _id, _id: reqRecipeId, ...reqRecipe };
+  const { matchedCount } = await recipesModel.update(reqRecipeId, recipeUpToDate);
+  if (matchedCount) return recipeUpToDate;
 };
 
 const removeRecipe = async (id, user) => {
@@ -43,7 +36,6 @@ const removeRecipe = async (id, user) => {
     return { response: 401, message: 'missing auth token' };
   }
   await recipesModel.remove(id);
-  return recipe;
 };
 
 module.exports = {
