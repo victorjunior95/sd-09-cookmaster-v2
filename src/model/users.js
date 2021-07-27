@@ -36,4 +36,4 @@ const findUserByEmail = async (email) => {
   }
 };
 
-const getUserIdByEmail = module.exports = { registerUser, userLogin, findUserByEmail };
+module.exports = { registerUser, userLogin, findUserByEmail };
