@@ -7,9 +7,13 @@ const registerRecipe = async (name, ingredients, preparation, userId) => {
 };
 
 const getRecipes = async () => {
-  console.log('Service');
   const response = await recipesModel.getRecipes();
   return { status: 200, payload: response };
 };
 
-module.exports = { registerRecipe, getRecipes };
+const getRecipeById = async (id) => {
+  const response = await recipesModel.getRecipeById(id);
+  if (!response) return { status: 404, payload: { message: 'recipe not found' } };
+  return { status: 200, payload: response };
+};
+module.exports = { registerRecipe, getRecipes, getRecipeById };

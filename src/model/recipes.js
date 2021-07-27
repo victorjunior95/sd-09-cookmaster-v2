@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const cookmasterDb = require('./cookmasterDb');
 
 const registerRecipe = async (recipeData) => {
@@ -11,7 +12,6 @@ const registerRecipe = async (recipeData) => {
 };
 
 const getRecipes = async () => {
-  console.log('Model');
   try {
     const recipesData = await cookmasterDb().then((db) => db.collection('recipes'));
     const recipes = await recipesData.find().toArray();
@@ -21,4 +21,15 @@ const getRecipes = async () => {
   }
 };
 
-module.exports = { registerRecipe, getRecipes };
+const getRecipeById = async (id) => {
+  try {
+    const searchId = new ObjectID(id);
+    const recipesData = await cookmasterDb().then((db) => db.collection('recipes'));
+    const recipes = await recipesData.find({ _id: searchId }).toArray();
+    return recipes[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { registerRecipe, getRecipes, getRecipeById };

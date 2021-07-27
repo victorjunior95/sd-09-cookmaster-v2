@@ -8,9 +8,14 @@ const registerRecipe = async (req, res) => {
 };
 
 const getRecipes = async (req, res) => {
-  console.log('Controller');
   const response = await recipesServices.getRecipes();
   return res.status(response.status).json(response.payload);
 };
 
-module.exports = { registerRecipe, getRecipes };
+const getRecipeById = async (req, res) => {
+  const { id } = req.params;
+  const response = await recipesServices.getRecipeById(id);
+  return res.status(response.status).json(response.payload);
+};
+
+module.exports = { registerRecipe, getRecipes, getRecipeById };
