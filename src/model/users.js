@@ -17,14 +17,23 @@ const registerUser = async (newUser) => {
 const userLogin = async (email, password) => {
   try {
     const usersDb = await cookmasterDb().then((db) => db.collection('users'));
-    console.log({ email, password });
-    const userFound = await usersDb.find({ email, password }).count() > 0;
-    console.log(userFound);
-    return userFound;
+    const userFound = await usersDb.find({ email, password }).toArray();
+    return userFound[0];
   } catch (err) {
     console.log('Erro na operação de login');
     console.log(err);
   }
 };
 
-module.exports = { registerUser, userLogin };
+const findUserByEmail = async (email) => {
+  console.log(email);
+  try {
+    const usersDb = await cookmasterDb().then((db) => db.collection('users'));
+    const isUserFound = await usersDb.find({ email }).toArray();
+    return isUserFound[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getUserIdByEmail = module.exports = { registerUser, userLogin, findUserByEmail };

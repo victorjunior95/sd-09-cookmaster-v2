@@ -14,10 +14,11 @@ const registerUser = async (newUser) => {
 };
 
 const userLogin = async (email, password) => {
-  const isUserFound = await userModel.userLogin(email, password);
-  console.log(isUserFound);
-  if (isUserFound) {
-    const token = jwt.sign({ email }, SECRET, jwtConfig);
+  const userFound = await userModel.userLogin(email, password);
+  console.log(userFound);
+  if (userFound) {
+    const { password: _, ...userWithoutPassword } = userFound;
+    const token = jwt.sign({ ...userWithoutPassword }, SECRET, jwtConfig);
     return { status: 200, payload: { token } };
   }
 

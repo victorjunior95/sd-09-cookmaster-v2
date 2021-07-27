@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const login = require('../routes/login');
 const users = require('../routes/users');
+const recipes = require('../routes/recipes');
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
@@ -19,5 +20,6 @@ app.get('/', (request, response) => {
 
 app.use('/users', users);
 app.use('/login', login);
+app.use('/recipes', recipes);
 
 module.exports = app;
