@@ -1,7 +1,7 @@
 const rescue = require('express-rescue');
 
 const Service = require('../services/RecipesService');
-const { CREATE } = require('../middleware/httpStatus');
+const { CREATE, OK } = require('../middleware/httpStatus');
 
 const createRecipe = rescue(async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
@@ -11,7 +11,6 @@ const createRecipe = rescue(async (req, res, next) => {
   if (recipe.error) {
     return next(recipe.error);
   }
-  console.log(recipe);
   res.status(CREATE).json(recipe);
 });
 
@@ -20,7 +19,19 @@ const findAll = rescue(async (_req, res) => {
   res.json(recipes);
 });
 
+const findRecipe = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const recipe = await Service.findRecipe(id);
+
+  if (recipe.error) {
+    return next(recipe.error);
+  }
+
+  res.status(OK).json(recipe);
+});
+
 module.exports = {
   createRecipe,
   findAll,
+  findRecipe,
 };

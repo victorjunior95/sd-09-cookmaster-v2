@@ -17,7 +17,6 @@ const validateToken = async (req, res, next) => {
     const user = await Model.findByEmail(payload.data.email);
     const { password: _, _id: userId, ...userData } = user;
     
-    console.log('user');
     req.user = { userId, ...userData };
     next();
   } catch (error) {

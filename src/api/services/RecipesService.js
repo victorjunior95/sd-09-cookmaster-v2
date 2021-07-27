@@ -1,7 +1,8 @@
 const Joi = require('joi');
+const { ObjectId } = require('mongodb');
 
 const Model = require('../models/RecipesModel');
-const { INVALID_DATA } = require('../middleware/httpStatus');
+const { INVALID_DATA, NOT_FOUND } = require('../middleware/httpStatus');
 // EMAIL_ALREADY_EXIST, UNAUTHORIZED
 
 const recipeValidate = Joi.object({
@@ -26,7 +27,21 @@ const findAll = async () => {
   return recipes;
 };
 
+const findRecipe = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return {
+      error: {
+        status: NOT_FOUND, message: 'recipe not found',
+      },
+    };
+  }
+
+  const recipe = await Model.findRecipe(id);
+  return recipe;
+};
+
 module.exports = {
   createRecipe,
   findAll,
+  findRecipe,
 };
