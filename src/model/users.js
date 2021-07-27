@@ -1,9 +1,7 @@
 const cookmasterDb = require('./cookmasterDb');
 
 const registerUser = async (newUser) => {
-  console.log('Iniciando registro no banco de dados');
   const usersDb = await cookmasterDb().then((data) => data.collection('users'));
-  console.log(usersDb);
   try {
     const { ops } = await usersDb.insertOne(newUser);
     console.log('Registrou');
@@ -16,4 +14,17 @@ const registerUser = async (newUser) => {
   }
 };
 
-module.exports = { registerUser };
+const userLogin = async (email, password) => {
+  try {
+    const usersDb = await cookmasterDb().then((db) => db.collection('users'));
+    console.log({ email, password });
+    const userFound = await usersDb.find({ email, password }).count() > 0;
+    console.log(userFound);
+    return userFound;
+  } catch (err) {
+    console.log('Erro na operação de login');
+    console.log(err);
+  }
+};
+
+module.exports = { registerUser, userLogin };

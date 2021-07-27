@@ -1,4 +1,11 @@
+const jwt = require('jsonwebtoken');
 const userModel = require('../model/users');
+
+const SECRET = 'MaxSecret';
+const jwtConfig = {
+  expiresIn: '15min',
+  algorithm: 'HS256',
+};
 
 const registerUser = async (newUser) => {
   const response = await userModel.registerUser(newUser);
@@ -6,4 +13,15 @@ const registerUser = async (newUser) => {
   return { status: 201, payload: { user: response } };
 };
 
-module.exports = { registerUser };
+const userLogin = async (email, password) => {
+  const isUserFound = await userModel.userLogin(email, password);
+  console.log(isUserFound);
+  if (isUserFound) {
+    const token = jwt.sign({ email }, SECRET, jwtConfig);
+    return { status: 200, payload: { token } };
+  }
+
+  return { status: 401, payload: { message: 'Incorrect username or password' } };
+};
+
+module.exports = { registerUser, userLogin };
