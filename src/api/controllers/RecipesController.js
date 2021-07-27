@@ -32,12 +32,15 @@ const findRecipe = rescue(async (req, res, next) => {
 
 const updateOne = rescue(async (req, res, next) => {
   const { id } = req.params;
+  const { userId } = req.user;
   const newRecipe = req.body;
-  const recipe = await Service.updateOne(id, newRecipe);
+  const recipe = await Service.updateOne(id, newRecipe, userId);
 
   if (recipe.error) {
     return next(recipe.error);
   }
+
+  res.status(OK).json(recipe);
 });
 
 module.exports = {

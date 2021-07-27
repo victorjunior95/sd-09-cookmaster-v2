@@ -40,8 +40,8 @@ const findRecipe = async (id) => {
   return recipe;
 };
 
-const updateOne = async (id, { name, ingredients, preparation }) => {
-  const { error } = recipeValidate.validate({ name, ingredients, preparation });
+const updateOne = async (id, newRecipe, userId) => {
+  const { error } = recipeValidate.validate({ ...newRecipe });
   if (error) {
     return {
       error: {
@@ -50,8 +50,14 @@ const updateOne = async (id, { name, ingredients, preparation }) => {
     };
   }
 
-  const recipe = await Model.updateOne(id, name, ingredients, preparation);
-  return recipe;
+  await Model.updateOne(id, newRecipe);
+  const updatedRecipe = {
+    _id: id,
+    ...newRecipe,
+    userId,
+  };
+
+  return updatedRecipe;
 };
 
 module.exports = {

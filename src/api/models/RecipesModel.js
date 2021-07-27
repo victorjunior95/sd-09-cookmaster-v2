@@ -23,6 +23,7 @@ async function findRecipe(id) {
 }
 
 async function updateOne(id, name, ingredients, preparation) {
+  console.log(name, ingredients, preparation);
   const db = await connection();
   const recipe = await db.collection('recipes')
     .updateOne(
@@ -33,7 +34,8 @@ async function updateOne(id, name, ingredients, preparation) {
         }, 
       },
     );
-    return recipe;
+  // console.log(recipe);
+  return recipe;
 }
 
 module.exports = {

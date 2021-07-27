@@ -8,5 +8,6 @@ const router = express.Router();
 router.post('/', validateToken, Controller.createRecipe);
 router.get('/', Controller.findAll);
 router.get('/:id', Controller.findRecipe);
+router.put('/:id', validateToken, Controller.updateOne);
 
 module.exports = router;
