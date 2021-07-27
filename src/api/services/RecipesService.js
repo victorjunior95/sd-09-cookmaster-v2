@@ -40,8 +40,23 @@ const findRecipe = async (id) => {
   return recipe;
 };
 
+const updateOne = async (id, { name, ingredients, preparation }) => {
+  const { error } = recipeValidate.validate({ name, ingredients, preparation });
+  if (error) {
+    return {
+      error: {
+        status: INVALID_DATA, message: 'recipe not found',
+      },
+    };
+  }
+
+  const recipe = await Model.updateOne(id, name, ingredients, preparation);
+  return recipe;
+};
+
 module.exports = {
   createRecipe,
   findAll,
   findRecipe,
+  updateOne,
 };

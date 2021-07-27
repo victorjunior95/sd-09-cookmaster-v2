@@ -20,10 +20,10 @@ const userValidate = Joi.object({
 
 const loginValidate = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(8).required(),
+  password: Joi.string().required(),
 });
 
-const createUser = async ({ name, email, password, role }) => {
+const createUser = async (name, email, password, role) => {
   const { error } = userValidate.validate({ name, email, password });
   // console.log(error);
   if (error) {
@@ -44,7 +44,7 @@ const createUser = async ({ name, email, password, role }) => {
   return create;
 };
 
-const login = async ({ email, password }) => {
+const login = async (email, password) => {
   if (!email || !password) {
     return { error: {
         status: UNAUTHORIZED,

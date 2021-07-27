@@ -6,7 +6,7 @@ const { OK } = require('../middleware/httpStatus');
 const createUser = rescue(async (req, res, next) => {
   const { name, email, password, role = 'user' } = req.body;
 
-  const user = await Service.createUser({ name, email, password, role });
+  const user = await Service.createUser(name, email, password, role);
 
   if (user.error) {
     return next(user.error);
@@ -16,8 +16,8 @@ const createUser = rescue(async (req, res, next) => {
 });
 
 const login = rescue(async (req, res, next) => {
-  // const { email, password } = req.body;
-  const userLogin = await Service.login(req.body);
+  const { email, password } = req.body;
+  const userLogin = await Service.login(email, password);
 
   if (userLogin.error) {
     return next(userLogin.error);
