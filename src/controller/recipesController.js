@@ -7,4 +7,10 @@ const registerRecipe = async (req, res) => {
   return res.status(response.status).json(response.payload);
 };
 
-module.exports = { registerRecipe };
+const getRecipes = async (req, res) => {
+  console.log('Controller');
+  const response = await recipesServices.getRecipes();
+  return res.status(response.status).json(response.payload);
+};
+
+module.exports = { registerRecipe, getRecipes };

@@ -6,4 +6,10 @@ const registerRecipe = async (name, ingredients, preparation, userId) => {
   return { status: 201, payload: { recipe: response } };
 };
 
-module.exports = { registerRecipe };
+const getRecipes = async () => {
+  console.log('Service');
+  const response = await recipesModel.getRecipes();
+  return { status: 200, payload: response };
+};
+
+module.exports = { registerRecipe, getRecipes };

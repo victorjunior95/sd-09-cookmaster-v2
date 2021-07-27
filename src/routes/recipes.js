@@ -9,7 +9,9 @@ const recipesController = require('../controller/recipesController');
 router.post('/',
   validateToken,
   (req, res, next) => fieldsValidation(['name', 'ingredients', 'preparation'], req, res, next),
-  recipesController.registerRecipe,
-  () => console.log('Registrou'));
+  recipesController.registerRecipe);
+
+router.get('/',
+  recipesController.getRecipes);
 
 module.exports = router;

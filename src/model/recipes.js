@@ -10,4 +10,15 @@ const registerRecipe = async (recipeData) => {
   }
 };
 
-module.exports = { registerRecipe };
+const getRecipes = async () => {
+  console.log('Model');
+  try {
+    const recipesData = await cookmasterDb().then((db) => db.collection('recipes'));
+    const recipes = await recipesData.find().toArray();
+    return recipes;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { registerRecipe, getRecipes };
