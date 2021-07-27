@@ -1,9 +1,9 @@
 const express = require('express');
 
 const app = express();
-const path = require('path');
 const rescue = require('express-rescue');
 const bodyParser = require('body-parser').json();
+const path = require('path');
 
 const usersRouter = require('../../routes/users');
 const recipesRouter = require('../../routes/recipes');

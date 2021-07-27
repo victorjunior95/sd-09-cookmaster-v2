@@ -32,8 +32,8 @@ const deleteById = async (id) => {
   return recipesModel.deleteOne(id);
 };
 
-const addImage = async (id, image) => {
-  const imagePath = `localhost:3000/src/uploads/${image}.jpeg`;
+const addImage = async (id) => {
+  const imagePath = `localhost:3000/src/uploads/${id}.jpeg`;
   return recipesModel.updateImage(id, imagePath);
 };
 
