@@ -34,7 +34,12 @@ async function updateOne(id, name, ingredients, preparation) {
         }, 
       },
     );
-  // console.log(recipe);
+  return recipe;
+}
+
+async function deleteOne(id) {
+  const db = await connection();
+  const recipe = await db.collection('recipes').deleteOne({ _id: ObjectId(id) });
   return recipe;
 }
 
@@ -43,4 +48,5 @@ module.exports = {
   findAll,
   findRecipe,
   updateOne,
+  deleteOne,
 };

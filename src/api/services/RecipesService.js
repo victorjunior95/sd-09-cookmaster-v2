@@ -60,9 +60,14 @@ const updateOne = async (id, newRecipe, userId) => {
   return updatedRecipe;
 };
 
+const deleteOne = async (id) => {
+  await Model.deleteOne(id);
+};
+
 module.exports = {
   createRecipe,
   findAll,
   findRecipe,
   updateOne,
+  deleteOne,
 };

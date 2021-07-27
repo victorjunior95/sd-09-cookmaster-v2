@@ -9,5 +9,6 @@ router.post('/', validateToken, Controller.createRecipe);
 router.get('/', Controller.findAll);
 router.get('/:id', Controller.findRecipe);
 router.put('/:id', validateToken, Controller.updateOne);
+router.delete('/:id', validateToken, Controller.deleteOne);
 
 module.exports = router;
