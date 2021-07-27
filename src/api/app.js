@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 
@@ -39,6 +40,9 @@ app
 app
   .route('/recipes/:id/image/')
   .put(memoryUpload.single('image'), Recipes.uploadPicture);
+
+// acessando arquivo estático, passando o local onde se encontra a imagem
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Error
 const errorMiddleware = require('../middlewares/error');
