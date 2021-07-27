@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+const path = require('path');
 const rescue = require('express-rescue');
 const bodyParser = require('body-parser').json();
 
@@ -14,6 +15,7 @@ app.use(bodyParser);
 const router = express.Router();
 
 app.use(rescue(router));
+router.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 router.use('/users', usersRouter);
 router.use('/recipes', recipesRouter);
 router.post('/login', loginController.userLogin);
