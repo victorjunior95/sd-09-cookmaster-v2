@@ -37,13 +37,22 @@ const edit = async (data, id) => {
 
 const drop = async (data, id) => {
   await connection().then((db) =>
-    db
-      .collection('recipes')
-      .deleteOne({ _id: ObjectId(id) }));
+    db.collection('recipes').deleteOne({ _id: ObjectId(id) }));
 
   const dropRecipe = await listById(id);
 
   return dropRecipe;
+};
+
+const uploadPicture = async (id, image) => {
+  await connection().then((db) =>
+    db
+      .collection('recipes')
+      .updateOne({ _id: ObjectId(id) }, { $set: { image } }));
+
+  const upload = await listById(id);
+
+  return upload;
 };
 
 module.exports = {
@@ -52,4 +61,5 @@ module.exports = {
   listById,
   edit,
   drop,
+  uploadPicture,
 };

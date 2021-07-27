@@ -1,4 +1,6 @@
 const Joi = require('joi');
+const path = require('path');
+const fs = require('fs').promises;
 
 const Recipes = require('../models/recipes');
 const validateAuth = require('../middlewares/validateAuth');
@@ -65,10 +67,25 @@ const drop = async (id, authorization) => {
   return dropRecipe;
 };
 
+const uploadPicture = async (authorization, id, buffer) => {
+  await validateAuth(authorization);
+
+  const urlImage = `localhost:3000/src/uploads/${id}.jpeg`;
+
+  const recipe = await Recipes.uploadPicture(id, urlImage);
+
+  const filePath = path.join(__dirname, '..', 'uploads', `${id}.jpeg`);
+
+  await fs.writeFile(filePath, buffer);
+
+  return recipe;
+};
+
 module.exports = {
   create,
   list,
   listById,
   edit,
   drop,
+  uploadPicture,
 };

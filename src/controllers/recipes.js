@@ -58,10 +58,27 @@ const drop = async (req, res, next) => {
   }
 };
 
+const uploadPicture = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const {
+      file: { buffer },
+    } = req;
+
+    const picture = await Recipes.uploadPicture(authorization, id, buffer);
+
+    return res.status(200).json(picture);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   create,
   list,
   listById,
   edit,
   drop,
+  uploadPicture,
 };
