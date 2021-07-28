@@ -11,10 +11,14 @@ router.post('/',
   (req, res, next) => fieldsValidation(['name', 'ingredients', 'preparation'], req, res, next),
   recipesController.registerRecipe);
 
-  router.get('/:id',
-    recipesController.getRecipeById);
+router.get('/:id',
+  recipesController.getRecipeById);
     
 router.get('/',
   recipesController.getRecipes);
+
+router.put('/:id',
+validateToken,
+recipesController.editRecipeById);
 
 module.exports = router;

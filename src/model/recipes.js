@@ -32,4 +32,20 @@ const getRecipeById = async (id) => {
   }
 };
 
-module.exports = { registerRecipe, getRecipes, getRecipeById };
+const editRecipeById = async (id, newData) => {
+  console.log(id);
+  try {
+    const searchId = new ObjectID(id);
+    const recipesData = await cookmasterDb().then((db) => db.collection('recipes'));
+    const updatedData = await recipesData.findOneAndUpdate(
+      { _id: searchId },
+      { $set: { ...newData } },
+      { returnOriginal: false },
+    );
+    return updatedData.value;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { registerRecipe, getRecipes, getRecipeById, editRecipeById };

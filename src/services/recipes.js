@@ -16,4 +16,10 @@ const getRecipeById = async (id) => {
   if (!response) return { status: 404, payload: { message: 'recipe not found' } };
   return { status: 200, payload: response };
 };
-module.exports = { registerRecipe, getRecipes, getRecipeById };
+
+const editRecipeById = async (id, newData) => {
+  const response = await recipesModel.editRecipeById(id, newData);
+  if (!response) return { status: 404, payload: { message: 'recipe not found' } };
+  return { status: 200, payload: response };
+};
+module.exports = { registerRecipe, getRecipes, getRecipeById, editRecipeById };
