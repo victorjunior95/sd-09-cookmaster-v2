@@ -23,6 +23,8 @@ app.use('/login', login);
 
 app.use('/recipes', recipes);
 
+app.use('/images', express.static(`${__dirname}/../uploads/`));
+
 app.use(error);
 
 module.exports = app;

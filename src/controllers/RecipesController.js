@@ -1,4 +1,5 @@
 const rescue = require('express-rescue');
+const path = require('path');
 
 const Service = require('../services/RecipesService');
 const { CREATE, OK } = require('../middleware/httpStatus');
@@ -63,6 +64,14 @@ const uploadImg = rescue(async (req, res, next) => {
   return res.status(OK).json(image);
 });
 
+const getImage = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const image = path.resolve(__dirname, '..', '..', 'uploads', id);
+
+  return res.status(OK).sendFile(image);
+});
+
 module.exports = {
   createRecipe,
   findAll,
@@ -70,4 +79,5 @@ module.exports = {
   updateOne,
   deleteOne,
   uploadImg,
+  getImage,
 };

@@ -24,5 +24,6 @@ router.get('/:id', Controller.findRecipe);
 router.put('/:id', validateToken, Controller.updateOne);
 router.delete('/:id', validateToken, Controller.deleteOne);
 router.put('/:id/image', validateToken, upload.single('image'), Controller.uploadImg);
+router.get('/images/:id', Controller.getImage);
 
 module.exports = router;
