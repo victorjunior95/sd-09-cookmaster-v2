@@ -7,8 +7,6 @@ const recipes = require('../routes/recipesRoutes');
 const app = express();
 app.use(bodyParser.json());
 
-const PORT = 3000;
-
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
