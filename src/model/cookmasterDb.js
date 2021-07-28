@@ -6,10 +6,10 @@ const OPTIONS = {
 };
 
 //  URL para trabalhar no local
-// const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
+const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
 
 //  URL para o evaluator
-const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
+// const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
 
 let db = null;
 

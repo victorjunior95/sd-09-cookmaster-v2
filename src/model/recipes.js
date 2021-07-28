@@ -48,4 +48,16 @@ const editRecipeById = async (id, newData) => {
   }
 };
 
-module.exports = { registerRecipe, getRecipes, getRecipeById, editRecipeById };
+const deleteRecipeById = async (id) => {
+  try {
+    const searchId = new ObjectID(id);
+    const recipesData = await cookmasterDb().then((db) => db.collection('recipes'));
+    await recipesData.remove({ _id: searchId });
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+module.exports = { registerRecipe, getRecipes, getRecipeById, editRecipeById, deleteRecipeById };
