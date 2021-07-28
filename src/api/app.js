@@ -24,8 +24,4 @@ app.use(({ status, message }, _req, res, _next) => {
   res.status(status).json({ message });
 });
 
-app.listen(PORT, () => {
-  console.log('Server localhost:3000 is Online');
-});
-
 module.exports = app;
