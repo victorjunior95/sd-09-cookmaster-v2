@@ -2,10 +2,10 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 // const path = require('path');
-const users = require('./routes/routerUser');
-const login = require('./routes/routerLogin');
-const recipes = require('./routes/routerRecipe');
-const error = require('./middleware/error');
+const users = require('../routes/routerUser');
+const login = require('../routes/routerLogin');
+const recipes = require('../routes/routerRecipe');
+const error = require('../middleware/error');
 
 const app = express();
 

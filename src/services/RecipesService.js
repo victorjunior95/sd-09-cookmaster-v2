@@ -64,10 +64,21 @@ const deleteOne = async (id) => {
   await Model.deleteOne(id);
 };
 
+const uploadImg = async (id, image) => {
+  if (!ObjectId.isValid(id)) return NOT_FOUND;
+
+  const img = `localhost:3000/src/uploads/${image}`;
+
+  const recipe = await Model.uploadImg(id, img);
+
+  return recipe;
+};
+
 module.exports = {
   createRecipe,
   findAll,
   findRecipe,
   updateOne,
   deleteOne,
+  uploadImg,
 };

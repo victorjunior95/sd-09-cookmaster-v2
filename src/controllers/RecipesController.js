@@ -51,10 +51,23 @@ const deleteOne = rescue(async (req, res, _next) => {
   res.status(204).end();
 });
 
+const uploadImg = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const { filename } = req.file;
+
+  const image = await Service.uploadImg(id, filename);
+
+  if (image.message) return next(image);
+
+  return res.status(OK).json(image);
+});
+
 module.exports = {
   createRecipe,
   findAll,
   findRecipe,
   updateOne,
   deleteOne,
+  uploadImg,
 };
