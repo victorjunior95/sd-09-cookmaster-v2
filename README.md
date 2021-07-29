@@ -258,7 +258,7 @@ A coleção de usuários deverá ter o seguinte nome: `users`.
 Os campos da coleção `users` terão este formato:
 
 ```json
-{ "name" : "Erick Jacquin", "email" : "erickjacquin@gmail.com", "password" : "12345678", "role" : "user" }
+
 ```
 
 A resposta do insert para ser retornada após a criação é esta:
