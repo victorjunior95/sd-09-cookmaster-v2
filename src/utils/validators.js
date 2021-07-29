@@ -25,6 +25,12 @@ const login = async ({ email, password }) => {
   }
 };
 
+const recipe = async ({ name, ingredients, preparation }) => {
+  if (!name || !ingredients || !preparation) {
+    throw err('Invalid entries. Try again.');
+  }
+};
+
 const token = async ({ authorization }) => {
   const secret = '6102acd9063f652fa2e20aa6';
   if (!authorization) {
@@ -41,7 +47,7 @@ const token = async ({ authorization }) => {
   return resgisteredUser;
 };
 
-module.exports = { user, userExists, login, token };
+module.exports = { user, userExists, login, token, recipe };
 
 // faz parte do services / regras de negocios do services
 // escape do teste unitarios pra não ter mais testes unitários
