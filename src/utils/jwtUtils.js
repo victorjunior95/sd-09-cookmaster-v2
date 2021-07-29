@@ -1,5 +1,5 @@
 const jwtConfig = {
-  expiresIn: '15m',
+  expiresIn: '50m',
   algorithm: 'HS256',
 };
 

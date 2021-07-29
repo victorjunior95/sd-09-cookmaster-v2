@@ -4,6 +4,7 @@ const errors = {
   fieldNotFound: { status: 401, message: 'All fields must be filled' },
   unauthorized: { status: 401, message: 'Incorrect username or password' },
   jwtError: { status: 401, message: 'jwt malformed' },
+  notFound: { status: 404, message: 'recipe not found' },
 };
   
 module.exports = (err, _req, res, _next) => {
