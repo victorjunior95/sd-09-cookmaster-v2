@@ -6,10 +6,7 @@ const create = async (userInfo, role) => {
       await validate.user(userInfo);
       await validate.userExists(userInfo);
     } catch (error) {
-      return {
-        status: 400,
-        message: error.message,
-      };
+      return error;
     }
   const response = await users.create(userInfo, role);
   const { password, ...user } = response;
