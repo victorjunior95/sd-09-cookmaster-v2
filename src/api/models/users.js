@@ -6,4 +6,9 @@ const create = async (user, role = 'user') =>
       .insertOne({ ...user, role })
       .then(({ ops }) => ops[0]));
 
-module.exports = { create };
+const getByEmail = (email) => 
+  connection()
+    .then((db) => db
+      .collection('users').findOne({ email }));
+
+module.exports = { create, getByEmail };
