@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const UserRoutes = require('../Routes/UsersRoutes');
+const { UsersRoutes, RecipesRoutes } = require('../Routes');
 
-const middlewares = require('../middlewares');
+const { error } = require('../middlewares');
 
 const app = express();
 
@@ -15,9 +15,10 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-UserRoutes(app);
+UsersRoutes(app);
+RecipesRoutes(app);
 
-app.use(middlewares.error);
+app.use(error);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 module.exports = app;

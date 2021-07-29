@@ -11,12 +11,7 @@ const findUser = async (email, password) => {
     .then((db) => db.collection('users').findOne(query));
 };
 
-// const isUser = async (email) => 
-//   connection()
-//     .then((db) => db.collection('users').findOne({ email }));
-
 module.exports = {
   createUser,
   findUser,
-  // isUser,
 };

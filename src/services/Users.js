@@ -1,14 +1,8 @@
 const Joi = require('joi');
 const JWT = require('jsonwebtoken');
 const model = require('../models/Users');
-
-const jwtConfig = {
-  expiresIn: '15m',
-  algorithm: 'HS256',
-};
-
-const SECRET = 'MARVEL > DC';
-
+const { SECRET, jwtConfig } = require('../utils/jwtUtils');
+  
 const validateUser = (name, email, password) => {
   const { error } = Joi.object({
     name: Joi.string().required(),

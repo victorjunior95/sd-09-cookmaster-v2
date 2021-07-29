@@ -1,14 +1,14 @@
 const rescue = require('express-rescue');
-const controller = require('../controllers/Users');
+const { createUser, login } = require('../controllers/Users');
 
 const UserRoutes = (app) => {
   app.route('/users')
     .get((req, res) => {
       res.send('foi!');
     })
-    .post(rescue(controller.createUser));
+    .post(rescue(createUser));
   app.route('/login')
-    .post(rescue(controller.login));
+    .post(rescue(login));
 };
 
 module.exports = UserRoutes;

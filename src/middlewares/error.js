@@ -2,7 +2,8 @@ const errors = {
   badRequest: { status: 400, message: 'Invalid entries. Try again.' },
   conflict: { status: 409, message: 'Email already registered' },
   fieldNotFound: { status: 401, message: 'All fields must be filled' },
-  unauthorized: { status: 401, message: 'Incorrect username or password' }, 
+  unauthorized: { status: 401, message: 'Incorrect username or password' },
+  jwtError: { status: 401, message: 'jwt malformed' },
 };
   
 module.exports = (err, _req, res, _next) => {
