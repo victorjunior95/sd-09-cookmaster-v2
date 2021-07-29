@@ -8,3 +8,5 @@ const getUserByEmail = (email) => connection().then((db) =>
   db.collection('users').findOne({ email }));
 
 module.exports = { createUser, getUserByEmail };
+
+// manipulação de bd conexão com db / queries de bd
