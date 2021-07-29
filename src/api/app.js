@@ -7,8 +7,8 @@ const path = require('path');
 
 const usersRouter = require('../routes/users');
 const recipesRouter = require('../routes/recipes');
+const loginRouter = require('../routes/login');
 const errorMiddleware = require('../controller/error');
-const loginController = require('../controller/login');
 
 app.use(bodyParser);
 
@@ -17,7 +17,7 @@ const router = express.Router();
 app.use(rescue(router));
 router.use('/users', usersRouter);
 router.use('/recipes', recipesRouter);
-router.post('/login', loginController.userLogin);
+router.post('/login', loginRouter);
 router.use('/images', express.static(path.join('src/uploads')));
 
 app.use(errorMiddleware);
