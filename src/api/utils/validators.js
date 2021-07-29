@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+
 const users = require('../models/users');
 
 const err = (message, status) => ({ message, status });
@@ -30,12 +31,15 @@ const login = async (email, password) => {
 const token = async ({ authorization }) => {
   const secret = '12345678910111213';
   if (!authorization) {
-    throw err('missing auth token', 401);
+    throw err('missing auth token');
   }
+  
   const payload = jwt.verify(authorization, secret);
-  if (!payload) {
-    throw err('jwt malformed');
-  }
+
+  // if (!payload) {
+  //   throw err('jwt malformed', 401);
+  // }
+
   const { password, ...userRegister } = await users.getByEmail(payload.email);
   if (!userRegister) {
     throw err('Invalid entries. Try again.');
@@ -43,4 +47,10 @@ const token = async ({ authorization }) => {
   return userRegister;
 };
 
-module.exports = { user, userExists, login, token };
+const recipe = async ({ name, ingredients, preparation }) => {
+  if (!name || !ingredients || !preparation) {
+    throw err('Invalid entries. Try again.', 400);
+  }
+};
+
+module.exports = { user, userExists, login, token, recipe };
