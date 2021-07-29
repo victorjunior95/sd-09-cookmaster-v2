@@ -17,7 +17,7 @@ const router = express.Router();
 app.use(rescue(router));
 router.use('/users', usersRouter);
 router.use('/recipes', recipesRouter);
-router.post('/login', loginRouter);
+router.use('/login', loginRouter);
 router.use('/images', express.static(path.join('src/uploads')));
 
 app.use(errorMiddleware);
