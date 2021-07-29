@@ -17,8 +17,8 @@ const findUser = async (email) => {
 };
 
 const createUserValidation = async (email) => {
-  const isUser = await findUser(email);
-  if (isUser) {
+  const user = await findUser(email);
+  if (user) {
     const error = new Error('Email already registered');
     error.statusCode = 409;
     throw error;
@@ -30,10 +30,7 @@ const createUser = async (name, email, password) => {
   await createUserValidation(email);
   const result = await model.createUser(name, email, password);
   const { password: _, ...userInfo } = result;
-  return {
-    status: 201,
-    userInfo,
-  };
+  return userInfo;
 };
 
 module.exports = {
