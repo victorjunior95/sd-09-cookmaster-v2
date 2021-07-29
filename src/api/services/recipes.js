@@ -15,4 +15,12 @@ const create = async (recipeInfo, user) => {
   };
 };
 
-module.exports = { create };
+const getAll = async () => {
+  const response = await recipes.getAll();
+  return {
+    status: 200,
+    recipesList: response,
+  };
+};
+
+module.exports = { create, getAll };

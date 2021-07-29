@@ -6,4 +6,10 @@ const create = async (recipe) =>
       .insertOne(recipe)
       .then(({ ops }) => ops[0]));
 
-module.exports = { create };
+const getAll = () => 
+  connection().then((db) => db
+    .collection('recipes')
+      .find()
+        .toArray());
+
+module.exports = { create, getAll };
