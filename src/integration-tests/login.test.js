@@ -10,9 +10,6 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('', () => {
-});
-
 describe('POST /login', () => {
   describe('When email and password arent filled', () => {
     let response;
@@ -73,7 +70,7 @@ describe('POST /login', () => {
     });
   });
 
-  describe.skip('When login is successful', () => {
+  describe('When login is successful', () => {
     let connectionMock;
     let response;
 
