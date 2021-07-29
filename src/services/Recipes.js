@@ -20,6 +20,10 @@ const createRecipe = async (name, preparation, ingredients, userId) => {
   return result;
 };
 
+const fetchRecipes = async () =>
+  model.fetchRecipes();
+
 module.exports = {
   createRecipe,
+  fetchRecipes,
 };
