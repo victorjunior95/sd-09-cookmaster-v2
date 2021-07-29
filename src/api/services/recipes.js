@@ -23,4 +23,20 @@ const getAll = async () => {
   };
 };
 
-module.exports = { create, getAll };
+const getById = async (id) => {
+  try {
+    await validate.recipeId(id);
+  } catch (error) {
+    return error;
+  }
+  const { _id, name, ingredients, preparation } = await recipes.getById(id);
+  return {
+    status: 200,
+    _id,
+    name, 
+    ingredients,
+    preparation,
+  };
+};
+
+module.exports = { create, getAll, getById };

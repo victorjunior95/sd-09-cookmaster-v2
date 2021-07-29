@@ -11,4 +11,9 @@ const getAll = async (_req, res) => {
   res.status(status).json(recipesList);
 };
 
-module.exports = { create, getAll };
+const getById = async (req, res) => {
+  const { status, ...jsonResponse } = await recipes.getById(req.params.id);
+  res.status(status).json(jsonResponse);
+};
+
+module.exports = { create, getAll, getById };
