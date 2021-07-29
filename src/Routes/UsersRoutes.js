@@ -8,7 +8,7 @@ const UserRoutes = (app) => {
     })
     .post(rescue(controller.createUser));
   app.route('/login')
-    .post(controller.login);
+    .post(rescue(controller.login));
 };
 
 module.exports = UserRoutes;

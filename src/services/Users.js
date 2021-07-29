@@ -1,5 +1,13 @@
 const Joi = require('joi');
+const JWT = require('jsonwebtoken');
 const model = require('../models/Users');
+
+const jwtConfig = {
+  expiresIn: '15m',
+  algorithm: 'HS256',
+};
+
+const SECRET = 'MARVEL > DC';
 
 const validateUser = (name, email, password) => {
   const { error } = Joi.object({
@@ -8,7 +16,22 @@ const validateUser = (name, email, password) => {
     password: Joi.string().required(),
   }).validate({ name, email, password });
 
-  if (error) throw error;
+  if (error) {
+    error.statusCode = 'badRequest';
+    throw error;
+  } 
+};
+
+const validateLoginForm = (email, password) => {
+  const { error } = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }).validate({ email, password });
+  
+  if (error) {    
+    error.statusCode = 'fieldNotFound';
+    throw error;
+  }
 };
 
 const findUser = async (email) => {
@@ -20,7 +43,7 @@ const createUserValidation = async (email) => {
   const user = await findUser(email);
   if (user) {
     const error = new Error('Email already registered');
-    error.statusCode = 409;
+    error.statusCode = 'conflict';
     throw error;
   }
 };
@@ -33,6 +56,28 @@ const createUser = async (name, email, password) => {
   return userInfo;
 };
 
+const isLoginValid = (result) => {
+  if (!result) {
+    const error = new Error('Incorrect username or password');
+    error.statusCode = 'unauthorized';
+    throw error;
+  }
+};
+
+const createToken = (user) => {
+  const { password: _, ...payload } = user;
+  const token = JWT.sign(payload, SECRET, jwtConfig);
+  return { token };
+};  
+
+const login = async (email, password) => {
+  validateLoginForm(email, password);
+  const result = await model.findUser(email, password);
+  isLoginValid(result);
+  return createToken(result);
+};
+
 module.exports = {
   createUser,
+  login,
 };
