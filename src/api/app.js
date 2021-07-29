@@ -5,10 +5,10 @@ const rescue = require('express-rescue');
 const bodyParser = require('body-parser').json();
 const path = require('path');
 
-const usersRouter = require('../../routes/users');
-const recipesRouter = require('../../routes/recipes');
-const errorMiddleware = require('../../controller/error');
-const loginController = require('../../controller/login');
+const usersRouter = require('../routes/users');
+const recipesRouter = require('../routes/recipes');
+const errorMiddleware = require('../controller/error');
+const loginController = require('../controller/login');
 
 app.use(bodyParser);
 
