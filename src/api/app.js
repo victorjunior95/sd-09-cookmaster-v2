@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const { UsersRoutes, RecipesRoutes } = require('../Routes');
+// const { UsersRoutes, RecipesRoutes } = require('../Routes');
 
 const { error } = require('../middlewares');
 
@@ -15,8 +15,8 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-UsersRoutes(app);
-RecipesRoutes(app);
+// UsersRoutes(app);
+// RecipesRoutes(app);
 
 app.use(error);
 
