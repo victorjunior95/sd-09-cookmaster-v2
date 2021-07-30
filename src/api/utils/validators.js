@@ -60,4 +60,10 @@ const recipeId = async (id) => {
   }
 };
 
-module.exports = { user, userExists, login, token, recipe, recipeId };
+const admin = async ({ authorization }) => {
+  const secret = '12345678910111213';
+  const { role } = jwt.verify(authorization, secret);
+  if (role !== 'admin') throw err('Only admins can register new admins');
+};
+
+module.exports = { user, userExists, login, token, recipe, recipeId, admin };

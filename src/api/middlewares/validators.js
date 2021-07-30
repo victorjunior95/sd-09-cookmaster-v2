@@ -11,4 +11,14 @@ const token = async (req, res, next) => {
     }
 };
 
-module.exports = { token };
+const admin = async (req, res, next) => {
+  try {
+    await validate.admin(req.headers);
+    next();
+    } catch (err) {
+      const { message } = err;
+      res.status(403).json({ message });
+    }
+};
+
+module.exports = { token, admin };

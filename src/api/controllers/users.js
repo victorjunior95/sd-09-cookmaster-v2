@@ -12,4 +12,10 @@ const login = async (req, res) => {
   res.status(status).json(jsonResponse);
 };
 
-module.exports = { create, login };
+const createAdmin = async (req, res) => {
+  const { body } = req;
+  const { status, ...jsonResponse } = await users.create(body, 'admin');
+  res.status(status).json(jsonResponse);
+};
+
+module.exports = { create, login, createAdmin };
