@@ -7,5 +7,6 @@ const route = express.Router();
 route.post('/', validate.token, recipes.create);
 route.get('/', recipes.getAll);
 route.get('/:id', recipes.getById);
+route.put('/:id', validate.token, recipes.update);
 
 module.exports = route;

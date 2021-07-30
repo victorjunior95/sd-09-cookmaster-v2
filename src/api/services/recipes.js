@@ -39,4 +39,13 @@ const getById = async (id) => {
   };
 };
 
-module.exports = { create, getAll, getById };
+const update = async (id, recipe, user) => {
+  const { _id: userId } = user;
+  await recipes.update(id, { ...recipe, userId });
+  return {
+    status: 200,
+    userId,
+  };
+};
+
+module.exports = { create, getAll, getById, update };
