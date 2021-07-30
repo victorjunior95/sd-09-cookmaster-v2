@@ -7,9 +7,9 @@ async function findUser(email, password) {
   return result;
 }
 
-async function newUser(name, email, password) {
+async function newUser(name, email, password, role) {
   const db = await connection();
-  const result = await db.collection('users').insertOne({ name, email, password, role: 'user' });
+  const result = await db.collection('users').insertOne({ name, email, password, role });
   return result.ops[0];
 }
 

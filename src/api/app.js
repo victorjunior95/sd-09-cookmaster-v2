@@ -18,6 +18,7 @@ app.get('/', (request, response) => {
 app.post('/users', rescue(usersController.newUser));
 app.post('/login', rescue(usersController.login));
 app.post('/recipes', recipesController.tokenValidation, rescue(recipesController.newRecipe));
+app.post('/users/admin', recipesController.tokenValidation, rescue(usersController.newUser));
 app.get('/recipes', recipesController.fetchRecipes);
 app.get('/recipes/:id', rescue(recipesController.getById));
 app.put('/recipes/:id', recipesController.tokenValidation, rescue(recipesController.editRecipe));

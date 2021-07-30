@@ -40,12 +40,12 @@ async function emailValidation(email) {
   }
 }
 
-async function newUser(name, email, password) {
+async function newUser(name, email, password, role) {
   userValidation(name, email, password);
   await emailValidation(email);
-  const obj = await model.newUser(name, email, password);
+  const obj = await model.newUser(name, email, password, role);
   const { password: _, ...result } = obj;
-  return { status: 201, result };
+  return result;
 }
 
 async function login(email, password) {
@@ -58,7 +58,7 @@ async function login(email, password) {
   }
   const { password: _, ...payload } = result;
   const token = JWT.sign(payload, secret, options);
-  return { status: 200, token };
+  return token;
 }
 
 module.exports = {
