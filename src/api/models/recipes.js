@@ -28,4 +28,10 @@ const remove = (id) =>
     .collection('recipes')
       .deleteOne({ _id: ObjectID(id) }));
 
-module.exports = { create, getAll, getById, update, remove };
+const putImage = (id, image) => 
+  connection()
+    .then((db) => db
+      .collection('recipes')
+        .updateOne({ _id: ObjectID(id) }, { $set: { image } }));
+
+module.exports = { create, getAll, getById, update, remove, putImage };

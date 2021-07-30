@@ -1,4 +1,5 @@
 const recipes = require('../services/recipes');
+const upload = require('../utils/upload');
 
 const create = async (req, res) => {
   const { body, user } = req;
@@ -26,4 +27,8 @@ const remove = async (req, res) => {
   res.status(status).json();
 };
 
-module.exports = { create, getAll, getById, update, remove };
+const putImage = [upload.single('image'),
+  (req, res) => recipes.putImage(req.params.id, req.file.path)
+    .then(({ status, data }) => res.status(status).json({ ...data, userId: req.params.id }))];
+
+module.exports = { create, getAll, getById, update, remove, putImage };
