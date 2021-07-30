@@ -2,9 +2,9 @@ const { ObjectId } = require('mongodb');
 const connect = require('../api/connect');
 
 const RECIPES = 'recipes';
-const createRecipes = async (recipes) => {
+const createRecipes = async (recipes, userId) => {
   try {
-    const { name, ingredients, preparation, userId } = recipes;
+    const { name, ingredients, preparation } = recipes;
     const db = await connect();
     const result = await db.collection(RECIPES).insertOne({
       name,

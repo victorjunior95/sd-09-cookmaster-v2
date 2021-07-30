@@ -3,8 +3,8 @@ const { StatusCodes } = require('http-status-codes');
 
 const recipeModel = require('../model/recipeModel');
 
-const createRecipes = async (recipes) => {
-  const { name, ingredients, preparation, userId } = recipes;
+const createRecipes = async (recipes, { _id: userId }) => {
+  const { name, ingredients, preparation } = recipes;
 
   if (!name || !ingredients || !preparation) {
      return {
@@ -14,7 +14,7 @@ const createRecipes = async (recipes) => {
        };
     }
   const result = await recipeModel
-    .createRecipes({ name, ingredients, preparation, userId });
+    .createRecipes({ name, ingredients, preparation }, userId);
    return result;
 };
  const getRecipes = async () => {
@@ -46,8 +46,11 @@ const deleteRecipes = async (recipeId) => {
 
 const imageUpdate = async (recipeId, file) => {
   const image = `localhost:3000/${file.destination}${file.filename}`;
-  recipeModel.imageUpdate(recipeId, image);
+  
+  await recipeModel.imageUpdate(recipeId, image);
   const result = await recipeModel.findRecipes(recipeId);
+  
+   console.log(result);
   return result;
 };
 

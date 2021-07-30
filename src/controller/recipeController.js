@@ -4,7 +4,7 @@ const recipesService = require('../service/recipeService');
  const createRecipes = async (req, res) => {
   console.log('[RECIPE CONTROLLER] : CHAMOU O MÉTODO CRIAR UM RECECIPE');
   try {
-    const result = await recipesService.createRecipes(req.body);
+    const result = await recipesService.createRecipes(req.body, req.user);
   if (result.isError) return res.status(result.status).json(result.err);
   return res.status(StatusCodes.CREATED).json({ recipe: result });
   } catch (error) {
@@ -66,7 +66,8 @@ const imageUpdate = async (req, res) => {
   console.log('[RECIPE CONTROLLER] : CHAMOU O MÉTODO ATUALIZAR UMA IMAGE');
   try {
     const { id } = req.params;
-    const result = await recipesService.imageUpdate(id, req.file);
+    const { _id: userId } = req.user;
+    const result = await recipesService.imageUpdate(id, req.file, userId);
     return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.log(`[RECIPE CONTROLLER] : buscar => ${error}`);

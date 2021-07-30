@@ -1124,11 +1124,11 @@ describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () 
   });
 
   it('Será validado que não é possível enviar foto sem estar autenticado', async () => {
-    const photoFile = path.resolve(__dirname, '../src/uploads/ratinho.jpg');
-    const content = fs.createReadStream(photoFile);
-    const formData = frisby.formData();
+   // const photoFile = path.resolve(__dirname, '../src/uploads/ratinho.jpg');
+  //  const content = fs.createReadStream(photoFile);
+  //  const formData = frisby.formData();
 
-    formData.append('image', content);
+  //  formData.append('image', content);
 
     let result;
     let resultRecipes;
@@ -1164,7 +1164,7 @@ describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () 
       });
 
     await frisby
-      .put(`${url}/recipes/${resultRecipes.recipe._id}/image`, { body: formData })
+      .put(`${url}/recipes/${resultRecipes.recipe._id}/image`, { body: null })
       .expect('status', 401);
   });
 
