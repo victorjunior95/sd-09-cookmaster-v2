@@ -5,9 +5,9 @@ const { SECRET, jwtConfig } = require('../utils/jwtUtils');
   
 const validateUser = (name, email, password) => {
   const { error } = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    name: Joi.string(),
+    email: Joi.string().email(),
+    password: Joi.string(),
   }).validate({ name, email, password });
 
   if (error) {
