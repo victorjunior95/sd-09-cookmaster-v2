@@ -23,4 +23,9 @@ const update = (id, recipe) =>
     .collection('recipes')
       .updateOne({ _id: ObjectID(id) }, { $set: recipe }));
 
-module.exports = { create, getAll, getById, update };
+const remove = (id) => 
+  connection().then((db) => db
+    .collection('recipes')
+      .deleteOne({ _id: ObjectID(id) }));
+
+module.exports = { create, getAll, getById, update, remove };

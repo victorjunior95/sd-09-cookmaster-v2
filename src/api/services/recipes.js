@@ -48,4 +48,6 @@ const update = async (id, recipe, user) => {
   };
 };
 
-module.exports = { create, getAll, getById, update };
+const remove = (id) => recipes.remove(id).then(() => ({ status: 204 }));
+
+module.exports = { create, getAll, getById, update, remove };

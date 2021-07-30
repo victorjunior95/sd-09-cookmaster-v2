@@ -8,5 +8,6 @@ route.post('/', validate.token, recipes.create);
 route.get('/', recipes.getAll);
 route.get('/:id', recipes.getById);
 route.put('/:id', validate.token, recipes.update);
+route.delete('/:id', validate.token, recipes.remove);
 
 module.exports = route;

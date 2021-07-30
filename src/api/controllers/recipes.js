@@ -21,4 +21,9 @@ const update = async (req, res) => {
   res.status(status).json({ _id: req.params.id, ...req.body, userId });
 };
 
-module.exports = { create, getAll, getById, update };
+const remove = async (req, res) => {
+  const { status } = await recipes.remove(req.params.id);
+  res.status(status).json();
+};
+
+module.exports = { create, getAll, getById, update, remove };
