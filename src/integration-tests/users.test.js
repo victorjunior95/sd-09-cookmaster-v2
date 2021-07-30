@@ -13,9 +13,8 @@ describe('Testing route POST /users', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app)
         .post('/users')
         .send({ name: 'jack', email: 'jack@email.com', password: 'jack' });
     });
@@ -32,6 +31,9 @@ describe('Testing route POST /users', () => {
     it('should have a "user" property', () => {
       expect(response.body).to.have.property('user');
     });
+    it('should be an object as "user" property', () => {
+      expect(response.body.user).to.be.a('object');
+    });
     it('should have the right properties containing the new user information', () => {
       expect(response.body.user).to.have.keys('_id', 'name', 'email', 'role');
     });
@@ -41,9 +43,8 @@ describe('Testing route POST /users', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app)
         .post('/users')
         .send({ email: 'jack@email.com', password: 'jack' });
     });
@@ -69,9 +70,8 @@ describe('Testing route POST /users', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app)
         .post('/users')
         .send({ name: 'jack', password: 'jack' });
     });
@@ -97,9 +97,8 @@ describe('Testing route POST /users', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app)
         .post('/users')
         .send({ name: 'jack', email: 'jackemail.com', password: 'jack' });
     });
@@ -125,9 +124,8 @@ describe('Testing route POST /users', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app)
         .post('/users')
         .send({ name: 'jack', email: 'jack@email.com' });
     });
@@ -154,13 +152,10 @@ describe('Testing route POST /users', () => {
     let response;
     before(async () => {
       connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
+      sinon.stub(MongoClient, 'connect').resolves(connection);
       await connection.db('Cookmaster').collection('users')
         .insertOne({ name: 'jack', email: 'jack@email.com', password: 'jack'});
-      response = await chai.request(server)
-        .post('/users')
-        .send({ name: 'jack', email: 'jack@email.com' });
+      response = await chai.request(app).post('/users').send({ name: 'jack', email: 'jack@email.com' });
     });
     after(async () => {
       MongoClient.connect.restore();
@@ -187,11 +182,8 @@ describe('Testing route POST /login', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
-        .post('/users')
-        .send({ name: 'mia', email: 'mia@email.com', password: 'mia' });
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app).post('/login').send({ name: 'mia', email: 'mia@email.com', password: 'mia' });
     });
     after(async () => {
       MongoClient.connect.restore();
@@ -215,11 +207,8 @@ describe('Testing route POST /login', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
-        .post('/users')
-        .send({ email: 'mia@email.com', password: 'mia' });
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app).post('/login').send({ email: 'mia@email.com', password: 'mia' });
     });
     after(async () => {
       MongoClient.connect.restore();
@@ -243,11 +232,8 @@ describe('Testing route POST /login', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
-        .post('/users')
-        .send({ password: 'mia' });
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app).post('/login').send({ password: 'mia' });
     });
     after(async () => {
       MongoClient.connect.restore();
@@ -271,11 +257,8 @@ describe('Testing route POST /login', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
-        .post('/users')
-        .send({ email: 'mia@email.com' });
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app) .post('/login').send({ email: 'mia@email.com' });
     });
     after(async () => {
       MongoClient.connect.restore();
@@ -299,11 +282,8 @@ describe('Testing route POST /login', () => {
     let response;
     before(async () => {
       const connection = await getConnection();
-      sinon.stub(MongoClient, 'connect')
-        .resolves(connection);
-      response = await chai.request(server)
-        .post('/users')
-        .send({ email: 'mia@email.com', password: 'jack'});
+      sinon.stub(MongoClient, 'connect').resolves(connection);
+      response = await chai.request(app).post('/login').send({ email: 'mia@email.com', password: 'jack'});
     });
     after(async () => {
       MongoClient.connect.restore();
