@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const usersRoute = require('../../routes/usersRoute');
+const loginRoute = require('../../routes/loginRoute');
 
 const app = express();
 // codigo do bodyparser consultado no https://stackoverflow.com/questions/24330014/bodyparser-is-deprecated-express-4
@@ -17,5 +18,6 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 app.use('/users', usersRoute);
+app.use('/login', loginRoute);
 
 module.exports = app;
