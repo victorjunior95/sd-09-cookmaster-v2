@@ -17,4 +17,16 @@ const updateRecipe = (id, recipe, { _id: userId }) =>
 const removeRecipe = (id) => recipesModel.removeRecipe(id)
   .then(() => ({ status: 204 }));
 
-module.exports = { createRecipe, recipesList, getRecipeById, updateRecipe, removeRecipe };
+const setImageRecipe = (id, path) =>
+recipesModel.setImageRecipe(id, `localhost:3000/${path}`)
+.then(() => recipesModel.getRecipeById(id)
+.then((data) => ({ status: 200, data })));
+
+module.exports = {
+  createRecipe,
+  recipesList,
+  getRecipeById,
+  updateRecipe,
+  removeRecipe,
+  setImageRecipe,
+};

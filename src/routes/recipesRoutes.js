@@ -9,6 +9,6 @@ route.get('/', recipe.recipesList);
 route.get('/:id', validate.recipeId, recipe.getRecipeById);
 route.put('/:id', validate.token, recipe.updateRecipe);
 route.delete('/:id', validate.token, recipe.removeRecipe);
-// route.put('/:id/image', validate.token, recipe.setImage);
+route.put('/:id/image', validate.token, recipe.setImageRecipe);
 
 module.exports = route;
