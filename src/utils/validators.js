@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { ObjectID } = require('mongodb');
 const userModel = require('../models/userModel');
 
 const err = (message) => ({ message });
@@ -46,8 +47,11 @@ const token = async ({ authorization }) => {
   }
   return resgisteredUser;
 };
+const recipeId = async (id) => {
+  if (!ObjectID.isValid(id)) throw err('recipe not found');
+};
 
-module.exports = { user, userExists, login, token, recipe };
+module.exports = { user, userExists, login, token, recipe, recipeId };
 
 // faz parte do services / regras de negocios do services
 // escape do teste unitarios pra não ter mais testes unitários

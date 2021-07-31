@@ -23,6 +23,10 @@ const token = (req, _res, next) => validate.token(req.headers)
   })
   .catch(({ message }) => next({ status: 401, message }));
 
-module.exports = { user, userExists, login, token, recipe };
+const recipeId = (req, _res, next) => validate.recipeId(req.params.id)
+  .then(() => next())
+  .catch(({ message }) => next({ status: 404, message }));
+
+module.exports = { user, userExists, login, token, recipe, recipeId };
 
 // faz parte de controllers / controllers auxiliares

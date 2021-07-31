@@ -7,4 +7,7 @@ const createRecipe = (newRecipe, { _id: userId }) =>
 const recipesList = () => recipesModel.recipesList()
   .then((data) => ({ status: 200, data }));
 
-module.exports = { createRecipe, recipesList };
+const getRecipeById = (id) => recipesModel.getRecipeById(id)
+  .then((recipe) => ({ status: 200, recipe }));
+
+module.exports = { createRecipe, recipesList, getRecipeById };

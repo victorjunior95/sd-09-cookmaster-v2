@@ -6,4 +6,7 @@ const createRecipe = (req, res) => recipesService.createRecipe(req.body, req.use
 const recipesList = (_req, res) => recipesService.recipesList()
   .then(({ status, data }) => res.status(status).json(data));
 
-module.exports = { createRecipe, recipesList };
+const getRecipeById = (req, res) => recipesService.getRecipeById(req.params.id)
+  .then(({ status, recipe }) => res.status(status).json(recipe));
+
+module.exports = { createRecipe, recipesList, getRecipeById };
