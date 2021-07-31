@@ -14,4 +14,7 @@ const updateRecipe = (id, recipe, { _id: userId }) =>
   recipesModel.updateRecipe(id, { ...recipe, userId })
   .then(() => ({ status: 200, userId }));
 
-module.exports = { createRecipe, recipesList, getRecipeById, updateRecipe };
+const removeRecipe = (id) => recipesModel.removeRecipe(id)
+  .then(() => ({ status: 204 }));
+
+module.exports = { createRecipe, recipesList, getRecipeById, updateRecipe, removeRecipe };

@@ -13,4 +13,7 @@ const updateRecipe = (req, res) => recipesService.updateRecipe(req.params.id, re
   .then(({ status, userId }) => res.status(status)
   .json({ _id: req.params.id, ...req.body, userId }));
 
-module.exports = { createRecipe, recipesList, getRecipeById, updateRecipe };
+const removeRecipe = (req, res) => recipesService.removeRecipe(req.params.id)
+  .then(({ status }) => res.status(status).json());
+
+module.exports = { createRecipe, recipesList, getRecipeById, updateRecipe, removeRecipe };
