@@ -9,4 +9,8 @@ const recipesList = (_req, res) => recipesService.recipesList()
 const getRecipeById = (req, res) => recipesService.getRecipeById(req.params.id)
   .then(({ status, recipe }) => res.status(status).json(recipe));
 
-module.exports = { createRecipe, recipesList, getRecipeById };
+const updateRecipe = (req, res) => recipesService.updateRecipe(req.params.id, req.body, req.user)
+  .then(({ status, userId }) => res.status(status)
+  .json({ _id: req.params.id, ...req.body, userId }));
+
+module.exports = { createRecipe, recipesList, getRecipeById, updateRecipe };
