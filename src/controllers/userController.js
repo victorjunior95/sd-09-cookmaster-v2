@@ -6,7 +6,10 @@ const createUser = (req, res) => userServices.create(req.body)
 const login = (req, res) => userServices.login(req.body)
   .then(({ status, token }) => res.status(status).json({ token }));
 
-module.exports = { createUser, login };
+  const createUserAdmin = (req, res) => userServices.create(req.body, 'admin')
+  .then(({ status, user }) => res.status(status).json({ user }));
+
+module.exports = { createUser, login, createUserAdmin };
 
 // dispara informações/queries
 // comunica com usuário

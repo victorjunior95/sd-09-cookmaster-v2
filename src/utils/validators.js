@@ -11,6 +11,12 @@ const user = async ({ name, email, password }) => {
   }
 };
 
+const admin = async ({ authorization }) => {
+  const secret = '6102acd9063f652fa2e20aa6';
+  const { role } = jwt.verify(authorization, secret);
+  if (role !== 'admin') throw err('Only admins can register new admins');
+};
+
 const userExists = async ({ email }) => {
   const exists = await userModel.getUserByEmail(email);
   if (exists) throw err('Email already registered');
@@ -51,7 +57,7 @@ const recipeId = async (id) => {
   if (!ObjectID.isValid(id)) throw err('recipe not found');
 };
 
-module.exports = { user, userExists, login, token, recipe, recipeId };
+module.exports = { user, userExists, login, token, recipe, recipeId, admin };
 
 // faz parte do services / regras de negocios do services
 // escape do teste unitarios pra não ter mais testes unitários
