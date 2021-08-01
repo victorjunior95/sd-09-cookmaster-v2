@@ -45,7 +45,7 @@ const deleteRecipeById = async (req, res, _next) => {
   const token = req.headers.authorization;
 
   const validateId = await getRecipeByIdService(id);
-  if (!validateId) return res.status(validateId.status).json({message: validateId.error});
+  if (!validateId) return res.status(validateId.status).json({ message: validateId.error });
 
   const deleted = await deleteRecipeByIdService(id, token);
   console.log(`deleted controller ok ${deleted}`);
