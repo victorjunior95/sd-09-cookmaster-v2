@@ -5,6 +5,7 @@ const {
   newRecipeModel,
   getAllRecipesModel,
   getRecipeByIdModel,
+  updateRecipeByIdModel,
 } = require('../models/recipeModels');
 
 const dataValidation = Joi.object({
@@ -53,8 +54,28 @@ const getRecipeByIdService = async (id) => {
   return recipe;
 };
 
+const updateRecipeByIdService = async (newData) => {
+  const { id, token, updateData } = newData;
+  
+  const validToken = await retrieveTokenData(token);
+  if (validToken.error) return validToken;
+
+  const validId = ObjectId(id);
+  if (!validId) return { error: 'recipe not found', status: 404 };
+
+  const validRecipe = await validateRecipeData(updateData, token);
+  if (validRecipe.error) return validRecipe;
+  
+  const { _id } = validRecipe;
+  const recipeUpdate = { ...updateData, userId: _id, id };
+ 
+  const updatedRecipe = await updateRecipeByIdModel(recipeUpdate);
+  return updatedRecipe;
+};
+
 module.exports = {
   newRecipeService,
   getAllRecipesService,
   getRecipeByIdService,
+  updateRecipeByIdService,
 };

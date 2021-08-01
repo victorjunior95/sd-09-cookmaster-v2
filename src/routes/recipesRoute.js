@@ -6,5 +6,6 @@ const router = express.Router();
 router.post('/', recipesController.newRecipe);
 router.get('/', recipesController.getAllRecipes);
 router.get('/:id', recipesController.getRecipeById);
+router.put('/:id', recipesController.updateRecipeById);
 
 module.exports = router;

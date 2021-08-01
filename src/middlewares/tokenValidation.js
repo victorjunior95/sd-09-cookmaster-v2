@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const secret = 'pipocin';
 
 const validateToken = async (token) => {
-  if (!token) return { error: 'jwt malformed', status: 401 };
+  if (!token) return { error: 'missing auth token', status: 401 };
   try {
     const decoded = jwt.verify(token, secret);
     return decoded.data;
