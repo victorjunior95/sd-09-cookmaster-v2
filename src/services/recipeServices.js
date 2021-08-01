@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const { validateToken } = require('../middlewares/tokenValidation');
-const { newRecipeModel } = require('../models/recipeModels');
+const { newRecipeModel, getAllRecipesModel } = require('../models/recipeModels');
 
 const dataValidation = Joi.object({
   name: Joi.string().required(),
@@ -34,6 +34,12 @@ const newRecipeService = async (recipeData, token) => {
   return { recipe: createRecipe };
 };
 
+const getAllRecipesService = async () => {
+  const allRecipes = await getAllRecipesModel();
+  return allRecipes;
+};
+
 module.exports = {
   newRecipeService,
+  getAllRecipesService,
 };
