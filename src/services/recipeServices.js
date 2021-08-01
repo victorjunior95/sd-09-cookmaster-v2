@@ -6,7 +6,10 @@ const {
   getAllRecipesModel,
   getRecipeByIdModel,
   updateRecipeByIdModel,
+  deleteRecipeByIdModel,
 } = require('../models/recipeModels');
+
+const NOT_FOUND = 'recipe not found';
 
 const dataValidation = Joi.object({
   name: Joi.string().required(),
@@ -48,9 +51,9 @@ const getAllRecipesService = async () => {
 // Como validar o ID foi verificado no meu próprio código do Store Manager ObjectId.isValid(id)
 const getRecipeByIdService = async (id) => {
   const validId = ObjectId.isValid(id);
-  if (!validId) return { error: 'recipe not found', status: 404 };
+  if (!validId) return { error: NOT_FOUND, status: 404 };
   const recipe = await getRecipeByIdModel(id);
-  if (!recipe) return { error: 'recipe not found', status: 404 };
+  if (!recipe) return { error: NOT_FOUND, status: 404 };
   return recipe;
 };
 
@@ -61,7 +64,7 @@ const updateRecipeByIdService = async (newData) => {
   if (validToken.error) return validToken;
 
   const validId = ObjectId(id);
-  if (!validId) return { error: 'recipe not found', status: 404 };
+  if (!validId) return { error: NOT_FOUND, status: 404 };
 
   const validRecipe = await validateRecipeData(updateData, token);
   if (validRecipe.error) return validRecipe;
@@ -73,9 +76,25 @@ const updateRecipeByIdService = async (newData) => {
   return updatedRecipe;
 };
 
+const deleteRecipeByIdService = async (id, token) => {
+  const validToken = await retrieveTokenData(token);
+  if (validToken.error) return validToken;
+
+  const validId = ObjectId(id);
+  if (!validId) return { error: NOT_FOUND, status: 404 };
+
+  const recipe = await getRecipeByIdModel(id);
+  if (!recipe) return { error: NOT_FOUND, status: 404 };
+
+  const response = await deleteRecipeByIdModel(id);
+  console.log(response);
+  return response;
+};
+
 module.exports = {
   newRecipeService,
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
+  deleteRecipeByIdService,
 };

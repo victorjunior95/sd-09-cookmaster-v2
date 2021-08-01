@@ -4,6 +4,7 @@ const {
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
+  deleteRecipeByIdService,
 } = require('../services/recipeServices');
 
 const newRecipe = rescue(async (req, res, _next) => {
@@ -39,9 +40,24 @@ const updateRecipeById = rescue(async (req, res, _next) => {
   return res.status(200).json(response);
 });
 
+const deleteRecipeById = async (req, res, _next) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+
+  const validateId = await getRecipeByIdService(id);
+  if (!validateId) return res.status(validateId.status).json({message: validateId.error});
+
+  const deleted = await deleteRecipeByIdService(id, token);
+  console.log(`deleted controller ok ${deleted}`);
+  if (deleted.error) return res.status(deleted.status).json({ message: deleted.error });
+
+  return res.status(204).json();
+};
+
 module.exports = {
   newRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
+  deleteRecipeById,
 };

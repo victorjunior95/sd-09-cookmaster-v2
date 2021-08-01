@@ -27,9 +27,15 @@ const updateRecipeByIdModel = async (recipeUpdate) => connection()
   ))
   .then((result) => result.value);
 
+const deleteRecipeByIdModel = async (id) => connection()
+  .then((db) => db.collection('recipes')
+    .findOneAndDelete({ _id: ObjectId(id) }));
+    // .then((result) => result.deletedCount));
+
 module.exports = {
   newRecipeModel,
   getAllRecipesModel,
   getRecipeByIdModel,
   updateRecipeByIdModel,
+  deleteRecipeByIdModel,
 };
