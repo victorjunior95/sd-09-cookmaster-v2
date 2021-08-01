@@ -1,6 +1,11 @@
 const Joi = require('joi');
+const { ObjectId } = require('mongodb');
 const { validateToken } = require('../middlewares/tokenValidation');
-const { newRecipeModel, getAllRecipesModel } = require('../models/recipeModels');
+const {
+  newRecipeModel,
+  getAllRecipesModel,
+  getRecipeByIdModel,
+} = require('../models/recipeModels');
 
 const dataValidation = Joi.object({
   name: Joi.string().required(),
@@ -39,7 +44,17 @@ const getAllRecipesService = async () => {
   return allRecipes;
 };
 
+// Como validar o ID foi verificado no meu próprio código do Store Manager ObjectId.isValid(id)
+const getRecipeByIdService = async (id) => {
+  const validId = ObjectId.isValid(id);
+  if (!validId) return { error: 'recipe not found', status: 404 };
+  const recipe = await getRecipeByIdModel(id);
+  if (!recipe) return { error: 'recipe not found', status: 404 };
+  return recipe;
+};
+
 module.exports = {
   newRecipeService,
   getAllRecipesService,
+  getRecipeByIdService,
 };
