@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const { getUserByEmail } = require('../models/loginModels');
+const { getUserByEmail } = require('../models/usersModels');
 
 const dataValidation = Joi.object({
   email: Joi.string().email({ tlds: false }).required(),
@@ -32,14 +32,14 @@ const validateErrors = async (loginData) => {
 };
 
 const generateToken = async (userData) => {
-  const { _id, email, password } = userData;
+  const { _id, email } = userData;
 
   const jwtConfig = {
     expiresIn: '3d',
     algorithm: 'HS256',
   };
 
-  const token = jwt.sign({ data: { _id, email, password } }, secret, jwtConfig);
+  const token = jwt.sign({ data: { _id, email } }, secret, jwtConfig);
   return token;
 }; 
 
@@ -50,8 +50,9 @@ const loginService = async (loginData) => {
   const userData = await validateUser(loginData);
   if (userData.error) return userData;
 
-  const token = await generateToken(userData);
-  return token;
+  const { password: _, ...userDataWithoutPassword } = userData;
+  const token = await generateToken(userDataWithoutPassword);
+  return { token };
 };
 
 module.exports = {

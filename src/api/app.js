@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const usersRoute = require('../../routes/usersRoute');
-const loginRoute = require('../../routes/loginRoute');
+const usersRoute = require('../routes/usersRoute');
+const loginRoute = require('../routes/loginRoute');
+const recipesRoute = require('../routes/recipesRoute');
 
 const app = express();
 // codigo do bodyparser consultado no https://stackoverflow.com/questions/24330014/bodyparser-is-deprecated-express-4
@@ -19,5 +20,6 @@ app.get('/', (request, response) => {
 
 app.use('/users', usersRoute);
 app.use('/login', loginRoute);
+app.use('/recipes', recipesRoute);
 
 module.exports = app;

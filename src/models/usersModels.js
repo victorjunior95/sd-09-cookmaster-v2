@@ -11,7 +11,11 @@ const existingEmailModel = async (userEmail) =>
   connection()
     .then((db) => db.collection('users').findOne({ email: userEmail }));
 
+const getUserByEmail = async (email) => connection()
+.then((db) => db.collection('users').findOne({ email }));
+
 module.exports = {
   newUserModel,
   existingEmailModel,
+  getUserByEmail,
 };
