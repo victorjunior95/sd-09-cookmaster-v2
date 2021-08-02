@@ -1,7 +1,7 @@
 const path = require('path');
 
 const service = require('../services/Recipes');
-const { upload } = require('../middlewares');
+// const { upload } = require('../middlewares');
 
 const createRecipe = async (req, res) => {
   const { name, preparation, ingredients } = req.body;
