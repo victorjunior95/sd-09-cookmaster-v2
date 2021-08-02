@@ -9,8 +9,7 @@ const tokenValidation = async (req, res, next) => {
     const token = req.headers.authorization;
     
     if (!token) { 
-      console.log('bateu aqui', token);
-       return res.status(UNAUTHORIZED).json({ message: 'missing auth token' }); 
+     return res.status(UNAUTHORIZED).json({ message: 'missing auth token' }); 
 }
     const decoded = jwt.verify(token, secret);
     
