@@ -22,7 +22,7 @@ const newAdmin = async (req, res) => {
   }
   const result = await service.newAdmin(name, email, password);
   res.status(201).json({ user: result });
-}
+};
 
 module.exports = {
   createUser,
