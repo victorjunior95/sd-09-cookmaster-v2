@@ -10,7 +10,6 @@ const errors = {
 };
   
 module.exports = (err, _req, res, _next) => {
-  console.log(err);
   const { message, status } = errors[err.statusCode];
 
   if (err.isJoi) {
