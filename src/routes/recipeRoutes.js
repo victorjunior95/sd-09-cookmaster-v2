@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const multer = require('multer');
 const recipesController = require('../controller/recipeController');
-const tokenValidation = require('../middlewares/tokenValidation');
+const { tokenValidation } = require('../middlewares/tokenValidation');
 
  const storage = multer.diskStorage({
   destination: (req, file, callback) => {

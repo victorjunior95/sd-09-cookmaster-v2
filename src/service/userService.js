@@ -25,10 +25,12 @@ const createUser = async ({ name, email, password, userId }) => {
       status: StatusCodes.CONFLICT,
     }; 
   }
+ 
   const result = await userModel.createUser({ name, email, password, userId });
   return result;
 };
 
 module.exports = {
   createUser,
+   
 };
