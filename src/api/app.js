@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 // const multer = require('multer');
 const path = require('path');
 const UserRouter = require('../rotes/Users');
+const LoginRouter = require('../rotes/Login');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use(UserRouter);
+app.use(LoginRouter);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {

@@ -17,10 +17,7 @@ const createUser = async (name, email, password) => {
 const getUserByEmail = async (email) => {
   const result = await connection()
     .then((db) => db.collection('users').findOne({ Email: email }))
-    .then((data) => {
-      if (!data) return true;
-      return false;
-    });
+    .then((data) => data);
   return result;
 };
 
