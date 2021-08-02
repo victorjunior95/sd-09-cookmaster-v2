@@ -12,7 +12,20 @@ const login = async (req, res) => {
   res.status(200).json(token);
 };
 
+const newAdmin = async (req, res) => {
+  const { name, email, password } = req.body;
+  const { role } = req.user;
+  if (role !== 'admin') {
+    const error = new Error();
+    error.statusCode = 'invalidUser';
+    throw error;
+  }
+  const result = await service.newAdmin(name, email, password);
+  res.status(201).json({ user: result });
+}
+
 module.exports = {
   createUser,
   login,
+  newAdmin,
 };

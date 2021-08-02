@@ -11,7 +11,13 @@ const findUser = async (email, password) => {
     .then((db) => db.collection('users').findOne(query));
 };
 
+const createNewAdmin = (name, email, password) => 
+  connection()
+    .then((db) => db.collection('users').insertOne({ name, email, password, role: 'admin' }))
+    .then((result) => result.ops[0]);
+
 module.exports = {
   createUser,
   findUser,
+  createNewAdmin,
 };

@@ -5,6 +5,8 @@ const errors = {
   unauthorized: { status: 401, message: 'Incorrect username or password' },
   jwtError: { status: 401, message: 'jwt malformed' },
   notFound: { status: 404, message: 'recipe not found' },
+  invalidUser: { status: 403, message: 'Only admins can register new admins' },
+  missingToken: { status: 401, message: 'missing auth token' },
 };
   
 module.exports = (err, _req, res, _next) => {

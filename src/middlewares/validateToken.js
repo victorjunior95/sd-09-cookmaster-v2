@@ -1,11 +1,13 @@
 const JWT = require('jsonwebtoken');
 const { SECRET } = require('../utils/jwtUtils');
 
-module.exports = (req, res, next) => {
+module.exports = (req, _res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ message: 'missing auth token' });
+    const error = new Error();
+    error.statusCode = 'missingToken';
+    throw error;
   }
 
   try {

@@ -43,6 +43,11 @@ const editRecipe = async (id, name, preparation, ingredients) => {
   return result;
 };
 
+const addImageToRecipe = async (id, image) => {
+  const result = await model.addImageToRecipe(id, image);
+  return result;
+};
+
 const deleteRecipe = async (id) => 
   model.deleteRecipe(id);
 
@@ -54,5 +59,6 @@ module.exports = {
   fetchRecipes,
   findById,
   editRecipe,
+  addImageToRecipe,
   deleteRecipe,
 };
