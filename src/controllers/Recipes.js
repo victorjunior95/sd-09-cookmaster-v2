@@ -29,10 +29,10 @@ const editRecipe = async (req, res) => {
 };
 
 const addImageToRecipe = async (req, res, _next) => {
-      const { id } = req.params;
-      const result = await service
-        .addImageToRecipe(id, path.join('localhost:3000', 'src', 'uploads', `${id}.jpeg`));
-      return res.status(200).json(result);
+  const { id } = req.params;
+  const result = await service
+    .addImageToRecipe(id, path.join('localhost:3000', 'src', 'uploads', `${id}.jpeg`));
+  return res.status(200).json(result);
 };
 
 const deleteRecipe = async (req, res) => {

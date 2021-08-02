@@ -10,11 +10,15 @@ const errors = {
 };
   
 module.exports = (err, _req, res, _next) => {
-  const { message, status } = errors[err.statusCode];
+  if (err.statusCode) {
+    const { message, status } = errors[err.statusCode];
 
-  if (err.isJoi) {
-    return res.status(status).json({ message });    
+    if (err.isJoi) {
+      return res.status(status).json({ message });    
+    }
+  
+    return res.status(status).json({ message });
   }
 
-  return res.status(status).json({ message });
+  return res.status(500).json({ message: err.message });
 };
