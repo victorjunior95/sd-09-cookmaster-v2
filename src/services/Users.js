@@ -71,7 +71,7 @@ const login = async (email, password) => {
   return createToken(result);
 };
 
-const newAdmin = async( name, email, password) => {
+const newAdmin = async (name, email, password) => {
   const result = await model.createNewAdmin(name, email, password);
   const { password: _, ...admin } = result;
   return admin;
