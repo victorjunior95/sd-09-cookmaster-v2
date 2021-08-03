@@ -137,4 +137,5 @@ module.exports = {
   updateRecipeByIdService,
   deleteRecipeByIdService,
   uploadImageService,
+  adminValidation,
 };

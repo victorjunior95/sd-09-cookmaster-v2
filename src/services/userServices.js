@@ -1,5 +1,7 @@
 const Joi = require('joi');
-const { newUserModel, existingEmailModel } = require('../models/usersModels');
+const { newUserModel, existingEmailModel, newAdminModel } = require('../models/usersModels');
+const { validateToken } = require('../middlewares/tokenValidation');
+const { adminValidation } = require('./recipeServices');
 
 const dataValidation = Joi.object({
   name: Joi.string().required(),
@@ -53,4 +55,15 @@ const newUserService = async (newUserData) => {
   return { user: formattedUser };
 };
 
-module.exports = { newUserService };
+const newAdminService = async (newAdminData, token) => {
+  const { _id } = await validateToken(token);
+  const isAdmin = await adminValidation(_id);
+  if (!isAdmin) return { error: 'Only admins can register new admins', status: 403 };
+
+  const newdata = { ...newAdminData, role: 'admin' };
+
+  const newAdmin = await newAdminModel(newdata);
+  return { user: newAdmin };
+};
+
+module.exports = { newUserService, newAdminService };

@@ -29,7 +29,7 @@ afterAll(async () => {
   await exec('rm -rf coverage .nyc_output');
 });
 
-describe.skip
+describe
   .each([
     [11,30,50], 
     [13,60,100],

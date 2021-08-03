@@ -1,5 +1,5 @@
 const rescue = require('express-rescue');
-const { newUserService } = require('../services/userServices');
+const { newUserService, newAdminService } = require('../services/userServices');
 
 const newUser = rescue(async (req, res, _next) => {
   const newUserData = req.body;
@@ -9,4 +9,14 @@ const newUser = rescue(async (req, res, _next) => {
   return res.status(201).json(response);
 });
 
-module.exports = { newUser };
+const newAdminUser = rescue(async (req, res, _next) => {
+  const token = req.headers.authorization;
+  const newAdminData = req.body;
+
+  const response = await newAdminService(newAdminData, token);
+  if (response.error) return res.status(response.status).json({ message: response.error });
+
+  return res.status(201).json(response);
+});
+
+module.exports = { newUser, newAdminUser };

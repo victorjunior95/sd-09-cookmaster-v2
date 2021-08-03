@@ -14,8 +14,12 @@ const existingEmailModel = async (userEmail) =>
 const getUserByEmail = async (email) => connection()
 .then((db) => db.collection('users').findOne({ email }));
 
+const newAdminModel = async (newData) => connection()
+  .then((db) => db.collection('users').insertOne(newData)).then((result) => result.ops[0]);
+
 module.exports = {
   newUserModel,
   existingEmailModel,
   getUserByEmail,
+  newAdminModel,
 };
