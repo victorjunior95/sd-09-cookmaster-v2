@@ -56,7 +56,7 @@ const deleteRecipeById = async (req, res, _next) => {
   return res.status(204).json();
 };
 
-const getRecipeImage = [
+const uploadRecipeImage = [
   upload.single('image'),
   rescue(async (req, res, _next) => {
     const { id } = req.params;
@@ -78,5 +78,5 @@ module.exports = {
   getRecipeById,
   updateRecipeById,
   deleteRecipeById,
-  getRecipeImage,
+  uploadRecipeImage,
 };
