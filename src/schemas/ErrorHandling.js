@@ -4,6 +4,7 @@ const messages = {
   LOGIN_FIELDS: 'All fields must be filled',
   INVALID_LOGIN: 'Incorrect username or password',
   INVALID_TOKEN: 'jwt malformed',
+  MISSING_TOKEN: 'missing auth token',
   INVALID_RECIPE: 'recipe not found',
 };
 

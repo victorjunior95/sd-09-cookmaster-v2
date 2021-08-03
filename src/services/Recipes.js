@@ -16,4 +16,6 @@ const getRecipeById = async (id) => {
   return isValid;
 };
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById };
+const editRecipe = async (userID, recipe) => RecipesModel.editRecipe(userID, recipe);
+
+module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe };

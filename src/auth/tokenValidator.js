@@ -6,7 +6,7 @@ const tokenValidator = async (req, res, next) => {
   const secret = 'mySecretKey';
 
   if (!token) {
-    return res.status(codes.CODE_401).json({ message: messages.INVALID_TOKEN });
+    return res.status(codes.CODE_401).json({ message: messages.MISSING_TOKEN });
   }
 
   try {
