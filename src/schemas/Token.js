@@ -4,8 +4,7 @@ const createToken = (user) => {
   const jwtConfig = {
     algorithm: 'HS256',
   };
-  const { _id } = user;
-  const secret = (_id).toString();
+  const secret = 'mySecretKey';
   const token = jwt.sign(user, secret, jwtConfig);
   return { result: { token }, code: 200 };
 };

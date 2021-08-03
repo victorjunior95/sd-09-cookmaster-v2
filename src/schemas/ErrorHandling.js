@@ -3,6 +3,7 @@ const messages = {
   EMAIL_REGISTERED: 'Email already registered',
   LOGIN_FIELDS: 'All fields must be filled',
   INVALID_LOGIN: 'Incorrect username or password',
+  INVALID_TOKEN: 'jwt malformed',
 };
 
 const codes = {
