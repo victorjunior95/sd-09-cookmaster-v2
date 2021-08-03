@@ -501,6 +501,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
           .get(`${url}/recipes/999`)
           .expect('status', 404)
           .then((responseRecipes) => {
+            console.log(responseRecipes);
             const { json } = responseRecipes;
             expect(json.message).toBe('recipe not found');
           });

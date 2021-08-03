@@ -11,4 +11,9 @@ const createRecipe = async (name, ingredients, preparation, userId) => {
 
 const getAllRecipes = async () => RecipesModel.getAllRecipes();
 
-module.exports = { createRecipe, getAllRecipes };
+const getRecipeById = async (id) => {
+  const isValid = await RecipeSchemas.idValidator(id);
+  return isValid;
+};
+
+module.exports = { createRecipe, getAllRecipes, getRecipeById };
