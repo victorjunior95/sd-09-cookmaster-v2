@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
 const User = require('../service/User');
+
+const secret = 'supersegredotrybe';
 
 const validateBodyReq = (name, password, email) => {
   let invalid = false;
@@ -10,6 +13,14 @@ const validateBodyReq = (name, password, email) => {
   return invalid;
 };
 
+const validateLoginBody = (email, password) => {
+  if (!email || !password) return { message: 'All fields must be filled' };
+  const emailRegex = /\S+@\S+\.\S+/;
+  const validateEmail = emailRegex.test(email);
+  if (!validateEmail) return { message: 'Incorrect username or password' };
+  return null;
+};
+
 const create = async (req, res) => {
   const { name, password, email } = req.body;
   const invalid = validateBodyReq(name, password, email);
@@ -19,4 +30,19 @@ const create = async (req, res) => {
   return res.status(201).json(newUser);
 };
 
-module.exports = { create };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const invalid = validateLoginBody(email, password);
+  if (invalid) return res.status(401).json(invalid);
+  const makeLogin = await User.login(email, password);
+  if (makeLogin.message) return res.status(401).json(makeLogin);
+  const { role, _id } = makeLogin;
+  const jwtConfig = {
+    expiresIn: '7d',
+    algorithm: 'HS256',
+  };
+  const token = jwt.sign({ data: _id, email, role }, secret, jwtConfig);
+  return res.status(200).json({ token });
+};
+
+module.exports = { create, login };

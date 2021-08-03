@@ -6,7 +6,7 @@ const findByEmail = async (email) => {
   const user = await connection().then((db) => db.collection('users')
   .findOne({ email }));
   if (!user) return null;
-  return formatUser(user);
+  return user;
 };
 
 const create = async (name, password, email) => {
@@ -16,4 +16,13 @@ const create = async (name, password, email) => {
   return formatUser(result);
 };
 
-module.exports = { findByEmail, create };
+const login = async (email, password) => {
+  const user = await findByEmail(email);
+  if (!user || password !== user.password) {
+    return { message: 'Incorrect username or password' };
+  }
+  const { role, _id } = user;
+  return { role, _id };
+};
+
+module.exports = { findByEmail, create, login };
