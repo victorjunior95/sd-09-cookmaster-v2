@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const formatUser = ({ name, password, email, role, _id }) => ({ _id, name, email, password, role });
+const formatUser = ({ name, email, role, _id }) => ({ _id, name, email, role });
 
 const findByEmail = async (email) => {
   const user = await connection().then((db) => db.collection('users')
