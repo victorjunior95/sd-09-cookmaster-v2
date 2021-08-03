@@ -45,6 +45,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
       })
       .expect('status', 200)
       .then((response) => {
+        console.log(response);
         const { body } = response;
         const result = JSON.parse(body);
         return frisby

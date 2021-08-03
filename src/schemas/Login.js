@@ -12,7 +12,7 @@ const validateLogin = (email, password) => {
 };
 
 const ValidatePassword = (reqPassword, userData) => {
-  if (!userData || reqPassword !== userData.Senha) {
+  if (!userData || reqPassword !== userData.password) {
     return objectError(messages.INVALID_LOGIN, codes.CODE_401);
   }
   return {};
