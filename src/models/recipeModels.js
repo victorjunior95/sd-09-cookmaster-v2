@@ -32,10 +32,27 @@ const deleteRecipeByIdModel = async (id) => connection()
     .findOneAndDelete({ _id: ObjectId(id) }));
     // .then((result) => result.deletedCount));
 
+const isAdminModel = async (userId) => connection()
+  .then((db) => db.collection('users')
+    .findOne({ _id: ObjectId(userId) })
+    .then((result) => result.role));
+
+const uploadImageModel = async (id, image) => connection()
+  .then((db) => db.collection('recipes').findOneAndUpdate({ _id: ObjectId(id) },
+    {
+      $set: {
+        image,
+      },
+    },
+    { returnOriginal: false }))
+  .then((result) => result.value);
+      
 module.exports = {
   newRecipeModel,
   getAllRecipesModel,
   getRecipeByIdModel,
   updateRecipeByIdModel,
   deleteRecipeByIdModel,
+  uploadImageModel,
+  isAdminModel,
 };

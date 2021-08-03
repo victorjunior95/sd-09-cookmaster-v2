@@ -7,6 +7,8 @@ const {
   getRecipeByIdModel,
   updateRecipeByIdModel,
   deleteRecipeByIdModel,
+  uploadImageModel,
+  isAdminModel,
 } = require('../models/recipeModels');
 
 const NOT_FOUND = 'recipe not found';
@@ -91,10 +93,48 @@ const deleteRecipeByIdService = async (id, token) => {
   return response;
 };
 
+const adminValidation = async (userId) => {
+  const userRole = await isAdminModel(userId);
+  if (userRole === 'admin') return true;
+  return null;
+};
+
+const validateImageUploadData = async (id, token) => {
+  const validToken = await retrieveTokenData(token);
+  if (validToken.error) return validToken;
+
+  const recipe = await getRecipeByIdModel(id);
+  if (!recipe) return { error: NOT_FOUND, status: 404 };
+
+  const { _id } = validToken;
+  const recipeUserId = recipe.userId;
+  const isAdmin = await adminValidation(_id);
+  if (_id === recipeUserId || isAdmin) {
+    return null;
+  }
+
+  return {
+    error: 'missing auth token',
+    status: 401,
+  };
+};
+
+const uploadImageService = async (id, token, image) => {
+  const unauthorizedUpload = await validateImageUploadData(id, token);
+  if (unauthorizedUpload) return unauthorizedUpload;
+
+  const validId = ObjectId(id);
+  if (!validId) return { error: NOT_FOUND, status: 404 };
+
+  const uploadImage = await uploadImageModel(id, image);
+  return uploadImage;
+};
+
 module.exports = {
   newRecipeService,
   getAllRecipesService,
   getRecipeByIdService,
   updateRecipeByIdService,
   deleteRecipeByIdService,
+  uploadImageService,
 };

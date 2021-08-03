@@ -5,7 +5,9 @@ const {
   getRecipeByIdService,
   updateRecipeByIdService,
   deleteRecipeByIdService,
+  uploadImageService,
 } = require('../services/recipeServices');
+const upload = require('../middlewares/upload');
 
 const newRecipe = rescue(async (req, res, _next) => {
   const token = req.headers.authorization;
@@ -54,10 +56,27 @@ const deleteRecipeById = async (req, res, _next) => {
   return res.status(204).json();
 };
 
+const getRecipeImage = [
+  upload.single('image'),
+  rescue(async (req, res, _next) => {
+    const { id } = req.params;
+    const token = req.headers.authorization;
+    const image = `localhost:3000/src/uploads/${id}.jpeg`;
+    
+   const validateId = await getRecipeByIdService(id);
+    if (!validateId) return res.status(validateId.status).json({ message: validateId.error });
+
+    const response = await uploadImageService(id, token, image);
+    if (response.error) return res.status(response.status).json({ message: response.error });
+    res.status(200).json(response);
+  }),
+];
+
 module.exports = {
   newRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
   deleteRecipeById,
+  getRecipeImage,
 };
