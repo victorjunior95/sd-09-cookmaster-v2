@@ -27,8 +27,17 @@ const findById = async (req, res) => {
   const { id } = req.params;
   const recipe = await Recipe.findById(id);
   if (!recipe) return res.status(404).json({ message: 'recipe not found' });
-  console.log(recipe);
   return res.status(200).json(recipe);
 };
 
-module.exports = { create, getAll, findById };
+const edit = async (req, res) => {
+  const { user } = req;
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const params = { name, ingredients, preparation };
+  const edited = await Recipe.edit(id, params, user);
+  if (edited.error) return res.status(edited.error.status).json(edited.error.message);
+  return res.status(200).json(edited);
+};
+
+module.exports = { create, getAll, findById, edit };

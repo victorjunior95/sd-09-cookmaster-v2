@@ -29,4 +29,12 @@ const findById = async (id) => {
   return formatRecipe(recipe);
 };
 
-module.exports = { create, getAll, findById };
+const edit = async (id, name, ingredients, preparation) => {
+  const idEdit = ObjectId(id);
+  const db = await connection();
+  await db.collection('recipes')
+    .updateOne({ _id: idEdit }, { $set: { name, ingredients, preparation } });
+  return findById(id);
+};
+
+module.exports = { create, getAll, findById, edit };
