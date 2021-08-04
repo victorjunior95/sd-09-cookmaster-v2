@@ -9,4 +9,6 @@ const create = async (name, ingredients, preparation, user) => {
 
 const getAll = async () => Recipe.getAll();
 
-module.exports = { create, getAll };
+const findById = async (id) => Recipe.findById(id);
+
+module.exports = { create, getAll, findById };

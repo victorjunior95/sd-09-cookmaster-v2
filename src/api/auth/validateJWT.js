@@ -5,12 +5,10 @@ const segredo = 'supersegredotrybe';
 
 module.exports = async (req, res, next) => {
   const token = req.headers.authorization;
-  console.log(`token no header: ${token}`);
   if (!token) return res.status(401).json({ message: 'jwt malformed' });
   try {
     const decoded = jwt.verify(token, segredo);
     const user = await model.findByEmail(decoded.data.email);
-    console.log(`user no auth: ${user}`);
     if (!user) return res.status(401).json({ message: 'jwt malformed' });
     req.user = user;
     next();
