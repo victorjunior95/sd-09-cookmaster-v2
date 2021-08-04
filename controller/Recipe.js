@@ -40,4 +40,12 @@ const edit = async (req, res) => {
   return res.status(200).json(edited);
 };
 
-module.exports = { create, getAll, findById, edit };
+const deleteOne = async (req, res) => {
+  const { user } = req;
+  const { id } = req.params;
+  const deleting = await Recipe.deleteOne(user, id);
+  if (!deleting) return res.status(204).end();
+  return deleting;
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne };

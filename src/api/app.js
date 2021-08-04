@@ -19,5 +19,6 @@ app.post('/recipes', validateJWT, Recipe.create);
 app.get('/recipes', Recipe.getAll);
 app.get('/recipes/:id', Recipe.findById);
 app.put('/recipes/:id', validateJWT, Recipe.edit);
+app.delete('/recipes/:id', validateJWT, Recipe.deleteOne);
 
 module.exports = app;

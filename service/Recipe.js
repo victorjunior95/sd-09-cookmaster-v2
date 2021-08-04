@@ -11,22 +11,30 @@ const getAll = async () => Recipe.getAll();
 
 const findById = async (id) => Recipe.findById(id);
 
-const edit = async (id, params, user) => {
-  const { name, ingredients, preparation } = params;
+const validateUser = async (user, id) => {
   const toEdit = await findById(id);
   const { _id, role } = user;
   const idUser = _id.toString();
   if (!toEdit) return { error: { status: 404, message: 'Recipe not found' } };
-  console.log(`toEdit: ${toEdit}`);
-  console.log(`toEdit.userId: ${toEdit.userId}`);
-  console.log(`role: ${role}`);
-  console.log(`idUser: ${idUser}`);
   const userId = toEdit.userId.toString();
-  console.log(`ahiu: ${(userId === idUser)}`);
   if (userId === idUser || role === 'admin') {
-    return Recipe.edit(id, name, ingredients, preparation);
+    return null;
   }
   return { error: { status: 401, message: 'You cant do it' } };
 };
 
-module.exports = { create, getAll, findById, edit };
+const edit = async (id, params, user) => {
+  const { name, ingredients, preparation } = params;
+  const invalidUser = await validateUser(user, id);
+  if (invalidUser) return invalidUser;
+  const edited = await Recipe.edit(id, name, ingredients, preparation);
+  return edited;
+};
+
+const deleteOne = async (user, id) => {
+  const invalidUser = await validateUser(user, id);
+  if (invalidUser) return invalidUser;
+  return Recipe.deleteOne(id);
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne };

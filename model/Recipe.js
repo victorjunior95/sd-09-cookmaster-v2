@@ -37,4 +37,11 @@ const edit = async (id, name, ingredients, preparation) => {
   return findById(id);
 };
 
-module.exports = { create, getAll, findById, edit };
+const deleteOne = async (id) => {
+  const idDelete = ObjectId(id);
+  const db = await connection();
+  await db.collection('recipes').deleteOne({ _id: idDelete });
+  return null;
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne };
