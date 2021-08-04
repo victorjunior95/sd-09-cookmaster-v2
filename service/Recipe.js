@@ -7,4 +7,6 @@ const create = async (name, ingredients, preparation, user) => {
   return { recipe: newRecipe };
 };
 
-module.exports = { create };
+const getAll = async () => Recipe.getAll();
+
+module.exports = { create, getAll };
