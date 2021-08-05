@@ -37,4 +37,13 @@ const deleteOne = async (user, id) => {
   return Recipe.deleteOne(id);
 };
 
-module.exports = { create, getAll, findById, edit, deleteOne };
+const addImage = async (id, user) => {
+  const invalidUser = await validateUser(user, id);
+  if (invalidUser) return invalidUser;
+  const recipe = await findById(id);
+  const { _id: recipeId } = recipe;
+  const imageName = `${recipeId}.jpeg`;
+  return Recipe.addImage(id, imageName);
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne, addImage };

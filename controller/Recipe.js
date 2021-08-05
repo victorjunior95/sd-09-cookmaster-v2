@@ -48,4 +48,12 @@ const deleteOne = async (req, res) => {
   return deleting;
 };
 
-module.exports = { create, getAll, findById, edit, deleteOne };
+const addImage = async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  const add = await Recipe.addImage(id, user);
+  if (add.error) return res.status(add.error.status).json(add.error.message);
+  return res.status(200).json(add);
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne, addImage };

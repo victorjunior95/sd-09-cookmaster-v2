@@ -1,11 +1,21 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const formatRecipe = ({ name, ingredients, preparation, userId, _id }) => ({ name,
-  ingredients,
-  preparation,
-  userId,
-  _id });
+const formatRecipe = ({ name, ingredients, preparation, userId, image, _id }) => {
+  if (!image) {
+    return { name,
+      ingredients,
+      preparation,
+      userId,
+      _id };
+  }
+    return { name,
+      ingredients,
+      preparation,
+      userId,
+      _id,
+      image };
+};
 
 const create = async (name, ingredients, preparation, userId) => {
   const db = await connection();
@@ -44,4 +54,13 @@ const deleteOne = async (id) => {
   return null;
 };
 
-module.exports = { create, getAll, findById, edit, deleteOne };
+const addImage = async (id, imageName) => {
+  const idObj = ObjectId(id);
+  const imagePath = `localhost:3000/src/uploads/${imageName}`;
+  const db = await connection();
+  await db.collection('recipes')
+  .updateOne({ _id: idObj }, { $set: { image: imagePath } });
+  return findById(id);
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne, addImage };
