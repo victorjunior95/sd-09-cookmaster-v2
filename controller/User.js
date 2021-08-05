@@ -30,6 +30,14 @@ const create = async (req, res) => {
   return res.status(201).json(newUser);
 };
 
+const createAdmin = async (req, res) => {
+  const { name, password, email } = req.body;
+  const { user } = req;
+  const newAdmin = await User.createAdmin(user, name, password, email);
+  if (newAdmin.message) return res.status(403).json(newAdmin);
+  return res.status(201).json(newAdmin);
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   const invalid = validateLoginBody(email, password);
@@ -45,4 +53,4 @@ const login = async (req, res) => {
   return res.status(200).json({ token });
 };
 
-module.exports = { create, login };
+module.exports = { create, login, createAdmin };

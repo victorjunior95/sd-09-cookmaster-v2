@@ -16,6 +16,14 @@ const create = async (name, password, email) => {
   return formatUser(result);
 };
 
+const createAdmin = async (name, password, email) => {
+  const db = await connection();
+  const createNew = await db.collection('users')
+  .insertOne({ name, password, email, role: 'admin' });
+  const result = createNew.ops[0];
+  return formatUser(result);
+};
+
 const login = async (email, password) => {
   const user = await findByEmail(email);
   if (!user || password !== user.password) {
@@ -25,4 +33,4 @@ const login = async (email, password) => {
   return { role, _id };
 };
 
-module.exports = { findByEmail, create, login };
+module.exports = { findByEmail, create, login, createAdmin };
