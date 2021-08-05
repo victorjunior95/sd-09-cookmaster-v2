@@ -26,7 +26,20 @@ const login = rescue(async (req, res, next) => {
   res.status(OK).json(userLogin);
 });
 
+const createAdmin = rescue(async (req, res, next) => {
+  // const { name, email, password, role = 'admin' } = req.body;
+
+  const admin = await Service.createAdmin(req.body, req.user);
+
+  if (admin.error) {
+    return next(admin.error);
+  }
+
+  return res.status(201).json(admin);
+ });
+
 module.exports = {
   createUser,
   login,
+  createAdmin,
 };

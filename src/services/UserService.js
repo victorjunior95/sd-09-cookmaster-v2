@@ -2,7 +2,8 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
 const Model = require('../models/UserModel');
-const { INVALID_DATA, EMAIL_ALREADY_EXIST, UNAUTHORIZED } = require('../middleware/httpStatus');
+const { INVALID_DATA,
+   EMAIL_ALREADY_EXIST, UNAUTHORIZED, FORBIDDEN } = require('../middleware/httpStatus');
 
 const SECRET = 'meusegredosupersecreto';
 
@@ -44,6 +45,22 @@ const createUser = async (name, email, password, role) => {
   return create;
 };
 
+const createAdmin = async (userBody, userData) => {
+  const { name, email, password, role = 'admin' } = userBody;
+  const objectUser = {
+    name, email, password, role,
+  };
+
+  if (userData.role !== 'admin') {
+      return { error: { 
+        status: FORBIDDEN, message: 'Only admins can register new admins', 
+      } };
+    }
+
+  const admin = await Model.create(objectUser);
+  return admin;
+};
+
 const login = async (email, password) => {
   if (!email || !password) {
     return { error: {
@@ -70,4 +87,5 @@ const login = async (email, password) => {
 module.exports = {
   createUser,
   login,
+  createAdmin,
 };

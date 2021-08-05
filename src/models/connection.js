@@ -12,16 +12,17 @@ const DB_NAME = 'Cookmaster';
 
 let db = null;
 
-const connection = () => (db
+const connection = () =>
+  (db
     ? Promise.resolve(db)
     : MongoClient.connect(MONGO_DB_URL, OPTIONS)
-      .then((conn) => {
-        db = conn.db(DB_NAME);
-        return db;
-      })
-      .catch((err) => {
-        console.log(err);
-        process.exit();
-      }));
+        .then((conn) => {
+          db = conn.db(DB_NAME);
+          return db;
+        })
+        .catch((err) => {
+          console.log(err);
+          process.exit();
+        }));
 
 module.exports = connection;
