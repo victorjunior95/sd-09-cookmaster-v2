@@ -1,3 +1,4 @@
+const path = require('path');
 const Recipe = require('../service/Recipe');
 
 const validateBodyReq = (name, ingredients, preparation) => {
@@ -56,4 +57,10 @@ const addImage = async (req, res) => {
   return res.status(200).json(add);
 };
 
-module.exports = { create, getAll, findById, edit, deleteOne, addImage };
+const getImage = async (req, res) => {
+  const { imageId } = req.params;
+  const image = path.join(__dirname, '..', 'src', 'uploads', imageId);
+  return res.status(200).sendFile(image);
+};
+
+module.exports = { create, getAll, findById, edit, deleteOne, addImage, getImage };

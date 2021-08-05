@@ -24,6 +24,7 @@ app.post('/login', User.login);
 app.post('/recipes', validateJWT, Recipe.create);
 app.get('/recipes', Recipe.getAll);
 app.get('/recipes/:id', Recipe.findById);
+app.get('/images/:imageId', Recipe.getImage);
 app.put('/recipes/:id', validateJWT, Recipe.edit);
 app.put('/recipes/:id/image', validateJWT, upload.single('image'), Recipe.addImage);
 app.delete('/recipes/:id', validateJWT, Recipe.deleteOne);
