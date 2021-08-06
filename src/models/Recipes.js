@@ -40,4 +40,15 @@ const editRecipe = async (userId, { id, name, ingredients, preparation }) => {
   return result;
 };
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe };
+const deleteRecipe = async (recipeId, userID, role) => {
+  const query = role === 'admin' 
+    ? { _id: ObjectID(recipeId), userId: userID } 
+    : { _id: ObjectID(recipeId) };
+
+  const result = await connection()
+    .then((db) => db.collection('recipes').deleteOne(query))
+    .then(() => response(null, 204));
+  return result;
+};
+
+module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe, deleteRecipe };

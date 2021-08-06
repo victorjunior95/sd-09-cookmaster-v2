@@ -18,4 +18,9 @@ const getRecipeById = async (id) => {
 
 const editRecipe = async (userID, recipe) => RecipesModel.editRecipe(userID, recipe);
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe };
+const deleteRecipe = async (recipeId, userID, role) => {
+  const deleted = await RecipesModel.deleteRecipe(recipeId, userID, role);
+  return deleted;
+};
+
+module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe, deleteRecipe };

@@ -11,8 +11,9 @@ const tokenValidator = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secret);
-    const { _id } = decoded;
+    const { _id, role } = decoded;
     req.userId = _id;
+    req.role = role;
     next();
   } catch (err) {
     return res.status(codes.CODE_401).json({ message: messages.INVALID_TOKEN });

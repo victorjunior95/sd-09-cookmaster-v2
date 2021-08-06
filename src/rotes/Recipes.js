@@ -8,5 +8,6 @@ Router.post('/recipes', Auth.tokenValidator, RecipesController.createRecipe);
 Router.get('/recipes/:id', RecipesController.getRecipeById);
 Router.get('/recipes', RecipesController.getAllRecipes);
 Router.put('/recipes/:id', Auth.tokenValidator, RecipesController.editRecipe);
+Router.delete('/recipes/:id', Auth.tokenValidator, RecipesController.deleteRecipe);
 
 module.exports = Router;
