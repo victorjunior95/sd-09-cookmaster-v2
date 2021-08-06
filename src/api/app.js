@@ -1,14 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ERROR_MIDDLEWARE = require('./middlewares/ErrorMiddleware');
+// const JWT_VALIDATOR = require('./middlewares/JWTValidator');
+const controllers = require('./controllers');
 
 const app = express();
 
 app.use(bodyParser.json());
 
-app.post('/users', () => { console.log('controler'); });
+app.post('/users', controllers.userController);
 app.post('/login', () => { console.log('controler'); });
-app.post('/recipes', () => { console.log('valida jwt'); });
+app.post('/recipes', () => { console.log('posta receita'); });
 app.get('/recipes', () => { console.log('lista com e sem jwt'); });
 app.get('/recipes/:id', () => { console.log('lista com e sem jwt'); });
 app.post('/recipes/:id', () => { console.log('postar IMG'); });
