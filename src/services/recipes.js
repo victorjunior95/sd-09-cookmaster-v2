@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs').promises;
 
 const Recipes = require('../models/recipes');
+const Users = require('../models/users');
 const validateAuth = require('../middlewares/validateAuth');
 
 const JoiSchema = Joi.object({
@@ -52,19 +53,41 @@ const listById = async (id) => {
 };
 
 const edit = async (data, id, authorization) => {
-  await validateAuth(authorization);
+  const payload = await validateAuth(authorization);
 
-  const editRecipe = await Recipes.edit(data, id);
+  const getUser = await Users.getByEmail(payload.email);
+  const getRecipe = await Recipes.listById(id);
 
-  return editRecipe;
+  const { _id: idUser } = getUser;
+
+  const idRecipe = getRecipe.userId.toString();
+
+  if (getUser.role === 'admin' || idUser.toString() === idRecipe) {
+    const editRecipe = await Recipes.edit(data, id);
+
+    return editRecipe;
+  }
+
+  throw validateError(401, 'unauthorized user');
 };
 
 const drop = async (id, authorization) => {
-  await validateAuth(authorization);
+  const payload = await validateAuth(authorization);
 
-  const dropRecipe = await Recipes.drop(id);
+  const getUser = await Users.getByEmail(payload.email);
+  const getRecipe = await Recipes.listById(id);
 
-  return dropRecipe;
+  const { _id: idUser } = getUser;
+
+  const idRecipe = getRecipe.userId.toString();
+
+  if (getUser.role === 'admin' || idUser.toString() === idRecipe) {
+    const dropRecipe = await Recipes.drop(id);
+
+    return dropRecipe;
+  }
+
+  throw validateError(401, 'unauthorized user');
 };
 
 const uploadPicture = async (authorization, id, buffer) => {

@@ -3,9 +3,9 @@ const Joi = require('joi');
 const User = require('../models/users');
 
 const JoiSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  password: Joi.string().required(),
+  name: Joi.string().not().empty().required(),
+  email: Joi.string().not().empty().required(),
+  password: Joi.string().not().empty().required(),
 });
 
 const validateError = (statusCode, message) => ({
