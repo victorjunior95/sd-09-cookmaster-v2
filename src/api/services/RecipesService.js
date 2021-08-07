@@ -1,4 +1,4 @@
-const recipes = require('../models/recipes');
+const Model = require('../models/RecipesModel');
 const validate = require('../utils/validators');
 
 const create = async (recipeInfo, user) => {
@@ -8,7 +8,7 @@ const create = async (recipeInfo, user) => {
     return error;
   }
   const { _id: userId } = user;
-  const response = await recipes.create(recipeInfo, userId);
+  const response = await Model.create(recipeInfo, userId);
   return {
     status: 201,
     recipe: response,
@@ -16,7 +16,7 @@ const create = async (recipeInfo, user) => {
 };
 
 const getAll = async () => {
-  const response = await recipes.getAll();
+  const response = await Model.getAll();
   return {
     status: 200,
     recipesList: response,
@@ -29,7 +29,7 @@ const getById = async (id) => {
   } catch (error) {
     return error;
   }
-  const { _id, name, ingredients, preparation } = await recipes.getById(id);
+  const { _id, name, ingredients, preparation } = await Model.getById(id);
   return {
     status: 200,
     _id,
@@ -41,7 +41,7 @@ const getById = async (id) => {
 
 const update = async (id, recipe, user) => {
   const { _id: userId } = user;
-  await recipes.update(id, { ...recipe, userId });
+  await Model.update(id, { ...recipe, userId });
   return {
     status: 200,
     userId,
@@ -49,10 +49,10 @@ const update = async (id, recipe, user) => {
 };
 
 const putImage = (id, path) => 
-  recipes.putImage(id, `localhost:3000/${path}`)
-    .then(() => recipes.getById(id)
+Model.putImage(id, `localhost:3000/${path}`)
+    .then(() => Model.getById(id)
     .then((data) => ({ status: 200, data })));
 
-const remove = (id) => recipes.remove(id).then(() => ({ status: 204 }));
+const remove = (id) => Model.remove(id).then(() => ({ status: 204 }));
 
 module.exports = { create, getAll, getById, update, remove, putImage };
