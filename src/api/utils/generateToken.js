@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const users = require('../models/users');
 
-const secret = '12345678910111213';
+const secret = 'meusegredosecreto';
 const jwtConfig = { expiresIn: '15m', algorithm: 'HS256' };
 
 const generateToken = async (email) => {

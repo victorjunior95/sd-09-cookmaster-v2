@@ -30,7 +30,7 @@ const login = async (email, password) => {
 };
 
 const token = async ({ authorization }) => {
-  const secret = '12345678910111213';
+  const secret = 'meusegredosecreto';
   if (!authorization) {
     throw err('missing auth token');
   }
@@ -57,7 +57,7 @@ const recipeId = async (id) => {
 };
 
 const admin = async ({ authorization }) => {
-  const secret = '12345678910111213';
+  const secret = 'meusegredosecreto';
   const { role } = jwt.verify(authorization, secret);
   if (role !== 'admin') throw err('Only admins can register new admins');
 };
