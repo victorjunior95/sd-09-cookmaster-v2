@@ -37,10 +37,6 @@ const token = async ({ authorization }) => {
   
   const payload = jwt.verify(authorization, secret);
 
-  // if (!payload) {
-  //   throw err('jwt malformed', 401);
-  // }
-
   const { password, ...userRegister } = await users.getByEmail(payload.email);
   if (!userRegister) {
     throw err('Invalid entries. Try again.');

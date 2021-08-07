@@ -1,4 +1,4 @@
-const recipes = require('../services/recipes');
+const recipes = require('../services/RecipesService');
 const upload = require('../utils/upload');
 
 const create = async (req, res) => {
