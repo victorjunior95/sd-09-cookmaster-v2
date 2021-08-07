@@ -7,9 +7,9 @@ Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e
 Você já usa o GitHub diariamente para desenvolver os exercícios, certo? Agora, para desenvolver os projetos, você deverá seguir as instruções a seguir. Fique atento a cada passo, e se tiver qualquer dúvida, nos envie por Slack! #vqv 🚀
 
 Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu projeto a partir deste repositório, utilizando uma branch específica e um Pull Request para colocar seus códigos.
-
+ 
 ---
-
+  
 # Sumário
 
 - [Boas vindas ao repositório do projeto Cookmaster!](#boas-vindas-ao-repositório-do-projeto-cookmaster)
@@ -258,7 +258,7 @@ A coleção de usuários deverá ter o seguinte nome: `users`.
 Os campos da coleção `users` terão este formato:
 
 ```json
-{ "name" : "Erick Jacquin", "email" : "erickjacquin@gmail.com", "password" : "12345678", "role" : "user" }
+
 ```
 
 A resposta do insert para ser retornada após a criação é esta:
