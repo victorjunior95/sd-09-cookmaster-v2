@@ -13,23 +13,21 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-// Users
 const User = require('../controllers/user');
+const Login = require('../controllers/login');
+const Recipes = require('../controllers/recipes');
+const Admin = require('../controllers/admin');
 
+const { memoryUpload } = require('../middlewares/upload');
+
+// Users
 app.route('/users').post(User);
 
 // Login
-const Login = require('../controllers/login');
-
 app.route('/login').post(Login);
 
 // Recipes
-const Recipes = require('../controllers/recipes');
-const { memoryUpload } = require('../middlewares/upload');
-
-app.route('/recipes')
-  .post(Recipes.create)
-  .get(Recipes.list);
+app.route('/recipes').post(Recipes.create).get(Recipes.list);
 
 app
   .route('/recipes/:id')
@@ -43,6 +41,10 @@ app
 
 // acessando arquivo estático, passando o local onde se encontra a imagem
 app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+
+app
+  .route('/users/admin')
+  .post(Admin);
 
 // Error
 const errorMiddleware = require('../middlewares/error');
