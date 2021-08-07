@@ -33,4 +33,16 @@ const login = async (email, password) => {
   return { role, _id };
 };
 
-module.exports = { findByEmail, create, login, createAdmin };
+const getAll = async () => {
+  const db = await connection();
+  const users = await db.collection('users').find().toArray();
+  return users.map(formatUser);
+};
+
+const model = () => {
+  const isModel = true;
+  if (isModel) return 'ok';
+  return 'notOk';
+};
+
+module.exports = { findByEmail, create, login, createAdmin, getAll, model };

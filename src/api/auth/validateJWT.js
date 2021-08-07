@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const model = require('../../../model/User');
+const model = require('../../model/User');
 
 const segredo = 'supersegredotrybe';
 

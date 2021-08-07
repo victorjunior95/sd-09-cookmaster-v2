@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
-const User = require('../../controller/User');
-const Recipe = require('../../controller/Recipe');
+const User = require('../controller/User');
+const Recipe = require('../controller/Recipe');
 const validateJWT = require('./auth/validateJWT');
-const storage = require('../../controller/Storage');
+const storage = require('../controller/Storage');
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,6 +19,9 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
+app.get('/model', User.model);
+app.get('/ping', User.ping);
+app.get('/users', User.getAll);
 app.post('/users', User.create);
 app.post('/users/admin', validateJWT, User.createAdmin);
 app.post('/login', User.login);

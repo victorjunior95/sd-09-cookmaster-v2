@@ -13,6 +13,20 @@ const validateBodyReq = (name, password, email) => {
   return invalid;
 };
 
+const ping = (_req, res) => {
+  res.status(200).json({ ping: 'pong' });
+};
+
+const getAll = async (_req, res) => {
+  const users = await User.getAll();
+  return res.status(200).json(users);
+};
+
+const model = (_req, res) => {
+  const response = User.model();
+  res.status(200).json(response);
+};
+
 const validateLoginBody = (email, password) => {
   if (!email || !password) return { message: 'All fields must be filled' };
   const emailRegex = /\S+@\S+\.\S+/;
@@ -53,4 +67,4 @@ const login = async (req, res) => {
   return res.status(200).json({ token });
 };
 
-module.exports = { create, login, createAdmin };
+module.exports = { create, login, createAdmin, ping, getAll, model };

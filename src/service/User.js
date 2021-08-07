@@ -28,4 +28,11 @@ const login = async (email, password) => {
   return makeLogin;
 };
 
-module.exports = { create, login, createAdmin };
+const getAll = async () => User.getAll();
+
+const model = () => {
+  const modelOk = User.model();
+  return { model: modelOk };
+};
+
+module.exports = { create, login, createAdmin, getAll, model };

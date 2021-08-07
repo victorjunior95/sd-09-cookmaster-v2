@@ -59,7 +59,7 @@ const addImage = async (req, res) => {
 
 const getImage = async (req, res) => {
   const { imageId } = req.params;
-  const image = path.join(__dirname, '..', 'src', 'uploads', imageId);
+  const image = path.join(__dirname, '..', 'uploads', imageId);
   return res.status(200).sendFile(image);
 };
 
