@@ -34,3 +34,5 @@ app.put('/recipes/:id/image', validateJWT, upload.single('image'), Recipe.addIma
 app.delete('/recipes/:id', validateJWT, Recipe.deleteOne);
 
 module.exports = app;
+
+// concluido
