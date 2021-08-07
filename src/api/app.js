@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 // const multer = require('multer');
 const path = require('path');
 const router = require('../router');
+const middlewares = require('../middlewares');
 
 const app = express();
 
@@ -22,6 +23,8 @@ const upload = multer({
   storage,
 });
 */
+
+app.use(middlewares.error);
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
