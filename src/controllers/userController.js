@@ -1,9 +1,12 @@
 const { user } = require('../services');
 
+const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
 const HTTP_BAD_REQUEST_STATUS = 400;
+const HTTP_UNAUTHORIZED_STATUS = 401;
 
 const ENTRIES_ERROR = 'Invalid entries. Try again.';
+const LOGIN_FIELD_ERROR = 'All fields must be filled';
 
 const addUser = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -23,6 +26,25 @@ const addUser = async (req, res, next) => {
   res.status(HTTP_CREATED_STATUS).json(newUser);
 };
 
+const login = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    const err = new Error(LOGIN_FIELD_ERROR);
+
+    err.statusCode = HTTP_UNAUTHORIZED_STATUS;
+
+    return next(err);
+  }
+
+  const token = await user.login({ email, password });
+
+  if (token.statusCode) return next(token);
+
+  res.status(HTTP_OK_STATUS).json(token);
+};
+
 module.exports = {
   addUser,
+  login,
 };
