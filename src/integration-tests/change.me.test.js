@@ -24,6 +24,8 @@ const EMAIL_CONFLICT_ERROR = 'Email already registered';
 const LOGIN_FIELD_ERROR = 'All fields must be filled';
 const LOGIN_INCORRECT_ERROR = 'Incorrect username or password';
 const RECIPE_NOT_FOUND_ERROR = 'recipe not found';
+const TOKEN_ERROR = 'missing auth token';
+const NOT_YOUR_RECIPE_ERROR = 'You can modify only your own recipes';
 
 const ID_EXAMPLE = '604cb554311d68f491ba5781';
 
@@ -438,6 +440,43 @@ describe('POST /recipes', () => {
     });
   });
 
+  describe('quando não é passado o campo "preparation"', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      const token = await chai.request(server).post('/login').send(user).then((res) => res.body.token);
+
+      response = await chai.request(server).post('/recipes').set('authorization', token).send(payload);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 400', () => {
+      expect(response).to.have.status(HTTP_BAD_REQUEST_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+    });
+  });
+
   describe('com dados válidos', () => {
     const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
     let response;
@@ -554,6 +593,148 @@ describe('GET /recipes/:id', () => {
     });
 
     it('que possui a propriedade "ingredients"', () => {
+      expect(response.body).to.have.property('ingredients');
+    });
+  });
+});
+
+describe('PUT /recipes/:id', () => {
+  const user = { name: 'Testy', password: 'tester123', email: 'testythetester@gmail.com', role: 'user' };
+  const user2 = { name: 'Testy2', password: 'tester1234', email: 'testy2@gmail.com', role: 'user' };
+
+  describe('quando não é passado um token jwt', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      response = await chai.request(server).put(`/recipes/${ID_EXAMPLE}`).send(payload);
+    });
+
+    it('retorna status 401', () => {
+      expect(response).to.have.status(HTTP_UNAUTHORIZED_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+      expect(response.body.message).to.be.equal(TOKEN_ERROR);
+    });
+  });
+
+  describe('quando não encontrada', () => {
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      const token = await chai.request(server).post('/login').send(user).then((res) => res.body.token);
+
+      response = await chai.request(server).put(`/recipes/${ID_EXAMPLE}`).set('authorization', token);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 404', () => {
+      expect(response).to.have.status(HTTP_NOT_FOUND_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+      expect(response.body.message).to.be.equal(RECIPE_NOT_FOUND_ERROR);
+    });
+  });
+
+  describe('quando a receita não foi feita pelo usuário', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      const { insertedId: userId } = await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user2);
+
+      const token = await chai.request(server).post('/login').send(user2).then((res) => res.body.token);
+
+      const { insertedId } = await connectionMock.db(DB_NAME).collection(COLLECTION_RECIPE).insertOne({ ...payload, userId });
+
+      response = await chai.request(server).put(`/recipes/${insertedId}`).set('authorization', token).send(payload);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 401', () => {
+      expect(response).to.have.status(HTTP_UNAUTHORIZED_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+      expect(response.body.message).to.be.equal(NOT_YOUR_RECIPE_ERROR);
+    });
+  });
+
+  describe('com tudo válido', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      const { insertedId: userId } = await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      const token = await chai.request(server).post('/login').send(user).then((res) => res.body.token);
+
+      const { insertedId } = await connectionMock.db(DB_NAME).collection(COLLECTION_RECIPE).insertOne({ ...payload, userId });
+
+      response = await chai.request(server).put(`/recipes/${insertedId}`).set('authorization', token).send(payload);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 200', () => {
+      expect(response).to.have.status(HTTP_OK_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "ingredients"', () => {
       expect(response.body).to.have.property('ingredients');
     });
   });
