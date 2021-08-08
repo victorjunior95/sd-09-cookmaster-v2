@@ -25,9 +25,9 @@ const idValidator = (id) => {
   const test = idRegex.test(id);
 
   if (!test) {
-    const err = new Error(ENTRIES_ERROR);
+    const err = new Error(RECIPE_NOT_FOUND_ERROR);
 
-    err.statusCode = HTTP_BAD_REQUEST_STATUS;
+    err.statusCode = HTTP_NOT_FOUND_STATUS;
 
     return err;
   }
@@ -132,7 +132,7 @@ const addImage = async (req, res, next) => {
 
   if (foundRecipe.statusCode) return next(foundRecipe);
 
-  const image = path.join(__dirname, '..', 'uploads', `${id}.jpeg`);
+  const image = path.join('localhost:3000/src', 'uploads', `${id}.jpeg`);
 
   const recipeImage = await recipe.addImage({ userId, email, role }, id, image);
 

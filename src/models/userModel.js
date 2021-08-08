@@ -9,13 +9,15 @@ const findByEmail = async (email) => {
 };
 
 const addUser = async (userData) => {
+  const { name, email } = userData;
+
   const role = 'user';
 
   const usersCollection = await connection().then((db) => db.collection(COLLECTION));
 
   const { insertedId: _id } = await usersCollection.insertOne({ ...userData, role });
 
-  return { user: { _id, role, ...userData } };
+  return { user: { _id, role, name, email } };
 };
 
 const findUser = async (userData) => {
