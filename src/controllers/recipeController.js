@@ -2,6 +2,7 @@ const { recipe } = require('../services');
 
 const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
+const HTTP_NO_CONTENT_STATUS = 204;
 const HTTP_BAD_REQUEST_STATUS = 400;
 const HTTP_NOT_FOUND_STATUS = 404;
 
@@ -82,9 +83,25 @@ const updateRecipe = async (req, res, next) => {
   res.status(HTTP_OK_STATUS).json(updatedRecipe);
 };
 
+const deleteRecipe = async (req, res, next) => {
+  const { id } = req.params;
+  const { userId, email, role } = req.user;
+
+  const foundRecipe = await findRecipe(id);
+
+  if (foundRecipe.statusCode) return next(foundRecipe);
+
+  const deletedRecipe = await recipe.deleteRecipe({ userId, email, role }, id);
+
+  if (deletedRecipe.statusCode) return next(deletedRecipe);
+
+  res.status(HTTP_NO_CONTENT_STATUS).end();
+};
+
 module.exports = {
   addRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };

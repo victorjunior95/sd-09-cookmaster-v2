@@ -2,7 +2,7 @@ const { recipe } = require('../models');
 
 const HTTP_UNAUTHORIZED_STATUS = 401;
 
-const NOT_YOUR_RECIPE_ERROR = 'You can modify only your own recipes';
+const NOT_YOUR_RECIPE_ERROR = 'You can only modify your own recipes';
 
 const addRecipe = (recipeData, userData) => {
   const newRecipe = {
@@ -37,9 +37,24 @@ const updateRecipe = async (newRecipeData, userData, id) => {
   return newRecipe;
 };
 
+const deleteRecipe = async (userData, id) => {
+  const foundRecipe = await getRecipeById(id);
+
+  if (foundRecipe.userId.toString() !== userData.userId && userData.role !== 'admin') {
+    const err = new Error(NOT_YOUR_RECIPE_ERROR);
+
+    err.statusCode = HTTP_UNAUTHORIZED_STATUS;
+
+    return err;
+  }
+
+  return recipe.deleteRecipe(id);
+};
+
 module.exports = {
   addRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
+  deleteRecipe,
 };
