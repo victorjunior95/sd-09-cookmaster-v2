@@ -19,6 +19,22 @@ const badRequest = () => {
   return err;
 };
 
+const idValidator = (id) => {
+  const idRegex = /^.{24}$/;
+
+  const test = idRegex.test(id);
+
+  if (!test) {
+    const err = new Error(ENTRIES_ERROR);
+
+    err.statusCode = HTTP_BAD_REQUEST_STATUS;
+
+    return err;
+  }
+
+  return test;
+};
+
 const addRecipe = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
   const { userId, email, role } = req.user;
@@ -58,6 +74,8 @@ const findRecipe = async (id) => {
 const getRecipeById = async (req, res, next) => {
   const { id } = req.params;
 
+  if (idValidator(id).statusCode) return next(idValidator(id));
+
   const foundRecipe = await findRecipe(id);
 
   if (foundRecipe.statusCode) return next(foundRecipe);
@@ -69,6 +87,8 @@ const updateRecipe = async (req, res, next) => {
   const { id } = req.params;
   const { name, ingredients, preparation } = req.body;
   const { userId, email, role } = req.user;
+
+  if (idValidator(id).statusCode) return next(idValidator(id));
 
   const foundRecipe = await findRecipe(id);
 
@@ -89,6 +109,8 @@ const deleteRecipe = async (req, res, next) => {
   const { id } = req.params;
   const { userId, email, role } = req.user;
 
+  if (idValidator(id).statusCode) return next(idValidator(id));
+
   const foundRecipe = await findRecipe(id);
 
   if (foundRecipe.statusCode) return next(foundRecipe);
@@ -103,6 +125,8 @@ const deleteRecipe = async (req, res, next) => {
 const addImage = async (req, res, next) => {
   const { id } = req.params;
   const { userId, email, role } = req.user;
+
+  if (idValidator(id).statusCode) return next(idValidator(id));
 
   const foundRecipe = await findRecipe(id);
 
