@@ -41,14 +41,35 @@ const editRecipe = async (userId, { id, name, ingredients, preparation }) => {
 };
 
 const deleteRecipe = async (recipeId, userID, role) => {
-  const query = role === 'admin' 
-    ? { _id: ObjectID(recipeId), userId: userID } 
-    : { _id: ObjectID(recipeId) };
+  const filter = role === 'admin' 
+    ? { _id: ObjectID(recipeId) }
+    : { _id: ObjectID(recipeId), userId: userID };
 
   const result = await connection()
-    .then((db) => db.collection('recipes').deleteOne(query))
+    .then((db) => db.collection('recipes').deleteOne(filter))
     .then(() => response(null, 204));
   return result;
 };
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe, deleteRecipe };
+const insertImage = async (recipeId, userID, url, role) => {
+  const filter = role === 'admin' 
+  ? { _id: ObjectID(recipeId) } 
+  : { _id: ObjectID(recipeId), userId: userID };
+  
+  const result = await connection()
+  .then((db) => db.collection('recipes').updateOne(filter, { $set: { image: url } }))
+  .then(async () => {
+    const recipe = await getRecipeById(recipeId);
+    return recipe;
+  });
+  return result;
+};
+
+module.exports = {
+  createRecipe,
+  getAllRecipes,
+  getRecipeById,
+  editRecipe,
+  deleteRecipe,
+  insertImage,
+};

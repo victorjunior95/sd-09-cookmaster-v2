@@ -1,5 +1,6 @@
 const rescue = require('express-rescue');
 const RecipesService = require('../services/Recipes');
+const upload = require('../schemas/UploadConfig');
 
 const createRecipe = rescue(async (req, res) => {
   const { userId } = req;
@@ -43,4 +44,20 @@ const deleteRecipe = rescue(async (req, res) => {
   res.status(code).json(result);
 });
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe, deleteRecipe };
+const insertImage = [
+  upload.single('image'),
+  rescue(async (req, res) => {
+  const { id } = req.params;
+  const { userId, role } = req;
+  const { result, code } = await RecipesService.insertRecipe(id, userId, req.file.path, role);
+  res.status(code).json(result);
+})];
+
+module.exports = {
+  createRecipe,
+  getAllRecipes,
+  getRecipeById,
+  editRecipe,
+  deleteRecipe,
+  insertImage,
+};

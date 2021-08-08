@@ -23,4 +23,18 @@ const deleteRecipe = async (recipeId, userID, role) => {
   return deleted;
 };
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById, editRecipe, deleteRecipe };
+const insertRecipe = async (id, userId, path, role) => RecipesModel.insertImage(
+  id,
+  userId,
+  `localhost:3000/${path}`,
+  role,
+);
+
+module.exports = {
+  createRecipe,
+  getAllRecipes,
+  getRecipeById,
+  editRecipe,
+  deleteRecipe,
+  insertRecipe,
+};
