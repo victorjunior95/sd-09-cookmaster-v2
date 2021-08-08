@@ -13,7 +13,10 @@ const addRecipe = (recipeData, userData) => {
 
 const getRecipes = () => recipe.getRecipes();
 
+const getRecipeById = (id) => recipe.getRecipeById(id);
+
 module.exports = {
   addRecipe,
   getRecipes,
+  getRecipeById,
 };

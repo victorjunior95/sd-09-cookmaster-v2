@@ -16,12 +16,14 @@ const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
 const HTTP_BAD_REQUEST_STATUS = 400;
 const HTTP_UNAUTHORIZED_STATUS = 401;
+const HTTP_NOT_FOUND_STATUS = 404;
 const HTTP_CONFLICT_STATUS = 409;
 
 const ENTRIES_ERROR = 'Invalid entries. Try again.';
 const EMAIL_CONFLICT_ERROR = 'Email already registered';
 const LOGIN_FIELD_ERROR = 'All fields must be filled';
 const LOGIN_INCORRECT_ERROR = 'Incorrect username or password';
+const RECIPE_NOT_FOUND_ERROR = 'recipe not found';
 
 const ID_EXAMPLE = '604cb554311d68f491ba5781';
 
@@ -45,11 +47,11 @@ describe('POST /users', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
     });
   });
   
@@ -70,11 +72,11 @@ describe('POST /users', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
     });
   });
 
@@ -95,11 +97,11 @@ describe('POST /users', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
     });
   });
 
@@ -120,11 +122,11 @@ describe('POST /users', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
     });
   });
 
@@ -151,11 +153,11 @@ describe('POST /users', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(EMAIL_CONFLICT_ERROR);
+      expect(response.body.message).to.be.equal(EMAIL_CONFLICT_ERROR);
     });
   });
 
@@ -184,11 +186,11 @@ describe('POST /users', () => {
     });
 
     it('objeto de resposta possui a propriedade "user"', () => {
-        expect(response.body).to.have.property('user');
+      expect(response.body).to.have.property('user');
     });
 
     it('objeto de resposta possui a proprieadade "role"', () => {
-        expect(response.body.user).to.have.property('role');
+      expect(response.body.user).to.have.property('role');
     });
 
     it('com o perfil correto', () => {
@@ -215,11 +217,11 @@ describe('POST /login', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(LOGIN_FIELD_ERROR);
+      expect(response.body.message).to.be.equal(LOGIN_FIELD_ERROR);
     });
   });
 
@@ -240,11 +242,11 @@ describe('POST /login', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(LOGIN_FIELD_ERROR);
+      expect(response.body.message).to.be.equal(LOGIN_FIELD_ERROR);
     });
   });
 
@@ -265,11 +267,11 @@ describe('POST /login', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(LOGIN_INCORRECT_ERROR);
+      expect(response.body.message).to.be.equal(LOGIN_INCORRECT_ERROR);
     });
   });
 
@@ -298,11 +300,11 @@ describe('POST /login', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(LOGIN_INCORRECT_ERROR);
+      expect(response.body.message).to.be.equal(LOGIN_INCORRECT_ERROR);
     });
   });
 
@@ -333,7 +335,7 @@ describe('POST /login', () => {
     });
 
     it('que possui a propriedade "token"', () => {
-        expect(response.body).to.have.property('token');
+      expect(response.body).to.have.property('token');
     });
   });
 });
@@ -358,7 +360,7 @@ describe('POST /recipes', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
   });
 
@@ -391,11 +393,11 @@ describe('POST /recipes', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
     });
   });
 
@@ -428,11 +430,11 @@ describe('POST /recipes', () => {
     });
 
     it('objeto de resposta possui a propriedade "message"', () => {
-        expect(response.body).to.have.property('message');
+      expect(response.body).to.have.property('message');
     });
 
     it('com a mensagem correta', () => {
-        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+      expect(response.body.message).to.be.equal(ENTRIES_ERROR);
     });
   });
 
@@ -465,7 +467,7 @@ describe('POST /recipes', () => {
     });
 
     it('que possui a propriedade "recipe"', () => {
-        expect(response.body).to.have.property('recipe');
+      expect(response.body).to.have.property('recipe');
     });
   });
 });
@@ -488,6 +490,71 @@ describe('GET /recipes', () => {
 
     it('retorna um array no body', () => {
       expect(response.body).to.be.an('array');
+    });
+  });
+});
+
+describe('GET /recipes/:id', () => {
+  describe('quando não encontrada', () => {
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      response = await chai.request(server).get(`/recipes/${ID_EXAMPLE}`);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 404', () => {
+      expect(response).to.have.status(HTTP_NOT_FOUND_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+      expect(response.body.message).to.be.equal(RECIPE_NOT_FOUND_ERROR);
+    });
+  });
+
+  describe('quando encontrada', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      const { insertedId } = await connectionMock.db(DB_NAME).collection(COLLECTION_RECIPE).insertOne(payload);
+
+      response = await chai.request(server).get(`/recipes/${insertedId}`);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 200', () => {
+      expect(response).to.have.status(HTTP_OK_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('que possui a propriedade "ingredients"', () => {
+      expect(response.body).to.have.property('ingredients');
     });
   });
 });
