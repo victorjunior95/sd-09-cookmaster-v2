@@ -44,7 +44,27 @@ const login = async (req, res, next) => {
   res.status(HTTP_OK_STATUS).json(token);
 };
 
+const addAdmin = async (req, res, next) => {
+  const { name, email, password } = req.body;
+  const { userId, role } = req.user;
+
+  if (!name || !email || !password) {
+    const err = new Error(ENTRIES_ERROR);
+
+    err.statusCode = HTTP_BAD_REQUEST_STATUS;
+
+    return next(err);
+  }
+
+  const newAdmin = await user.addAdmin({ name, email, password }, { userId, role });
+
+  if (newAdmin.statusCode) return next(newAdmin);
+  
+  res.status(HTTP_CREATED_STATUS).json(newAdmin);
+};
+
 module.exports = {
   addUser,
   login,
+  addAdmin,
 };

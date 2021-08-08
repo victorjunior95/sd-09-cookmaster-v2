@@ -24,8 +24,19 @@ const findUser = async (userData) => {
   return usersCollection.findOne({ ...userData });
 };
 
+const addAdmin = async (adminData) => {
+  const role = 'admin';
+
+  const usersCollection = await connection().then((db) => db.collection(COLLECTION));
+
+  const { insertedId: _id } = await usersCollection.insertOne({ ...adminData, role });
+
+  return { user: { _id, role, ...adminData } };
+};
+
 module.exports = {
   addUser,
   findByEmail,
   findUser,
+  addAdmin,
 };

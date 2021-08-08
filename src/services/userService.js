@@ -3,11 +3,13 @@ const { user } = require('../models');
 
 const HTTP_BAD_REQUEST_STATUS = 400;
 const HTTP_UNAUTHORIZED_STATUS = 401;
+const HTTP_FORBIDDEN_STATUS = 403;
 const HTTP_CONFLICT_STATUS = 409;
 
 const ENTRIES_ERROR = 'Invalid entries. Try again.';
 const EMAIL_CONFLICT_ERROR = 'Email already registered';
 const LOGIN_INCORRECT_ERROR = 'Incorrect username or password';
+const ADMIN_ERROR = 'Only admins can register new admins';
 
 const ID = '_id';
 
@@ -69,7 +71,20 @@ const login = async (userData) => {
   return { token };
 };
 
+const addAdmin = async (newAdminData, userData) => {
+  if (userData.role !== 'admin') {
+    const err = new Error(ADMIN_ERROR);
+
+    err.statusCode = HTTP_FORBIDDEN_STATUS;
+
+    return err;
+  }
+
+  return user.addAdmin(newAdminData);
+};
+
 module.exports = {
   addUser,
   login,
+  addAdmin,
 };
