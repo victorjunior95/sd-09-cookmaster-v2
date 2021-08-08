@@ -11,6 +11,9 @@ const addRecipe = (recipeData, userData) => {
   return recipe.addRecipe(newRecipe);
 };
 
+const getRecipes = () => recipe.getRecipes();
+
 module.exports = {
   addRecipe,
+  getRecipes,
 };

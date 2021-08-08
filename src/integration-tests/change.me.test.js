@@ -469,3 +469,25 @@ describe('POST /recipes', () => {
     });
   });
 });
+
+describe('GET /recipes', () => {
+  describe('em todos os casos', () => {
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      response = await chai.request(server).get('/recipes');
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna um array no body', () => {
+      expect(response.body).to.be.an('array');
+    });
+  });
+});

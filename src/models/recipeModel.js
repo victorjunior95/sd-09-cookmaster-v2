@@ -10,6 +10,13 @@ const addRecipe = async (recipeData) => {
   return { recipe: { _id, ...recipeData } };
 };
 
+const getRecipes = async () => {
+  const recipeCollection = await connection().then((db) => db.collection(COLLECTION));
+
+  return recipeCollection.find().toArray();
+};
+
 module.exports = {
   addRecipe,
+  getRecipes,
 };

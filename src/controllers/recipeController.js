@@ -1,12 +1,10 @@
 const { recipe } = require('../services');
 
-// const HTTP_OK_STATUS = 200;
+const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
 const HTTP_BAD_REQUEST_STATUS = 400;
-// const HTTP_UNAUTHORIZED_STATUS = 401;
 
 const ENTRIES_ERROR = 'Invalid entries. Try again.';
-// const LOGIN_FIELD_ERROR = 'All fields must be filled';
 
 const addRecipe = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
@@ -30,6 +28,13 @@ const addRecipe = async (req, res, next) => {
   res.status(HTTP_CREATED_STATUS).json(newRecipe);
 };
 
+const getRecipes = async (_req, res, _next) => {
+  const recipes = await recipe.getRecipes();
+
+  res.status(HTTP_OK_STATUS).send(recipes);
+};
+
 module.exports = {
   addRecipe,
+  getRecipes,
 };
