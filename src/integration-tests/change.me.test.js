@@ -337,3 +337,135 @@ describe('POST /login', () => {
     });
   });
 });
+
+describe('POST /recipes', () => {
+  const user = { name: 'Testy', password: 'tester123', email: 'testythetester@gmail.com', role: 'user' };
+
+  describe('quando não é passado um token jwt', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      response = await chai.request(server).post('/recipes').send(payload);
+    });
+
+    it('retorna status 401', () => {
+      expect(response).to.have.status(HTTP_UNAUTHORIZED_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+        expect(response.body).to.have.property('message');
+    });
+  });
+
+  describe('quando não é passado o campo "name"', () => {
+    const payload = { ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      const token = await chai.request(server).post('/login').send(user).then((res) => res.body.token);
+
+      response = await chai.request(server).post('/recipes').set('authorization', token).send(payload);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 400', () => {
+      expect(response).to.have.status(HTTP_BAD_REQUEST_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+        expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+    });
+  });
+
+  describe('quando não é passado o campo "ingredients"', () => {
+    const payload = { name: 'chocolate milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      const token = await chai.request(server).post('/login').send(user).then((res) => res.body.token);
+
+      response = await chai.request(server).post('/recipes').set('authorization', token).send(payload);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 400', () => {
+      expect(response).to.have.status(HTTP_BAD_REQUEST_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('objeto de resposta possui a propriedade "message"', () => {
+        expect(response.body).to.have.property('message');
+    });
+
+    it('com a mensagem correta', () => {
+        expect(response.body.message).to.be.equal(ENTRIES_ERROR);
+    });
+  });
+
+  describe('com dados válidos', () => {
+    const payload = { name: 'chocolate milk', ingredients: 'chocolate, milk', preparation: 'mix and drink' };
+    let response;
+
+    before(async () => {
+      const connectionMock = await getConnection();
+
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await connectionMock.db(DB_NAME).collection(COLLECTION_USER).insertOne(user);
+
+      const token = await chai.request(server).post('/login').send(user).then((res) => res.body.token);
+
+      response = await chai.request(server).post('/recipes').set('authorization', token).send(payload);
+    });
+
+    after(() => {
+      MongoClient.connect.restore();
+    });
+
+    it('retorna status 201', () => {
+      expect(response).to.have.status(HTTP_CREATED_STATUS);
+    });
+
+    it('retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('que possui a propriedade "recipe"', () => {
+        expect(response.body).to.have.property('recipe');
+    });
+  });
+});

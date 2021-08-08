@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 const jwt = require('jsonwebtoken');
 const { user } = require('../models');
 
@@ -9,6 +8,8 @@ const HTTP_CONFLICT_STATUS = 409;
 const ENTRIES_ERROR = 'Invalid entries. Try again.';
 const EMAIL_CONFLICT_ERROR = 'Email already registered';
 const LOGIN_INCORRECT_ERROR = 'Incorrect username or password';
+
+const ID = '_id';
 
 const emailValidator = (email) => {
   const emailRegex = /^[0-9a-zA-Z._-]+@[a-z]*mail\.com(\.[a-z]{2})?$/;
@@ -58,7 +59,7 @@ const login = async (userData) => {
   }
 
   const payload = {
-    id: loginSuccessful._id,
+    userId: loginSuccessful[ID],
     email: userData.email,
     role: loginSuccessful.role,
   };
