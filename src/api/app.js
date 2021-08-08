@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const multer = require('multer');
 const path = require('path');
+
 const router = require('../router');
 const middlewares = require('../middlewares');
 
@@ -13,16 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
 
 app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
-
-/*
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, 'uploads'),
-});
-
-const upload = multer({
-  storage,
-});
-*/
 
 app.use(middlewares.error);
 

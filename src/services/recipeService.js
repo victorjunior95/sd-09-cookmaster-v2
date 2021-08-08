@@ -51,10 +51,25 @@ const deleteRecipe = async (userData, id) => {
   return recipe.deleteRecipe(id);
 };
 
+const addImage = async (userData, id, image) => {
+  const foundRecipe = await getRecipeById(id);
+
+  if (foundRecipe.userId.toString() !== userData.userId && userData.role !== 'admin') {
+    const err = new Error(NOT_YOUR_RECIPE_ERROR);
+
+    err.statusCode = HTTP_UNAUTHORIZED_STATUS;
+
+    return err;
+  }
+
+  return recipe.addImage(id, image);
+};
+
 module.exports = {
   addRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  addImage,
 };

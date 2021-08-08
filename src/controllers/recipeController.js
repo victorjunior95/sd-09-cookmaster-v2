@@ -1,3 +1,5 @@
+const path = require('path');
+
 const { recipe } = require('../services');
 
 const HTTP_OK_STATUS = 200;
@@ -98,10 +100,28 @@ const deleteRecipe = async (req, res, next) => {
   res.status(HTTP_NO_CONTENT_STATUS).end();
 };
 
+const addImage = async (req, res, next) => {
+  const { id } = req.params;
+  const { userId, email, role } = req.user;
+
+  const foundRecipe = await findRecipe(id);
+
+  if (foundRecipe.statusCode) return next(foundRecipe);
+
+  const image = path.join(__dirname, '..', 'uploads', `${id}.jpeg`);
+
+  const recipeImage = await recipe.addImage({ userId, email, role }, id, image);
+
+  if (recipeImage.statusCode) return next(recipeImage);
+
+  res.status(HTTP_OK_STATUS).json({ ...foundRecipe, image });
+};
+
 module.exports = {
   addRecipe,
   getRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  addImage,
 };
