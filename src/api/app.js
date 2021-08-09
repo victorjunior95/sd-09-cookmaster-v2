@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const rescue = require('express-rescue');
 const bodyParser = require('body-parser').json();
@@ -26,6 +27,7 @@ app.put('/recipes/:id/image/', recipesController.tokenValidation, recipesControl
 app.delete('/recipes/:id',
   recipesController.tokenValidation,
   rescue(recipesController.deleteRecipe));
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 app.use(errors);
 
 module.exports = app;
