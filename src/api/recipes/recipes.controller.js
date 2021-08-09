@@ -10,4 +10,12 @@ const addRecipe = async (req, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
-module.exports = { addRecipe };
+const listRecipes = async (__, res) => {
+  try {
+    const { status, data } = await recipesService.listRecipes();
+
+    return res.status(status).json(data);
+  } catch (err) { return res.status(400).json(err); }
+};
+
+module.exports = { addRecipe, listRecipes };

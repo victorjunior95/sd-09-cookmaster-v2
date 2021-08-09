@@ -22,4 +22,10 @@ const createRecipe = async (newRecipe, token) => {
   return { status: 201, data: { recipe } };
 };
 
-module.exports = { createRecipe };
+const listRecipes = async () => {
+  const data = await recipesModel.listRecipes();
+
+  return { status: 200, data };
+};
+
+module.exports = { createRecipe, listRecipes };
