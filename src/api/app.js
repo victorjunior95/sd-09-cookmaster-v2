@@ -22,6 +22,7 @@ app.post('/users/admin', recipesController.tokenValidation, rescue(usersControll
 app.get('/recipes', recipesController.fetchRecipes);
 app.get('/recipes/:id', rescue(recipesController.getById));
 app.put('/recipes/:id', recipesController.tokenValidation, rescue(recipesController.editRecipe));
+app.put('/recipes/:id/image/', recipesController.tokenValidation, recipesController.addImg);
 app.delete('/recipes/:id',
   recipesController.tokenValidation,
   rescue(recipesController.deleteRecipe));

@@ -44,10 +44,16 @@ async function deleteRecipe(id) {
   return result;
 }
 
+async function addImg(id, image) {
+  const result = await model.addImg(id, image);
+  return result;
+}
+
 module.exports = {
   newRecipe,
   fetchRecipes,
   getById,
   editRecipe,
   deleteRecipe,
+  addImg,
 };

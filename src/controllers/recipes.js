@@ -1,5 +1,7 @@
 const JWT = require('jsonwebtoken');
+const path = require('path');
 const service = require('../services/recipes');
+const upload = require('../middlewares/multer');
 
 const secret = 'bomb';
 
@@ -49,6 +51,16 @@ async function deleteRecipe(req, res) {
   res.status(204).json(result);
 }
 
+const addImg = [
+  upload.single('image'),
+  async (req, res) => {
+    const { id } = req.params;
+    const result = await service
+      .addImg(id, path.join('localhost:3000', 'src', 'uploads', `${id}.jpeg`));
+    res.status(200).json(result);
+  },
+];
+
 module.exports = {
   newRecipe,
   tokenValidation,
@@ -56,4 +68,5 @@ module.exports = {
   getById,
   editRecipe,
   deleteRecipe,
+  addImg,
 };
