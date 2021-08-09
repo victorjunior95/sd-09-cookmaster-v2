@@ -1,8 +1,9 @@
 const Joi = require('joi');
 const recipesModel = require('../models/recipesModel');
 
-const BAD_REQUEST_STATUS = 400;
+const OK_STATUS = 200;
 const CREATED_STATUS = 201;
+const BAD_REQUEST_STATUS = 400;
 
 const msg400 = 'Invalid entries. Try again.';
 
@@ -27,6 +28,14 @@ const register = async (recipe, userId) => {
   };
 };
 
+const getRecipesServices = async () => {
+  const result = await recipesModel.getRecipesModels();
+  return {
+    status: OK_STATUS, result,
+  };
+};
+
 module.exports = {
   register,
+  getRecipesServices,
 };
