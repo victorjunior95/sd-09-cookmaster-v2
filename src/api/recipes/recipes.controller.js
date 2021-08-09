@@ -18,4 +18,17 @@ const listRecipes = async (__, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
-module.exports = { addRecipe, listRecipes };
+const getRecipeById = async (req, res) => {
+  try {
+    const { params: { id } } = req;
+    const { status, data } = await recipesService.getRecipeById(id);
+
+    return res.status(status).json(data);
+  } catch (err) { return res.status(400).json(err); }
+};
+
+module.exports = {
+  addRecipe,
+  listRecipes,
+  getRecipeById,
+};

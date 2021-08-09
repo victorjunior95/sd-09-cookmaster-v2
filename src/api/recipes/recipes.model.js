@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connection = require('../connection');
 
 const addRecipe = async (newRecipe) => {
@@ -16,7 +17,17 @@ const listRecipes = async () => {
   return recipesList;
 };
 
+const getRecipeById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const db = await connection();
+  const recipes = await db.collection('recipes').findOne(ObjectId(id));
+
+  return recipes;
+};
+
 module.exports = {
   addRecipe,
   listRecipes,
+  getRecipeById,
 };
