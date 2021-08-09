@@ -1,0 +1,25 @@
+const recipesModel = require('./recipes.model');
+const loginService = require('../login/login.service');
+
+const recipeValidation = ({ name, ingredients, preparation }) => {
+  if (!name || !ingredients || !preparation) {
+    return { status: 400, data: { message: 'Invalid entries. Try again.' } };
+  }
+};
+
+const createRecipe = async (newRecipe, token) => {
+  const recipeError = recipeValidation(newRecipe);
+  
+  if (recipeError) return recipeError;
+
+  const tokenData = await loginService.tokenValidator(token);
+
+  if (!tokenData) return { status: 401, data: { message: 'jwt malformed' } };
+
+  const { _id } = tokenData;
+  const recipe = await recipesModel.addRecipe({ ...newRecipe, userId: _id });
+
+  return { status: 201, data: { recipe } };
+};
+
+module.exports = { createRecipe };

@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken');
 const usersModel = require('../users/users.model');
 
-const tokenGenerator = (user) => {
-  const secret = '2021cookmasterv2';
-  const config = { expiresIn: '15m', algorithm: 'HS256' };
+const secret = '2021cookmasterv2';
+const config = { expiresIn: '15m', algorithm: 'HS256' };
+const tokenGenerator = (user) => jwt.sign(user, secret, config);
 
-  return jwt.sign(user, secret, config);
+const tokenValidator = async (token) => {
+  const tokenData = token && jwt.decode(token, secret);
+  const user = tokenData && await usersModel.getUserByEmail(tokenData.email);
+  return user && tokenData;
 };
 
 const login = async ({ email, password }) => {
@@ -26,4 +29,4 @@ const login = async ({ email, password }) => {
   return { status: 200, data: { token } };
 };
 
-module.exports = { login };
+module.exports = { login, tokenValidator, tokenGenerator };
