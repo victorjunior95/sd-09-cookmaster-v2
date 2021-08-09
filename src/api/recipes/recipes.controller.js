@@ -7,9 +7,7 @@ const addRecipe = async (req, res) => {
     const { status, data } = await recipesService.createRecipe(body, authorization);
 
     return res.status(status).json(data);
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json(err); }
+  } catch (err) { return res.status(400).json(err); }
 };
 
 module.exports = { addRecipe };
