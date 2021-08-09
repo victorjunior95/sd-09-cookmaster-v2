@@ -12,5 +12,6 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 app.use('/users', require('./users/users.routes'));
+app.use('/login', require('./login/login.routes'));
 
 module.exports = app;
