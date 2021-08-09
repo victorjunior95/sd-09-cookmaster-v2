@@ -21,13 +21,26 @@ const getRecipeById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
 
   const db = await connection();
-  const recipes = await db.collection('recipes').findOne(ObjectId(id));
+  const recipe = await db.collection('recipes').findOne(ObjectId(id));
 
-  return recipes;
+  return recipe;
+};
+
+const updateRecipeById = async (id, { name, ingredients, preparation }) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const db = await connection();
+  await db.collection('recipes')
+    .updateOne({ _id: ObjectId(id) }, { $set: { name, ingredients, preparation } });
+
+  const recipe = await db.collection('recipes').findOne(ObjectId(id));
+
+  return recipe;
 };
 
 module.exports = {
   addRecipe,
   listRecipes,
   getRecipeById,
+  updateRecipeById,
 };
