@@ -30,7 +30,7 @@ const loginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-const register = async (user) => {
+const registerUserServices = async (user) => {
   const validateEmail = await usersModel.findByEmail(user);
   const validateUser = userSchema.validate(user);
   
@@ -42,12 +42,12 @@ const register = async (user) => {
     return { status: CONFLICT_STATUS, result: { message: msg409 } };
   }
 
-  const result = await usersModel.userRegistration(user);
+  const result = await usersModel.registerUserModels(user);
 
   return { status: CREATED_STATUS, result };
 };
 
-const loginUser = async (login) => {
+const userLoginServices = async (login) => {
   const validateLogin = loginSchema.validate(login);
   if (validateLogin.error) {
     return { status: UNAUTHORIZED_STATUS, result: { message: msg401notFilled } };
@@ -64,6 +64,6 @@ const loginUser = async (login) => {
 };
 
 module.exports = {
-  register,
-  loginUser,
+  registerUserServices,
+  userLoginServices,
 };

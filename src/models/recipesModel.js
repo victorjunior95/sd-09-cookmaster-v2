@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connections');
 
-const recipesRegistration = async ({ name, ingredients, preparation }, userId) => {
+const registerRecipeModels = async ({ name, ingredients, preparation }, userId) => {
   const newRecipe = await connection().then((db) =>
     db.collection('recipes').insertOne({ name, ingredients, preparation, userId }));
   const { insertedId: _id } = newRecipe;
@@ -30,9 +30,17 @@ const editRecipeModels = async (id, { name, ingredients, preparation }) => {
   return result;
 };
 
+const delRecipeModels = async (id) => {
+  const recipeId = new ObjectId(id);
+  const result = await connection().then((db) => db
+    .collection('recipes').findOneAndDelete({ _id: recipeId }));
+  return result;
+};
+
 module.exports = {
-  recipesRegistration,
+  registerRecipeModels,
   getRecipesModels,
   getByIdRecipeModels,
   editRecipeModels,
+  delRecipeModels,
 };

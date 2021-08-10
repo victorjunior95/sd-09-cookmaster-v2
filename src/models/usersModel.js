@@ -6,7 +6,7 @@ const findByEmail = async ({ email }) => {
   return result;
 };
 
-const userRegistration = async ({ name, email, password }) => {
+const registerUserModels = async ({ name, email, password }) => {
   const newRegister = await connection().then((db) => db
     .collection('users').insertOne({ name, email, password }));
 
@@ -15,5 +15,5 @@ const userRegistration = async ({ name, email, password }) => {
 
 module.exports = {
   findByEmail,
-  userRegistration,
+  registerUserModels,
 };

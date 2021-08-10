@@ -3,6 +3,7 @@ const recipesModel = require('../models/recipesModel');
 
 const OK_STATUS = 200;
 const CREATED_STATUS = 201;
+const NO_CONTENT_STATUS = 204;
 const BAD_REQUEST_STATUS = 400;
 const NOT_FOUND_STATUS = 404;
 
@@ -15,7 +16,7 @@ const schemaRecipes = Joi.object({
   preparation: Joi.string().required(),
 });
 
-const register = async (recipe, userId) => {
+const registerRecipeServices = async (recipe, userId) => {
   const validateRecipe = schemaRecipes.validate(recipe);
 
   if (validateRecipe.error) {
@@ -23,7 +24,7 @@ const register = async (recipe, userId) => {
   }
 
   const resultRecipe = await recipesModel
-    .recipesRegistration(recipe, userId);
+    .registerRecipeModels(recipe, userId);
 
   return {
     status: CREATED_STATUS, result: resultRecipe,
@@ -50,9 +51,15 @@ const editRecipeServices = async (id, newRecipe) => {
   return { status: OK_STATUS, result };
 };
 
+const delRecipeServices = async (id) => {
+  const result = await recipesModel.delRecipeModels(id);
+  return { status: NO_CONTENT_STATUS, result };
+};
+
 module.exports = {
-  register,
+  registerRecipeServices,
   getRecipesServices,
   getByIdRecipeServices,
   editRecipeServices,
+  delRecipeServices,
 };
