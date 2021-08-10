@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/usersModel');
+const recipesServices = require('../services/recipesService');
 
 const SECRET = 'cookmastersecret';
+
 const UNAUTHORIZED_STATUS = 401;
+const NOTFOUND_STATUS = 404;
+
+const msg404 = 'User without permission to change';
 
 const validateToken = async (req, res, next) => {
   const token = req.headers.authorization;
@@ -24,6 +29,24 @@ const validateToken = async (req, res, next) => {
   }
 };
 
+const validateUser = async (req, _res, next) => {
+  const { _id, role } = req.user;
+  const { id } = req.params;
+  try {
+    const recipe = await recipesServices.getByIdRecipeServices(id);
+    const { status, result } = recipe;
+    if (status === 404) return next(recipe);
+    if (role !== 'admin' && result.userId.toString() !== _id.toString()) {
+      return next({ status: NOTFOUND_STATUS, err: msg404 });
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   validateToken,
+  validateUser,
 };

@@ -18,8 +18,17 @@ const getByIdRecipeControllers = async (req, res, _next) => {
   return res.status(status).json(result);
 };
 
+const editRecipeControllers = async (req, res, _next) => {
+  const { id } = req.params;
+  const newRecipe = req.body;
+  const { status, result } = await recipesServices
+    .editRecipeServices(id, newRecipe);
+  return res.status(status).json(result);
+};
+
 module.exports = {
   recipesRegistration,
   getRecipesControllers,
   getByIdRecipeControllers,
+  editRecipeControllers,
 };
