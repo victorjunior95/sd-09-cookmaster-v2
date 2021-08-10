@@ -36,9 +36,19 @@ const updateRecipeById = async (req, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
+const deleteRecipeById = async (req, res) => {
+  try {
+    const { params: { id }, headers: { authorization } } = req;
+    const { status, data } = await recipesService.deleteRecipeById(id, authorization);
+
+    return res.status(status).json(data);
+  } catch (err) { return res.status(400).json(err); }
+};
+
 module.exports = {
   addRecipe,
   listRecipes,
   getRecipeById,
   updateRecipeById,
+  deleteRecipeById,
 };

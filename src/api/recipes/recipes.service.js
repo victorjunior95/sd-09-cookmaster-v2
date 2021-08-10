@@ -64,9 +64,23 @@ const updateRecipeById = async (id, data, token) => {
   }
 };
 
+const deleteRecipeById = async (id, token) => {
+  const tokenError = await tokenVerifications(token);
+  if (tokenError) return tokenError;
+
+  const { role, _id } = await loginService.tokenValidator(token);
+
+  if (await canEdit(role, _id, id)) {
+    await recipesModel.deleteRecipeById(id);
+
+    return { status: 204, data: null };
+  }
+};
+
 module.exports = {
   createRecipe,
   listRecipes,
   getRecipeById,
   updateRecipeById,
+  deleteRecipeById,
 };
