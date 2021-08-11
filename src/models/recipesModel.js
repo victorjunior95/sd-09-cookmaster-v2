@@ -47,10 +47,10 @@ const addImageModels = async (id, image) => {
 };
   
 module.exports = {
-  registerRecipeModels,
-  getRecipesModels,
-  getByIdRecipeModels,
-  editRecipeModels,
-  delRecipeModels,
   addImageModels,
+  delRecipeModels,
+  editRecipeModels,
+  getByIdRecipeModels,
+  getRecipesModels,
+  registerRecipeModels,
 };

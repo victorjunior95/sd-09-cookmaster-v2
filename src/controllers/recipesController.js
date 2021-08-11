@@ -42,10 +42,10 @@ const addImageControllers = async (req, res, _next) => {
 };
 
 module.exports = {
-  registerRecipeControllers,
-  getRecipesControllers,
-  getByIdRecipeControllers,
-  editRecipeControllers,
-  delRecipeControllers,
   addImageControllers,
+  delRecipeControllers,
+  editRecipeControllers,
+  getByIdRecipeControllers,
+  getRecipesControllers,
+  registerRecipeControllers,
 };

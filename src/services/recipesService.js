@@ -58,10 +58,10 @@ const addImageServices = async (id, image) => {
 };
 
 module.exports = {
-  registerRecipeServices,
-  getRecipesServices,
-  getByIdRecipeServices,
-  editRecipeServices,
-  delRecipeServices,
   addImageServices,
+  delRecipeServices,
+  editRecipeServices,
+  getByIdRecipeServices,
+  getRecipesServices,
+  registerRecipeServices,
 };

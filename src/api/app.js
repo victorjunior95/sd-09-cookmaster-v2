@@ -30,6 +30,8 @@ app.get('/', (request, response) => {
 
 app.post('/users', usersController.registerUserControllers);
 
+app.post('/users/admin', validateToken, usersController.registerAdminControllers);
+
 app.post('/login', usersController.userLoginControllers);
 
 app.post('/recipes', validateToken, recipesController.registerRecipeControllers);

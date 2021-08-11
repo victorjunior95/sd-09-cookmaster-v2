@@ -13,10 +13,12 @@ const OK_STATUS = 200;
 const CREATED_STATUS = 201;
 const BAD_REQUEST_STATUS = 400;
 const UNAUTHORIZED_STATUS = 401;
+const FORBIDDEN_STATUS = 403;
 const CONFLICT_STATUS = 409;
 const msg400 = 'Invalid entries. Try again.';
 const msg401notFilled = 'All fields must be filled';
 const msg401noPassword = 'Incorrect username or password';
+const msg403 = 'Only admins can register new admins';
 const msg409 = 'Email already registered';
 
 const userSchema = Joi.object({
@@ -47,6 +49,22 @@ const registerUserServices = async (user) => {
   return { status: CREATED_STATUS, result };
 };
 
+const registerAdminServices = async (admin, role) => {
+  const validateAdmin = userSchema.validate(admin);
+
+  if (validateAdmin.error) {
+    return { status: FORBIDDEN_STATUS, result: { message: msg403 } };
+  }
+
+  if (role !== 'admin') {
+    return { status: FORBIDDEN_STATUS, result: { message: msg403 } };
+  }
+
+  const result = await usersModel.registerAdminModels(admin);
+
+  return { status: CREATED_STATUS, result };
+};
+
 const userLoginServices = async (login) => {
   const validateLogin = loginSchema.validate(login);
   if (validateLogin.error) {
@@ -64,6 +82,7 @@ const userLoginServices = async (login) => {
 };
 
 module.exports = {
+  registerAdminServices,
   registerUserServices,
   userLoginServices,
 };
