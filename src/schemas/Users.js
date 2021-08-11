@@ -16,4 +16,9 @@ const emailAlreadyExists = async (exists) => {
   return {};
 };
 
-module.exports = { ValidateUser, emailAlreadyExists };
+const validateAdmin = (role) => {
+  if (role === 'admin') return objectError(messages.NOT_ADMIN, codes.CODE_403);
+  return {};
+};
+
+module.exports = { ValidateUser, emailAlreadyExists, validateAdmin };

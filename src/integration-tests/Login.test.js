@@ -8,8 +8,6 @@ const sinon = require('sinon');
 const app = require('../api/app');
 const { MongoClient } = require('mongodb');
 const connection = require('./connection');
-const { response } = require('express');
-
 
 describe('Requesting login', () => {
   describe('when successfully logged in', () => {

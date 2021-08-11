@@ -6,6 +6,7 @@ const messages = {
   INVALID_TOKEN: 'jwt malformed',
   MISSING_TOKEN: 'missing auth token',
   INVALID_RECIPE: 'recipe not found',
+  NOT_ADMIN: 'Only admins can register new admins',
 };
 
 const codes = {
@@ -13,6 +14,7 @@ const codes = {
   CODE_409: 409,
   CODE_401: 401,
   CODE_404: 404,
+  CODE_403: 403,
 };
 
 const objectError = (message, code) => ({ result: { message }, code });
