@@ -17,7 +17,7 @@ const emailAlreadyExists = async (exists) => {
 };
 
 const validateAdmin = (role) => {
-  if (role === 'admin') return objectError(messages.NOT_ADMIN, codes.CODE_403);
+  if (role !== 'admin') return objectError(messages.NOT_ADMIN, codes.CODE_403);
   return {};
 };
 

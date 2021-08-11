@@ -21,4 +21,16 @@ const getUserByEmail = async (email) => {
   return result;
 };
 
-module.exports = { createUser, getUserByEmail };
+const createAdmin = async (name, email, password) => {
+  const result = await connection()
+    .then((db) => db.collection('users').insertOne(
+      { email, password, name, role: 'admin' },
+    ))
+    .then((data) => {
+      const user = { name, email, role: 'admin', _id: data.insertedId };
+      return response(user, 201);
+    });
+  return result;
+};
+
+module.exports = { createUser, getUserByEmail, createAdmin };
