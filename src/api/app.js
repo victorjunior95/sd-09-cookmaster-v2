@@ -44,6 +44,8 @@ app.put('/recipes/:id', validateToken, validateUser,
 app.put('/recipes/:id/image', upload.single('image'), validateToken,
   recipesController.addImageControllers);
 
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+
 app.delete('/recipes/:id', validateToken, validateUser,
   recipesController.delRecipeControllers);
 
