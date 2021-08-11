@@ -1,4 +1,5 @@
 const recipesServices = require('../services/recipes');
+const uploadImage = require('../middleware/uploadImage');
 
 const registerRecipe = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
@@ -33,9 +34,19 @@ const deleteRecipeById = async (req, res) => {
   return res.status(response.status).json(response.payload);
 };
 
+const addPictureOnRecipe = [
+  uploadImage.single('image'),
+  async (req, res) => {
+    const { id } = req.params;
+    const response = await recipesServices.addPictureOnRecipe(id);
+    return res.status(response.status).json(response.payload);
+},
+];
+
 module.exports = {
   registerRecipe,
   getRecipes,
   getRecipeById,
   editRecipeById,
-  deleteRecipeById };
+  deleteRecipeById,
+  addPictureOnRecipe };

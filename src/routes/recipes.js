@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const fieldsValidation = require('../middleware/fieldsValidation');
 const validateToken = require('../middleware/validateToken');
+const fieldsValidation = require('../middleware/fieldsValidation');
 const recipesController = require('../controller/recipesController');
 
 router.post('/',
@@ -24,5 +24,9 @@ recipesController.editRecipeById);
 router.delete('/:id',
 validateToken,
 recipesController.deleteRecipeById);
+
+router.put('/:id/image',
+  validateToken,
+  recipesController.addPictureOnRecipe);
 
 module.exports = router;

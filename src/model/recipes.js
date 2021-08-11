@@ -60,4 +60,22 @@ const deleteRecipeById = async (id) => {
   }
 };
 
-module.exports = { registerRecipe, getRecipes, getRecipeById, editRecipeById, deleteRecipeById };
+const addPictureOnRecipe = async (id, image) => {
+  console.log(image);
+  const recipeId = new ObjectID(id);
+  const recipesData = await cookmasterDb().then((db) => db.collection('recipes'));
+  const response = await recipesData.findOneAndUpdate(
+    { _id: recipeId },
+    { $set: { image } },
+  );
+  console.log(response);
+  return response;
+};
+
+module.exports = {
+  registerRecipe,
+  getRecipes,
+  getRecipeById,
+  editRecipeById,
+  deleteRecipeById,
+  addPictureOnRecipe };

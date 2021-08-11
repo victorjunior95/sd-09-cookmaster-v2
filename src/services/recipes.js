@@ -28,9 +28,16 @@ const deleteRecipeById = async (id) => {
   if (!response) return { status: 404, payload: { message: 'recipe not found' } };
   return { status: 204, payload: response };
 };
+
+const addPictureOnRecipe = async (id) => {
+  await recipesModel.addPictureOnRecipe(id, `localhost:3000/src/uploads/${id}.jpeg`);
+  const response = await recipesModel.getRecipeById(id);
+  return { status: 200, payload: response };
+};
 module.exports = {
   registerRecipe,
   getRecipes,
   getRecipeById,
   editRecipeById,
-  deleteRecipeById };
+  deleteRecipeById,
+  addPictureOnRecipe };
