@@ -27,6 +27,7 @@ const editRecipeModels = async (id, { name, ingredients, preparation }) => {
     .collection('recipes').findOneAndUpdate({ _id: recipeId },
       { $set: { name, ingredients, preparation } },
       { returnOriginal: false })).then((res) => res.value);
+  
   return result;
 };
 
@@ -37,10 +38,19 @@ const delRecipeModels = async (id) => {
   return result;
 };
 
+const addImageModels = async (id, image) => {
+  const recipeId = new ObjectId(id);
+  const result = await connection().then((db) => db
+    .collection('recipes').findOneAndUpdate({ _id: recipeId }, { $set: { image } },
+      { returnOriginal: false })).then((res) => res.value);
+  return result;
+};
+  
 module.exports = {
   registerRecipeModels,
   getRecipesModels,
   getByIdRecipeModels,
   editRecipeModels,
   delRecipeModels,
+  addImageModels,
 };

@@ -23,19 +23,15 @@ const registerRecipeServices = async (recipe, userId) => {
     return { status: BAD_REQUEST_STATUS, result: { message: msg400 } };
   }
 
-  const resultRecipe = await recipesModel
+  const result = await recipesModel
     .registerRecipeModels(recipe, userId);
 
-  return {
-    status: CREATED_STATUS, result: resultRecipe,
-  };
+  return { status: CREATED_STATUS, result };
 };
 
 const getRecipesServices = async () => {
   const result = await recipesModel.getRecipesModels();
-  return {
-    status: OK_STATUS, result,
-  };
+  return { status: OK_STATUS, result };
 };
 
 const getByIdRecipeServices = async (id) => {
@@ -56,10 +52,16 @@ const delRecipeServices = async (id) => {
   return { status: NO_CONTENT_STATUS, result };
 };
 
+const addImageServices = async (id, image) => {
+  const result = await recipesModel.addImageModels(id, image);
+  return { status: OK_STATUS, result };
+};
+
 module.exports = {
   registerRecipeServices,
   getRecipesServices,
   getByIdRecipeServices,
   editRecipeServices,
   delRecipeServices,
+  addImageServices,
 };

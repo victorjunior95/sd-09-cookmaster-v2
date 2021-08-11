@@ -33,10 +33,19 @@ const delRecipeControllers = async (req, res, _next) => {
   return res.status(status).json(result);
 };
 
+const addImageControllers = async (req, res, _next) => {
+  const { id } = req.params;
+  const { filename } = req.file;
+  const image = `localhost:3000/src/uploads/${filename}`;
+  const { status, result } = await recipesServices.addImageServices(id, image);
+  return res.status(status).json(result);
+};
+
 module.exports = {
   registerRecipeControllers,
   getRecipesControllers,
   getByIdRecipeControllers,
   editRecipeControllers,
   delRecipeControllers,
+  addImageControllers,
 };

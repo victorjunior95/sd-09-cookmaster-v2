@@ -5,7 +5,7 @@ const recipesServices = require('../services/recipesService');
 const SECRET = 'cookmastersecret';
 
 const UNAUTHORIZED_STATUS = 401;
-const NOTFOUND_STATUS = 404;
+const NOT_FOUND_STATUS = 404;
 
 const msg404 = 'User without permission to change';
 
@@ -35,9 +35,9 @@ const validateUser = async (req, _res, next) => {
   try {
     const recipe = await recipesServices.getByIdRecipeServices(id);
     const { status, result } = recipe;
-    if (status === 404) return next(recipe);
+    if (status === NOT_FOUND_STATUS) return next(recipe);
     if (role !== 'admin' && result.userId.toString() !== _id.toString()) {
-      return next({ status: NOTFOUND_STATUS, err: msg404 });
+      return next({ status: NOT_FOUND_STATUS, err: msg404 });
     }
 
     next();
