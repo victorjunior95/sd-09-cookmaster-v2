@@ -10,4 +10,14 @@ const login = async (req, res) => {
   } catch (err) { return res.status(400).json(err); }
 };
 
-module.exports = { login };
+const jwtVerifications = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+
+    const tokenError = await loginService.tokenVerifications(authorization);
+
+    return tokenError ? res.status(tokenError.status).json(tokenError.data) : next();
+  } catch (err) { return res.status(400).json(err); }
+};
+
+module.exports = { login, jwtVerifications };

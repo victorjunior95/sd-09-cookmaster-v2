@@ -77,10 +77,21 @@ const deleteRecipeById = async (id, token) => {
   }
 };
 
+const addImageToRecipe = async (id) => {
+  const imageName = `${id}.jpeg`;
+
+  const data = await recipesModel.addImageToRecipe(id, imageName);
+
+  return { status: 200, data };
+};
+
 module.exports = {
   createRecipe,
   listRecipes,
   getRecipeById,
   updateRecipeById,
   deleteRecipeById,
+  addImageToRecipe,
+  canEdit,
+  tokenVerifications,
 };

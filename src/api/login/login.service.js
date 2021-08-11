@@ -29,4 +29,10 @@ const login = async ({ email, password }) => {
   return { status: 200, data: { token } };
 };
 
-module.exports = { login, tokenValidator, tokenGenerator };
+const tokenVerifications = async (token) => {
+  if (!token) return { status: 401, data: { message: 'missing auth token' } };
+  const tokenData = await tokenValidator(token);
+  if (!tokenData) return { status: 401, data: { message: 'jwt malformed' } };
+};
+
+module.exports = { login, tokenValidator, tokenGenerator, tokenVerifications };
