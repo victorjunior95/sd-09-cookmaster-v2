@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const path = require('path');
 const login = require('../routes/login');
 const users = require('../routes/users');
 const recipes = require('../routes/recipes');
@@ -21,5 +22,6 @@ app.get('/', (request, response) => {
 app.use('/users', users);
 app.use('/login', login);
 app.use('/recipes', recipes);
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 module.exports = app;
