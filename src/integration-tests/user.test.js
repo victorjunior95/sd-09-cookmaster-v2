@@ -1,5 +1,4 @@
 const chai = require('chai');
-const sinon = require('sinon');
 const chaiHttp = require('chai-http');
 
 const { expect, request } = require("chai");
@@ -10,25 +9,86 @@ const getConnection = require('./mongoMock');
 
 chai.use(chaiHttp);
 
-const { MongoClient } = require('mongodb');
 const app = require('../api/app');
 
-describe('Criação de usuario', async () => {
-  describe('Nome invalido', async () => {
-    let fakeDB;
-    let response;
 
-    before(async (done) => {
-      const user = {name: 'oi', email: 'root@email.com', password: 'admin'}
-      response = await chai.request(server).post('/users').send(user).end(() => done())
+describe('Cadastro de usuario', () => {
+  it('Nome não preenchido', (done) => {
+    const newUser = { email: 'erickjaquin@gmail.com',password: '12345678' };
+    chai.request(app).post('/users').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(400);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
+      done();
     });
+  });
 
-    it('Retorna status 400', async () => {
-      expect(response.statusCode).to.be.equal(400)
+  it('Email não preenchido', (done) => {
+    const newUser = { name: 'Erick Jaquin',password: '12345678' };
+    chai.request(app).post('/users').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(400);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
+      done();
     });
+  });
 
-    it('Retorna mensagem especifica', async function(){
-      expect(response.body.message).to.be.equal('All fields must be filled')
+  it('Email invalido', (done) => {
+    const newUser = { name: 'Erick Jaquin',password: '12345678', email: 'erickjaquin@' };
+    chai.request(app).post('/users').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(400);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
+      done();
     });
-  })
+  });
+
+  it('Senha não preenchida', (done) => {
+    const newUser = { name: 'Erick Jaquin', email: 'erickjaquin@' };
+    chai.request(app).post('/users').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(400);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
+      done();
+    });
+  });
+});
+
+describe('Login', () => {
+  it('Será validado que o campo "email" é obrigatório', (done) => {
+    const newUser = { password: '12345678' };
+    chai.request(app).post('/login').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(401);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('All fields must be filled');
+      done();
+    });
+  });
+
+  it('Será validado que o campo "password" é obrigatório', (done) => {
+    const newUser = { email: 'erickjaquin@teste.com' };
+    chai.request(app).post('/login').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(401);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('All fields must be filled');
+      done();
+    });
+  });
+
+  it('Será validado que não é possível fazer login com um email inválido', (done) => {
+    const newUser = { email: 'erickjaquin@', password: '12345678' };
+    chai.request(app).post('/login').send(newUser).end((err, res) => {
+      expect(err).to.be.null;
+      expect(res).to.have.status(401);
+      console.log(res.body.message);
+      expect(res.body.message).to.be.equal('All fields must be filled');
+      done();
+    });
+  });
 });
