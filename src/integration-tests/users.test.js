@@ -1,8 +1,8 @@
 const chai = require('chai');
 const sinon = require('sinon');
+const app = require('../api/app');
 const { response } = require('express');
 const { MongoClient } = require('mongodb');
-const app = require('../api/app');
 const { getConnection } = require('./connectionMock');
 const { expect } = chai;
 describe('Cadastro de usuarios, POST /users', () => {
