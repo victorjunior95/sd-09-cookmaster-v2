@@ -22,4 +22,22 @@ const postUser = async (name, password, email) => {
   return userDefault(data);
 };
 
-module.exports = { postUser, getByEmail };
+const postLogin = async (email, password) => {
+  const user = await getByEmail(email);
+
+  if (!user || password !== user.password) {
+    return { message: 'Incorrect username or password' };
+  }
+
+  const {
+    role,
+    _id,
+  } = user;
+
+  return {
+    role,
+    _id,
+  };
+};
+
+module.exports = { postUser, getByEmail, postLogin };

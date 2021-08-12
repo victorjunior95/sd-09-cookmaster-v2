@@ -15,7 +15,7 @@ const OPTIONS = {
 
 let db = null;
 
-// Rafael Java me ajudou a fazer a conexão de dessa forma.
+// Rafael Java me ajudou a fazer a conexão dessa forma.
 const connection = () => (db
   ? Promise.resolve(db)
   : MongoClient.connect(URL, OPTIONS)

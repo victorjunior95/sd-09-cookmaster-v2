@@ -14,4 +14,6 @@ const postUser = async (name, password, email) => {
   };
 };
 
-module.exports = { postUser };
+const postLogin = async (email, password) => userModels.postLogin(email, password);
+
+module.exports = { postUser, postLogin };
