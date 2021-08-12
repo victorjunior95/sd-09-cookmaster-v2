@@ -4,7 +4,7 @@ const userModels = require('../../models/userModels');
 const secret = 'seusecretdetoken';
 
 module.exports = async (req, res, next) => {
-  const token = req.headers['authorization'];
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).json({ message: 'missing auth token' });
