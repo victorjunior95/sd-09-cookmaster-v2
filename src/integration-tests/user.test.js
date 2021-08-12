@@ -58,7 +58,7 @@ describe('Cadastro de usuario', () => {
   });
 });
 
-describe('Login', () => {
+describe('Login', async () => {
   it('Será validado que o campo "email" é obrigatório', (done) => {
     const newUser = { password: '12345678' };
     chai.request(app).post('/login').send(newUser).end((err, res) => {
@@ -81,13 +81,26 @@ describe('Login', () => {
     });
   });
 
-  it('Será validado que não é possível fazer login com um email inválido', (done) => {
-    const newUser = { email: 'erickjaquin@', password: '12345678' };
-    chai.request(app).post('/login').send(newUser).end((err, res) => {
+  // it('Será validado que não é possível fazer login com um email inválido', (done) => {
+  //   const newUser = { email: 'erickjaquin@', password: '12345678' };
+  //   chai.request(app).post('/login').send(newUser).end((err, res) => {
+  //     expect(err).to.be.null;
+  //     expect(res).to.have.status(401);
+  //     console.log(res.body.message);
+  //     expect(res.body.message).to.be.equal('All fields must be filled');
+  //     done();
+  //   });
+  // });
+});
+
+describe('Cadastro de receitas', () => {
+  it('Será validado que não é possível cadastrar uma receita com token invalido', (done) => {
+    const newRecipe = { ingredients: 'Frango',preparation: '10 min no forno' };
+    chai.request(app).post('/recipes').set('Authorization', '123').send(newRecipe).end((err, res) => {
       expect(err).to.be.null;
       expect(res).to.have.status(401);
       console.log(res.body.message);
-      expect(res.body.message).to.be.equal('All fields must be filled');
+      expect(res.body.message).to.be.equal('jwt malformed');
       done();
     });
   });
