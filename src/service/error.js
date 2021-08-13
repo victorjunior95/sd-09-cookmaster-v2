@@ -6,13 +6,17 @@
  * For exemple: 
  * 
  * const function = (data) => {
-   const { error } = JoiSchema.validate(data);
-   if (error) throw validateError(400, 'hello world');
+   const { error } = **JoiSchema**.validate(data);
+   if (error) **throw** validateError(400, 'hello world');
 }
  */
-module.exports = {
+const validateError = {
     validateError: (status, message) => ({
       status,
       message,
     }),
+  };
+
+  module.exports = {
+    validateError,
   };
