@@ -41,4 +41,31 @@ const getRecipesById = async (req, res) => {
   return res.status(200).json(recipe);
 };
 
-module.exports = { postRecipes, getRecipes, getRecipesById };
+const putRecipesById = async (req, res) => {
+  const { user } = req;
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const params = { name, ingredients, preparation };
+
+  const recipeEdit = await recipesService.putRecipesById(id, params, user);
+
+  if (recipeEdit.error) {
+    return res.status(recipeEdit.error.status).json(recipeEdit.error.message);
+  }
+
+  return res.status(200).json(recipeEdit);
+};
+
+const deleteRecipesbyId = async (req, res) => {
+  const { user } = req;
+  const { id } = req.params;
+  const del = await recipesService.deleteRecipesbyId(user, id);
+
+  if (!del) {
+    return res.status(204).end();
+  }
+
+  return del;
+};
+
+module.exports = { postRecipes, getRecipes, getRecipesById, putRecipesById, deleteRecipesbyId };
