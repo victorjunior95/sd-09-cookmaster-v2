@@ -171,7 +171,8 @@ describe('POST /users', () => {
     })
 
     after(async () => {
-      MongoClient.connect.restore();
+      await fakeDB.db('Cookmaster').collection('users').deleteMany({})
+      await MongoClient.connect.restore();
     });
 
     it('Retorna status 409', () => {
@@ -188,6 +189,111 @@ describe('POST /users', () => {
 
     it('Objeto de resposta tem uma mensagem especifica', () => {
       expect(response.body.message).to.be.equal('Email already registered')
+    });
+  })
+})
+
+describe('endpoint para o login de usuários', () => {
+  describe('Será validado que não é possível fazer login com um email inválido', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+      response = await chai.request(app).post('/login').send(user).then((res) => res);
+    })
+
+    after(async () => {
+      await fakeDB.db('Cookmaster').collection('users').deleteMany({})
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(401)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "user"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.be.equal('Incorrect username or password')
+    });
+  })
+
+  describe('Será validado que não é possível fazer login com uma senha inválida', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const newUser = {name: 'nome', email: 'teste@teste.com', password: '123456'}
+      const user = {email: 'teste@teste.com', password: '987654321'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+      await chai.request(app).post('/users').send(newUser)
+
+      response = await chai.request(app).post('/login').send(user).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(401)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "user"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.be.equal('Incorrect username or password')
+    });
+  })
+
+  describe('Será validado que é possível fazer login com sucesso', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const newUser = {name: 'nome', email: 'teste@teste.com', password: '123456'}
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+      await chai.request(app).post('/users').send(newUser)
+
+      response = await chai.request(app).post('/login').send(user).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(200)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "user"', () => {
+      expect(response.body).to.have.property('token')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.not.be.equal('')
     });
   })
 })
