@@ -1,107 +1,116 @@
 const chai = require('chai');
+const sinon = require('sinon');
+
 const chaiHttp = require('chai-http');
-
-const { expect, request } = require("chai");
-
-const server = require('../api/app');
-
-const getConnection = require('./mongoMock');
-
 chai.use(chaiHttp);
 
-const app = require('../api/app');
+const app = require('../api/app')
 
+const { expect } = chai;
 
-describe('Cadastro de usuario', () => {
-  it('Nome não preenchido', (done) => {
-    const newUser = { email: 'erickjaquin@gmail.com',password: '12345678' };
-    chai.request(app).post('/users').send(newUser).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(400);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
-      done();
+describe('POST /users', () => {
+  describe('Será validado que o campo "name" é obrigatório', () => {
+    let response;
+
+    before(async () => {
+      const user = {email: 'erickjaquin@gmail.com',password: '12345678'}
+      response = await chai.request(app)
+        .post('/users')
+        .send(user)
+    })
+    it('Retorna status 400', () => {
+      expect(response).to.have.status(400)
     });
-  });
 
-  it('Email não preenchido', (done) => {
-    const newUser = { name: 'Erick Jaquin',password: '12345678' };
-    chai.request(app).post('/users').send(newUser).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(400);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
-      done();
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
     });
-  });
 
-  it('Email invalido', (done) => {
-    const newUser = { name: 'Erick Jaquin',password: '12345678', email: 'erickjaquin@' };
-    chai.request(app).post('/users').send(newUser).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(400);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
-      done();
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
     });
-  });
 
-  it('Senha não preenchida', (done) => {
-    const newUser = { name: 'Erick Jaquin', email: 'erickjaquin@' };
-    chai.request(app).post('/users').send(newUser).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(400);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('Invalid entries. Try again.');
-      done();
+    it('A propriedade "message" possui uma mensagem de erro adequada', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
     });
-  });
-});
+  })
 
-describe('Login', async () => {
-  it('Será validado que o campo "email" é obrigatório', (done) => {
-    const newUser = { password: '12345678' };
-    chai.request(app).post('/login').send(newUser).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(401);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('All fields must be filled');
-      done();
+  describe('Será validado que o campo "email" é obrigatório', () => {
+    let response;
+
+    before(async () => {
+      const user = {name: 'nome',password: '12345678'}
+      response = await chai.request(app)
+        .post('/users')
+        .send(user)
+    })
+    it('Retorna status 400', () => {
+      expect(response).to.have.status(400)
     });
-  });
 
-  it('Será validado que o campo "password" é obrigatório', (done) => {
-    const newUser = { email: 'erickjaquin@teste.com' };
-    chai.request(app).post('/login').send(newUser).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(401);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('All fields must be filled');
-      done();
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
     });
-  });
 
-  // it('Será validado que não é possível fazer login com um email inválido', (done) => {
-  //   const newUser = { email: 'erickjaquin@', password: '12345678' };
-  //   chai.request(app).post('/login').send(newUser).end((err, res) => {
-  //     expect(err).to.be.null;
-  //     expect(res).to.have.status(401);
-  //     console.log(res.body.message);
-  //     expect(res.body.message).to.be.equal('All fields must be filled');
-  //     done();
-  //   });
-  // });
-});
-
-describe('Cadastro de receitas', () => {
-  it('Será validado que não é possível cadastrar uma receita com token invalido', (done) => {
-    const newRecipe = { ingredients: 'Frango',preparation: '10 min no forno' };
-    chai.request(app).post('/recipes').set('Authorization', '123').send(newRecipe).end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(401);
-      console.log(res.body.message);
-      expect(res.body.message).to.be.equal('jwt malformed');
-      done();
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
     });
-  });
-});
+
+    it('A propriedade "message" possui uma mensagem de erro adequada', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
+    });
+  })
+
+  describe('Será validado que não é possível cadastrar usuário com o campo email inválido', () => {
+    let response;
+
+    before(async () => {
+      const user = {name: 'nome',password: '12345678', email: 'teste@'}
+      response = await chai.request(app)
+        .post('/users')
+        .send(user)
+    })
+    it('Retorna status 400', () => {
+      expect(response).to.have.status(400)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('A propriedade "message" possui uma mensagem de erro adequada', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
+    });
+  })
+
+  describe('Será validado que o campo "senha" é obrigatório', () => {
+    let response;
+
+    before((done) => {
+      const user = {name: 'nome', email: 'teste@gmail.com'}
+      response = chai.request(app).post('/users').send(user).then((res) => res)
+      done();
+    })
+
+    it('Retorna status 400', () => {
+      console.log(response)
+      expect(response).to.have.status(400)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('A propriedade "message" possui uma mensagem de erro adequada', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
+    });
+  })
+})
