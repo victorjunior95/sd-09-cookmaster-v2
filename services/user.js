@@ -1,4 +1,4 @@
-const Utils = require('../utils');
+const Utils = require('../src/utils');
 const Model = require('../models');
 
 const invalidEntries = 'Invalid entries. Try again.';
