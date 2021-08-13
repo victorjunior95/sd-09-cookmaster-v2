@@ -11,4 +11,8 @@ const postRecipes = async (name, ingredients, preparation, user) => {
   };
 };
 
-module.exports = { postRecipes };
+const getRecipes = async () => recipesModels.getRecipes();
+
+const getRecipesById = async (id) => recipesModels.getRecipesById(id);
+
+module.exports = { postRecipes, getRecipes, getRecipesById };

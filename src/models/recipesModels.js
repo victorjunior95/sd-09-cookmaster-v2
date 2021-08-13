@@ -1,6 +1,7 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const defaulRecipe = ({ name, ingredients, preparation, userId, image, _id }) => {
+const defaultRecipe = ({ name, ingredients, preparation, userId, image, _id }) => {
   if (!image) {
     return { name, ingredients, preparation, userId, _id };
   }
@@ -15,7 +16,26 @@ const postRecipes = async (name, ingredients, preparation, userId) => {
 
   const data = newRecipe.ops[0];
 
-  return defaulRecipe(data);
+  return defaultRecipe(data);
 };
 
-module.exports = { postRecipes };
+const getRecipes = async () => {
+  const db = await connection();
+  const recipes = await db.collection('recipes').find().toArray();
+
+  return recipes.map(defaultRecipe); 
+};
+
+const getRecipesById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const recipeId = ObjectId(id);
+  const db = await connection();
+  const recipe = await db.collection('recipes').findOne({ _id: recipeId });
+
+  return defaultRecipe(recipe);
+};
+
+module.exports = { postRecipes, getRecipes, getRecipesById };
