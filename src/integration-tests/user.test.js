@@ -84,6 +84,10 @@ describe('POST /login', () => {
       response = await chai.request(server).post('/login').send({});
     })
 
+    it('retorna body', () => {
+      expect(response.body).to.be.an('object');
+    });
+  
     it('HTTP 401 é corretamente retornado', () => {
       expect(response).to.have.status(401);
     });
@@ -117,6 +121,10 @@ describe('POST /login', () => {
 
     it('http 401 é retornado', () => {
       expect(response).to.have.status(401);
+    });
+
+    it('retorna body', () => {
+      expect(response.body).to.be.an('object');
     });
 
     it('o objeto possui a propriedade MESSAGE', () => {
