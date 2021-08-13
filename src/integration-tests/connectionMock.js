@@ -13,4 +13,4 @@ const getConnection = async () => {
     .connect(URL_MOCK, OPTIONS);
 };
 
-module.exports = { getConnection, MongoClient, DBServer };
+module.exports = { getConnection, DBServer };
