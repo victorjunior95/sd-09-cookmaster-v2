@@ -3,8 +3,6 @@ const sinon = require('sinon');
 const chaiHttp = require('chai-http');
 const { MongoClient } = require('mongodb');
 
-const app = require('../api/app');
-
 chai.use(chaiHttp);
 
 const server = require('../api/app');
@@ -83,7 +81,7 @@ describe('POST /login', () => {
     let response;
 
     before (async () => {
-      response = await chai.request(app).post('/login').send({});
+      response = await chai.request(server).post('/login').send({});
     })
 
     it('HTTP 401 é corretamente retornado', () => {
@@ -107,7 +105,7 @@ describe('POST /login', () => {
       connectionMock = await getConnection();
       sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
-      response = await chai.request(app).post('/login').send({
+      response = await chai.request(server).post('/login').send({
         email: 'test@test.com',
         password: '12345678',
       });
@@ -144,7 +142,7 @@ describe('POST /login', () => {
         password: 'goat'
       });
 
-      response = await chai.request(app).post('/login').send({
+      response = await chai.request(server).post('/login').send({
         email: 'portiere@parma.com',
         password: 'goat'
       });
@@ -175,7 +173,7 @@ describe('POST /users', () => {
         connectionMock = await getConnection();
         sinon.stub(MongoClient, 'connect').resolves(connectionMock);
   
-        response = await chai.request(app).post('/users').send({
+        response = await chai.request(server).post('/users').send({
           name: 'XABLAAAAAU',
           email: 'andiamoca@misonoresoconto.com',
           password: '09123908',
