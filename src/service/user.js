@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const { validateError } = require('./error');
 
@@ -6,7 +6,7 @@ const model = require('../model/user');
 
 const signUpValidationSchema = Joi.object({
     name: Joi.string().required(),
-    email: Joi.email().required(),
+    email: Joi.string().email().required(),
     passoword: Joi.string().required(),
 });
 
