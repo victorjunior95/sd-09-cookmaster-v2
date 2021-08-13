@@ -18,7 +18,7 @@ describe('POST /login', () => {
       response = await chai.request(app).post('/login').send({});
     })
 
-    it('return HTPP 401', () => {
+    it('return HTTP 401', () => {
       expect(response).to.have.status(401);
     });
 
@@ -91,13 +91,11 @@ describe('POST /login', () => {
     });
 
     after(async () => {
+      await connectionMock.db('Cookmaster').collection('users').deleteMany({});
       MongoClient.connect.restore();
-      await connectionMock.db('Cookmaster').collection('users').deleteOne({
-        email: 'test_foi@test.com',
-      })
     });
 
-    it('return HTPP 200', () => {
+    it('return HTTP 200', () => {
       expect(response).to.have.status(200);
     });
 

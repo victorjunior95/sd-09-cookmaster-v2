@@ -1,5 +1,8 @@
 const chai = require('chai');
+const sinon = require('sinon');
 const chaiHttp = require('chai-http');
+const { getConnection } = require('./connectionMock');
+const { MongoClient } = require('mongodb');
 
 const app = require('../api/app');
 
@@ -9,17 +12,26 @@ const { expect } = chai;
 
 describe('POST /users', () => {
   describe('When user is registered', () => {
+    let connectionMock;
     let response;
 
     before (async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
       response = await chai.request(app).post('/users').send({
-        name: 'Teste Foi',
-        email: 'test_foi@test.com',
-        password: '12345678',
+        name: 'Testado',
+        email: 'testado@test.com',
+        password: '123456',
       });
     })
 
-    it('return HTPP 201', () => {
+    after(async () => {
+      await connectionMock.db('Cookmaster').collection('users').deleteMany({});
+      MongoClient.connect.restore();
+    });
+
+    it('return HTTP 201', () => {
       expect(response).to.have.status(201);
     });
 
