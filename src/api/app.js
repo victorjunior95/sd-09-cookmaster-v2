@@ -15,6 +15,7 @@ app.get('/', (request, response) => {
 app.use('/users', require('./users/users.routes'));
 app.use('/login', require('./login/login.routes'));
 app.use('/recipes', require('./recipes/recipes.routes'));
+
 app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 module.exports = app;
