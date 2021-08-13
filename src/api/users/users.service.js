@@ -1,3 +1,4 @@
+const { tokenValidator } = require('../login/login.service');
 const usersModel = require('./users.model');
 
 const newUserValidation = (name, password, email) => {
@@ -38,7 +39,27 @@ const createUser = async ({ name, email, password }) => {
   };
 };
 
+const createAdmin = async ({ name, email, password }, token) => {
+  const { role } = await tokenValidator(token);
+
+  if (role !== 'admin') {
+    return { status: 403, data: { message: 'Only admins can register new admins' } };
+  }
+
+  const userValidationError = newUserValidation(name, password, email);
+
+  if (userValidationError) return userValidationError;
+
+  const uniqueEmailError = await uniqueEmailVerication(email);
+
+  if (uniqueEmailError) return uniqueEmailError;
+
+  const user = await usersModel.addUser({ name, email, password, role });
+  return { status: 201, data: { user } };
+};
+
 module.exports = {
   createUser,
   newUserValidation,
+  createAdmin,
 };
