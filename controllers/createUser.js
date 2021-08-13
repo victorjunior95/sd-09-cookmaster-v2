@@ -4,7 +4,7 @@ const Services = require('../services/user');
 
 const CREATED = 201;
 
-module.exports = rescue(async (req, res) => {
+const createUser = rescue(async (req, res) => {
   // console.log('CONTROLLER req.body', req.body);
   const { name, email, password } = req.body;
   const user = await Services.createUser(name, email, password);
@@ -12,3 +12,5 @@ module.exports = rescue(async (req, res) => {
   delete user.password;
   res.status(CREATED).json({ user });
 });
+
+module.exports = createUser;
