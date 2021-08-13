@@ -1,5 +1,4 @@
 const { MongoClient } = require('mongodb');
-
 // /**
 //  * **URL** correta para o funcionamento dos testes
 //  */
@@ -10,26 +9,21 @@ const { MongoClient } = require('mongodb');
  * **URL** correta para que o avaliador funcione.
  */
 const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
-const DB_NAME = 'Cookmaster'; 
-
-let db = null;
+const DB_NAME = 'Cookmaster';
 
 /**
  * Código base Retirado do último projeto **store-manager-sd-09** e do bloco 27.1
  */
-const connection = () => {
-  const OPTIONS = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
-
-  return db
-    ? Promise.resolve(db)
-    : MongoClient.connect(MONGO_DB_URL, OPTIONS)
-      .then((conn) => {
-        db = conn.db(DB_NAME);
-        return db;
-      });
-};
+const connection = () =>
+  MongoClient
+    .connect(MONGO_DB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then((conn) => conn.db(DB_NAME))
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
 
 module.exports = connection;
