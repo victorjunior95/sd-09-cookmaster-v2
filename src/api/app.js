@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const rescue = require('express-rescue');
 const bodyParser = require('body-parser').json();
-const path = require('path');
+const PATH = require('path');
 const userRoute = require('../routes/user');
 const loginRoute = require('../routes/login');
 const recipesRoute = require('../routes/recipes');
@@ -17,7 +17,7 @@ app.use(rescue(router));
 router.use('/users', userRoute);
 router.use('/login', loginRoute);
 router.use('/recipes', recipesRoute);
-router.use('/images', express.static(path.join('src/uploads')));
+router.use('/images', express.static(PATH.join('src/uploads')));
 
 app.use(errorMiddleware);
 

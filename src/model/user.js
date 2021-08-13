@@ -1,8 +1,8 @@
 const connection = require('../connections/connection');
 
-const addUserRegistration = async (user, role) => {
+const addUserRegistration = async (userInfo, role) => {
   const addUser = await connection()
-  .then((db) => db.collection('users').insertOne(user));
+  .then((db) => db.collection('users').insertOne(userInfo));
   return {
     name: addUser.ops[0].name,
     email: addUser.ops[0].email,

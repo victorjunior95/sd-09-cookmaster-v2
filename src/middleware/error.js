@@ -1,4 +1,5 @@
 const SERVER_ERROR_MESSAGE = 'Internal server error';
+const STATUS = 500;
 
 /**
  * Module that exports the correct message according the given status
@@ -8,8 +9,7 @@ const SERVER_ERROR_MESSAGE = 'Internal server error';
     return res.status(err.status).json({ message: err.message });
   }
 
-  console.log(err.message);
-  return res.status(500).json({
+  return res.status(STATUS).json({
     error: {
       message: SERVER_ERROR_MESSAGE,
     },
