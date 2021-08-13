@@ -1,13 +1,13 @@
 const connection = require('../connections/connection');
 
 const addUserRegistration = async (user, role) => {
-  const newUser = await connection()
+  const addUser = await connection()
   .then((db) => db.collection('users').insertOne(user));
   return {
-    name: newUser.ops[0].name,
-    email: newUser.ops[0].email,
+    name: addUser.ops[0].name,
+    email: addUser.ops[0].email,
     role,
-    _id: newUser.insertedId,
+    _id: addUser.insertedId,
   };
 };
 const searchEmail = async (email) => connection()

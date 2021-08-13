@@ -18,7 +18,7 @@ const postAdmin = [
       if (role !== 'admin') {
         return res.status(403).json({ message: 'Only admins can register new admins' });
       }
-      const newUser = await service.newUser(req.body, 'admin');
+      const newUser = await service.addUser(req.body, 'admin');
       return res.status(201).json({ user: newUser });
     } catch (err) {
       next(err);
