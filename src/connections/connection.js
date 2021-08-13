@@ -1,4 +1,10 @@
 const { MongoClient } = require('mongodb');
+
+const OPTIONS = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
 // /**
 //  * **URL** correta para o funcionamento dos testes
 //  */
@@ -16,10 +22,7 @@ const DB_NAME = 'Cookmaster';
  */
 const connection = () =>
   MongoClient
-    .connect(MONGO_DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+    .connect(MONGO_DB_URL, OPTIONS)
     .then((conn) => conn.db(DB_NAME))
     .catch((err) => {
       console.error(err);

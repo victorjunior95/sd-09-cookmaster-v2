@@ -1,9 +1,9 @@
-const service = require('../service/login');
+const serviceLogin = require('../service/login');
 
 const userLogin = async (req, res, next) => {
   try {
     const user = req.body;
-    const token = await service.validateLogin(user);
+    const token = await serviceLogin.validateLogin(user);
     return res.status(200).json({ token });
   } catch (err) {
     return next(err);
