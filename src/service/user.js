@@ -7,7 +7,7 @@ const model = require('../model/user');
 const signUpValidationSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
-    passoword: Joi.string().required(),
+    password: Joi.string().required(),
 });
 
 const addUser = async (userInfo, role) => {

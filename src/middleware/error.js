@@ -3,16 +3,17 @@ const SERVER_ERROR_MESSAGE = 'Internal server error';
 /**
  * Module that exports the correct message according the given status
  */
-const errorMiddleware = (err, _req, res, _next) => {
-  const { status, message } = err;
+ const errorMiddleware = (err, _req, res, _next) => {
+  if (err.status) {
+    return res.status(err.status).json({ message: err.message });
+  }
 
-  return status
-    ? res.status(status).json({ message })
-    : res.status(500).json({
-      error: {
-        message: SERVER_ERROR_MESSAGE,
-      },
-    });
+  console.log(err.message);
+  return res.status(500).json({
+    error: {
+      message: SERVER_ERROR_MESSAGE,
+    },
+  });
 };
 
 module.exports = errorMiddleware;
