@@ -1,0 +1,26 @@
+const Joi = require('joi');
+
+const { validateError } = require('./error');
+
+const model = require('../model/user');
+
+const signUpValidationSchema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.email().required(),
+    passoword: Joi.string().required(),
+});
+
+const addUser = async (userInfo, role) => {
+   const { error } = signUpValidationSchema.validate(userInfo);
+   if (error) throw validateError(400, 'Invalid entries. Try again.');
+
+   const foundEmail = await model.searchEmail(userInfo.email);
+  if (foundEmail) throw validateError(409, 'Email already registered');
+
+  const registeredUser = await model.addUserRegistration(userInfo, role);
+  return registeredUser;
+};
+
+module.exports = {
+  addUser,
+};
