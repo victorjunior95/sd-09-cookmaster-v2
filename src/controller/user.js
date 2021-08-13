@@ -1,5 +1,5 @@
 const usersService = require('../service/user');
-const validateJWT = require('./jwtValidation');
+// const validateJWT = require('./jwtValidation');
 
 const addUserPost = async (req, res, next) => {
   try {
