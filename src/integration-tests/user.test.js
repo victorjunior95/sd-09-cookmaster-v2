@@ -297,3 +297,211 @@ describe('endpoint para o login de usuários', () => {
     });
   })
 })
+
+describe('cadastro de receitas', () => {
+  describe('Será validado que não é possível cadastrar uma receita com token invalido', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+
+      const newUser = {name: 'nome', email: 'teste@teste.com', password: '123456'}
+      await chai.request(app).post('/users').send(newUser)
+
+      const recipe = {name: 'Frango do jacquin',ingredients: 'Frango',preparation: '10 min no forno'}
+
+
+      response = await chai.request(app).post('/recipes').set({Authorization:'6437658488'}).send(recipe).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(401)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "user"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.be.equal('jwt malformed')
+    });
+  })
+
+  describe('Será validado que não é possível cadastrar receita sem o campo "name"', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+
+      const login = await chai.request(app).post('/login').send(user).then((res) => res)
+      const { token } = login.body;
+
+      const recipe = {ingredients: 'Frango',preparation: '10 min no forno'}
+
+
+      response = await chai.request(app).post('/recipes').set({Authorization:token}).send(recipe).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(400)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
+    });
+  })
+
+  describe('Será validado que não é possível cadastrar receita sem o campo "ingredients"', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+
+      const login = await chai.request(app).post('/login').send(user).then((res) => res)
+      const { token } = login.body;
+
+      const recipe = {name: 'Frango do jacquin',preparation: '10 min no forno'}
+
+
+      response = await chai.request(app).post('/recipes').set({Authorization:token}).send(recipe).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(400)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
+    });
+  })
+
+  describe('Será validado que não é possível cadastrar receita sem o campo "preparation"', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+
+      const login = await chai.request(app).post('/login').send(user).then((res) => res)
+      const { token } = login.body;
+
+      const recipe = {name: 'Frango do jacquin',ingredients: 'Frango'}
+
+
+      response = await chai.request(app).post('/recipes').set({Authorization:token}).send(recipe).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 401', () => {
+      expect(response).to.have.status(400)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "message"', () => {
+      expect(response.body).to.have.property('message')
+    });
+
+    it('Objeto de resposta tem uma mensagem especifica', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.')
+    });
+  })
+
+
+  describe('Será validado que é possível cadastrar uma receita com sucesso', () => {
+    let response;
+    let fakeDB;
+
+    before(async () => {
+      const user = {email: 'teste@teste.com', password: '123456'}
+      fakeDB = await createDB()
+      sinon.stub(MongoClient, 'connect').resolves(fakeDB);
+
+      const login = await chai.request(app).post('/login').send(user).then((res) => res)
+      const { token } = login.body;
+
+      const recipe = {name: 'Frango do jacquin',ingredients: 'Frango',preparation: '10 min no forno'}
+
+
+      response = await chai.request(app).post('/recipes').set({Authorization:token}).send(recipe).then((res) => res);
+    })
+
+    after(async () => {
+      await MongoClient.connect.restore();
+    });
+
+    it('Retorna status 201', () => {
+      expect(response).to.have.status(201)
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(response.body).to.be.a('object')
+    });
+
+    it('Objeto de resposta tem uma propriedade chamada "recipe"', () => {
+      expect(response.body).to.have.property('recipe')
+    });
+
+    it('propriedade chamada "recipe" tem propriedades especificas', () => {
+      expect(response.body.recipe).to.have.property('name')
+      expect(response.body.recipe).to.have.property('ingredients')
+      expect(response.body.recipe).to.have.property('preparation')
+      expect(response.body.recipe).to.have.property('userId')
+      expect(response.body.recipe).to.have.property('_id')
+    });
+
+    it('Objeto de resposta tem valores corretos', () => {
+      expect(response.body.recipe.name).to.be.equal('Frango do jacquin')
+      expect(response.body.recipe.ingredients).to.be.equal('Frango')
+      expect(response.body.recipe.preparation).to.be.equal('10 min no forno')
+    });
+  })
+})
