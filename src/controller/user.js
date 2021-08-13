@@ -9,6 +9,7 @@ const addUserPost = async (req, res, next) => {
     next(err);
   }
 };
+
 const postAdmin = [
   validateJWT,
   async (req, res, next) => {

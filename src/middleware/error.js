@@ -8,7 +8,11 @@ const errorMiddleware = (err, _req, res, _next) => {
 
   return status
     ? res.status(status).json({ message })
-    : res.status(500).json({ message: SERVER_ERROR_MESSAGE });
+    : res.status(500).json({
+      error: {
+        message: SERVER_ERROR_MESSAGE,
+      },
+    });
 };
 
 module.exports = errorMiddleware;
