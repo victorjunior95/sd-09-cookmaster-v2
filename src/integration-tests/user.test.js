@@ -3,6 +3,8 @@ const sinon = require('sinon');
 const chaiHttp = require('chai-http');
 const { MongoClient } = require('mongodb');
 
+const app = require('../api/app');
+
 chai.use(chaiHttp);
 
 const server = require('../api/app');
@@ -75,6 +77,91 @@ describe('POST /login', () => {
       expect(response).to.have.status(200);
       expect(response.body).to.have.have.a.property('token');
     });
+  });
+
+  describe('email e passoword não preenchidos', () => {
+    let response;
+
+    before (async () => {
+      response = await chai.request(app).post('/login').send({});
+    })
+
+    it('HTTP 401 é corretamente retornado', () => {
+      expect(response).to.have.status(401);
+    });
+
+    it('response object has `message` property', () => {
+      expect(response.body).to.have.a.property('message');
+    });
+
+    it('possui correta mensagem', () => {
+      expect(response.body.message).to.be.equal('All fields must be filled')
+    });
+  });
+
+  describe('email não existente.', () => {
+    let connectionMock;
+    let response;
+
+    before(async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      response = await chai.request(app).post('/login').send({
+        email: 'test@test.com',
+        password: '12345678',
+      });
+    });
+
+    after(async () => {
+      MongoClient.connect.restore();
+    });
+
+    it('http 401 é retornado', () => {
+      expect(response).to.have.status(401);
+    });
+
+    it('o objeto possui a propriedade MESSAGE', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('mensagem tem seu corpo correto', () => {
+      expect(response.body.message).to.be.equal('Incorrect username or password')
+    });
+  });
+
+  describe('login realizado com suceso', () => {
+    let connectionMock;
+    let response;
+
+    before(async () => {
+      connectionMock = await getConnection();
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+
+      await connectionMock.db('Cookmaster').collection('users').insertOne({
+        name: 'Gianluigi Buffon',
+        email: 'portiere@parma.com',
+        password: 'goat'
+      });
+
+      response = await chai.request(app).post('/login').send({
+        email: 'portiere@parma.com',
+        password: 'goat'
+      });
+    });
+
+    after(async () => {
+      await connectionMock.db('Cookmaster').collection('users').deleteMany({});
+      MongoClient.connect.restore();
+    });
+
+    it('Possui a propriedade TOKEN', () => {
+      expect(response.body).to.have.property('token')
+    });
+
+    it('RETORNA O HTTP 200', () => {
+      expect(response).to.have.status(200);
+    });   
   });
 });
 
