@@ -56,4 +56,24 @@ const deleteRecipesbyId = async (user, id) => {
   return recipesModels.deleteRecipesbyId(id);
 };
 
-module.exports = { postRecipes, getRecipes, getRecipesById, putRecipesById, deleteRecipesbyId };
+const putImage = async (id, user) => {
+  const invalidUser = await verifyPermission(user, id);
+
+  if (invalidUser) {
+    return invalidUser;
+  }
+
+  const { _id: recipeId } = await getRecipesById(id);
+  const imageName = `${recipeId}.jpeg`;
+
+  return recipesModels.putImage(id, imageName);
+};
+
+module.exports = {
+  postRecipes,
+  getRecipes,
+  getRecipesById,
+  putRecipesById,
+  deleteRecipesbyId,
+  putImage,
+};

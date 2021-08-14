@@ -7,10 +7,6 @@ const getByEmail = async (email) => {
     .then((db) => db.collection('users')
     .findOne({ email }));
 
-  if (!user) {
-    return null;
-  }
-
   return user;
 };
 

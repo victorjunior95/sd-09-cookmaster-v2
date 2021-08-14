@@ -1,10 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const validateJWT = require('./auth/validateJWT');
 
 const userControllers = require('../controllers/userControllers');
 const recipesControllers = require('../controllers/recipesControllers');
+const storage = require('../middlewares/uploadFIle');
 
+const upload = multer({ storage });
 const app = express();
 app.use(bodyParser.json());
 
@@ -17,9 +20,14 @@ app.get('/', (request, response) => {
 app.post('/users', userControllers.postUser);
 app.post('/login', userControllers.postLogin);
 app.post('/recipes', validateJWT, recipesControllers.postRecipes);
+
 app.get('/recipes', recipesControllers.getRecipes);
 app.get('/recipes/:id', recipesControllers.getRecipesById);
+app.get('/images/:imageId', recipesControllers.getImageById);
+
 app.put('/recipes/:id', validateJWT, recipesControllers.putRecipesById);
+app.put('/recipes/:id/image', validateJWT, upload.single('image'), recipesControllers.putImage);
+
 app.delete('/recipes/:id', validateJWT, recipesControllers.deleteRecipesbyId);
 
 module.exports = app;

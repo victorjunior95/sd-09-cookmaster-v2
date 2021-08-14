@@ -1,3 +1,4 @@
+const path = require('path');
 const recipesService = require('../service/recipesService');
 
 const verifyReq = (name, ingredients, preparation) => {
@@ -68,4 +69,31 @@ const deleteRecipesbyId = async (req, res) => {
   return del;
 };
 
-module.exports = { postRecipes, getRecipes, getRecipesById, putRecipesById, deleteRecipesbyId };
+const putImage = async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  const putImg = await recipesService.putImage(id, user);
+
+  if (putImg.error) {
+    return res.status(putImg.error.status).json(putImg.error.message);
+  }
+
+  return res.status(200).json(putImg);
+};
+
+const getImageById = async (req, res) => {
+  const { imageId } = req.params;
+  const image = path.join(__dirname, '..', 'uploads', imageId);
+
+  return res.status(200).sendFile(image);
+};
+
+module.exports = {
+  postRecipes,
+  getRecipes,
+  getRecipesById,
+  putRecipesById,
+  deleteRecipesbyId,
+  putImage,
+  getImageById,
+};
