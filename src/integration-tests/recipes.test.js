@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
 
-const server = require('../api/');
+const server = require('../api/app');
 const connection = require('./connectionMock');
 
 const { expect } = chai;
