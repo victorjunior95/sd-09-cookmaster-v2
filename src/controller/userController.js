@@ -1,4 +1,4 @@
-const service = require('../service/user');
+const service = require('../service/userService');
 const validateJWT = require('./jwtValidation');
 
 const addUserPost = async (req, res, next) => {

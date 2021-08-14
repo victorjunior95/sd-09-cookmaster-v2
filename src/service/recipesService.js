@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const { ObjectId } = require('mongodb');
-const recipesModel = require('../model/recipes');
-const { validateError } = require('./error');
+const recipesModel = require('../model/recipesModel');
+const { validateError } = require('./errorValidate');
 
 const validationSchema = Joi.object({
   name: Joi.string().required(),

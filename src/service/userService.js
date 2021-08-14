@@ -1,8 +1,8 @@
 const Joi = require('@hapi/joi');
 
-const { validateError } = require('./error');
+const { validateError } = require('./errorValidate');
 
-const model = require('../model/user');
+const model = require('../model/userModel');
 
 const signUpValidationSchema = Joi.object({
     name: Joi.string().required(),

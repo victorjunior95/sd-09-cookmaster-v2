@@ -1,4 +1,4 @@
-const recipesService = require('../service/recipes');
+const recipesService = require('../service/recipesService');
 const validateJWT = require('./jwtValidation');
 const uploadImage = require('./multer');
 

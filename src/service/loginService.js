@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
-const usersModel = require('../model/user');
-const { validateError } = require('./error');
+const usersModel = require('../model/userModel');
+const { validateError } = require('./errorValidate');
 
 const secret = 'secretToken';
 
