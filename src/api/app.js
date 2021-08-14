@@ -5,6 +5,7 @@ const validateJWT = require('./auth/validateJWT');
 
 const userControllers = require('../controllers/userControllers');
 const recipesControllers = require('../controllers/recipesControllers');
+const adminControllers = require('../controllers/adminControllers');
 const storage = require('../middlewares/uploadFIle');
 
 const upload = multer({ storage });
@@ -20,6 +21,7 @@ app.get('/', (request, response) => {
 app.post('/users', userControllers.postUser);
 app.post('/login', userControllers.postLogin);
 app.post('/recipes', validateJWT, recipesControllers.postRecipes);
+app.post('/users/admin', validateJWT, adminControllers.postAdmin);
 
 app.get('/recipes', recipesControllers.getRecipes);
 app.get('/recipes/:id', recipesControllers.getRecipesById);
