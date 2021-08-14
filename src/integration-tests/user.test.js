@@ -11,6 +11,34 @@ const { expect } = require('chai');
 
 let connectionMock;
 
+const MOCK_USER = {
+  name: 'xablau',
+  email: 'xaxa@blaublau.com',
+  password: '03902'
+}
+
+  const MOCK_USER_1 = {
+    name: 'xablau',
+    email: 'xaxa@blaublau.com',
+    password: '450'
+  }
+
+  const RESPONSE_MOCK_USER_1 = {
+    email: 'xaxa@blaublau.com',
+    password: '450'
+  }
+
+  const MOCK_USER_GK = {
+    name: 'Gianluigi Buffon',
+    email: 'portiere@parma.com',
+    password: 'goat'
+  }
+
+  const RESPONSE_MOCK_USER_GK = {
+    email: 'portiere@parma.com',
+    password: 'goat'
+  }
+
 describe('POST /users', () => {
   before(async () => {
     connectionMock = await getConnection();
@@ -27,11 +55,7 @@ describe('POST /users', () => {
     before(async () => {
       response = await chai.request(server)
         .post('/users')
-        .send({
-          name: 'xablau',
-          email: 'xaxa@blaublau.com',
-          password: '03902'
-        });
+        .send(MOCK_USER);
     });
 
     it('retorna o status 201 e um objeto com a propriedade "user"', () => {
@@ -57,18 +81,11 @@ describe('POST /login', () => {
     before(async () => {
       const DB_NAME = 'Cookmaster';
       const usersCollection = connectionMock.db(DB_NAME).collection('users');
-      await usersCollection.insertOne({
-        name: 'xablau',
-        email: 'xaxa@blaublau.com',
-        password: '450'
-      });
+      await usersCollection.insertOne(MOCK_USER_1);
 
       response = await chai.request(server)
         .post('/login')
-        .send({
-            email: 'xaxa@blaublau.com',
-            password: '450'
-        });
+        .send(RESPONSE_MOCK_USER_1);
     });
 
     it('retornar status 200 e um objeto /token/', () => {
@@ -110,7 +127,7 @@ describe('POST /login', () => {
       sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
       response = await chai.request(server).post('/login').send({
-        email: 'test@test.com',
+        email: 'teste@testeee.com',
         password: '12345678',
       });
     });
@@ -144,16 +161,9 @@ describe('POST /login', () => {
       connectionMock = await getConnection();
       sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
-      await connectionMock.db('Cookmaster').collection('users').insertOne({
-        name: 'Gianluigi Buffon',
-        email: 'portiere@parma.com',
-        password: 'goat'
-      });
+      await connectionMock.db('Cookmaster').collection('users').insertOne(MOCK_USER_GK);
 
-      response = await chai.request(server).post('/login').send({
-        email: 'portiere@parma.com',
-        password: 'goat'
-      });
+      response = await chai.request(server).post('/login').send(RESPONSE_MOCK_USER_GK);
     });
 
     after(async () => {
