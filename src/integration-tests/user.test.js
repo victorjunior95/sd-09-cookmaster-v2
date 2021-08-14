@@ -3,216 +3,276 @@ const sinon = require('sinon');
 const chaiHttp = require('chai-http');
 const { MongoClient } = require('mongodb');
 
+const server = require('../api/app');
+const connection = require('./mockConnection');
+
+const { expect } = chai;
 chai.use(chaiHttp);
 
-const server = require('../api/app');
-const { getConnection } = require('./mock/connection');
-const { expect } = require('chai');
+const VALID_USER = {
+  name: 'Gialuigi Buffon',
+  email: 'portiere@email.com',
+  password: 'greateasofalltime',
+};
+
+const ADMIN_USER = {
+  name: 'Administrador',
+  email: 'admin@email.com',
+  password: 'passwoard',
+  role: 'admin',
+};
+
+const INVALID_USER_NAME = {
+  name: 123,
+  email: 'mockuseremail@email.com',
+  password: 'mockuserpassword',
+};
+
+const INVALID_USER_EMAIL = {
+  name: 123,
+  email: 'mockuseremail@email.com',
+  password: 'mockuserpassword',
+};
 
 let connectionMock;
 
-const MOCK_USER = {
-  name: 'xablau',
-  email: 'xaxa@blaublau.com',
-  password: '03902'
-}
-
-  const MOCK_USER_1 = {
-    name: 'xablau',
-    email: 'xaxa@blaublau.com',
-    password: '450'
-  }
-
-  const RESPONSE_MOCK_USER_1 = {
-    email: 'xaxa@blaublau.com',
-    password: '450'
-  }
-
-  const MOCK_USER_GK = {
-    name: 'Gianluigi Buffon',
-    email: 'portiere@parma.com',
-    password: 'goat'
-  }
-
-  const RESPONSE_MOCK_USER_GK = {
-    email: 'portiere@parma.com',
-    password: 'goat'
-  }
-
-describe('POST /users', () => {
+describe('Testa o caminho "/users"', () => {
   before(async () => {
-    connectionMock = await getConnection();
+    connectionMock = await connection();
     sinon.stub(MongoClient, 'connect').resolves(connectionMock);
   });
 
-  after(async() => {
+  after(async () => {
     MongoClient.connect.restore();
   });
 
-  describe('Quando é passado nome, email e senha corretamente', () => {
+  describe('1 - Testa a adição de um usuário', () => {
     let response;
 
     before(async () => {
-      response = await chai.request(server)
-        .post('/users')
-        .send(MOCK_USER);
+      const usersCollection = connectionMock.db('Cookmaster').collection('users');
+      await usersCollection.deleteMany({});
+      response = await chai.request(server).post('/users').send(VALID_USER);
     });
 
-    it('retorna o status 201 e um objeto com a propriedade "user"', () => {
+    it('1 - retorna com código de estatus "201"', () => {
       expect(response).to.have.status(201);
-      expect(response.body).to.have.have.a.property('user');
-    });
-  });
-});
-
-describe('POST /login', () => {
-  before(async () => {
-    connectionMock = await getConnection();
-    sinon.stub(MongoClient, 'connect').resolves(connectionMock);
-  });
-
-  after(async() => {
-    MongoClient.connect.restore();
-  });
-
-  describe('Quando o login é efetuado com sucesso', () => {
-    let response;
-
-    before(async () => {
-      const DB_NAME = 'Cookmaster';
-      const usersCollection = connectionMock.db(DB_NAME).collection('users');
-      await usersCollection.insertOne(MOCK_USER_1);
-
-      response = await chai.request(server)
-        .post('/login')
-        .send(RESPONSE_MOCK_USER_1);
     });
 
-    it('retornar status 200 e um objeto /token/', () => {
-      expect(response).to.have.status(200);
-      expect(response.body).to.have.have.a.property('token');
-    });
-  });
-
-  describe('email e passoword não preenchidos', () => {
-    let response;
-
-    before (async () => {
-      response = await chai.request(server).post('/login').send({});
-    })
-
-    it('retorna body', () => {
-      expect(response.body).to.be.an('object');
-    });
-  
-    it('HTTP 401 é corretamente retornado', () => {
-      expect(response).to.have.status(401);
-    });
-
-    it('response object has `message` property', () => {
-      expect(response.body).to.have.a.property('message');
-    });
-
-    it('possui correta mensagem', () => {
-      expect(response.body.message).to.be.equal('All fields must be filled')
-    });
-  });
-
-  describe('email não existente.', () => {
-    let connectionMock;
-    let response;
-
-    before(async () => {
-      connectionMock = await getConnection();
-      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
-
-      response = await chai.request(server).post('/login').send({
-        email: 'teste@testeee.com',
-        password: '12345678',
-      });
-    });
-
-    after(async () => {
-      MongoClient.connect.restore();
-    });
-
-    it('http 401 é retornado', () => {
-      expect(response).to.have.status(401);
-    });
-
-    it('retorna body', () => {
+    it('2 - retorna um objeto no body', () => {
       expect(response.body).to.be.an('object');
     });
 
-    it('o objeto possui a propriedade MESSAGE', () => {
+    it('3 - retorna um body com a propriedade "user"', () => {
+      expect(response.body).to.have.property('user');
+    });
+
+    it('4 - a propriedade "user" deve ter a propriedade "name"', () => {
+      expect(response.body.user).to.have.property('name');
+    });
+
+    it('5 - a propriedade "user" deve ter a propriedade "email"', () => {
+      expect(response.body.user).to.have.property('email');
+    });
+
+    it('6 - a propriedade "user" deve ter a propriedade "role"', () => {
+      expect(response.body.user).to.have.property('role');
+    });
+
+    it('7 - a propriedade "user" deve ter a propriedade "role" com valor "user"', () => {
+      expect(response.body.user.role).to.be.equal('user');
+    });
+
+    it('8 - a propriedade "user" deve ter a propriedade "_id"', () => {
+      expect(response.body.user).to.have.property('_id');
+    });
+  });
+
+  describe('2 - Testa um login com campo "name" inválido', () => {
+    let response;
+
+    before(async () => {
+      const usersCollection = connectionMock.db('Cookmaster').collection('users');
+      await usersCollection.deleteMany({});
+
+      response = await chai.request(server).post('/users').send(INVALID_USER_NAME);
+    });
+
+    it('1 - retorna com código de estatus "400"', () => {
+      expect(response).to.have.status(400);
+    });
+
+    it('2 - retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('3 - objeto de resposta possui a propriedade "message"', () => {
       expect(response.body).to.have.property('message');
     });
 
-    it('mensagem tem seu corpo correto', () => {
-      expect(response.body.message).to.be.equal('Incorrect username or password')
+    it('4 - a propriedade "message" tem o valor "Invalid entries. Try again."', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.');
     });
   });
 
-  describe('login realizado com suceso', () => {
-    let connectionMock;
+  describe('3 - Testa um login com campo "email" inválido', () => {
     let response;
 
     before(async () => {
-      connectionMock = await getConnection();
-      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
+      const usersCollection = connectionMock.db('Cookmaster').collection('users');
+      await usersCollection.deleteMany({});
 
-      await connectionMock.db('Cookmaster').collection('users').insertOne(MOCK_USER_GK);
-
-      response = await chai.request(server).post('/login').send(RESPONSE_MOCK_USER_GK);
+      response = await chai.request(server).post('/users').send(INVALID_USER_EMAIL);
     });
 
-    after(async () => {
-      await connectionMock.db('Cookmaster').collection('users').deleteMany({});
-      MongoClient.connect.restore();
+    it('1 - retorna com código de estatus "400"', () => {
+      expect(response).to.have.status(400);
     });
 
-    it('Possui a propriedade TOKEN', () => {
-      expect(response.body).to.have.property('token')
+    it('2 - retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
     });
 
-    it('RETORNA O HTTP 200', () => {
-      expect(response).to.have.status(200);
-    });   
+    it('3 - objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('4 - a propriedade "message" tem o valor "Invalid entries. Try again."', () => {
+      expect(response.body.message).to.be.equal('Invalid entries. Try again.');
+    });
+  });
+
+  describe('4 - Testa um login com campo "email" já cadastrado', () => {
+    let response;
+
+    before(async () => {
+      const usersCollection = connectionMock.db('Cookmaster').collection('users');
+      await usersCollection.deleteMany({});
+      await usersCollection.insertOne(VALID_USER);
+
+      response = await chai.request(server).post('/users').send(VALID_USER);
+    });
+
+    it('1 - retorna com código de estatus "409"', () => {
+      expect(response).to.have.status(409);
+    });
+
+    it('2 - retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('3 - objeto de resposta possui a propriedade "message"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('4 - a propriedade "message" tem o valor "Email already registered"', () => {
+      expect(response.body.message).to.be.equal('Email already registered');
+    });
+  });
+
+  describe('5 - Testa a adição de um admin por um admin', () => {
+    let response;
+
+    before(async () => {
+      const usersCollection = connectionMock.db('Cookmaster').collection('users');
+      await usersCollection.deleteMany({});
+
+      await chai.request(server).post('/users').send(ADMIN_USER);
+
+      const token = await chai
+        .request(server)
+        .post('/login')
+        .send({ email: 'mockadminemail@email.com', password: 'mockadminpassword' })
+        .then((response) => response.body.token);
+
+      response = await chai
+        .request(server)
+        .post('/users/admin')
+        .set('authorization', token)
+        .send({
+          name: 'Mock User',
+          email: 'mockuseremail@email.com',
+          password: 'mockuserpassword',
+        });
+    });
+
+    it('1 - retorna com código de estatus "201"', () => {
+      expect(response).to.have.status(201);
+    });
+
+    it('2 - retorna um objeto no body', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('3 - retorna um body com a propriedade "user"', () => {
+      expect(response.body).to.have.property('user');
+    });
+
+    it('4 - a propriedade "user" deve ter a propriedade "name"', () => {
+      expect(response.body.user).to.have.property('name');
+    });
+
+    it('5 - a propriedade "user" deve ter a propriedade "email"', () => {
+      expect(response.body.user).to.have.property('email');
+    });
+
+    it('6 - a propriedade "user" deve ter a propriedade "role"', () => {
+      expect(response.body.user).to.have.property('role');
+    });
+
+    it('7 - a propriedade "user" deve ter a propriedade "role" com valor "admin"', () => {
+      expect(response.body.user.role).to.be.equal('admin');
+    });
+
+    it('8 - a propriedade "user" deve ter a propriedade "_id"', () => {
+      expect(response.body.user).to.have.property('_id');
+    });
+  });
+
+  describe('6 - Testa se dá erro ao adicionar um usuário admin sem ser um admin', () => {
+    let response;
+
+    before(async () => {
+      const usersCollection = connectionMock.db('Cookmaster').collection('users');
+      await usersCollection.deleteMany({});
+
+      await chai.request(server).post('/users').send({
+        name: 'Mock User',
+        email: 'mockuseremail@email.com',
+        password: 'mockuserpassword',
+      });
+
+      const token = await chai
+        .request(server)
+        .post('/login')
+        .send({ email: 'mockuseremail@email.com', password: 'mockuserpassword' })
+        .then((response) => response.body.token);
+
+      response = await chai
+        .request(server)
+        .post('/users/admin')
+        .set('authorization', token)
+        .send({
+          name: 'Mock User 2',
+          email: 'mockuseremail2@email.com',
+          password: 'mockuserpassword2',
+        });
+    });
+
+    it('1 - retorna com código de estatus "403"', () => {
+      expect(response).to.have.status(403);
+    });
+
+    it('2 - retorna um objeto no campo "body"', () => {
+      expect(response.body).to.be.an('object');
+    });
+
+    it('3 - tem a propriedade "message" no campo "body"', () => {
+      expect(response.body).to.have.property('message');
+    });
+
+    it('4 - a propriedade "message" no campo "body" tem valor "Only admins can register new admins', () => {
+      expect(response.body.message).to.be.equal('Only admins can register new admins');
+    });
   });
 });
-
-
-describe('POST /users', () => {
-    describe('Quando um usuário é criado', () => {
-      let connectionMock;
-      let response;
-  
-      before (async () => {
-        connectionMock = await getConnection();
-        sinon.stub(MongoClient, 'connect').resolves(connectionMock);
-  
-        response = await chai.request(server).post('/users').send({
-          name: 'XABLAAAAAU',
-          email: 'andiamoca@misonoresoconto.com',
-          password: '09123908',
-        });
-      })
-  
-      after(async () => {
-        await connectionMock.db('Cookmaster').collection('users').deleteMany({});
-        MongoClient.connect.restore();
-      });
-  
-      it('propriedades do user', () => {
-        expect(response.body).to.have.property('user');
-      });
-
-      it('retrona o objeto do usuário', () => {
-        expect(response.body).to.be.an('object');
-      });
-
-      it('retorna HTTP 201', () => {
-        expect(response).to.have.status(201);
-      });  
-    });
-  });
