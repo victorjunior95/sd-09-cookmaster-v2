@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const path = require('path');
 
 const validateRecipesInputToCreate = require('../middleware/validateRecipesInputToCreate');
 const validateToken = require('../middleware/validateToken');
@@ -9,8 +10,9 @@ const {
     editRecipeService,
     deleteRecipeService,
     updateWithImageService,
+    getRecipeByIdService,
+    getAllRecipesService,
 } = require('../services/recipesService');
-const { getAllRecipesService, getRecipeByIdService } = require('../services/recipesService');
 
 const RecipesRouter = express.Router();
 const SECRET = 'essaédificil';
@@ -56,19 +58,14 @@ RecipesRouter.put('/:id', validateToken, async (req, res) => {
 });
 
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, 'uploads/');
-    },
-    filename: (req, file, callback) => {
-        const { id } = req.params;
-        callback(null, `${id}.jpeg`);
-    },
-});
+    destination: (_req, _file, callback) => callback(null, path.join(__dirname, '..', 'uploads')),
+    filename: (req, _file, callback) => callback(null, `${req.params.id}.jpeg`),
+  });
 
 const upload = multer({ storage });
 
-RecipesRouter.put('/:id/image/', validateToken, upload.single('image'), async (req, res) => {
-    const { id } = req.params;
+RecipesRouter.put('/:id/image', validateToken, upload.single('image'), async (req, res) => {
+   const { id } = req.params;
    const { file } = req;
    const resultRecipes = await updateWithImageService(id, file);
    res.status(200).json(resultRecipes);

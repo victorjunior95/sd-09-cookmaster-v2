@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const usersModel = require('../models/usersModel');
 
-module.exports = async (req, res, next) => {
+module.exports = async (req, _res, next) => {
     const isInputsValid = Joi.object({
         name: Joi.string().required(),
         email: Joi.string().email().required(),
