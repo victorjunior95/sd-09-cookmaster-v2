@@ -16,7 +16,7 @@ const createUser = async (name, email, password) => {
   const userAlreadyExist = await Model.findUser(email);
   if (userAlreadyExist) throw Error(emailRegistered);
 
-  await Model.createUser(name, email, password);
+  return Model.createUser(name, email, password);
 };
 
 const login = async (email, password) => {
@@ -41,7 +41,7 @@ const createAdmin = async (token, name, email, password) => {
   // console.log('SERVICE createAdmin req.body', name, email, password);
   const decoded = Utils.tokenDecrypt(token);
   if (decoded.role !== 'admin') throw Error(onlyAdmin);
-  await Model.createAdmin(name, email, password);
+  return Model.createAdmin(name, email, password);
 };
 
 module.exports = {
