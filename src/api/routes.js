@@ -1,4 +1,4 @@
-const createUsers = require('../../controllers/createUser');
+const createUsers = require('../../controllers/createUsers');
 const createAdmin = require('../../controllers/createAdmin');
 const loginUser = require('../../controllers/login');
 
