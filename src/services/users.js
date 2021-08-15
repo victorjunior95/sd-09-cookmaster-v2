@@ -1,5 +1,5 @@
 const Users = require('../models/users');
-const { validateCreate } = require('../middlewares/validateCreate');
+const { validateCreate, validateLogin } = require('../middlewares/validateUsers');
 
 const create = async ({ name, email, password, role = 'user' }) => {
   // valida se tem email, senha e nome
@@ -22,6 +22,32 @@ const create = async ({ name, email, password, role = 'user' }) => {
   return newUser;
 };
 
+const login = async ({ email, password }) => {
+  // valida se foi enviado email e password
+  const validLogin = validateLogin(email, password);
+  if (validLogin) return validLogin;
+
+  // verifica se email e password constam no banco de dados
+  const allUsers = await Users.getAllUsers();
+  const exist = allUsers
+  .find((user) => user.email === email && user.password === password);
+
+  if (!exist) {
+    return {
+      status: 401,
+      error: {
+        message: 'Incorrect username or password', 
+      },
+    };
+  }
+  
+  return {
+    status: 200,
+    user: exist,
+  };
+};
+
 module.exports = {
   create,
+  login,
 };
