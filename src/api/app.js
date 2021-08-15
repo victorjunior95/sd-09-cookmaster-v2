@@ -20,5 +20,6 @@ app.get('/', (request, response) => {
 // Não remover esse end-point, ele é necessário para o avaliador
 
 apiRoutes.post('/users', routes.createUsers);
+apiRoutes.post('/users/admin', routes.createAdmin);
 
 module.exports = app;

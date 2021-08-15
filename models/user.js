@@ -16,7 +16,18 @@ const findUser = async (email) => {
   // console.log('MODEL findUser user', user);
   return user;
 };
+
+const createAdmin = async (name, email, password) => {
+  // console.log('MODEL createAdmin req.body', name, email, password);
+  const db = await connect();
+  const user = await db.collection('users')
+    .insertOne({ name, email, password, role: 'admin' });
+  // console.log('MODEL createAdmin user', user.ops[0]);
+  return user.ops[0];
+};
+
 module.exports = { 
   createUser,
   findUser,
+  createAdmin,
 };
