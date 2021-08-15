@@ -968,7 +968,7 @@ describe('8 - Crie um endpoint para a exclusão de uma receita', () => {
   });
 });
 
-describe.only('9 - Crie um endpoint para a adição de uma imagem a uma receita', () => {
+describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () => {
   let connection;
   let db;
 
@@ -1011,42 +1011,42 @@ describe.only('9 - Crie um endpoint para a adição de uma imagem a uma receita'
     const photoFile = path.resolve(__dirname, '..', 'src', 'uploads', 'ratinho.jpg');
     const content = fs.createReadStream(photoFile);
     const formData = frisby.formData();
-
+    
     formData.append('image', content);
-
+    
     let result;
     let resultRecipes;
-
+    
     await frisby
-      .post(`${url}/login/`, {
-        email: 'erickjacquin@gmail.com',
-        password: '12345678',
+    .post(`${url}/login/`, {
+      email: 'erickjacquin@gmail.com',
+      password: '12345678',
+    })
+    .expect('status', 200)
+    .then((response) => {
+      const { body } = response;
+      result = JSON.parse(body);
+      return frisby
+      .setup({
+        request: {
+          headers: {
+            Authorization: result.token,
+            'Content-Type': 'application/json',
+          },
+        },
       })
-      .expect('status', 200)
-      .then((response) => {
-        const { body } = response;
-        result = JSON.parse(body);
-        return frisby
-          .setup({
-            request: {
-              headers: {
-                Authorization: result.token,
-                'Content-Type': 'application/json',
-              },
-            },
-          })
-          .post(`${url}/recipes`, {
-            name: 'Receita de frango do Jacquin',
-            ingredients: 'Frango',
-            preparation: '10 min no forno',
-          })
-          .expect('status', 201)
-          .then((responseRecipes) => {
-            const { body } = responseRecipes;
-            resultRecipes = JSON.parse(body);
-          });
+      .post(`${url}/recipes`, {
+        name: 'Receita de frango do Jacquin',
+        ingredients: 'Frango',
+        preparation: '10 min no forno',
+      })
+      .expect('status', 201)
+      .then((responseRecipes) => {
+        const { body } = responseRecipes;
+        resultRecipes = JSON.parse(body);
       });
-
+    });
+    
     await frisby
       .setup({
         request: {

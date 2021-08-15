@@ -19,7 +19,12 @@ const createUserModel = async (name, email, password) => connection().then((db) 
       role: 'user',
     }));
 
+    const createNewUserModel = async (name, email, password) => connection()
+    .then((db) => db.collection('users').insertOne({ name, email, password, role: 'admin' }))
+    .then((result) => result.ops[0]);
+
 module.exports = {
   createUserModel,
   findByEmail,
+  createNewUserModel,
 };

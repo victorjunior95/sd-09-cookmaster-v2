@@ -38,7 +38,6 @@ const updateWithImageModel = async (id, file) => {
   if (!ObjectId.isValid(id)) return null;
 
   const urlImage = `localhost:3000/src/uploads/${file.filename}`;
-
   await connection()
     .then((db) => db.collection('recipes')
       .updateOne({ _id: ObjectId(id) }, { $set: { image: urlImage } }));
