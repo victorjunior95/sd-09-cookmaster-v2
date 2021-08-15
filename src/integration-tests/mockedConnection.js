@@ -1,16 +1,9 @@
 const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-const OPTIONS = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
+const DBServer = new MongoMemoryServer();
 
-const mockedConnection = async () => {
-  const DBServer = await MongoMemoryServer.create();
-  const URLMock = DBServer.getUri();
+const getConnection = () => DBServer.getUri().then((URIMock) => MongoClient.connect(URIMock, OPTIONS));
 
-  return MongoClient.connect(URLMock, OPTIONS);
-};
-
-module.exports = mockedConnection;
+module.exports = getConnection; 
