@@ -13,5 +13,5 @@ const createNewAdminService = async (name, email, password) => {
 
 module.exports = {
     createUserService,
-    createNewAdminService
+    createNewAdminService,
 };

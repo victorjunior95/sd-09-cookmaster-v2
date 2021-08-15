@@ -21,8 +21,8 @@ UsersRouter.post('/', validateUsersInputToCreate, async (req, res) => {
 UsersRouter.post('/admin', isAdminUser, async (req, res) => {
     const { name, email, password } = req.body;
 
-    const newAdmin = await createNewAdminService(name, email, password)
+    const newAdmin = await createNewAdminService(name, email, password);
     res.status(201).json({ user: newAdmin });
-})
+});
 
 module.exports = UsersRouter;
