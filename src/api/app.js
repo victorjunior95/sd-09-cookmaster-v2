@@ -21,5 +21,6 @@ app.get('/', (request, response) => {
 
 apiRoutes.post('/users', routes.createUsers);
 apiRoutes.post('/users/admin', routes.createAdmin);
+apiRoutes.post('/login', routes.login);
 
 module.exports = app;
