@@ -9,7 +9,7 @@ async function create({ name, email, password, role }) {
     role,
   });
   return {
-      _id: insertedId,
+      id: insertedId,
       name,
       email,
       role,

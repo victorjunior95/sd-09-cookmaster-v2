@@ -3,10 +3,7 @@
  * @typedef { import("express").Response} Response
  */
 
-function isEmailValid(email) {
-    const regex = /.+@.+\..+/;
-    return email && regex.test(email);
-}
+const { isEmailValid } = require('./helpers');
 
 function createUserValidator(req, res, next) {
     const { name, email, password } = req.body;
