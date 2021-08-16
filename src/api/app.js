@@ -1,15 +1,9 @@
-const bodyParser = require('body-parser');
 const express = require('express');
-const path = require('path');
-const router = require('./router');
-
-const middlewares = require('./middlewares');
+const router = require('../routes/router');
+const mdw = require('../middlewares');
 
 const app = express();
-
-app.use(bodyParser.json());
-app.use(router);
-app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
+app.use(express.json());
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
@@ -17,6 +11,7 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.use(middlewares.error);
+app.use(router);
+app.use(mdw.mdwError.genericError);
 
 module.exports = app;
