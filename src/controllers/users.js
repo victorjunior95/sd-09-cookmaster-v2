@@ -3,11 +3,11 @@ const Users = require('../services/users');
 
 const SECRET = 'XABLAU';
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const { name, email, password, role } = req.body;
   const newUser = await Users.create({ name, email, password, role });
 
-  if (newUser.error) return (newUser);
+  if (newUser.error) return next(newUser);
 
   const { password: _, ...user } = newUser;
 
@@ -27,7 +27,7 @@ const login = async (req, res, next) => {
 
   const token = jwt.sign({ data: result.user }, SECRET, jwtConfig);
 
-  res.status(200).json({ token }).send(result);
+  res.status(200).json({ token });
 };
 
 module.exports = {

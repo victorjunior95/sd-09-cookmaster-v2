@@ -15,7 +15,6 @@ const validateToken = async (req, res, next) => {
     const { _id, role } = payload.data;
     req.userId = _id;
     req.role = role;
-    // console.log(payload);
     next();
   } catch (err) {
     return res.status(401).json({ message: err.message });
