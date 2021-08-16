@@ -1,5 +1,7 @@
-const bodyParser = require('body-parser');
 const express = require('express');
+const bodyParser = require('body-parser');
+
+const Error = require('../middlewares/error');
 
 const app = express();
 
@@ -20,5 +22,7 @@ app.get('/', (request, response) => {
 apiRoutes.post('/users', routes.createUsers);
 apiRoutes.post('/users/admin', routes.createAdmin);
 apiRoutes.post('/login', routes.login);
+
+app.use(Error);
 
 module.exports = app;
