@@ -17,12 +17,26 @@ const registerRecipe = async (req, res) => {
   }
 };
 
-const getAllRecipe = async (req, res) => {
+const getAllRecipe = async (_req, res) => {
   const result = await recipesService.getAll();
   res.status(OK).json(result);
+};
+
+const getRecipeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await recipesService.getById(id);
+
+    res.status(OK).json(result);
+  } catch (error) {
+    const data = JSON.parse(error.message);
+    res.status(data.status).send({ message: data.message });
+  }
 };
 
 module.exports = {
   registerRecipe,
   getAllRecipe,
+  getRecipeById,
 };
