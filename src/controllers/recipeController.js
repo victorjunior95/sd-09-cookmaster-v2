@@ -24,6 +24,12 @@ async function createRecipe(req, res) {
     } });
 }
 
+async function getAllRecipes(req, res) {
+    const allRecipes = await recipeModel.getAll();
+    res.status(200).json(allRecipes);
+}
+
 module.exports = {
     createRecipe,
+    getAllRecipes,
 };

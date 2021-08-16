@@ -16,6 +16,13 @@ async function create({ userId, name, ingredients, preparation }) {
     };
 }
 
+async function getAll() {
+    const recipeCollection = await getConnection('recipes');
+    const allRecipes = await recipeCollection.find();
+    return allRecipes.toArray();
+}
+
 module.exports = {
     create,
+    getAll,
 };
