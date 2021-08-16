@@ -57,10 +57,25 @@ const deleteById = async (id) => {
   return deletedProduct;
 };
 
+const insertImage = async (recipeId, userId, url, role) => {
+  const filter = role === 'admin'
+    ? { _id: ObjectId(recipeId) }
+    : { _id: ObjectId(recipeId), userId };
+
+  const result = await connection()
+  .then((db) => db.collection('recipes').updateOne(filter, { $set: { image: url } }))
+  .then(async () => {
+    const recipe = await getRecipeById(recipeId);
+    return recipe;
+  });
+  return result;
+};
+
 module.exports = {
   create,
   getAllRecipes,
   getRecipeById,
   editRecipe,
   deleteById,
+  insertImage,
 };

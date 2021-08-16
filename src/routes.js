@@ -10,5 +10,6 @@ router.get('/recipes', Recipes.getAllRecipes);
 router.get('/recipes/:id', Recipes.getById);
 router.put('/recipes/:id', validateToken, Recipes.editRecipe);
 router.delete('/recipes/:id', validateToken, Recipes.deleteById);
+router.put('/recipes/:id/image', validateToken, Recipes.insertImageRecipe);
 
 module.exports = router;

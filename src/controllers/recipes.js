@@ -1,5 +1,6 @@
 const Recipes = require('../services/recipes');
-
+const upload = require('../middlewares/uploadConfig');
+ 
 const create = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
   const { userId } = req;
@@ -46,10 +47,21 @@ const deleteById = async (req, res, next) => {
   return res.status(204).json(recipe);
 };
 
+const insertImageRecipe = [
+upload.single('image'), async (req, res) => {
+  const { id } = req.params;
+  const { userId, role } = req;
+  const result = await Recipes.insertImageRecipe(id, userId, req.file.path, role);
+  console.log(result);
+  res.status(200).json(result);
+},
+];
+
 module.exports = {
   create,
   getAllRecipes,
   getById,
   editRecipe,
   deleteById,
+  insertImageRecipe,
 };

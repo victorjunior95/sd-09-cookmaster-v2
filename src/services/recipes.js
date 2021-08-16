@@ -90,10 +90,18 @@ const deleteById = async (id) => {
   return result;
 };
 
+const insertImageRecipe = async (id, userId, path, role) => Recipes.insertImage(
+  id,
+  userId, 
+  `localhost:3000/${path}`,
+  role,
+);
+
 module.exports = {
   create,
   getAllRecipes,
   getById,
   editRecipe,
   deleteById,
+  insertImageRecipe,
 };
