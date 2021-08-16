@@ -34,7 +34,7 @@ const update = async (id, name, ingredients, preparation) => {
   const answer = await connection.collection('recipes')
   .updateOne(
     { _id: ObjectId(id) },
-    { $set: name, ingredients, preparation },
+    { $set: { name, ingredients, preparation } },
   );
 
   return answer;
