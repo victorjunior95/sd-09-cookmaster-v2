@@ -7,7 +7,6 @@ const BAD_REQUEST = {
   message: 'Invalid entries. Try again.',
   status: 400,
 };
-
 const NOT_FOUND = {
   message: 'recipe not found',
   status: 404,
@@ -49,8 +48,26 @@ const getById = async (id) => {
   return result;
 };
 
+const update = async (id, name, ingredients, preparation) => {
+  if (!ObjectId.isValid(id)) {
+    throw new Error(JSON.stringify(NOT_FOUND));
+  }
+
+  return recipesModel.update(id, name, ingredients, preparation);
+};
+
+const erase = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw new Error(JSON.stringify(NOT_FOUND));
+  }
+
+  return recipesModel.erase(id);
+};
+
 module.exports = {
   register,
   getAll,
   getById,
+  update,
+  erase,
 };

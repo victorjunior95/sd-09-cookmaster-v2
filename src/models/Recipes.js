@@ -28,8 +28,28 @@ const getById = async (id) => {
   return answer;
 };
 
+const update = async (id, name, ingredients, preparation) => {
+  const connection = await connect();
+
+  const answer = await connection.collection('recipes')
+  .updateOne(
+    { _id: ObjectId(id) },
+    { $set: name, ingredients, preparation },
+  );
+
+  return answer;
+};
+
+const erase = async (id) => {
+  const connection = await connect();
+
+  await connection.collection('recipes').deleteOne({ _id: ObjectId(id) });
+};
+
 module.exports = {
   register,
   getAll,
   getById,
+  update,
+  erase,
 };
