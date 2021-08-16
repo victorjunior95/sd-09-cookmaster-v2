@@ -1,106 +1,57 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const chaihttp = require('chai-http');
+
+const server = require('../api/app');
+
+const { MongoClient } = require('mongodb');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+
+chai.use(chaihttp);
 const { expect } = chai;
 
-chai.use(chaiHttp);
+const usersToBeRegistered = [
+  { name: 'Albert Einstein', password: '123456', email: 'aeinstein@email.com' },
+  { name: 'Nikola Tesla', password: 'nicola123', email: 'elnick@email.com' },
+  { name: 'Thomas Edison', password: 'tominhas55', email: 'totoedison@email.com' },
+  { name: 'Elon Musk', password: 'elmusktheboss', email: 'elonMusk@tesla.com' },
+]
 
-const sinon = require('sinon');
-const app = require('../api/app');
-const { MongoClient } = require('mongodb');
-const connection = require('./connection');
+describe('/GET - GET ALL USERS - return a list off all users on data base;', () => {
 
-describe('Registering users', () => {
-  describe('when it is created successfully', () => {
+  describe('Should return an array list of all users', () => {
+    let connectionMock;
     let response;
-    let conn;
-
     before(async () => {
-      conn = await connection();
-      sinon.stub(MongoClient, 'connect').resolves(conn);
+      const DBServer = await MongoMemoryServer.create();
+      const URLMock = DBServer.getUri();
+      const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
+      connectionMock = await MongoClient.connect(URLMock, OPTIONS);
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
-      response = await chai.request(app)
-        .post('/users')
-        .send({
-          name: "fake_name",
-          email: "email@fake.com",
-          password: "fakepassword"
-        });
+      await connectionMock.db('Cookmaster').collection('users').insertMany(usersToBeRegistered);
+      response = await chai.request(server).get('/users/');
     });
 
     after(async () => {
       MongoClient.connect.restore();
+      await connectionMock.db('Cookmaster').collection('users').deleteMany({});
     });
 
-    it('Return status code 201',async () => {
-      expect(response).to.have.status(201);
+    it('Should return status 200', () => {
+      expect(response).to.have.status(200);
     });
 
-    it('Return a object', () => {
-      expect(response.body).to.be.a('object');
+    it('Should return an array with four elements', () => {
+      expect(response.body).to.be.an('array');
+      expect(response.body.length).to.equal(4);
     });
-    it('Object has the property "user"', () => {
-      expect(response.body).to.have.property('user');
-    })
-    it('User has the properties "name", "email", "role" and "_id"', () => {
-      const { user } = response.body;
 
-      expect(user).to.have.property('name');
-      expect(user.name).to.be.equal('fake_name');
-
-      expect(user).to.have.property('email');
-      expect(user.email).to.be.equal('email@fake.com');
-
-      expect(user).to.have.property('role');
-      expect(user.role).to.be.equal('user');
-
-      expect(user).to.have.property('_id');
+    it('Should have the array with users, who was previously registered', () => {
+      expect(response.body[0].name).to.be.equal('Albert Einstein');
+      expect(response.body[1].name).to.be.equal('Nikola Tesla');
+      expect(response.body[2].name).to.be.equal('Thomas Edison');
+      expect(response.body[3].name).to.be.equal('Elon Musk');
     });
   });
-  describe('when it is not created successfully', () => {
-    let response;
-
-    before(async () => {
-      response = await chai.request(app)
-        .post('/users')
-        .send({});
-    });
-
-    it('Return status code 400',async () => {
-      expect(response).to.have.status(400);
-    });
-
-    it('Return the message "Invalid entries. Try again."', () => {
-      expect(response.body).to.have.property('message');
-      expect(response.body.message).to.be.equal('Invalid entries. Try again.');
-    });
-  });
-
-  describe('when the email already exists', () => {
-    let response;
-    let conn;
-    const user = { name: 'fakeName', email: 'fake@email.com', password: '123'};
-
-    before(async () => {
-      conn = await connection();
-      sinon.stub(MongoClient, 'connect').resolves(conn);
-      await conn.db('Cookmaster').collection('users').insertOne(user);
-
-      response = await chai.request(app)
-        .post('/users')
-        .send(user);
-    });
-
-    after(async () => {
-      MongoClient.connect.restore();
-      await conn.db('Cookmaster').collection('users').deleteOne({ name: 'fakeName' });
-    });
-
-    it('Return status code 409', () => {
-      expect(response).to.have.status(409);
-    });
-    it('Return the message "Email already registered"', () => {
-      expect(response.body).to.have.property('message');
-      expect(response.body.message).to.be.equal('Email already registered');
-    });
-  });
-}); 
+});

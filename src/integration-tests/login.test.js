@@ -1,80 +1,133 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const chaihttp = require('chai-http');
+
+const server = require('../api/app');
+
+const { MongoClient } = require('mongodb');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+
+chai.use(chaihttp);
 const { expect } = chai;
 
-chai.use(chaiHttp);
+const validUserRegister = { name: "Albert Einstein", email: 'aeinstein@email.com', password: '123456' };
+const validUser = { email: 'aeinstein@email.com', password: '123456' };
+const invalidUsers = {
+  user0: { email: 'aeinstein@email.com', password: '' },
+  user1: { email: 'aeinstein@email.com', password: 1234 },
+  user2: { email: '', password: 123456 },
+  user3: { email: 'aeinstein@ema@il.com', password: 123456 },
+}
 
-const sinon = require('sinon');
-const app = require('../api/app');
-const { MongoClient } = require('mongodb');
-const connection = require('./connection');
+describe('/POST - LOGIN USER; the body of request should have, "email", "password" to receive JWT', () => {
+  describe('When the request was rejected, with no correct object on the body of request', () => {
+    describe('The body havent property password', () => {
+      let response;
+      before(async () => {
+        response = await chai.request(server).post('/login/').send(invalidUsers.user0);
+      });
 
-describe('Requesting login', () => {
-  describe('when successfully logged in', () => {
+      it('Should return status 401', () => {
+        expect(response).to.have.status(401);
+      });
+
+      it('Should return an object', () => {
+        expect(response.body).to.be.an('object');
+      });
+
+      it('Should have the error message, with property "message"', () => {
+        expect(response.body.message).to.be.equal('All fields must be filled');
+      });
+    });
+
+    describe('The body havent property password with more than five characters', () => {
+      let response;
+      before(async () => {
+        response = await chai.request(server).post('/login/').send(invalidUsers.user1);
+      });
+
+      it('Should return status 401', () => {
+        expect(response).to.have.status(401);
+      });
+
+      it('Should return an object', () => {
+        expect(response.body).to.be.an('object');
+      });
+
+      it('Should have the error message, with property "message"', () => {
+        expect(response.body.message).to.be.equal('All fields must be filled');
+      });
+    });
+
+    describe('The body havent property email', () => {
+      let response;
+      before(async () => {
+        response = await chai.request(server).post('/login/').send(invalidUsers.user2);
+      });
+
+      it('Should return status 401', () => {
+        expect(response).to.have.status(401);
+      });
+
+      it('Should return an object', () => {
+        expect(response.body).to.be.an('object');
+      });
+
+      it('Should have the error message, with property "message"', () => {
+        expect(response.body.message).to.be.equal('All fields must be filled');
+      });
+    });
+
+    describe('The body havent property password with more than five characters', () => {
+      let response;
+      before(async () => {
+        response = await chai.request(server).post('/login/').send(invalidUsers.user3);
+      });
+
+      it('Should return status 401', () => {
+        expect(response).to.have.status(401);
+      });
+
+      it('Should return an object', () => {
+        expect(response.body).to.be.an('object');
+      });
+
+      it('Should have the error message, with property "message"', () => {
+        expect(response.body.message).to.be.equal('Incorrect username or password');
+      });
+    });
+  });
+
+  describe('When the request was accepted, will return a JWT', () => {
+    let connectionMock;
     let response;
-    let conn;
-    const user = { name: 'fakeName', email: 'fake@email.com', password: '123'};
-
     before(async () => {
-      conn = await connection();
-      sinon.stub(MongoClient, 'connect').resolves(conn);
-      await conn.db('Cookmaster').collection('users').insertOne(user);
+      const DBServer = await MongoMemoryServer.create();
+      const URLMock = DBServer.getUri();
+      const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
+      connectionMock = await MongoClient.connect(URLMock, OPTIONS);
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
-      response = await chai.request(app)
-        .post('/login')
-        .send({
-          email: "fake@email.com",
-          password: "123"
-        });
+      await connectionMock.db('Cookmaster').collection('users').insertOne(validUserRegister);
+
+      response = await chai.request(server).post('/login/').send(validUser);
     });
 
     after(async () => {
       MongoClient.connect.restore();
-      await conn.db('Cookmaster').collection('users').deleteOne({ name: 'fakeName' });
+      await connectionMock.db('Cookmaster').collection('users').deleteMany({});
     });
 
-    it('Return the status code 200', () => {
+    it('Should return status 200', () => {
       expect(response).to.have.status(200);
     });
 
-    it('Return a token', () => {
-      expect(response.body).to.have.property('token');
-      expect(response.body.token).to.be.not.empty;
+    it('Should return an object, with property "token"', () => {
+      expect(response.body).to.be.an('object').with.property('token');
+    });
+
+    it('Should contain the JWT, in property "token"', () => {
+      expect(response.body.token.length).to.be.equal(211);
     });
   });
-
-  describe('when login is not successful', () => {
-    let response;
-
-    before(async () => {
-      response = await chai.request(app)
-        .post('/login')
-        .send({});
-    });
-
-    it('when the request not have a body', () => {
-      expect(response).to.have.status(401);
-      expect(response.body).to.have.property('message');
-      expect(response.body.message).to.be.equal('All fields must be filled');
-    });
-  });
-
-  describe('when the email is in the wrong format', () => {
-    let response;
-
-    before(async () => {
-      response = await chai.request(app)
-        .post('/login')
-        .send({
-          email: "fakeemail.com",
-          password: "123"
-        });
-    });
-
-    it('Return the message "Incorrect username or password"', () => {
-      expect(response).to.have.status(401);
-      expect(response.body).to.have.property('message');
-      expect(response.body.message).to.be.equal('Incorrect username or password');
-    });
-  });
-}); 
+});

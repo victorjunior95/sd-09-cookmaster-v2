@@ -1,182 +1,65 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const chaihttp = require('chai-http');
+
+const server = require('../api/app');
+
+const { MongoClient } = require('mongodb');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+
+chai.use(chaihttp);
 const { expect } = chai;
 
-chai.use(chaiHttp);
+const recipesToBeRegistered = [
+  { name: 'estrogonoff de carne', ingredients: 'carne, creme de leite', preparation: 'cozinhar tudo por 10min' },
+  { name: 'milho na manteiga', ingredients: 'milho, manteiga e sal', preparation: 'cozinhar o milho por 20min, colocar sal e manteiga a gosto' },
+  { name: 'vitamina de abacate', ingredients: 'abacate, leite, gelo, açucar', preparation: 'adicionar tudo ao liquidificador e adoçar a gosto' },
+]
 
-const sinon = require('sinon');
-const app = require('../api/app');
-const { MongoClient, ObjectID } = require('mongodb');
-const connection = require('./connection');
-
-describe('Registering a recipe', () => {
-  describe('when it is created successfully', () => {
+describe('/GET - GET ALL RECIPES - return a list off all recipes on data base;', () => {
+  describe('Should return an array list of all recipes', () => {
+    let connectionMock;
     let response;
-    let conn;
-    let login;
-    const user = { name: 'fakeName', email: 'fake@email.com', password: '123'};
-
     before(async () => {
-      conn = await connection();
-      sinon.stub(MongoClient, 'connect').resolves(conn);
-      await conn.db('Cookmaster').collection('users').insertOne(user);
+      const DBServer = await MongoMemoryServer.create();
+      const URLMock = DBServer.getUri();
+      const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
+      connectionMock = await MongoClient.connect(URLMock, OPTIONS);
+      sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 
-      login = await chai.request(app)
-        .post('/login')
-        .send({ email: user.email, password: user.password });
-
-      response = await chai.request(app)
-        .post('/recipes')
-        .send({
-          name: "fakeRecipe",
-          ingredients: "fakeIngredients",
-          preparation: "fakePreparation"
-        })
-        .set('authorization', login.body.token);
+      await connectionMock.db('Cookmaster').collection('recipes').insertMany(recipesToBeRegistered);
+      response = await chai.request(server).get('/recipes/');
     });
 
     after(async () => {
       MongoClient.connect.restore();
-      await conn.db('Cookmaster').collection('recipes').deleteOne({ name: 'fakeRecipe' });
+      await connectionMock.db('Cookmaster').collection('recipes').deleteMany({});
     });
 
-    it('Return the status code 201', () => {
-      expect(response). to .have.status(201);
+    it('Should return status 200', () => {
+      expect(response).to.have.status(200);
     });
 
-    it('Return a object with the property "recipe"', () => {
-      expect(response.body).to.have.property('recipe');
-      expect(response.body.recipe).to.be.an('object');
-    });
-  });
-
-  describe('when it is not created successfully', () => {
-    describe('when a token is inValid', () => {
-      let response;
-      let conn;
-
-      before(async () => {
-        response = await chai.request(app)
-          .post('/recipes')
-          .send({
-            name: "fakeRecipe",
-            ingredients: "fakeIngredients",
-            preparation: "fakePreparation"
-          })
-          .set('authorization', '999');
-      });
-
-      it('Return the status code 401', () => {
-        expect(response).to.have.status(401);
-      }); 
-
-      it('Return the message "jwt malformed"', () => {
-        expect(response.body).to.have.property('message');
-        expect(response.body.message).to.be.equal('jwt malformed');
-      });
+    it('Should return an array with three elements', () => {
+      expect(response.body).to.be.an('array');
+      expect(response.body.length).to.equal(3);
     });
 
-    describe('when a token is missing', () => {
-      let response;
-      let conn;
-
-      before(async () => {
-        response = await chai.request(app)
-          .post('/recipes')
-          .send({
-            name: "fakeRecipe",
-            ingredients: "fakeIngredients",
-            preparation: "fakePreparation"
-          });
-      });
-
-      it('Return the status code 401', () => {
-        expect(response).to.have.status(401);
-      }); 
-
-      it('Return the message "missing auth token"', () => {
-        expect(response.body).to.have.property('message');
-        expect(response.body.message).to.be.equal('missing auth token');
-      });
+    it('Should have the array with recipes, who was previously registered', () => {
+      expect(response.body[0].name).to.be.equal('estrogonoff de carne');
+      expect(response.body[1].name).to.be.equal('milho na manteiga');
+      expect(response.body[2].name).to.be.equal('vitamina de abacate');
     });
 
-    describe('when the request not have a body', () => {
-      let response;
-      let conn;
-      let login;
-      const user = { name: 'fakeName', email: 'fake@email.com', password: '123'};
-
-      before(async () => {
-        conn = await connection();
-        sinon.stub(MongoClient, 'connect').resolves(conn);
-        await conn.db('Cookmaster').collection('users').insertOne(user);
-
-        login = await chai.request(app)
-          .post('/login')
-          .send({ email: user.email, password: user.password });
-
-        response = await chai.request(app)
-          .post('/recipes')
-          .send({})
-          .set('authorization', login.body.token);
-      });
-
-      after(async () => {
-        MongoClient.connect.restore();
-        await conn.db('Cookmaster').collection('recipes').deleteOne({ name: 'fakeRecipe' });
-      });
-
-      it('Return the status code 400', () => {
-        expect(response).to.have.status(400);
-      });
-
-      it('Return the message "Invalid entries. Try again."', () => {
-        expect(response.body).to.have.property('message');
-        expect(response.body.message).to.be.equal('Invalid entries. Try again.');
-      });
+    it('Should have the propeties, "_id", "name", "ingredients", "preparation", "userId"', () => {
+      expect(response.body[0]._id).to.exist;
+      expect(response.body[0]._id.length).to.equal(24);
+      expect(response.body[0].name).to.exist;
+      expect(response.body[0].name).to.be.an('string');
+      expect(response.body[0].ingredients).to.exist;
+      expect(response.body[0].ingredients).to.be.an('string');
+      expect(response.body[0].preparation).to.exist;
+      expect(response.body[0].preparation).to.be.an('string');
     });
-  });
-});
-
-describe('Listing all recipes', () => {
-  let response;
-  let conn;
-  const recipes = [
-    {
-       _id: '5f46a9c177df66035f61a36e',
-       name: 'fakeRecipe01',
-       ingredients: 'fakeIngredients01',
-       preparation: 'fakePreparation01',
-       userID: '5f46a9c177df66035f61a36d'
-    },
-    {
-      _id: '5f46a9c177df66035f61a37e',
-      name: 'fakeRecipe02',
-      ingredients: 'fakeIngredients02',
-      preparation: 'fakePreparation02',
-      userID: '5f46a9c177df66035f61a37d'
-   }
-  ];
-
-  before(async () => {
-    conn = await connection();
-    sinon.stub(MongoClient, 'connect').resolves(conn);
-    await conn.db('Cookmaster').collection('recipes').insertMany(recipes);
-
-    response = await chai.request(app)
-      .get('/recipes');
-  });
-
-  after(async () => {
-    MongoClient.connect.restore();
-    await conn.db('Cookmaster').collection('recipes').deleteMany();
-  });
-
-  it('Return the status code 200', () => {
-    expect(response).to.have.status(200);
-  });
-
-  it('Return an array', () => {
-    expect(response.body).to.be.an('array');
   });
 });
