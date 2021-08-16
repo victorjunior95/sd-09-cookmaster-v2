@@ -343,3 +343,29 @@ describe('POST /users/admin', () => {
       expect(res.body).to.have.a.property('message'));
   });
 });
+
+describe('GET /recipes/:id', () => {
+  describe('Receita pelo ID', () => {
+    let res;
+
+    before(async() => {
+      res = await chai.request(server).get(`/recipes/11`);
+    });
+
+    it('Retorna o código de status "404"', () => {
+      expect(res).to.have.status(404);
+    });
+
+    it('Retorna um objeto no body', () => {
+      expect(res.body).to.be.an('object');
+    });
+
+    it('Possui a propriedade "message"', () => {
+      expect(res.body).to.have.property('message');
+    });
+
+    it('Receita não encontrada', () => {
+      expect(res.body.message).to.be.equals('recipe not found');
+    });
+  });
+});
