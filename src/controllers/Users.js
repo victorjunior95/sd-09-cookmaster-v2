@@ -19,6 +19,22 @@ const registerUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const { status, token } = await usersService.login({ email, password });
+    // const verifyAccount = await usersService.login({ email, password });
+
+    // res.status(verifyAccount.status).json({ verifyAccount.token });
+    res.status(status).json({ token });
+  } catch (error) {
+    const data = JSON.parse(error.message);
+    res.status(data.status).send({ message: data.message });
+  }
+};
+
 module.exports = {
   registerUser,
+  loginUser,
 };
