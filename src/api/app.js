@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Users = require('../controllers/users');
+const routes = require('../routes');
 const error = require('../middlewares/error');
 
 const app = express();
@@ -11,11 +11,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.post('/users', Users.create);
-app.post('/login', Users.login);
-
-app.post('/recipes');
-
+app.use(routes);
 app.use(error);
 
 module.exports = app;
