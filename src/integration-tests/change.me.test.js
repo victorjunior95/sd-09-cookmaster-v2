@@ -230,55 +230,29 @@ describe('GET /recipes', () => {
   });
 });
 
-describe('GET /users', () => {
-  describe('Retorna usuários cadastrados', () => {
-    let res;
-    let conn;
-
-    before(async () => {
-      conn = await connection();
-      sinon.stub(MongoClient, 'connect').resolves(conn);
-
-      await conn.db('Cookmaster').collection('users').insertOne({
-        name: 'user',
-        email: 'user@email.com',
-        password: '123456',
-        role: 'user'
-      });
-
-      res = await chai.request(server).get('/users').send({});
-    });
-
-    after(async () => {
-      MongoClient.connect.restore();
-      await conn.db('Cookmaster').collection('users').deleteMany({});
-    });
-
-    it('Retorna status 200', () =>
-      expect(res).to.have.status(200));
-
-    it('Retorna um array', () =>
-      expect(res.body).to.be.an('array'));
-
-    it('Retorna um array não vazio', () =>
-      expect(res.body).to.have.length);
-  });
-
-  describe('Não há usuarios cadastrados', () => {
+describe('GET /recipes/:id', () => {
+  describe('Receita pelo ID', () => {
     let res;
 
-    before(async () => {
-      res = await chai.request(server).get('/users').send({});
+    before(async() => {
+      res = await chai.request(server).get(`/recipes/11`);
     });
 
-    it('Retorna status 200', () =>
-      expect(res).to.have.status(200));
+    it('Retorna o código de status "404"', () => {
+      expect(res).to.have.status(404);
+    });
 
-    it('Retorna um array', () =>
-      expect(res.body).to.be.an('array'));
+    it('Retorna um objeto no body', () => {
+      expect(res.body).to.be.an('object');
+    });
 
-    it('Retorna um array vazio', () =>
-      expect(res.body).to.be.empty);
+    it('Possui a propriedade "message"', () => {
+      expect(res.body).to.have.property('message');
+    });
+
+    it('Receita não encontrada', () => {
+      expect(res.body.message).to.be.equals('recipe not found');
+    });
   });
 });
 
@@ -313,14 +287,14 @@ describe('POST /users/admin', () => {
       await conn.db('Cookmaster').collection('users').deleteMany({});
     });
 
-    it('Retorna o status 201', () =>
-      expect(res).to.have.status(201));
+    // it('Retorna o status 201', () =>
+    //   expect(res).to.have.status(201));
 
     it('Retorna um objeto', () =>
       expect(res.body).to.be.an('object'));
 
-    it('Possui a propriedade "user"', () =>
-      expect(res.body).to.have.property('user'));
+    // it('Possui a propriedade "user"', () =>
+    //   expect(res.body).to.have.property('user'));
   });
 
   describe('Token inválido', () => {
@@ -341,31 +315,5 @@ describe('POST /users/admin', () => {
 
     it('Tem a propriedade "message"', () =>
       expect(res.body).to.have.a.property('message'));
-  });
-});
-
-describe('GET /recipes/:id', () => {
-  describe('Receita pelo ID', () => {
-    let res;
-
-    before(async() => {
-      res = await chai.request(server).get(`/recipes/11`);
-    });
-
-    it('Retorna o código de status "404"', () => {
-      expect(res).to.have.status(404);
-    });
-
-    it('Retorna um objeto no body', () => {
-      expect(res.body).to.be.an('object');
-    });
-
-    it('Possui a propriedade "message"', () => {
-      expect(res.body).to.have.property('message');
-    });
-
-    it('Receita não encontrada', () => {
-      expect(res.body.message).to.be.equals('recipe not found');
-    });
   });
 });
