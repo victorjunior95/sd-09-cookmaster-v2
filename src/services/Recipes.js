@@ -27,6 +27,9 @@ const register = async ({ name, ingredients, preparation, userId }) => {
   return recipesModel.register({ name, ingredients, preparation, userId });
 };
 
+const getAll = async () => recipesModel.getAll();
+
 module.exports = {
   register,
+  getAll,
 };
