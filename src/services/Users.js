@@ -89,7 +89,29 @@ const login = async ({ email, password }) => {
   return { status: OK, token };
 };
 
+const registerAdmin = async ({ name, email, password, role = 'admin' }) =>
+usersModel.register({ name, email, password, role });
+// const registerAdmin = async ({ name, email, password, role = 'admin' }) => {
+//   const validations = schemaRegister.validate({
+//     nameOfUser: name,
+//     emailOfUser: email,
+//     passwordOfUser: password,
+//   });
+
+//   const emailAlreadyExist = await usersModel.findByEmail(email);
+
+//   if (emailAlreadyExist) {
+//     throw new Error(JSON.stringify(CONFLICT_REQUEST));
+//   }
+
+//   if (validations.error) {
+//     throw new Error(JSON.stringify(BAD_REQUEST));
+//   }
+
+//    usersModel.register({ name, email, password, role });
+// };
 module.exports = {
   register,
   login,
+  registerAdmin,
 };

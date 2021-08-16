@@ -33,7 +33,24 @@ const loginUser = async (req, res) => {
   }
 };
 
+const registerAdmin = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const newAdmin = await usersService.registerAdmin({ name, email, password });
+
+    const { password: pass, ...remnant } = newAdmin;
+    res.status(CREATE_SUCCESS).json({ user: remnant });
+  } catch (error) {
+    console.error(error);
+
+    const data = JSON.parse(error.message);
+    res.status(data.status).json({ message: data.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  registerAdmin,
 };

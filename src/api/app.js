@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const routerUser = require('../routes/Users');
 const routerLogin = require('../routes/Login');
@@ -17,5 +18,6 @@ app.get('/', (request, response) => {
 app.use('/users', routerUser);
 app.use('/login', routerLogin);
 app.use('/recipes', routerRecipes);
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 module.exports = app;
