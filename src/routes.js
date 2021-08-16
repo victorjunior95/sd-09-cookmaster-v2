@@ -11,5 +11,6 @@ router.get('/recipes/:id', Recipes.getById);
 router.put('/recipes/:id', validateToken, Recipes.editRecipe);
 router.delete('/recipes/:id', validateToken, Recipes.deleteById);
 router.put('/recipes/:id/image', validateToken, Recipes.insertImageRecipe);
+router.post('/users/admin', validateToken, Users.createAdmin);
 
 module.exports = router;

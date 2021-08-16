@@ -47,7 +47,24 @@ const login = async ({ email, password }) => {
   };
 };
 
+const createAdmin = async ({ name, email, password, role: roleRegister }) => {
+  if (roleRegister !== 'admin') {
+    return {
+      status: 403,
+      error: {
+        message: 'Only admins can register new admins', 
+      },
+    };
+  }
+  
+  const role = 'admin';
+  const newAdmin = await Users.createAdmin(name, email, password, role);
+
+  return newAdmin;
+};
+
 module.exports = {
   create,
   login,
+  createAdmin,
 };
