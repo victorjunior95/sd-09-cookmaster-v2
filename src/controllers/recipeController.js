@@ -13,7 +13,7 @@ async function createRecipe(req, res) {
     const { name, ingredients, preparation } = req.body;
     const { user } = req;
     const createdRecipe = await recipeModel.create({
-        name, ingredients, preparation, userId: user._id,
+        name, ingredients, preparation, userId: user.id,
     });
     res.status(201).json({ recipe: {
         _id: createdRecipe.id,
@@ -44,7 +44,7 @@ async function editRecipe(req, res) {
     const { id } = req.params;
     const { user } = req;
     const recipe = await recipeModel.getRecipe(id);
-    if (!user._id.equals(recipe.userId) && user.role !== 'admin') {
+    if (!user.id.equals(recipe.userId) && user.role !== 'admin') {
         res.status(401).json({ message: 'User do not have permission to do it' });
         return;
     }
@@ -58,7 +58,7 @@ async function remove(req, res) {
     const { id } = req.params;
     const { user } = req;
     const recipe = await recipeModel.getRecipe(id);
-    if (!user._id.equals(recipe.userId) && user.role !== 'admin') {
+    if (!user.id.equals(recipe.userId) && user.role !== 'admin') {
         res.status(401).json({ message: 'User do not have permission to do it' });
         return;
     }
