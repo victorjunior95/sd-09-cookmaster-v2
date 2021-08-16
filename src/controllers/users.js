@@ -3,11 +3,11 @@ const Users = require('../services/users');
 
 const SECRET = 'XABLAU';
 
-const create = async (req, res, next) => {
+const create = async (req, res) => {
   const { name, email, password, role } = req.body;
   const newUser = await Users.create({ name, email, password, role });
 
-  if (newUser.error) return next(newUser);
+  if (newUser.error) return (newUser);
 
   const { password: _, ...user } = newUser;
 
