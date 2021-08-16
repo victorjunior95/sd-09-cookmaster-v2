@@ -19,16 +19,7 @@ const {
   login,
 } = require('../controllers/users');
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, 'src/uploads/'),
-  filename: (req, file, cb) => {
-    const { id } = req.params;
-    const split = file.originalname.split('.');
-    cb(null, `${id}.jpeg`);
-  },
-});
-
-const upload = multer({ storage });
+const upload = multer({ dest: 'uploads' });
 
 routes.post('/users', createUser);
 routes.post('/login', login);
