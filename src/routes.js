@@ -9,5 +9,6 @@ router.post('/recipes', validateToken, Recipes.create);
 router.get('/recipes', Recipes.getAllRecipes);
 router.get('/recipes/:id', Recipes.getById);
 router.put('/recipes/:id', validateToken, Recipes.editRecipe);
+router.delete('/recipes/:id', validateToken, Recipes.deleteById);
 
 module.exports = router;

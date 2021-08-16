@@ -78,9 +78,22 @@ const editRecipe = async (id, name, ingredients, preparation) => {
   return updateRecipe;
 };
 
+const deleteById = async (id) => {
+  const verifyProduct = await Recipes.getRecipeById(id);
+
+  if (!verifyProduct) {
+    return { status: 404, error: { message: 'recipe not found' } };
+  }
+
+  const result = Recipes.deleteById(id);
+
+  return result;
+};
+
 module.exports = {
   create,
   getAllRecipes,
   getById,
   editRecipe,
+  deleteById,
 };
