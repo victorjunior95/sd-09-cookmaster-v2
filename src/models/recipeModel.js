@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
+const id = '_id';
+
 async function create({ userId, name, ingredients, preparation }) {
     const recipeCollection = await getConnection('recipes');
     const { insertedId } = await recipeCollection.insertOne({
@@ -19,7 +21,7 @@ async function create({ userId, name, ingredients, preparation }) {
 
 async function getAll() {
     const recipeCollection = await getConnection('recipes');
-    const allRecipes = await recipeCollection.find();
+    const allRecipes = recipeCollection.find();
     return allRecipes.toArray();
 }
 
@@ -27,7 +29,11 @@ async function getRecipe(recipeId) {
     if (!ObjectId.isValid(recipeId)) return;
     const recipeCollection = await getConnection('recipes');
     const recipe = await recipeCollection.findOne({ _id: new ObjectId(recipeId) });
-    return recipe;
+    return {
+        ...recipe,
+        id: recipe[id],
+        _id: undefined,
+    };
 }
 
 async function update({ recipeId, name, ingredients, preparation }) {
@@ -45,10 +51,21 @@ async function remove(recipeId) {
     await recipeCollection.deleteOne({ _id: new ObjectId(recipeId) });
 }
 
+async function addPhoto(recipeId, photoUrl) {
+    const recipeCollection = await getConnection('recipes');
+    await recipeCollection.updateOne(
+        { _id: new ObjectId(recipeId) },
+        { $set: { image: photoUrl } },
+    );
+    const updatedRecipe = await getRecipe(recipeId);
+    return updatedRecipe;
+}
+
 module.exports = {
     create,
     getAll,
     getRecipe,
     update,
     remove,
+    addPhoto,
 };
