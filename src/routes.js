@@ -11,5 +11,6 @@ router.post('/login', loginValidator, userController.login);
 router.get('/recipes', recipeController.getAllRecipes);
 router.get('/recipes/:id', recipeController.getRecipe);
 router.post('/recipes', jwtAuth, createRecipeValidator, recipeController.createRecipe);
+router.put('/recipes/:id', jwtAuth, recipeController.editRecipe);
 
 module.exports = router;

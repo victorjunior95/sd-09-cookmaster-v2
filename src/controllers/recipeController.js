@@ -39,8 +39,18 @@ async function getRecipe(req, res) {
     res.status(200).json(recipe);
 }
 
+async function editRecipe(req, res) {
+    const { name, ingredients, preparation } = req.body;
+    const { id } = req.params;
+    const updatedRecipe = await recipeModel.update(
+        { recipeId: id, name, ingredients, preparation },
+    );
+    res.status(200).json(updatedRecipe);
+}
+
 module.exports = {
     createRecipe,
     getAllRecipes,
     getRecipe,
+    editRecipe,
 };

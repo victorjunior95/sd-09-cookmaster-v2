@@ -30,8 +30,19 @@ async function getRecipe(recipeId) {
     return recipe;
 }
 
+async function update({ recipeId, name, ingredients, preparation }) {
+    const recipeCollection = await getConnection('recipes');
+    await recipeCollection.updateOne(
+        { _id: new ObjectId(recipeId) },
+        { $set: { name, ingredients, preparation } },
+    );
+    const updatedRecipe = await getRecipe(recipeId);
+    return updatedRecipe;
+}
+
 module.exports = {
     create,
     getAll,
     getRecipe,
+    update,
 };
