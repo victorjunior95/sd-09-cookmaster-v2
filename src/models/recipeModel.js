@@ -40,9 +40,15 @@ async function update({ recipeId, name, ingredients, preparation }) {
     return updatedRecipe;
 }
 
+async function remove(recipeId) {
+    const recipeCollection = await getConnection('recipes');
+    await recipeCollection.deleteOne({ _id: new ObjectId(recipeId) });
+}
+
 module.exports = {
     create,
     getAll,
     getRecipe,
     update,
+    remove,
 };

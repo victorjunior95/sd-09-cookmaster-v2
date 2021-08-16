@@ -12,5 +12,6 @@ router.get('/recipes', recipeController.getAllRecipes);
 router.get('/recipes/:id', recipeController.getRecipe);
 router.post('/recipes', jwtAuth, createRecipeValidator, recipeController.createRecipe);
 router.put('/recipes/:id', jwtAuth, recipeController.editRecipe);
+router.delete('/recipes/:id', jwtAuth, recipeController.remove);
 
 module.exports = router;

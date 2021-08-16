@@ -54,9 +54,22 @@ async function editRecipe(req, res) {
     res.status(200).json(updatedRecipe);
 }
 
+async function remove(req, res) {
+    const { id } = req.params;
+    const { user } = req;
+    const recipe = await recipeModel.getRecipe(id);
+    if (!user._id.equals(recipe.userId) && user.role !== 'admin') {
+        res.status(401).json({ message: 'User do not have permission to do it' });
+        return;
+    }
+    await recipeModel.remove(id);
+    res.status(204).json();
+}
+
 module.exports = {
     createRecipe,
     getAllRecipes,
     getRecipe,
     editRecipe,
+    remove,
 };
