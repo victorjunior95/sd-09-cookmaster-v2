@@ -1,7 +1,6 @@
 const usersService = require('../services/Users');
 
 const CREATE_SUCCESS = 201;
-// const NOT_SUCCESS = 400;
 
 const registerUser = async (req, res) => {
   try {

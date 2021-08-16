@@ -72,7 +72,6 @@ const login = async ({ email, password }) => {
   }
 
   const getAllUsers = await usersModel.getAll();
-  // console.log(`========= ${getAllUsers} ================`);
 
   const checkUser = getAllUsers.find((user) => user.email === email && user.password === password);
 
