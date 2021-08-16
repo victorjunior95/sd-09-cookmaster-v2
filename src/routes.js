@@ -7,6 +7,7 @@ const createUserValidator = require('./validators/createUserValidator');
 const loginValidator = require('./validators/loginValidator');
 
 router.post('/users', createUserValidator, userController.createUser);
+router.post('/users/admin', jwtAuth, createUserValidator, userController.createUserAdmin);
 router.post('/login', loginValidator, userController.login);
 
 router.get('/recipes', recipeController.getAllRecipes);

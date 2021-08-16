@@ -45,7 +45,28 @@ async function login(req, res) {
     });
 }
 
+async function createUserAdmin(req, res) {
+    const { name, email, password } = req.body;
+    const { user } = req;
+    if (user.role !== 'admin') {
+        return res.status(403).json({ message: 'Only admins can register new admins' });
+    } 
+    const userWithSameEmail = await userModel.findByEmail(email);
+    if (userWithSameEmail) {
+        res.status(409).json({ message: 'Email already registered' });
+        return;
+    }
+    const userCreated = await userModel.create({ name, email, password, role: 'admin' });
+    res.status(201).json({ user: {
+        name: userCreated.name,
+        email: userCreated.email,
+        role: userCreated.role,
+        _id: userCreated.id,
+    } });
+}
+
 module.exports = {
     createUser,
     login,
+    createUserAdmin,
 };
