@@ -32,8 +32,20 @@ const getRecipeById = async (id) => {
   }
 };
 
-const editRecipe = async () => {
-  
+const editRecipe = async (id, name, ingredients, preparation) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const db = await connection();
+  const updateRecipe = await db.collection('recipes')
+    .findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: { name, ingredients, preparation } },
+      { returnOriginal: false },
+    );
+
+      if (!updateRecipe) return null;
+
+  return updateRecipe.value;
 };
 
 module.exports = {
