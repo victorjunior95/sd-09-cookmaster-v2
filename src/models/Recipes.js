@@ -46,10 +46,20 @@ const erase = async (id) => {
   await connection.collection('recipes').deleteOne({ _id: ObjectId(id) });
 };
 
+const newURL = async (id, image) => {
+  const connection = await connect();
+
+  await connection.collection('recipes').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { image } },
+  );
+};
+
 module.exports = {
   register,
   getAll,
   getById,
   update,
   erase,
+  newURL,
 };

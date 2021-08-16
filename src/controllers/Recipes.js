@@ -71,10 +71,27 @@ const deleteRecipe = async (req, res) => {
   }
 };
 
+const newURL = async (req, res) => {
+  const { filename } = req.file;
+  const urlImage = `localhost:3000/src/uploads/${filename}`;
+  try {
+    const { id } = req.params;
+
+    await recipesService.newURL(id, urlImage);
+
+    const result = await recipesService.getById(id);
+
+    res.status(OK).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   registerRecipe,
   getAllRecipe,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  newURL,
 };

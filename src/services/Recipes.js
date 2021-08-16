@@ -64,10 +64,19 @@ const erase = async (id) => {
   return recipesModel.erase(id);
 };
 
+const newURL = async (id, image) => {
+  if (!ObjectId.isValid(id)) {
+    throw new Error(JSON.stringify(NOT_FOUND));
+  }
+
+  return recipesModel.newURL(id, image);
+};
+
 module.exports = {
   register,
   getAll,
   getById,
   update,
   erase,
+  newURL,
 };
