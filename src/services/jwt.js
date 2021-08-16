@@ -7,6 +7,16 @@ function generateJwt({ id, email, role }) {
     return token;
 }
 
+function verifyJwt(token) {
+    try {
+        const { email, role } = jwt.verify(token, secret);
+        return { email, role, error: undefined };
+    } catch (error) {
+        return { error };
+    }
+}
+
 module.exports = {
     generateJwt,
+    verifyJwt,
 };
