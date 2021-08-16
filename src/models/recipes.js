@@ -32,8 +32,13 @@ const getRecipeById = async (id) => {
   }
 };
 
+const editRecipe = async () => {
+  
+};
+
 module.exports = {
   create,
   getAllRecipes,
   getRecipeById,
+  editRecipe,
 };
