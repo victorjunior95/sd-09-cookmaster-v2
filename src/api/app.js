@@ -12,6 +12,7 @@ app.get('/', (request, response) => {
 });
 
 app.use(routes);
+app.use('/images', express.static('src/uploads/'));
 app.use(error);
 
 module.exports = app;
