@@ -8,6 +8,8 @@ const createRecipe = async (name, ingredients, preparation, userId) => {
   return { recipe: result.ops[0] };
 };
 
+// a
+
 const getAll = async () => {
   const db = await connection();
   const result = await db.collection('recipes').find().toArray();
