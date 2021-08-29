@@ -4,6 +4,7 @@ const createUser = async (name, email, password) => {
   const db = await connection();
   const result = await db.collection('users')
     .insertOne({ name, email, password, role: 'user' });
+    console.log(result.ops[0]);
   return result.ops[0];
 };
 

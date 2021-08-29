@@ -5,10 +5,11 @@ const createRecipe = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
 
   const { user } = req;
+  const userId = user._id // linha adicionada para o userId aparecer na resposta da requisição
   if (!name || !ingredients || !preparation) { 
     return res.status(erros.BAD_REQUEST).json({ message: 'Invalid entries. Try again.' }); 
   }
-  const create = await recipesService.createRecipe(name, ingredients, preparation, user.id);
+  const create = await recipesService.createRecipe(name, ingredients, preparation, userId);
   res.status(erros.CREATED).json(create);
 };
 
