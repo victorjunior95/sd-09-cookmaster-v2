@@ -4,8 +4,8 @@ const erros = require('../utils/codigosErro');
 const createRecipe = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
 
-  const { user } = req;
-  const userId = user._id // linha adicionada para o userId aparecer na resposta da requisição
+  const { _id } = req.user;
+  const userId = _id; // linha adicionada para o userId aparecer na resposta da requisição
   if (!name || !ingredients || !preparation) { 
     return res.status(erros.BAD_REQUEST).json({ message: 'Invalid entries. Try again.' }); 
   }
