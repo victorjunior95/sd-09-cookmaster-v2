@@ -7,7 +7,7 @@ const DB_NAME = 'Cookmaster';
 
 // Para o avaliador funcionar altere a conexão do banco para:
 
- const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
+const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
 
 const connection = () =>
   mongoClient
